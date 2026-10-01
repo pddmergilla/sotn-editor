@@ -1,8 +1,34 @@
 # SOTN Editor v6.1
 
-Standalone browser editor for PS1 Castlevania: Symphony of the Night stage maps, entity placements, game stats, and selected extra hacks. The **Map Editor** tab is the v5.1 area editor; the **Stats Editor** and **Library Shop Editor** tabs were added in v6.0. It reads a user supplied disc image and includes no game assets; the Extra Hacks catalog holds only the short code and data runs each hack writes or restores.
+Create your own *Castlevania: Symphony of the Night* ROM hack in a standalone browser editor.
 
-## Start
+**[Open SOTN Editor](https://pddmergilla.github.io/sotn-editor/)**
+
+The editor changes stage maps, collisions, entity placements, game stats, the Library shop, and selected gameplay hacks. It reads a user-supplied US PlayStation disc image entirely in the browser, includes no game assets, never uploads the image, and never overwrites the source file.
+
+## Main features
+
+- Paint foreground and background tiles using the stage's real artwork.
+- Edit collision, room entities, item drops, relic orbs, and object graphics banks.
+- Change player, enemy, item, spell, familiar, pickup, and Richter statistics.
+- Edit Library shop items and prices.
+- Toggle 30 optional gameplay hacks for supported vanilla and Alternate Scarlet Symphony images.
+- Build a new BIN or export a PPF3 patch containing only your changes.
+- Undo map, entity, stat, shop, and hack edits in the browser.
+
+## Compatibility and safety
+
+- Designed for the US PS1 release and Alternate Scarlet Symphony 1.3.1/2.0 layouts.
+- Accepts 2048-byte sector ISO and 2352-byte sector BIN images.
+- Unsupported or changed data is rejected instead of guessed.
+- Raw-sector outputs receive updated EDC/ECC data.
+- Generated images and patches should be tested in an emulator before distribution.
+
+## Use the editor
+
+Open the [hosted editor](https://pddmergilla.github.io/sotn-editor/), select **Open SOTN BIN**, and choose your disc image. Everything runs locally in your browser.
+
+To run the project locally instead, start the included server and open its address in desktop Chrome or Edge:
 
 Run the included local web server in this folder, then open its address in desktop Chrome or Edge:
 
