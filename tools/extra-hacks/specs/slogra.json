@@ -1,0 +1,45 @@
+{
+ "id": "slogra",
+ "label": "No Flinch Slogra",
+ "summary": "Slogra is no longer knocked back when hit, so Gaibon can no longer grab and carry him for their combo attack; Slogra's spear-loss phase and both bosses' deaths are unchanged.",
+ "edits": [
+  {
+   "file": "ST/NZ0/NZ0.BIN",
+   "offset": "0x347D8",
+   "off": "4bf5060c",
+   "on": "00000000",
+   "why": "EntitySlogra: 'if (hitFlags&3 && step!=KNOCKBACK) SetStep(SLOGRA_KNOCKBACK=8)' jal -> nop (sotn_bosses slogra_hit)"
+  },
+  {
+   "file": "ST/NZ0/NZ0.BIN",
+   "offset": "0x34890",
+   "off": "4bf5060c",
+   "on": "00000000",
+   "why": "EntitySlogra: 'if (gaibon->grabedAscending) SetStep(SLOGRA_GAIBON_COMBO_ATTACK=0xD)' jal -> nop (sotn_bosses slogra_combo_handshake)"
+  },
+  {
+   "file": "ST/NZ0/NZ0.BIN",
+   "offset": "0x34E34",
+   "off": "9c0022a2",
+   "on": "00000000",
+   "why": "EntitySlogra knockback arc: 'sb v0,0x9C(s1)' (pickupFlag = 1) -> nop (sotn_bosses slogra_pickup_flag)"
+  },
+  {
+   "file": "ST/NZ0/NZ0.BIN",
+   "offset": "0x35854",
+   "off": "03004010",
+   "on": "03000010",
+   "why": "EntityGaibon: 'if (slogra->pickupFlag && step<5) SetStep(GAIBON_PICKUP_SLOGRA=9)' beqz -> unconditional b (Gaibon-Death-Fix; replaces sotn_bosses gaibon_pickup, whose nop of the shared jal at 0x3585C also broke Gaibon's death)"
+  }
+ ],
+ "vanilla": {
+  "supported": true,
+  "reason": "All four locations hold the off bytes in vanilla NZ0 and the patch only removes calls/branches, so it is safe on vanilla.",
+  "vanillaOff": []
+ },
+ "tunables": [],
+ "entityEdits": [],
+ "overlaps": [],
+ "confidence": "high",
+ "notes": "Sources: sotn_bosses.ppf + manifest/offsets/README (Codex 2026-09-26/referenced-chatgpt-conversation-this-is-an) ids slogra_hit, slogra_combo_handshake, slogra_pickup_flag, gaibon_pickup; Gaibon-Death-Fix-Scarlet-2.0.ppf + README (2026-09-26/check-sotn-decomp-github-and-base); decomp src/st/nz0/slogra.c, gaibon.c. gaibon_pickup nop'd 'jal SetStep' at NZ0 0x3585C, but Gaibon's FLAG_DEAD path ('j 0x801B585C' with a0=0xF at 0x35830) jumps into that same jal, so Gaibon could not die. The fix restored the jal (0x3585C is now 4bf5060c = vanilla = o, so it is NOT an edit and must never be written as nop) and made the pickup test at 0x35854 'b 0x801B5864'. Decision: 0x35854 belongs to this toggle. With Slogra on it is redundant (pickupFlag is only set in SLOGRA_KNOCKBACK, which can no longer be entered, and that store is nop'd too). With Slogra off, keeping it would be harmless (the death path does not pass through it) but would silently remove the vanilla Gaibon-carries-Slogra combo, so off restores the o/vanilla beqz; all-off = exact vanilla Slogra/Gaibon code. sotn_bosses.ppf was built against vanilla but its NZ0 records' old bytes equal o, so it reverted nothing here. NZ0's other o->a changes (map-editor layout 0x2742.., Reawakened 0x1958/0x3A2B4/0x3AE94, MP&Hearts 0x1DA4/0x42C4C/0x4317C, Double Aggro 0x457A8, Big-Heart candles 0x3020/0x3928) do not touch these bytes. Not emulator-verified here."
+}

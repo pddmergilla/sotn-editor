@@ -1,0 +1,65 @@
+{
+  "id": "all-cloaks-hearts",
+  "label": "All Cloaks give Hearts",
+  "summary": "Every cloak (not just the Blood Cloak) turns damage Alucard survives into hearts, at one heart per 5 damage; with No Cape there are no hearts.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EDDC",
+      "off": "36000434",
+      "on": "30000434",
+      "why": "HandleDamage: CheckEquipmentItemCount(ITEM_BLOOD_CLOAK 0x36, cape) -> (ITEM_NO_CAPE 0x30, cape)",
+      "origin": "SOTN-All-Cloaks-Blood-Effect.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EDF8",
+      "off": "07004010",
+      "on": "07004014",
+      "why": "'beqz v0' -> 'bnez v0': hearts are given unless No Cape is worn",
+      "origin": "SOTN-All-Cloaks-Blood-Effect.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EE0C",
+      "off": "45fa030c00000000",
+      "on": "fd78030c05000824",
+      "why": "'jal AddHearts(damage); nop' -> 'jal 0x800DE3F4; addiu t0,zero,5' (hearts = damage / 5)",
+      "origin": "unattributed (after SotN-All-Cloaks-Hearts-Damage-Divided-By-4)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3E3F4",
+      "off": "000000000000000000000000",
+      "on": "1b00880045fa030812200000",
+      "why": "Divider cave: divu a0,t0; j AddHearts 0x800FE914; mflo a0 Lives in item-text padding: only installed where those bytes are free (zero).",
+      "origin": "unattributed",
+      "offNote": "off differs from 1.3.1 (o=20816d757365816e00000000)",
+      "needsFree": true
+    }
+  ],
+  "vanilla": {
+    "supported": false,
+    "reason": "The divide-by-5 code sits in spare space after ASS's shortened Curry Rice description; in vanilla those bytes are the end of that description text.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EE10",
+      "length": 2,
+      "why": "Damage divisor (addiu t0,zero,5)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3E3F4",
+      "length": 12,
+      "why": "Cave in text padding; not used for detection (vanilla and 1.3.1 hold description text here)."
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [],
+  "confidence": "high",
+  "notes": "off for 0x3E3F4 is 12 zero bytes (string padding after 'Heals 1200HP (muse)'), not the 1.3.1 bytes, because the Curry Rice description was shortened separately by a text edit; the cave is only reached through 0x5EE0C. RISK: lengthening the Curry Rice (item 0x35) description in the Stats Editor past 0x3E3F3 would overwrite the cave and crash on a hit while wearing a cloak; the editor should treat DRA 0x3E3F4-0x3E3FF as reserved while this is on. The Blood Cloak rename at DRA 0x3F1C0 ('Scarlet' -> 'Blood Cloak') is name text, not part of this toggle. The superseded SotN-All-Cloaks-Hearts-Damage-Divided-By-4 PPF (srl a0,2 at 0x5EE10) is not in the image."
+}

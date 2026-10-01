@@ -1,0 +1,35 @@
+{
+  "id": "richter-save",
+  "label": "Richter always saved",
+  "summary": "Defeating Richter always takes the 'Richter saved' route (the Shaft's-orb cutscene that opens the Inverted Castle) instead of his normal defeat.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353DC",
+      "off": "00009594",
+      "on": "10d50608",
+      "why": "RicMain lethal-damage path: 'lhu s5,(a0)' -> 'j 0x801B5440' (the existing RicSetStep(0x70) PL_S_ENDING_4 call)",
+      "origin": "Richter-Save-Alternate-Scarlet-Symphony-2.0.ppf"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "The replaced word and the jump-target code (0x801B5440 'jal RicSetStep; ori a0,zero,0x70') are identical in vanilla.",
+    "vanillaOff": []
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "richter-no-flinch",
+      "detail": "0xB0 bytes before its word at 0x3548C; no overlap."
+    },
+    {
+      "hack": "richter-ai",
+      "detail": "No overlap."
+    }
+  ],
+  "confidence": "medium",
+  "notes": "README: Codex 2026-09-27/read-c-users-omergilla-downloads-castlevania/outputs/Richter-Save-Alternate-Scarlet-Symphony-2.0.README.md. Not emulator-verified by its author. In vanilla the save route needs the Holy Glasses and Shaft's orb; with this the bad-ending branch is skipped."
+}

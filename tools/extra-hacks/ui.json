@@ -1,0 +1,225 @@
+{
+ "minimap": {
+  "label": "MiniMap"
+ },
+ "fast-warp": {
+  "label": "Fast Warp"
+ },
+ "mist-gas-swap": {
+  "label": "Swap Power of Mist and Gas Cloud",
+  "summary": "ASS: Power of Mist sits on the Floating Catacombs pedestal and Gas Cloud on the Long Library pedestal; unchecking puts each back on the other's pedestal. Vanilla: swaps the Castle Keep (Power of Mist) and Floating Catacombs (Gas Cloud) relics."
+ },
+ "aggressive-enemy": {
+  "label": "Aggressive Enemy",
+  "subtitle": "Detection range increased",
+  "partialIsOn": true
+ },
+ "karasuman": {
+  "label": "No Flinch Karasuman"
+ },
+ "slogra": {
+  "label": "No Flinch Slogra"
+ },
+ "dopplegangers": {
+  "label": "No Flinch Dopplegangers"
+ },
+ "succubus": {
+  "label": "No Flinch and Faster Succubus",
+  "summary": "Succubus only flinches when hit during her clone attack, and her animations, attack timers, clones and wing spikes run faster (the wing-spike tips also get a 12×12 hitbox)."
+ },
+ "richter-no-flinch": {
+  "label": "No Flinch Richter"
+ },
+ "richter-ai": {
+  "label": "Epic Richter AI",
+  "vanillaNote": "On vanilla, the AI's knife, vibhuti and rebound-stone hits use Richter's Cross damage instead of the ASS-scaled 250–350."
+ },
+ "quick-items": {
+  "label": "Quick Items",
+  "subtitle": "L2 shortcuts",
+  "summary": "Hold L2 and press Square, Circle, Triangle or Cross to use a Potion, High Potion, X-Potion or Meal Ticket (thrown random food) without equipping it. Each shortcut costs the item's MP (hearts with Healing items use Hearts) and needs HP below max, and while L2 is held the face buttons don't attack, jump or backdash."
+ },
+ "mp-items": {
+  "label": "MP Cost Items instead of consumables",
+  "subtitle": "Includes MP gating",
+  "summary": "Potion, High Potion, X-Potion, Meal Ticket and Library Card are no longer used up; using one costs MP (or hearts, with Healing items use Hearts) instead (Antivenom, Uncurse and Hammer also cost MP), and a hand item that costs more MP than you have can't be used. Unchecking it on an ASS BIN restores ASS 1.3.1 item behaviour; checking it on vanilla also makes the throwing items reusable as in ASS.",
+  "values": [
+   {
+    "key": "potion",
+    "file": "DRA.BIN",
+    "offset": 27508,
+    "transform": "cost"
+   },
+   {
+    "key": "high",
+    "file": "DRA.BIN",
+    "offset": 27560,
+    "transform": "cost"
+   },
+   {
+    "key": "x",
+    "file": "DRA.BIN",
+    "offset": 27612,
+    "transform": "cost"
+   },
+   {
+    "key": "meal",
+    "file": "DRA.BIN",
+    "offset": 22880,
+    "transform": "cost"
+   },
+   {
+    "key": "cure",
+    "file": "DRA.BIN",
+    "offset": 26728,
+    "transform": "cost"
+   }
+  ],
+  "defaults": {
+   "potion": 30,
+   "high": 70,
+   "x": 200,
+   "meal": 50,
+   "cure": 20
+  },
+  "valueTemplate": "Costs: Potion {potion}, High Potion {high}, X-Potion {x}, Meal Ticket {meal}, Antivenom {cure}. Change them in the Stats Editor."
+ },
+ "agunea-limit": {
+  "label": "Agunea Limit",
+  "values": [
+   {
+    "key": "extra",
+    "file": "DRA.BIN",
+    "offset": 560856,
+    "transform": "aguneaExtra"
+   }
+  ],
+  "defaults": {
+   "extra": 5
+  },
+  "valueTemplate": "Limit in this BIN: the first strike plus up to {extra} extra strikes.",
+  "summary": "Holding Agunea stops after a fixed number of paid extra lightning strikes instead of continuing while hearts last."
+ },
+ "wolf-no-jump": {
+  "label": "No Jump Wolf Transformation"
+ },
+ "subweapon-weapon": {
+  "label": "Subweapon Attached to Weapon",
+  "subtitle": "Also removes subweapon pickups, adds L1/R1 subweapon change for Richter, and shows the subweapon icon beside the equipped weapon in the menu",
+  "entityLabel": "Candle pickups",
+  "entityOnText": "give Big Hearts instead of a subweapon",
+  "summary": "Alucard's subweapon follows the weapon in his first hand slot (72 weapons) and its icon appears beside the weapon in the equipment menu; candles and lamps that dropped subweapons drop Big Hearts; DOWN+TRIANGLE subweapon cycling is removed; Richter switches subweapons with L1/R1. Unchecking it on an ASS BIN restores ASS 1.3.1 behaviour (subweapon candles and DOWN+TRIANGLE); Richter's L1/R1 came with ASS 1.3.1 and stays."
+ },
+ "dark-stats": {
+  "label": "Dark Metamorphosis stat buff",
+  "values": [
+   {
+    "key": "atk",
+    "file": "DRA.BIN",
+    "offset": 272456,
+    "signed": true
+   },
+   {
+    "key": "int",
+    "file": "DRA.BIN",
+    "offset": 272532,
+    "signed": true
+   },
+   {
+    "key": "def",
+    "file": "DRA.BIN",
+    "offset": 272564,
+    "signed": true
+   },
+   {
+    "key": "cap",
+    "file": "DRA.BIN",
+    "offset": 272580,
+    "signed": true
+   }
+  ],
+  "defaults": {
+   "atk": 25,
+   "int": 25,
+   "def": 25,
+   "cap": 999
+  },
+  "valueTemplate": "Bonus in this BIN: +{atk} ATK, +{int} INT, +{def} DEF (ATK and DEF capped at {cap}).",
+  "summary": "Alucard's ATK, INT (shown and effective) and DEF go up while Dark Metamorphosis is active; ATK applies to non-zero attack values."
+ },
+ "dark-speed": {
+  "label": "Dark Metamorphosis SpeedUp",
+  "values": [
+   {
+    "key": "mult",
+    "file": "DRA.BIN",
+    "offset": 272664,
+    "transform": "sraMultiplier"
+   }
+  ],
+  "defaults": {
+   "mult": 1.5
+  },
+  "valueTemplate": "Speed in this BIN: {mult}× while active.",
+  "summary": "Alucard's walking, jumping, falling and backdash horizontal speed goes up while Dark Metamorphosis is active."
+ },
+ "sky-walker": {
+  "label": "Sky Walker",
+  "subtitle": "Infinite jump on Leap Stone, includes Up+Triangle to dropkick"
+ },
+ "heal-hearts": {
+  "label": "Healing items use Hearts instead of MP",
+  "subtitle": "Requires MP Cost Items instead of consumables",
+  "summary": "Potion, High Potion, X-Potion and Meal Ticket spend hearts instead of MP, from the menu and from the L2 shortcuts. Checking it sets their costs to 300, 700, 1500 and 500 hearts; unchecking it sets them back to 30, 70, 200 and 50 MP. The Stats Editor shows these as heart costs while it is checked. Item descriptions are not changed.",
+  "values": [
+   {
+    "key": "potion",
+    "file": "DRA.BIN",
+    "offset": 27508,
+    "transform": "cost"
+   },
+   {
+    "key": "high",
+    "file": "DRA.BIN",
+    "offset": 27560,
+    "transform": "cost"
+   },
+   {
+    "key": "x",
+    "file": "DRA.BIN",
+    "offset": 27612,
+    "transform": "cost"
+   },
+   {
+    "key": "meal",
+    "file": "DRA.BIN",
+    "offset": 22880,
+    "transform": "cost"
+   }
+  ],
+  "valueTemplate": "Costs: Potion {potion}, High Potion {high}, X-Potion {x}, Meal Ticket {meal}.",
+  "vanillaNote": "The heart costs are ASS-sized; on vanilla, lower them in the Stats Editor."
+ },
+ "subweapon-mp": {
+  "label": "Subweapon use MP instead of Hearts",
+  "summary": "Alucard's subweapons and Agunea's follow-up strikes spend MP instead of hearts, using the costs in the Stats Editor's Subweapons section (shown as MP costs while this is checked). Richter still uses hearts."
+ },
+ "faerie-behavior": {
+  "label": "Faerie Behavior",
+  "subtitle": "Free items and buffs",
+  "summary": "The Faerie no longer uses up items. A Hammer, Uncurse or Antivenom must still be in your inventory, but each use costs MP instead of the item, and the Faerie won't use one when you have less MP than that. Potion and High Potion heals from the Faerie are free and keep the potion. When you take a hit and stay above a quarter of your max HP, the Faerie casts a random free buff: STR, LCK, INT, ATK or DEF +20 for about 68 seconds.",
+  "values": [
+   {
+    "key": "mp",
+    "file": "DRA.BIN",
+    "offset": 273848
+   }
+  ],
+  "valueTemplate": "Hammer, Uncurse and Antivenom: {mp} MP per use."
+ },
+ "holy-water-richter": {
+  "label": "Richter-style Holy Water",
+  "subtitle": "Traveling flames",
+  "summary": "Alucard throws Holy Water in Richter's angled arc. When the bottle breaks, the fire travels along the ground for about 80 frames, leaving a flame every 4th frame, instead of burning in one spot. Damage, hit cooldown, Max on screen and the heart (or MP) cost still come from the Holy Water rows in the Stats Editor."
+ }
+}

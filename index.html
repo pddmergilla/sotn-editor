@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SOTN Editor v6.1</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>SOTN Editor <span>v6.1</span></h1>
+    <nav class="tabs" role="tablist" aria-label="Editor">
+      <button class="tab active" type="button" role="tab" data-tab="map" aria-selected="true">Map Editor</button>
+      <button class="tab" type="button" role="tab" data-tab="stats" aria-selected="false">Stats Editor <span id="statsBadge" class="badge hidden">0</span></button>
+      <button class="tab" type="button" role="tab" data-tab="shop" aria-selected="false">Library Shop Editor <span id="shopBadge" class="badge hidden">0</span></button>
+      <button class="tab" type="button" role="tab" data-tab="extraHacks" aria-selected="false">Extra Hacks</button>
+    </nav>
+  </div>
+  <div class="toolbar">
+    <button id="openDisc">Open SOTN BIN</button>
+    <button id="undoEdit" class="iconButton" type="button" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>↶</button>
+    <button id="buildBin" disabled>Build BIN</button>
+    <button id="exportPpf" disabled>Export PPF3</button>
+    <details class="legacy"><summary>Asset folder tools</summary><button id="openFolder">Open Area Assets</button><button id="openStageGfx">Load F_AREA.BIN</button><button id="saveAll" disabled>Save Assets</button></details>
+  </div>
+</header>
+
+<main id="mapView">
+  <aside class="left">
+    <section>
+      <h2>Area</h2>
+      <select id="areaSelect" disabled aria-label="Castle area"></select>
+      <div id="areaName" class="muted">No area opened</div>
+      <div id="gfxStatus" class="sourceStatus">Graphics: not loaded</div>
+    </section>
+
+    <section>
+      <h2>Rooms</h2>
+      <div id="roomList" class="list"></div>
+    </section>
+
+    <section>
+      <h2>Display</h2>
+      <label><input type="checkbox" id="showFg" checked> Foreground</label>
+      <label><input type="checkbox" id="showBg" checked> Background</label>
+      <label><input type="checkbox" id="showEntities" checked> Entities</label>
+      <label><input type="checkbox" id="showGrid"> Tile grid</label>
+      <label><input type="checkbox" id="showCollision"> Collision</label>
+    </section>
+  </aside>
+
+  <section class="center">
+    <div class="canvasbar">
+      <span id="roomInfo">Open your SOTN BIN</span>
+      <div class="zoom">
+        <button id="scrollUp" type="button" title="Scroll map up" aria-label="Scroll map up" disabled>↑</button>
+        <button id="scrollDown" type="button" title="Scroll map down" aria-label="Scroll map down" disabled>↓</button>
+        <button id="zoomOut">−</button>
+        <span id="zoomLabel">100%</span>
+        <button id="zoomIn">+</button>
+      </div>
+    </div>
+    <div id="canvasWrap">
+      <canvas id="mapCanvas" width="1024" height="768"></canvas>
+    </div>
+    <div class="status" id="status">Ready.</div>
+  </section>
+
+  <aside class="right">
+    <section>
+      <h2>Mode</h2>
+      <div class="segmented">
+        <button class="mode active" data-mode="tiles">Tiles</button>
+        <button class="mode" data-mode="entities">Entities</button>
+        <button class="mode" data-mode="collision">Collision</button>
+      </div>
+    </section>
+
+    <section id="collisionPanel" class="hidden">
+      <h2>Collision</h2>
+      <label>Layer
+        <select id="collisionLayer">
+          <option value="fg">Foreground</option>
+          <option value="bg">Background</option>
+        </select>
+      </label>
+      <label>Collision value <input id="collisionId" type="number" min="0" max="255" value="0"></label>
+      <button id="copyCollision" class="copyTile" type="button" aria-pressed="false" disabled>Copy Collision</button>
+      <p class="hint">Click a tile to change its collision value for every use of that tile in this area.</p>
+    </section>
+
+    <section id="tilePanel">
+      <h2>Tile Brush</h2>
+      <label>Paint layer
+        <select id="paintLayer">
+          <option value="fg">Foreground</option>
+          <option value="bg">Background</option>
+        </select>
+      </label>
+
+      <div class="tileSelection">
+        <label>Tile ID
+          <input id="tileId" type="number" min="0" max="65535" value="0">
+        </label>
+        <div id="tileInfo" class="muted">Select a tile.</div>
+      </div>
+      <button id="copyTile" class="copyTile" type="button" aria-pressed="false" disabled>Copy Tile</button>
+
+      <div id="paletteWrap">
+        <canvas id="tilePalette" width="256" height="256"></canvas>
+      </div>
+      <p class="hint">Click the palette to choose a tile. Paint with left mouse.</p>
+    </section>
+
+    <section id="entityPanel" class="hidden">
+      <h2>Entities <span id="entityAreaCode"></span></h2>
+      <div class="entityPanelHeading"><strong id="entityRoomTitle">No room selected</strong><span id="entityCount">0 entities</span></div>
+      <div id="entityList" class="entityList" role="listbox" aria-label="Current room entities"></div>
+      <label>Graphics and templates from room <select id="templateRoom" disabled></select></label>
+      <p id="graphicsBankHint" class="hint" aria-live="polite"></p>
+      <div id="entityEmpty" class="muted">Select an entity from the list or a map marker.</div>
+      <div id="entityFields" class="hidden">
+        <label>Change type using room template <select id="entityType"></select></label>
+        <div class="twocol">
+          <label>Room-local X <input id="entityX" type="number" min="-32768" max="32767" step="1"></label>
+          <label>Room-local Y <input id="entityY" type="number" min="-32768" max="32767" step="1"></label>
+        </div>
+        <details class="advancedFields">
+          <summary>Advanced fields</summary>
+          <div class="twocol">
+            <label>Flags <input id="entityFlags" type="number" min="0" max="255" step="1"></label>
+            <label>Slot <input id="entitySlot" type="number" min="0" max="255" step="1"></label>
+          </div>
+          <div class="twocol">
+            <label>Spawn ID <input id="entitySpawn" type="number" min="0" max="255" step="1"></label>
+            <label>Params <input id="entityParams" type="number" min="0" max="65535" step="1"></label>
+          </div>
+          <p id="entityParamsHint" class="hint"></p>
+        </details>
+        <label id="itemChoiceWrap" class="hidden">Drop choice <select id="entityItemChoice"></select></label>
+        <div id="heldItemWrap" class="hidden">
+          <label>Holds item <select id="entityHeldItem"></select></label>
+          <p id="heldItemHint" class="hint"></p>
+        </div>
+        <div id="relicChoiceWrap" class="hidden">
+          <label>Holds relic <select id="entityRelic"></select></label>
+          <p id="relicHint" class="hint"></p>
+        </div>
+        <div id="dropChoiceWrap" class="hidden">
+          <label><span id="dropChoiceLabel">Drops</span> <select id="entityDrop"></select></label>
+          <p id="dropHint" class="hint"></p>
+        </div>
+        <button id="applyEntity">Apply Changes</button>
+      </div>
+      <label>Place stage template <select id="newEntityType" disabled></select></label>
+      <div class="rowbuttons">
+        <button id="addEntity" disabled>Add Entity</button>
+        <button id="duplicateEntity" disabled>Duplicate</button>
+        <button id="deleteEntity" disabled>Delete</button>
+      </div>
+      <p id="entityCapacityHint" class="capacityHint" aria-live="polite">Choose a room to inspect its layout slots.</p>
+      <p class="hint">Drag a marker or edit its position to move it.</p>
+    </section>
+
+  </aside>
+</main>
+
+<section id="statsView" class="statsView hidden" aria-label="Stats Editor">
+  <div id="statsEmptyState" class="statsEmptyState">
+    <h2>Stats Editor</h2>
+    <p id="statsEmptyText">Open a SOTN BIN to edit starting stats, spells, subweapons, familiars, enemies and equipment. Values are read from the loaded BIN, so an already modded image shows its own numbers.</p>
+  </div>
+  <div id="statsLayout" class="statsLayout hidden">
+    <nav id="statsNav" class="statsNav" aria-label="Stat sections"></nav>
+    <div class="statsMain">
+      <div class="statsBar">
+        <h2 id="statsTitle">Stats</h2>
+        <input id="statsSearch" type="search" placeholder="Filter by name or #" aria-label="Filter">
+        <span id="statsSummary" class="muted">No stat changes</span>
+        <button id="statsRevertSection" type="button" disabled>Revert section</button>
+      </div>
+      <p id="statsNotes" class="statWarn hidden"></p>
+      <div id="statsContent" class="statsContent"></div>
+    </div>
+  </div>
+  <div class="status" id="statsStatus">Ready.</div>
+</section>
+
+<section id="shopView" class="statsView hidden" aria-label="Library Shop Editor">
+  <div id="shopEmptyState" class="statsEmptyState">
+    <h2>Library Shop Editor</h2>
+    <p id="shopEmptyText">Open a SOTN BIN to edit the Master Librarian's shop: what he sells and when, prices, the relic and magic scrolls, gems he buys, tactics prices and the menu. Values are read from the loaded BIN's ST/LIB/LIB.BIN.</p>
+  </div>
+  <div id="shopLayout" class="statsLayout hidden">
+    <nav id="shopNav" class="statsNav" aria-label="Shop sections"></nav>
+    <div class="statsMain">
+      <div class="statsBar">
+        <h2 id="shopTitle">Library shop</h2>
+        <input id="shopSearch" type="search" placeholder="Filter by item or #" aria-label="Filter">
+        <span id="shopSummary" class="muted">No shop changes</span>
+        <button id="shopRevertSection" type="button" disabled>Revert section</button>
+      </div>
+      <p id="shopNotes" class="statWarn hidden"></p>
+      <div id="shopContent" class="statsContent"></div>
+    </div>
+  </div>
+  <div class="status" id="shopStatus">Ready.</div>
+</section>
+
+<section id="extraHacksView" class="statsView extraHacksView hidden" aria-label="Extra Hacks">
+  <div class="extraHacksBar">
+    <h2>Extra Hacks</h2>
+    <p>Choose which verified mods to include when you build a BIN or export a PPF3.</p>
+  </div>
+  <p id="extraHacksSourceStatus" class="extraHacksSourceStatus" aria-live="polite">Open a BIN to inspect Extra Hacks.</p>
+  <p id="extraHacksConflict" class="extraHacksConflict hidden" role="alert"></p>
+  <div id="extraHacksList" class="extraHacksList" aria-label="Available Extra Hacks"></div>
+</section>
+
+<dialog id="iconPicker" class="iconPicker">
+  <div class="iconPickerHead"><strong id="iconPickerTitle">Icon</strong>
+    <label>Palette <input id="iconPickerPalette" type="number" min="0" max="319" step="1"></label>
+    <button id="iconPickerClose" type="button">Close</button></div>
+  <div class="iconPickerScroll"><canvas id="iconPickerGrid"></canvas></div>
+</dialog>
+
+<script src="sotn-core.js"></script>
+<script src="disc-stage.js"></script>
+<script src="entity-catalog.js"></script>
+<script src="entity-editor-model.js"></script>
+<script src="entity-templates.js"></script>
+<script src="stats-core.js"></script>
+<script src="stats-catalog.js"></script>
+<script src="stats-model.js"></script>
+<script src="shop-model.js"></script>
+<script src="stats-ui.js"></script>
+<script src="shop-ui.js"></script>
+<script src="extra-hacks-catalog.js"></script>
+<script src="extra-hacks-ui.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

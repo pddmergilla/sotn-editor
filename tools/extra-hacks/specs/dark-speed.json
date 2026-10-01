@@ -1,0 +1,104 @@
+{
+  "id": "dark-speed",
+  "label": "Dark Metamorphosis SpeedUp",
+  "summary": "While Dark Metamorphosis is active, Alucard's normal walking, jumping, falling and backdash horizontal speed is multiplied by 1.5.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42910",
+      "off": "8010030021104300401002001f00a39310300000833006002330c7002310c200",
+      "on": "0780083c162f089543480400020000110000000021208900e438040800000000",
+      "why": "Helper @0x800E2910 in the unused DebugCaptureVideo body: if timer 0x80072F16 != 0 then a0 += a0>>1; tail-jump to SetSpeedX 0x8010E390"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6E6D4",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: walk start (func_8010E6AC) 1.5 -> 2.25 (delay slot unchanged)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6E884",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: jump takeoff (func_8010E83C) 1.5 -> 2.25 (delay slot unchanged)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6FDA8",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: backdash start (func_8010FD88) -3.5 -> -5.25 (delay slot unchanged)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x72B80",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: PlayerStepWalk 1.5 -> 2.25 (delay slot unchanged)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x72CE0",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: PlayerStepJump direction case 0 1.5 -> 2.25 (delay slot unchanged)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x72D90",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: PlayerStepJump direction case 1 1.5 -> 2.25 (delay slot unchanged)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x731AC",
+      "off": "e438040c",
+      "on": "448a030c",
+      "why": "`jal SetSpeedX 0x8010E390` -> `jal 0x800E2910`: PlayerStepFall direction 0.75 -> 1.125 (delay slot unchanged)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "All seven call sites and the helper area are identical in vanilla and ASS 1.3.1; the helper only reads the vanilla Dark Metamorphosis timer and jumps to vanilla SetSpeedX, and it does not need the stat-buff hack.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42918",
+      "length": 2,
+      "why": "Multiplier: `sra $t1,$a0,N` (word 0x00044843, N=1); boosted speed = speed + (speed >> N) = 1 + 2^-N (N=1 -> 1.5x, N=2 -> 1.25x). N = (u16le(0x42918) >> 6) & 31. A different multiplier may need a different instruction in this slot."
+    }
+  ],
+  "display": {
+    "label": "Speed multiplier",
+    "file": "DRA.BIN",
+    "offset": "0x42918",
+    "type": "u16le",
+    "formula": "1 + 1/2^((value >> 6) & 31)"
+  },
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "dark-stats",
+      "detail": "Independent (see dark-stats): separate, byte-disjoint cave code (0x42910-0x4292F vs 0x42824-0x4290B), separate hook sites, no calls between them. Valid in all four combinations; no \"requires\"."
+    },
+    {
+      "hack": "mp-cost-items (Faerie buff code)",
+      "detail": "History: Faerie-Stat-Buff-on-Hit (09-27) had put code at 0x4290C-0x429xx; this Speed patch (09-29 02:00) overwrote 0x42910-0x4292F of it; Faerie-Animate-Buff-20MP-Repair (09-29 06:12) re-laid the Faerie code at 0x42934+ and repointed SERVANT/TT_002. In the current image nothing references 0x800E290C-0x800E2933 except these seven hooks to 0x800E2910 (0x4290C beqz and 0x42930 nop are dead Faerie leftovers, not part of this hack). Byte 0x42921 (00) is attributed to the Faerie PPF but is part of this helper's nop."
+    },
+    {
+      "hack": "sky-walker",
+      "detail": "Hooks 0x72CE0/0x72D90 are in PlayerStepJump (0x80112BB0), which also contains base-mod (v->o) jump changes at 0x73080-0x730AF; byte-disjoint, no interaction."
+    },
+    {
+      "hack": "minimap / fast-warp (Reawakened source)",
+      "detail": "Reawakened itself hooks four of the same SetSpeedX calls (0x6FDA8, 0x72B80, 0x72CE0, 0x72D90 -> jal 0x800CE904) and writes 0x42910; those parts are NOT in ASS 2.0, so no conflict now."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Source: Dark-Metamorphosis-Movement-Speed-Alternate-Scarlet-Symphony-2.0.ppf + README/manifest + work/implementation-plan.md (Codex 2026-09-29/new-chat). The PPF's undo bytes for 0x42910-0x4292F are the old Faerie code (not o) - do not use the PPF undo to turn this off; off = o = vanilla DebugCaptureVideo body bytes, which is unreachable (DebugCaptureVideo has no callers in US; see dark-stats). Hook undo bytes match o (jal 0x8010E390). Helper uses only $t0/$t1 (caller-saved, dead across the original jal); the sign-correct sra gives exact 2.25 / 1.125 / -5.25 with no compounding."
+}

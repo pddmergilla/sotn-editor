@@ -1,0 +1,54 @@
+{
+  "id": "eat-food-on-pickup",
+  "label": "Eat Food on Pickup",
+  "summary": "Food Alucard picks up in the castle is eaten on the spot and heals its value instead of going into the inventory; food that other game code adds (menu, shop) becomes a Meal Ticket.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5D884",
+      "off": "2190800021200002",
+      "on": "5a89030821908000",
+      "why": "AddToInventory entry: 'move s2,a0; move a0,s0' -> 'j 0x800E2568; move s2,a0'",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42568",
+      "off": "431903001e00a29323186700211043001e00a2a38010030021104300401002001f00a39310300000833006002330c7002310c200211862008010060021104600401002001f00a3a32000a39323102202",
+      "on": "10000016ffff48321d00092d0d0020154600092d0b0020113400093419000901124800000a800a3c21482a01124b299106000a3403002a151780093cfc8903082b48e90323f603082120000200000000",
+      "why": "AddToInventory hook: hand items 0x1D-0x45 with category 6 (food): caller below 0x80170000 (DRA/menu) -> becomes Meal Ticket 0x46; stage/overlay caller -> eat; otherwise resume at 0x800FD88C",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf + Eat-Food-On-Pickup.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427F0",
+      "off": "0e89030c1000a4276402bf8f6002b68f5c02b58f5802b48f5402b38f5002b28f4c02b18f4802b08f6802bd270800e003",
+      "on": "080020152000bfaf3a6d030cffff44322000bf8f1000b08f1800b28f0800e0032800bd274600123423f6030821200002",
+      "why": "Eat branch: heal the food's value (jal 0x800DB4E8) and return from AddToInventory without adding it; Meal Ticket branch sets s2=0x46",
+      "origin": "Eat-Food-On-Pickup.ppf (+1 byte from MealTicket-Throw-70MP.ppf)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Safe only with Quick Items also checked on vanilla (it installs the food heal routine 0x800DB4E8 that this code calls). The edited bytes are dead DebugCaptureScreen code and the vanilla AddToInventory entry in both vanilla and 1.3.1.",
+    "vanillaOff": [],
+    "vanillaRequires": [
+      "quick-items"
+    ]
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "quick-items",
+      "detail": "No byte overlap: Quick Items owns 0x424A0-0x424FF and 0x425B8-0x427EB; this owns 0x42568-0x425B7 and 0x427F0-0x4281F (dark-stats starts at 0x42824). Uses the shared food heal 0x3B4E8."
+    },
+    {
+      "hack": "instant-food",
+      "detail": "Independent."
+    }
+  ],
+  "confidence": "high",
+  "notes": "README: Downloads/ASS-2.0-Eat-Food-On-Pickup-README.md. The original Food PPF turned every added food into a Meal Ticket; Eat-Food-On-Pickup made stage/overlay callers eat instead (backup image b has the convert-only version, so 0x42568-0x425B7 differ b->a only in branch targets and one compare). The drop-table changes (food -> Meal Ticket and back) are enemy/prize data and not part of this toggle. Caller test is 'ra < 0x80170000': DRA and SLUS callers keep the conversion; stage, boss and weapon overlays eat."
+}

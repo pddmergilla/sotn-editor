@@ -1,0 +1,29 @@
+{
+  "id": "wolf-no-jump",
+  "label": "No Jump Wolf Transformation",
+  "summary": "Transforming into the Wolf no longer makes Alucard hop upward at the end of the transformation.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8EABC",
+      "off": "e43322ac",
+      "on": "e43320ac",
+      "why": "WolfStepS_8: `sw $v0,0x33e4($at)` (PLAYER.velocityY = FIX(-1.5)) -> `sw $zero,0x33e4($at)` (velocityY = 0)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "The instruction is identical in vanilla and the change only stores zero instead of -1.5 to PLAYER.velocityY.",
+    "vanillaOff": []
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "none-in-list",
+      "detail": "No other hack or PPF writes WolfStepS_8 (0x8012E9C0-0x8012EAD0); the single-high-jump / revert PPFs do not touch it."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Source: Wolf-Transformation-No-Jump.ppf + README/manifest (Codex 2026-09-29/s-3); decomp src/dra/wolfForm.c WolfStepS_8 line 1023. Only byte 0x8EABE changes (0x22 -> 0x20, rt v0 -> zero). v == o == e43322ac; both code paths into the store load v0 = 0xFFFE8000 (-1.5) first, so the hop is removed in all cases."
+}

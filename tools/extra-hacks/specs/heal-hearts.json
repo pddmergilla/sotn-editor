@@ -1,0 +1,36 @@
+{
+  "id": "heal-hearts",
+  "label": "Healing items use Hearts instead of MP",
+  "requires": [
+    "mp-items"
+  ],
+  "summary": "HasEnoughMp treats a cost with bit 0x8000 set as a heart cost, so Potion, High Potion, X-Potion and Meal Ticket spend hearts.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E8B8",
+      "off": "b07bc6240000c38c000000002a10640006004014000000000200a010231064000000c2ac3afa03082110000001000234",
+      "on": "0080883002430800b07bc6242330c8000000c38cff7f84302a10640004004014231864000200a010000000000000c3ac",
+      "origin": "ASS 2.0 Resource Swap (in the BIN)",
+      "why": "HasEnoughMp (0x800FE8B4): t0 = (cost & 0x8000) >> 12; pointer = &g_Status.mp - t0 (hearts at 0x80097BA8 when flagged); compare and subtract cost & 0x7FFF. Unflagged costs behave as vanilla."
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "HasEnoughMp is rewritten in place and uses only $t0 as scratch; vanilla has the same function at the same address."
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "mp-items",
+      "detail": "The four item cost fields belong to MP Cost Items; their hearts form is written through its \"with\" variant."
+    },
+    {
+      "hack": "quick-items",
+      "detail": "The L2 shortcut check/subtract switches to hearts through Quick Items \"with\" variants."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Taken from the user ASS 2.0 BIN 1aea50a7 (Resource Swap applied 10-01, differs from ASS_2.0_Resource_Swap_Addon.ppf, which hooked elsewhere). Item descriptions (\"Costs 300 Hearts\") are Stats-tab text and not toggled."
+}

@@ -1,0 +1,32 @@
+{
+  "id": "subweapon-mp",
+  "label": "Subweapon use MP instead of Hearts",
+  "summary": "Alucard's subweapons and Agunea's follow-up strikes spend MP instead of hearts.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E528",
+      "off": "a87b",
+      "on": "b07b",
+      "origin": "ASS 2.0 Resource Swap (in the BIN)",
+      "why": "Subweapon cost check (0x800FE528): addiu $a0,$a0,0x7BA8 (hearts) -> 0x7BB0 (MP); the same pointer is compared and subtracted."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x89050",
+      "off": "a87b",
+      "on": "b07b",
+      "origin": "ASS 2.0 Resource Swap (in the BIN)",
+      "why": "EntitySubwpnAgunea follow-up strike cost pointer: hearts -> MP."
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Two pointer immediates that hold the vanilla hearts address in every image."
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [],
+  "confidence": "high",
+  "notes": "Heart costs in the subweapon table are used as MP costs. Richter's subweapons (RIC.BIN) still use hearts."
+}

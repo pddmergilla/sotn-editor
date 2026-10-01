@@ -1,0 +1,276 @@
+{
+  "id": "faerie-behavior",
+  "label": "Faerie Behavior",
+  "summary": "The Faerie no longer uses up items. She still needs a Hammer, Uncurse or Antivenom in your inventory, but each use costs 20 MP instead of the item, and she won't use it below 20 MP. Her Potion and High Potion heals are free and keep the potion. When you take a hit and stay above 1/4 of your max HP, she casts one of five random free buffs: STR, LCK, INT, ATK or DEF +20 for 4096 frames (about 68 seconds).",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42DA0",
+      "off": "faff35a6fcff22a61380023cc062428c00000000040042160e000234feff22a6758b03080f0002340a000234feff22a6",
+      "on": "0980083c8a7909252148240100002291b07b0a8d0000000014004a290200401100000000211000000800e00300000000",
+      "why": "New helper FaerieHasItemAndMp(itemId) at 0x800E2DA0 (inside dead debug func_800E2B00): returns g_Status.equipHandCount[itemId] (0x8009798A+id) if g_Status.mp >= 20 (`slti $t2,mp,0x14`), else 0. Ends `jr ra; nop` at 0x42DC8-0x42DCF; 0x42DD0+ is the Quick Items hearts helper (not included).",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf (0x42DCC-0x42DCF nop was written earlier by the Potion Animation / L2 Timing PPFs and is now this helper's delay slot)",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x4068",
+      "off": "0980023c1d7a4290",
+      "on": "688b030c93000434",
+      "why": "CheckForValidAbility, Hammer trigger (petrified): `lui v0,0x8009; lbu v0,equipHandCount[HAMMER]` -> `jal 0x800E2DA0; ori a0,zero,0x93` (needs a Hammer AND 20 MP)",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x4128",
+      "off": "0980023c1b7a4290",
+      "on": "688b030c91000434",
+      "why": "CheckForValidAbility, Uncurse trigger: item count -> `jal 0x800E2DA0; ori a0,zero,0x91`",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x420C",
+      "off": "0980023c1a7a4290",
+      "on": "688b030c90000434",
+      "why": "CheckForValidAbility, Antivenom trigger: item count -> `jal 0x800E2DA0; ori a0,zero,0x90`",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x557C",
+      "off": "0980023c1d7a4290",
+      "on": "688b030c93000434",
+      "why": "UpdateServantUseHammer step 2: has-Hammer check -> `jal 0x800E2DA0; ori a0,zero,0x93` (no Hammer or <20 MP -> 'no medicine' animation)",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x5668",
+      "off": "1d7a6324000062900480073cf4c7e78cffff422409f8e000000062a0",
+      "on": "b07b628c0480073cecff4224f4c7e78cb07b62ac09f8e00000000000",
+      "why": "UpdateServantUseHammer step 3: `equipHandCount[HAMMER]--` -> `lw v0,g_Status.mp; addiu v0,v0,-20; sw v0,g_Status.mp` (Hammer kept, 20 MP spent); factory call kept, its delay slot becomes nop",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x58B8",
+      "off": "0980023c1b7a4290",
+      "on": "688b030c91000434",
+      "why": "UpdateServantUseUncurse step 2: has-Uncurse check -> `jal 0x800E2DA0; ori a0,zero,0x91`",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x599C",
+      "off": "1b7a6324000062900480073cf4c7e78cffff422409f8e000000062a0",
+      "on": "b07b628c0480073cecff4224f4c7e78cb07b62ac09f8e00000000000",
+      "why": "UpdateServantUseUncurse use step: `equipHandCount[UNCURSE]--` -> `g_Status.mp -= 20`",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x5C00",
+      "off": "0980023c1a7a4290",
+      "on": "688b030c90000434",
+      "why": "UpdateServantUseAntivenom step 2: has-Antivenom check -> `jal 0x800E2DA0; ori a0,zero,0x90`",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x5CE0",
+      "off": "1a7a6324000062900480073cf4c7e78cffff422409f8e000000062a0",
+      "on": "b07b628c0480073cecff4224f4c7e78cb07b62ac09f8e00000000000",
+      "why": "UpdateServantUseAntivenom use step: `equipHandCount[ANTIVENOM]--` -> `g_Status.mp -= 20`",
+      "origin": "Alternate Scarlet Symphony 2.0 - Faerie Items 20MP.ppf",
+      "part": "medicines-20mp"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x6414",
+      "off": "8a7922a0",
+      "on": "00000000",
+      "why": "UpdateServantUsePotion step 3: `sb v0,equipHandCount[potion]` (the decrement store) -> nop: the Faerie's Potion/High Potion is not used up and costs nothing",
+      "origin": "Alternate Scarlet Symphony 2.0 - Reusable Potions.ppf",
+      "part": "potions-free"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x3E64",
+      "off": "1a004010",
+      "on": "4d8a030c",
+      "why": "CheckForValidAbility HP-loss branch (s_CachedHp > hp): `beqz v0,0x80173ED0` -> `jal 0x800E2934` (delay slot `subu a0,a0,a1` kept); the stub re-does the branch and otherwise runs the on-hit buff picker",
+      "origin": "Faerie-Stat-Buff-on-Hit-ASS-2.0-10MP.ppf / Faerie-Animate-Buff-20MP-Repair-ASS-2.0.ppf",
+      "part": "hit-buff"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x6300",
+      "off": "30000396",
+      "on": "798a0308",
+      "why": "UpdateServantUsePotion step 2: `lhu v1,params(0x30)` -> `j 0x800E29E4`: params < 2 back to the potion item check (0x80176308), params >= 2 (buff) skip it (0x80176378)",
+      "origin": "Faerie-Animate-Buff-20MP-Repair-ASS-2.0.ppf",
+      "part": "hit-buff"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x63C4",
+      "off": "1780043cd02b848c0480023cdcc7428c0000000009f840000000000030000296",
+      "on": "828a0308000000000480023cdcc7428c0000000009f8400000000000878a0308",
+      "why": "UpdateServantUsePotion step 3 at pose 11: `lui/lw a0,g_FaerieSfx.potion` -> `j 0x800E2A08; nop` (pass-through that reloads the sfx and returns to 0x801763CC; it once pointed at the Reusable Potions MP check 0x800E2E20) and, after PlaySfx, 0x63E0 `lhu v0,params` -> `j 0x800E2A1C` (params < 2 -> normal potion code 0x801763E8; params >= 2 -> CreateEntFactoryFromEntity(self, FACTORY(0x37, params+2)) via 0x80176430). 0x63CC-0x63DF unchanged",
+      "origin": "Alternate Scarlet Symphony 2.0 - Reusable Potions.ppf / Faerie-Animate-Buff-20MP-Repair-ASS-2.0.ppf",
+      "part": "hit-buff"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42934",
+      "off": "8010060021104600401002001f00a3a32000a39323102202211862006254000c2000a3a31380013c046322ac08004004212000027254000c2120400001003126e803222ac9ff4014eb51023c212000026254000c000205341380013c046322ac07004104010002340e80043cd0b384245746000c21280002b78a0308000000001380013cd86222ac838a03082080053c0980023c9474429400000000100042300d0040102080053c1380043c0463848c1380013cd86220ac7254000c0000000039004104000000000e80043ce4b38424b58a0308000000002080143c0780043c7cc3848c21880000e24a000c60008424434a000c21200000213000001002a3272190600021800000009a11002110700240100200211054000100013c21084100c0c022940100c624000062a4100002340900c214020063241380043c0463848c212840026e54000c20000634",
+      "on": "2900401000000000e8ffbd271400bfaf1000a4af0c00a5af0800a6af0980083ca47b098d00000000805005002a502a011600401100000000b07b098d0000000014002a29000000000000000026002a9600000000d70009340c004911000000003958000c00000000050008341b004800000000001040000002000825300028a6d7000834260028a62c0020a61000a48f0c00a58f0800a68f1400bf8f1800bd270800e00300000000b4cf05080000000030000396000000000200622c0300401400000000ded8050800000000c2d80508000000001780043cd02b848c00000000f3d805080000000030000296000000000200432c13006014000000000980083cb07b098d0000000014002a29000000000000000000000000000000000200452421200002213000000cd9050800000000d1000834260008a62c0000a635d9050800000000fad8050800000000",
+      "why": "Faerie buff code in the dead DebugCaptureVideo body: 0x800E2934 on-hit picker (if HP after the hit > 1/4 max HP and the Faerie is not already in potion mode 0xD7: params = rand()%5 + 2, entityId = 0xD7, step = 0; registers saved/restored), 0x800E29DC `j 0x80173ED0` (no HP loss), 0x800E29E4 potion step-2 split, 0x800E2A08 sfx pass-through, 0x800E2A1C factory split. MP checks (`slti mp,20`) remain but their branches were nopped at 0x42978 and 0x42A40-0x42A4F, so the buff is free; 0x42A64-0x42A77 is the old not-enough-MP exit, now unreachable but kept in the run",
+      "origin": "Faerie-Stat-Buff-on-Hit-ASS-2.0-10MP.ppf / Faerie-Animate-Buff-20MP-Repair-ASS-2.0.ppf / Faerie-Free-Buff-Potion-ASS-2.0.ppf",
+      "part": "hit-buff"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "SERVANT/TT_002.BIN and DRA 0x42800-0x42F40 are byte-identical in vanilla US and ASS 1.3.1. Both DRA caves are dead debug code in vanilla: 0x42934-0x42A7F lies in DebugCaptureVideo (0x800E2824) and 0x42DA0-0x42DCF in func_800E2B00. Neither has a caller or pointer in vanilla. The new code calls only vanilla routines: rand 0x800160E4, the TT_002 functions, and g_api.CreateEntFactoryFromEntity/PlaySfx. It reads only vanilla RAM (g_Status hp/hpMax/mp/equipHandCount). The buff effects are vanilla potion effects 4-8 of blueprint 0x37 (Str/Luck/Smart/Attack/Shield Potion). Their table D_800ADEF0 and GiveStatBuff are unchanged in ASS.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42DB8",
+      "length": 2,
+      "why": "Faerie medicine MP requirement: int16 LE immediate of `slti $t2,$t2,N` in the helper (N=20). Keep equal to the three deductions below."
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x5670",
+      "length": 2,
+      "why": "Hammer MP cost: int16 LE immediate of `addiu $v0,$v0,-N` (-20)"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x59A4",
+      "length": 2,
+      "why": "Uncurse MP cost: int16 LE immediate of `addiu $v0,$v0,-N` (-20)"
+    },
+    {
+      "file": "SERVANT/TT_002.BIN",
+      "offset": "0x5CE8",
+      "length": 2,
+      "why": "Antivenom MP cost: int16 LE immediate of `addiu $v0,$v0,-N` (-20)"
+    }
+  ],
+  "values": [
+    {
+      "key": "mp",
+      "label": "Medicine MP cost",
+      "file": "DRA.BIN",
+      "offset": 273848,
+      "type": "s16le",
+      "instruction": "slti $t2,$t2,imm @0x800E2DB8 (MP needed)"
+    },
+    {
+      "key": "hammerMp",
+      "label": "Hammer MP spent",
+      "file": "SERVANT/TT_002.BIN",
+      "offset": 22128,
+      "type": "s16le",
+      "transform": "neg"
+    },
+    {
+      "key": "uncurseMp",
+      "label": "Uncurse MP spent",
+      "file": "SERVANT/TT_002.BIN",
+      "offset": 22948,
+      "type": "s16le",
+      "transform": "neg"
+    },
+    {
+      "key": "antivenomMp",
+      "label": "Antivenom MP spent",
+      "file": "SERVANT/TT_002.BIN",
+      "offset": 23784,
+      "type": "s16le",
+      "transform": "neg"
+    }
+  ],
+  "valueTemplate": "Hammer/Uncurse/Antivenom: {mp} MP per use, item kept. Potions: free. On-hit buff: +20 STR/LCK/INT/ATK/DEF for 4096 frames, free",
+  "parts": {
+    "medicines-20mp": [
+      "DRA.BIN 0x42DA0+48",
+      "SERVANT/TT_002.BIN 0x4068+8",
+      "SERVANT/TT_002.BIN 0x4128+8",
+      "SERVANT/TT_002.BIN 0x420C+8",
+      "SERVANT/TT_002.BIN 0x557C+8",
+      "SERVANT/TT_002.BIN 0x5668+28",
+      "SERVANT/TT_002.BIN 0x58B8+8",
+      "SERVANT/TT_002.BIN 0x599C+28",
+      "SERVANT/TT_002.BIN 0x5C00+8",
+      "SERVANT/TT_002.BIN 0x5CE0+28"
+    ],
+    "potions-free": [
+      "SERVANT/TT_002.BIN 0x6414+4"
+    ],
+    "hit-buff": [
+      "SERVANT/TT_002.BIN 0x3E64+4",
+      "SERVANT/TT_002.BIN 0x6300+4",
+      "SERVANT/TT_002.BIN 0x63C4+32",
+      "DRA.BIN 0x42934+332"
+    ]
+  },
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "dark-stats / dark-speed",
+      "detail": "Same DebugCaptureVideo cave, no shared bytes: dark-stats owns 0x42824-0x4290B and dark-speed owns 0x42910-0x4292F. This hack starts at 0x42934. The dead Faerie leftover words 0x4290C (beqz to 0x800E29C8) and 0x42930 (nop) sit between those ranges. Nothing references them and they are not in this spec (see deadLeftovers)."
+    },
+    {
+      "hack": "quick-items",
+      "detail": "Code next to this hack's on both sides, no shared bytes. The Meal-Ticket cave starts at 0x42A80, right after this hack's cave (ends 0x42A7F). The hearts helper starts at 0x42DD0, right after the Faerie helper (ends 0x42DCF). The quick-items helper is entered at 0x800E2DD0 by its own jal (0x426B0) and does not run into the Faerie helper's bytes."
+    },
+    {
+      "hack": "mp-items",
+      "detail": "Independent. mp-items changes Alucard's own item use (Hammer/Uncurse/Antivenom mpUsage 20, Potion 30 MP, etc. in g_EquipDefs). The Faerie never reads those fields. Her 20 MP is hard-coded here."
+    },
+    {
+      "hack": "(not listed) potion heal helper DRA 0x42DE0 + hook 0x80D18",
+      "detail": "Sets Potion 300 / High Potion 800 HP, which the Faerie's potions also use (pink-effect entries 16/17). It belongs to the Stats editor and is not in this spec."
+    }
+  ],
+  "deadLeftovers": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4290C",
+      "length": 4,
+      "origin": "Faerie-Stat-Buff-on-Hit-ASS-2.0-10MP.ppf",
+      "detail": "`beqz $v0,0x800E29C8` (o: `sb $v0,0x1e($sp)`); unreachable"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42930",
+      "length": 4,
+      "origin": "Faerie-Stat-Buff-on-Hit-ASS-2.0-10MP.ppf",
+      "detail": "nop (o: `addu $v1,$v1,$v0`); unreachable"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42E20",
+      "length": 92,
+      "origin": "Alternate Scarlet Symphony 2.0 - Reusable Potions.ppf",
+      "detail": "Old Faerie potion MP routine (Potion 50 / High Potion 99 MP, j 0x801763CC / 0x80176364). Nothing jumps to 0x800E2E20 any more (TT_002 0x63C4 now goes to 0x800E2A08), so it is dead and left out."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Sources: Faerie Items 20MP.ppf, Faerie-Stat-Buff-on-Hit-ASS-2.0-10MP.ppf, Faerie-Animate-Buff-20MP-Repair-ASS-2.0.ppf, Faerie-Free-Buff-Potion-ASS-2.0.ppf, and the TT_002 parts of Reusable Potions.ppf. Every o->a difference in SERVANT/TT_002.BIN (v == o) is covered. The only callers into the DRA Faerie code are the TT_002 hooks listed here. Decomp: src/servant/tt_002/faerie.c (CheckForValidAbility 0x80173D60, UseHammer 0x801753E4, UseUncurse 0x80175730, UseAntivenom 0x80175A78, UsePotion 0x80176178). Entity fields: 0x26 entityId (0xD1 default, 0xD7 use potion), 0x2C step, 0x30 params. Buff mapping: FACTORY(0x37, 4..8) -> EntityPlayerPinkEffect D_800ADEF0[4..8].unk18 = SBT_STR, SBT_LCK, SBT_INT, SBT_ATK, SBT_DEF. GiveStatBuff (0x800FF0F4) sets the timer to 0x1000 frames. The +20 bonuses are vanilla DRA code, unchanged in ASS. Behaviour details: the buff path skips the potion stock check and fires even with no potions. It does not check GetStatBuffTimer, so a new hit can refresh or add another buff. It can interrupt a Hammer/Uncurse/Antivenom approach that is in progress (anything but mode 0xD7), because it is checked before the medicine checks. With params >= 2 the normal potion flow continues after the effect is spawned: item sub-entity, 60-frame wait, back to default. The Free-Buff PPF removed the buff's MP check and deduction (0x42978 and 0x42A40-0x42A4F nopped). The 'slti mp,20' at 0x42974/0x42A3C is vestigial and not a tunable. Text left out (description strings, not toggled): DRA 0x3D3C0 'Faerie does not consume items' and the Hammer/Uncurse/Antivenom descriptions 'Faerie use Costs 20MP' / 'Uncurse Costs 20MP' / 'Poison Costs 20MP' (0x3D544/0x3D594/0x3D5C4)."
+}

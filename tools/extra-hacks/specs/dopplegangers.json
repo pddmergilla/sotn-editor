@@ -1,0 +1,31 @@
+{
+ "id": "dopplegangers",
+ "label": "No Flinch Dopplegangers",
+ "summary": "Doppelganger 10 and Doppelganger 40 no longer go into their hit-stun when struck; stone status, damage and death still work.",
+ "edits": [
+  {
+   "file": "BOSS/BO4/BO4.BIN",
+   "offset": "0x425A8",
+   "off": "5612070c",
+   "on": "00000000",
+   "why": "Doppelganger 10 (BO4) normal-hit branch: jal SetDopplegangerStep(Dop_Hit=0xB) -> nop (sotn_bosses doppleganger_10_hit)"
+  },
+  {
+   "file": "BOSS/RBO5/RBO5.BIN",
+   "offset": "0x414F8",
+   "off": "d60f070c",
+   "on": "00000000",
+   "why": "Doppelganger 40 (RBO5) normal-hit branch: jal SetDopplegangerStep(Dop_Hit=0xB) -> nop (sotn_bosses doppleganger_40_hit)"
+  }
+ ],
+ "vanilla": {
+  "supported": true,
+  "reason": "Both locations hold the off bytes in vanilla BO4/RBO5 and the patch is a nop, so it is safe on vanilla.",
+  "vanillaOff": []
+ },
+ "tunables": [],
+ "entityEdits": [],
+ "overlaps": [],
+ "confidence": "high",
+ "notes": "Source: sotn_bosses.ppf ids doppleganger_10_hit (BO4 0x425A8 5612070c -> 0) and doppleganger_40_hit (RBO5 0x414F8 d60f070c -> 0); decomp src/boss/bo4|rbo5/doppleganger.c (hitFlags 1..3 -> SetDopplegangerStep(Dop_Hit)). The separate stone-break step call right after it (0x425B8 / 0x41508, a0=0xC) is untouched. Not part of this hack and must be kept: Doppelganger 10 HP x4 (DRA enemy table 0xB08C, scarlet_symphony_2_* PPFs). Other BO4/RBO5 o->a bytes (Reawakened damage colours 0xA94/0x3779C/0x3837C and 0xB20/0x366D0/0x372B0, MP&Hearts 0xEE0/0x40F7C/0x414AC and 0xF6C/0x3FEB0/0x403E0, Alucard-Rebalance 0x41B04/0x40A38) do not touch these bytes. Not emulator-verified here."
+}

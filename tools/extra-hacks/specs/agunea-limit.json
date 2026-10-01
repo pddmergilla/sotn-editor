@@ -1,0 +1,61 @@
+{
+  "id": "agunea-limit",
+  "label": "Agunea Limit",
+  "summary": "Holding Agunea now stops after the first lightning strike plus at most five paid extra strikes (six total) instead of continuing while hearts last.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x88EC8",
+      "off": "00000000",
+      "on": "7c002886",
+      "why": "EntitySubwpnAgunea step 3: load-delay nop -> lh $t0,0x7c($s1) (strike frame counter ext.agunea.unk7C)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x88ED8",
+      "off": "00000000",
+      "on": "4800082d",
+      "why": "load-delay nop -> sltiu $t0,$t0,0x48 (counter < 72 = 6 strikes x 12 frames)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x88EE8",
+      "off": "00000000",
+      "on": "0a000011",
+      "why": "load-delay nop -> beqz $t0,0x80128F14 (counter reached limit: step=2, end before the next strike spends hearts)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "The three replaced words are nops in vanilla too and the new code only uses the Agunea entity ($s1) and the unused temp $t0; no other ASS code is involved.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x88ED8",
+      "length": 2,
+      "why": "Strike limit: int16 LE immediate of `sltiu $t0,$t0,N` (N = 0x48 = 72). A strike happens every 12 frames of ext.agunea.unk7C starting at 0, so total strikes = ceil(N/12) (72 -> 6 = 1 initial + 5 extra); extra strikes = N/12 - 1 when N is a multiple of 12."
+    }
+  ],
+  "display": {
+    "label": "Extra strikes",
+    "file": "DRA.BIN",
+    "offset": "0x88ED8",
+    "type": "u16le",
+    "formula": "ceil(value/12) - 1"
+  },
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "none-in-list",
+      "detail": "No other hack or PPF writes 0x88EC8-0x88EEB (o->a diffs in EntitySubwpnAgunea 0x80128C2C-0x801291C4 come only from this patch)."
+    },
+    {
+      "hack": "stray: Agunea-Succession-50-Hearts.ppf (not part of this toggle)",
+      "detail": "See notes: its only byte, DRA 0x85B8E 0x05->0x32, is in func_80125B6C (Holy Water side-wall collision), not in Agunea; it is deliberately excluded from this spec."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Source: Agunea-Five-Extra-Lightning-Strikes.ppf + manifest/README (Codex 2026-09-29/s). v == o == 00000000 at all three words; a matches the manifest. Decomp: src/dra/84B88.c EntitySubwpnAgunea case 3: strikes at unk7C % 12 == 0, extra strikes cost heartCost=5 (vanilla `ori $s0,$zero,5` at 0x89000, untouched). The new check runs only when unk7C != 0 (it sits after the `beqz unk7C` branch) and $t0 is not used anywhere else in the function. Agunea-Succession-50-Hearts.ppf (Codex 2026-09-28/s) is NOT part of this hack: its builder read an unaligned word at 0x85B8E; the aligned instruction is 0x85B8C `sll $a0,$a1,16` (00052400) and the patch makes it 00322400 = `sll $a0,$s2,16` with a non-zero rs field (R3000/emulators ignore rs for SLL). That function is func_80125B6C(y,x), called only from EntitySubwpnHolyWater (0x80125D5C) to test side walls at posX+x; it now uses the low half of $s2 (left over from the entity-update caller; EntitySubwpnHolyWater does not set s2) instead of +-4, so Holy Water's in-flight side-wall check probes a wrong X (likely flying through walls). It has no effect on Agunea's cost. Recommendation: leave it out of every toggle; optionally offer a separate fix that restores DRA 0x85B8E = 0x05 (vanilla). The 100-heart initial cost / 80 ATK of Agunea are stat-table values and are not part of this toggle."
+}

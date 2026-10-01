@@ -1,0 +1,339 @@
+{
+  "id": "succubus",
+  "label": "No Flinch and Faster Succubus",
+  "summary": "Succubus only flinches when hit during her clone attack, and her animations, attack timers, clones and wing spikes run faster.",
+  "edits": [
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x1214C",
+      "off": "08004010000000002c006296000000000100423003004010",
+      "on": "08004010000000002c006296000000000b00423803004014",
+      "why": "EntitySuccubus hit check: flinch (SetStep GET_HIT) on any odd step -> only when step == 11 (CLONE_ATTACK): andi 1/beqz -> xori 0xB/bnez",
+      "onAlt": [
+        "08000010000000002c006296000000000100423003004010"
+      ],
+      "onAltWhy": "older full no-flinch form (Succubus-No-Flinch / Succubus-Revert-To-No-Flinch PPFs: beqz -> b at 0x1214C, step test vanilla) also counts as on"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x6D4",
+      "off": "041c0a2306240625062606270628062904",
+      "on": "021c052303240325032603270328032902",
+      "why": "Faster: frame durations shortened (about 1/2 to 2/3) in D_801806D4 fly/turn anim"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x6F8",
+      "off": "04240a23061c061d061e061f062006210422ff000824082b082c202d012e022f0430ff000224082b082c082e0831083220",
+      "on": "02240523031c031d031e031f032003210222ff000524052b052c152d012e012f0330ff000124052b052c052e0531053215",
+      "why": "Faster: frame durations shortened (about 1/2 to 2/3) in D_801806F8/D_8018070C/D_8018071C fly, petal-attack and charge anims"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x734",
+      "off": "0c1c081b08361837011a0219021702182817ff00041c08380839083a203b011a02190217021804",
+      "on": "081c051b05361037011a0119011701181b17ff00031c05380539053a153b011a01190117011803",
+      "why": "Faster: frame durations shortened (about 1/2 to 2/3) in D_80180734/D_80180748 clone-attack and spike-attack anims"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x760",
+      "off": "081708190c",
+      "on": "0517051908",
+      "why": "Faster: frame durations shortened (about 1/2 to 2/3) in D_80180760 attack-end anim"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x780",
+      "off": "101a08190817084d484e014f021a10",
+      "on": "0b1a05190517054d304e014f011a0b",
+      "why": "Faster: frame durations shortened (about 1/2 to 2/3) in D_80180780 pink-ball shooting anim"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12898",
+      "off": "40",
+      "on": "20",
+      "why": "Faster: IDLE timer 64 -> 32 frames"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12994",
+      "off": "1f00423020",
+      "on": "0f00423010",
+      "why": "Faster: FLY timer (Random()&31)+32 -> (Random()&15)+16"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12B9C",
+      "off": "60",
+      "on": "40",
+      "why": "Faster: FLY wrap-around timer 96 -> 64"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12E00",
+      "off": "80",
+      "on": "56",
+      "why": "Faster: petal attack duration 128 -> 86 frames"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12E1C",
+      "off": "01",
+      "on": "00",
+      "why": "Faster: petals spawn every frame instead of every other frame (timer&1 -> timer&0)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13194",
+      "off": "30",
+      "on": "20",
+      "why": "Faster: charge-hit pause 48 -> 32"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13260",
+      "off": "50",
+      "on": "28",
+      "why": "Faster: TAUNT timer 80 -> 40"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13418",
+      "off": "40",
+      "on": "20",
+      "why": "Faster: clone attack wait 64 -> 32"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13571",
+      "off": "10030021104300001102",
+      "on": "11030000000000000000",
+      "why": "Faster: clone shot delay params*48+1 -> params*32+1 (sll 5; nop; nop)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x137CC",
+      "off": "40",
+      "on": "2b",
+      "why": "Faster: spike attack timer 64 -> 43"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x137F8",
+      "off": "40",
+      "on": "2b",
+      "why": "Faster: spike attack timer 64 -> 43"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13F28",
+      "off": "3f00422483",
+      "on": "1f00422443",
+      "why": "Faster: clone horizontal speed velX/64 -> velX/32"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13F34",
+      "off": "40",
+      "on": "20",
+      "why": "Faster: clone timer 64 -> 32"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13FC5",
+      "off": "10030021104300001102",
+      "on": "11030000000000000000",
+      "why": "Faster: clone shot delay params*48+1 -> params*32+1"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x14048",
+      "off": "2001",
+      "on": "c000",
+      "why": "Faster: clone shooting time 288 -> 192"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x142A8",
+      "off": "04",
+      "on": "06",
+      "why": "Faster: pink-ball grow-in scale +4 -> +6 per frame"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x145A0",
+      "off": "40",
+      "on": "60",
+      "why": "Faster: wing-spike extend scaleX +0x40 -> +0x60"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x145F4",
+      "off": "c0",
+      "on": "a0",
+      "why": "Faster: wing-spike retract scaleX -0x40 -> -0x60"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x14718",
+      "off": "00000000",
+      "on": "0c0c0334",
+      "why": "Wing-spike tip: nop -> ori v1,zero,0x0C0C"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x14734",
+      "off": "00000000",
+      "on": "460003a6",
+      "why": "Wing-spike tip: nop -> sh v1,0x46(s0) (hitbox 12x12 every frame)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "All changes are inside DRE.BIN Succubus code/animation data where vanilla equals ASS 1.3.1 (the off bytes); the two added instructions only use registers/fields of the same entity.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x6D4",
+      "length": 17,
+      "why": "animation frame durations (frame-id bytes in the range never change)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x6F8",
+      "length": 49,
+      "why": "animation frame durations (frame-id bytes in the range never change)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x734",
+      "length": 39,
+      "why": "animation frame durations (frame-id bytes in the range never change)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x760",
+      "length": 5,
+      "why": "animation frame durations (frame-id bytes in the range never change)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x780",
+      "length": 15,
+      "why": "animation frame durations (frame-id bytes in the range never change)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12898",
+      "length": 1,
+      "why": "IDLE timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12994",
+      "length": 1,
+      "why": "FLY random mask"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12998",
+      "length": 1,
+      "why": "FLY base timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12B9C",
+      "length": 1,
+      "why": "FLY timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x12E00",
+      "length": 1,
+      "why": "petal duration"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13194",
+      "length": 1,
+      "why": "charge pause"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13260",
+      "length": 1,
+      "why": "taunt timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13418",
+      "length": 1,
+      "why": "clone wait"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x137CC",
+      "length": 1,
+      "why": "spike timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x137F8",
+      "length": 1,
+      "why": "spike timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x13F34",
+      "length": 1,
+      "why": "clone timer"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x14048",
+      "length": 2,
+      "why": "clone shooting time"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x142A8",
+      "length": 1,
+      "why": "pink-ball scale step"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x145A0",
+      "length": 1,
+      "why": "spike extend step"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x145F4",
+      "length": 1,
+      "why": "spike retract step"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x14718",
+      "length": 2,
+      "why": "wing-spike tip hitbox width/height"
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "damage-colors (not in list)",
+      "detail": "DRE also has the Reawakened damage-number hooks (0xD60, 0x17D70, 0x18950); different bytes."
+    },
+    {
+      "hack": "none (MP and Hearts PPF, not a listed hack)",
+      "detail": "DRE 0x11AC/0x2155C/0x21A8C come from the \"MP and Hearts\" PPF (heart-drop data and helpers), not Succubus; left out of both states."
+    }
+  ],
+  "confidence": "medium",
+  "notes": "Flinch: the Succubus-No-Flinch PPF first skipped the flinch branch (0x1214E 0x40->0x00), then Succubus-Flinch-Only-Clone-Attack / Scylla-...-Succubus-Clone-Flinch(-v2) restored it and changed the step test; Succubus-Revert-To-No-Flinch is NOT applied in a. So a = vanilla structure with 'step & 1' replaced by 'step == SUCCUBUS_CLONE_ATTACK (11)': she still takes damage and dies normally, but only reacts to hits during the clone attack. Faster: no PPF; added between images t and b together with the Reawakened port. 0x6D4-0x71A, 0x12898, 0x12998, 0x13194, 0x13260 match Reawakened's halved values; the other ~40 bytes are custom (about 2/3 durations) and do not match Reawakened. Off = o = v for every byte (1.3.1 Succubus = vanilla here). Not included: the ASS 1.3.1 pink-ball speed doubling at 0x143EC/0x14404 (v->o, kept in both states), and the 163 unattributed DRE tilemap bytes 0xB54C-0xBD46: those are ASS 1.3.1 tile edits in both Nightmare rooms that a reverts to vanilla (map/tile data, not Succubus behaviour). DRE's 235 unattributed o->a bytes = 163 tilemap + 38 animation + 34 code. The wing-spike tip 12x12 hitbox store is the only change that is not a speed change; it was added in the same batch, so it is grouped here."
+}

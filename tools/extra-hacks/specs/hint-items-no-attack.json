@@ -1,0 +1,34 @@
+{
+  "id": "hint-items-no-attack",
+  "label": "Hint items have no attack",
+  "summary": "Items of category 2 (ASS's Hint items) are treated like food and medicine when attack is calculated, so they show and deal no weapon attack.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x54D70",
+      "off": "060002340e0062102190a0000a0002340b006210",
+      "on": "2190a00002006238030042300c00401000000000",
+      "why": "GetEquipProperties: 'cat==6 || cat==10' (food/medicine keep their raw attack) -> '(cat^2)&3==0' (also category 2 = THROW_1)",
+      "origin": "unattributed (food/Hint build)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E83C",
+      "off": "06000234130062100a00023411006210",
+      "on": "00000000020062380300423011004010",
+      "why": "CalcAttack: the same category test widened to category 2 (attack 0 for THROW_1 items)",
+      "origin": "unattributed (food/Hint build)"
+    }
+  ],
+  "vanilla": {
+    "supported": false,
+    "reason": "In vanilla category 2 is the Heaven Sword, Shakram and Runesword, which would lose their attack; this only makes sense with ASS's Hint items.",
+    "vanillaOff": []
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [],
+  "confidence": "medium",
+  "notes": "(cat^2)&3==0 matches categories 2, 6, 10, 14 = THROW_1, FOOD, MEDICINE. ASS 2.0 has 22 items in category 2 (food Hints 0x1E-0x2A/0x3F and the Hint items 0x94-0x9E) and none of the three vanilla THROW_1 weapons. Added between image t (09-27) and b (10-01), no PPF. Probably part of the food/Hint work; could be merged into instant-food (ASS only)."
+}

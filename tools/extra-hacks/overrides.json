@@ -1,0 +1,37 @@
+{
+ "karasuman": {
+  "onAlt": {
+   "ST/NZ1/NZ1.BIN:0x2abc8": [
+    "000042300300401000000000d7c1060c"
+   ]
+  }
+ },
+ "richter-ai": {
+  "vanillaOnPatch": {
+   "BOSS/BO6/BO6.BIN:0x268f0": [
+    [
+     2,
+     "0000"
+    ],
+    [
+     8,
+     "0000"
+    ],
+    [
+     14,
+     "0000"
+    ],
+    [
+     20,
+     "0000"
+    ]
+   ]
+  }
+ },
+ "mp-items": {
+  "baseOriginVanillaOnly": true
+ },
+ "subweapon-weapon": {
+  "useEntities": true
+ }
+}

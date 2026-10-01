@@ -1,0 +1,178 @@
+{
+  "id": "quick-items",
+  "label": "Quick Items (L2 shortcuts)",
+  "summary": "Hold L2 and press Square, Circle, Triangle or Cross to use a Potion, High Potion, X-Potion or Meal Ticket (thrown random food) without equipping it. Each shortcut costs the item's MP and needs HP below max, and while L2 is held the face buttons don't attack, jump or backdash.",
+  "requires": [
+    "mp-items"
+  ],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6AD60",
+      "off": "4c74428c",
+      "on": "6e89030c",
+      "why": "EntityAlucard per-frame hook: 'lw v0,D_8009744C' -> 'jal 0x800E25B8' (L2 handler, which returns D_8009744C in v0). off = vanilla/1.3.1 (no L2 shortcut in 1.3.1)",
+      "origin": "Reusable Potions.ppf (jal 0x800E2C00), retargeted by MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425B8",
+      "off": "211862006254000c2000a3a321a0400008008006212000027254000c2120800201003126e803222acaff4014eb51023c212000026254000c0002053421a0400007008106350011340e80043cd0b384245746000c21280002fe890308000000000780023c7cc3428c4501a3276400538466005084000060a0ffff3126fdff2106ffff63242120600242000234180070021001a2a34d0002341101a2a3360002341a01a2a3280002341e01a2a3010002342a01a2a3180002342c01a2a32201b3a312180000401003002110430036004224021a02001301a3a3021c02001201a2a3021602001401a3a3020061061501a2a3ff00642621180002031204002301a2a3",
+      "on": "b0ffbd270000a3af0400a4af0800a5af0c00a6af1000a7af1400a8af1800a9af1c00aaaf2000abaf2400acaf2800adaf2c00aeaf3000afaf4000bfaf0980083c9074099594740a950100293167002011f0004a3104800b3c18ca6b250b800c3c00ce8c2508000d342170000000006f950000848df000ef310200e011ffffad252570c40102006b25f8ffa01504008c2507800b3cec2e6f8d2770c0012478ee01ec2e6fad5100401180004b31080060159f000c3420004b3105006015a0000c3410004b3102006015a1000c3446000c3440680c002168ac0180680d002168ac0180680d000a800e3c2168ae01284bae95a07b0f8da47b048db07b058d2a78e401",
+      "why": "L2 handler (in dead DebugCaptureScreen body): while L2 is held, mask face-button actions; on Square/Circle/Triangle/Cross pick 0x9F/0xA0/0xA1/0x46; check HP<max, MP>=mpUsage, player state, owned or equipped; potions: temporarily equip in hand 0 and call func_8010EDB8; Meal Ticket: spawn thrown food (0x800E2A80) and subtract its MP",
+      "origin": "ASS-2.0-Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "b0ffbd270000a3af0400a4af0800a5af0c00a6af1000a7af1400a8af1800a9af1c00aaaf2000abaf2400acaf2800adaf2c00aeaf3000afaf4000bfaf0980083c9074099594740a950100293167002011f0004a3104800b3c18ca6b250b800c3c00ce8c2508000d342170000000006f950000848df000ef310200e011ffffad252570c40102006b25f8ffa01504008c2507800b3cec2e6f8d2770c0012478ee01ec2e6fad5100401180004b31080060159f000c3420004b3105006015a0000c3410004b3102006015a1000c3446000c3440680c002168ac0180680d002168ac0180680d000a800e3c2168ae01284bae95a07b0f8da47b048d748b030cff7fce31",
+        "why": "With Healing items use Hearts: 0x426B0 jal 0x800E2DD0 (hearts check helper) + andi $t6,0x7FFF; 0x42790/0x427A0 subtract from hearts (0x80097BA8) instead of MP."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426B8",
+      "off": "020001062601b0a3ff000326031203002701a2a3212080021001a5276e54000c360006343e004004213800001002a527ffff1126280020062080163c1800330221a8a000129000002000601a21800000211012024010020021105600000044940100e724ffff8330c2110300f80042300000a2a00100a52482180300f80063300000a3a00100a5241f008430c02004000000a4a0100002340800e2140100a524212080022128a0026e54000c300006341b004004213800002128a002010010262a101302e3ff401421101202ffff3126ddff2106239053020700e010212080021002a527403007006e54000c2130c7000b004004000000007254000c21208002",
+      "on": "3a00e0112a28ae003800a01407800f3c762fe495fc2ee58d340080142c2fe48d3200a0140400053c0700a534242085002e0080140434e4950634e5950500842c2a0080104000a52c2800a01021200c018a798490007c058d05008014047c048d0300ac100000000020008c14000000004600043414008411007c058d007c0cad3400a5afe82ee68dec2ee78d3800a6af3c00a7af80000634e82ee6ad6e3b040cec2ee6ad07800f3c3800a68f3c00a78fe82ee6adec2ee7ad0980083c3400a58fe9890308007c05ada08a030c3400aeaf060040100980083cb07b058d3400ae8f000000002328ae00b07b05ad4000bf8f0000a38f0400a48f0800a58f0c00a68f",
+      "why": "L2 handler (in dead DebugCaptureScreen body): while L2 is held, mask face-button actions; on Square/Circle/Triangle/Cross pick 0x9F/0xA0/0xA1/0x46; check HP<max, MP>=mpUsage, player state, owned or equipped; potions: temporarily equip in hand 0 and call func_8010EDB8; Meal Ticket: spawn thrown food (0x800E2A80) and subtract its MP",
+      "origin": "ASS-2.0-Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "3a00a0102128e0013800a01407800f3c762fe495fc2ee58d340080142c2fe48d3200a0140400053c0700a534242085002e0080140434e4950634e5950500842c2a0080104000a52c2800a01021200c018a798490007c058d05008014047c048d0300ac100000000020008c14000000004600043414008411007c058d007c0cad3400a5afe82ee68dec2ee78d3800a6af3c00a7af80000634e82ee6ad6e3b040cec2ee6ad07800f3c3800a68f3c00a78fe82ee6adec2ee7ad0980083c3400a58fe9890308007c05ada08a030c3400aeaf060040100980083ca87b058d3400ae8f000000002328ae00a87b05ad4000bf8f0000a38f0400a48f0800a58f0c00a68f",
+        "why": "With Healing items use Hearts: 0x426B0 jal 0x800E2DD0 (hearts check helper) + andi $t6,0x7FFF; 0x42790/0x427A0 subtract from hearts (0x80097BA8) instead of MP."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427B8",
+      "off": "0d004104000000000e80043ce4b384245746000c00000000fe890308000000000e80043cdcb384245746000c00000000fe890308",
+      "on": "1000a78f1400a88f1800a98f1c00aa8f2000ab8f2400ac8f2800ad8f2c00ae8f3000af8f5000bd270980023c4c74428c0800e003",
+      "why": "L2 handler (in dead DebugCaptureScreen body): while L2 is held, mask face-button actions; on Square/Circle/Triangle/Cross pick 0x9F/0xA0/0xA1/0x46; check HP<max, MP>=mpUsage, player state, owned or equipped; potions: temporarily equip in hand 0 and call func_8010EDB8; Meal Ticket: spawn thrown food (0x800E2A80) and subtract its MP",
+      "origin": "ASS-2.0-Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42A80",
+      "off": "120040042130000021184002010010264000022aebff401421107002010031264000222ae4ff4014000000000b00c0101002a5271380043c0463848c6e54000c4030060005004104000000000e80043cdcb384245746000c000000004402bf8f4002b48f3c02b38f3802b28f3402b18f3002b08f4802bd270800e003",
+      "on": "e8ffbd271400bfaf2889030c000000001000a2af20000434e761040c40000534b70040101000a88f43000934300048a4260049a40e80083cdc2b0825280048ac010008342c0048a40008083c340048ac07800b3cd833688ddc33698dec336a95000048acfcff083c21482801040049acfeff083c0c0048ac5c8b0308",
+      "why": "L2+Cross spawner: roll food (0x800E24A0), allocate entity, set update 0x800E2BDC, position and throw velocity (overwrote the old Down+L2 X-Potion helper)",
+      "origin": "ASS-2.0-MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42BDC",
+      "off": "c862428c00000000060040140000000021200002f347000c21280000088b030821b8000021200002f347000c010005341380023cc86242940000000040110200e0ff572421200002fd47000c0100053421280002219000000980103c48791026fcff1e260a001534080014340e0071260400a0a00500a0a00600a0a01380023cb462428c700003340800a3a401004230c01102000c00a2a01380023cb462428c500003340a00a3a402004230801102000d00a2a01480033c0c90638c1380043ccc62848c800002341000a2a41200a2a4401803000480013c2108230004c12294f8078424c647000c0e00a2a42120c00221280000213000000b80023c80cd4224",
+      "on": "b8ffbd274400bfaf4000b0af21808000300008960000000040480800214828018048090021482801804809000a800a3c21482a01304b2495324b25954dad030c1f0006342c00029601000834190048140400043420b7030c0100053424e240043400088e640002ae8000093c25400901340008aef66c030c21200002ef01083c71b108350c0048ac1a00083c7fb10835180048ac8000083c71bf0835240048ac0200083c7fbf0835300048ac020008342c0008a62c000296020008342e0048140000088e0800098e04000a8e0c000b8e2140090121504b0100286b25000008ae04000aae0c000bae020004860200210504008424f8ff8424060005861000a627",
+      "why": "L2+Cross thrown-food entity update (icon prim, arc, wall/floor collision, ~9 s timeout, pickup heals the food value) + spawner tail 0x42D70-0x42D8F + dead tail of the earlier L2 handler 0x42D90-0x42D9F (Reusable Potions/L2 Timing Fix lineage)",
+      "origin": "ASS-2.0-MealTicket-Throw-70MP.ppf (0x42BDC-0x42D8F), old L2 handler (0x42D90-0x42D9F)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42CDC",
+      "off": "1380073cb462e78cffffe3321000a2af0000028e823807002138e300010042247c4d000c000002ae1380043ccc62848c2128c002c647000cf80784240c00d6260780043ccccb84241480033c0c90638c0980023c2c79428c4019030021806400010042240980013c2c7922ac21206002f347000c2128000000000496000002961f008430c020040082180200f8006330c2110200f8004230f6ff24a2f7ff23a2f8ff22a21380023cc062428c0000000004004216d6000234d4000234698b0308faff34a6",
+      "on": "17bd030c213800001000a88f00000000020008310200001100000000080000ae02000486060005861000a6270700a52417bd030c213800001000a88f0c00098e01000831c3e100112800aa8fc1e1201906000896080000ae21400a01060008a60c0000ae000208347c0008a6030008340c6d03082c0008a67c00089600000000ffff0825dae100117c0008a60c6d0308000000000200401100e0083423400800080048ac1400bf8f000000000800e0031800bd274c74428c000000000800e00300000000",
+      "why": "L2+Cross thrown-food entity update (icon prim, arc, wall/floor collision, ~9 s timeout, pickup heals the food value) + spawner tail 0x42D70-0x42D8F + dead tail of the earlier L2 handler 0x42D90-0x42D9F (Reusable Potions/L2 Timing Fix lineage)",
+      "origin": "ASS-2.0-MealTicket-Throw-70MP.ppf (0x42BDC-0x42D8F), old L2 handler (0x42D90-0x42D9F)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3B3D8",
+      "off": "25730a007772206572720a00636c6f206572720a0000000073696d3a633a5c62696e5c6472613030",
+      "on": "6400888c0880023c4048080021482801804809002148280180480900ec6f42240800e00321104900",
+      "why": "L2+Cross entity helper: get the entity's primitive (written over unused debug printf strings)",
+      "origin": "ASS-2.0-MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3B430",
+      "off": "66696c653a253032782c253033780a0068616c663a25730a00000000647220203a253033780a0000677434203a253033780a0000673420203a253033780a0000677433203a253033780a00006c696e653a253033780a0000737031363a253033780a0000737020203a253033780a000074696c653a253033780a0000656e76203a253033780a0000656666203a253033780a000072656400677265656e000000626c756500000000202068616c66206f6e0a000020206861",
+      "on": "f66c030c212000020200088606000986f9ff0a2508004aa420004aa407000a2514004aa42c004aa4f9ff2a250a004aa416004aa407002a2522004aa42e004aa42c000a960c000b8e03000c3403004c1102000c3c2a586c011200601507800b3cda336a85de336c8523400a010200010523482c0123400800020021051100082d234809002100292d2440090105000011300004963a6d030c000000006419040c212000024400bf8f4000b08f4800bd270800e00300000000",
+      "why": "L2+Cross entity helper: place the icon quad, test for Alucard in range, heal (jal 0x800DB4E8) and destroy the entity (written over unused debug printf strings)",
+      "origin": "ASS-2.0-MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x424A0",
+      "off": "e8ffbd271000bfaf3958000c00000000290008341b004800101000001d00422440480200214822018048090021482201804809000a800a3c21482a01124b2a9106000b34f0ff4b15000000000c4b23851000bf8f1800bd270800e00300000000",
+      "on": "e8ffbd271000bfaf3958000c00000000290008341b004800101000001d00422440480200214822018048090021482201804809000a800a3c21482a01124b2a9106000b34f0ff4b15000000000c4b23851000bf8f1800bd270800e00300000000",
+      "why": "SHARED, not reverted: random food roll (rand()%41+0x1D, rerolls non-category-6 Hints). Also used by the hand Meal Ticket throw (WEAPON0/1 jal 0x800E24A0), so off = on in ASS. Included so that a vanilla install has it",
+      "origin": "ASS-2.0-Food-MealTicket-L2-Shortcuts.ppf / MealTicket-Throw-70MP.ppf (food features)",
+      "shared": true
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3B4E8",
+      "off": "40480400214824018048090021482401804809000a800a3c21482a010c4b288507800a3c762f4b95782f4c950300601501000b34762f4ba521600000216088010800e003782f4ca5",
+      "on": "40480400214824018048090021482401804809000a800a3c21482a010c4b288507800a3c762f4b95782f4c950300601501000b34762f4ba521600000216088010800e003782f4ca5",
+      "why": "SHARED, not reverted: food heal routine (healKind/healAmount += food attack value). Also used by eat-on-pickup (0x427F8) and the food overlay pickup, so off = on in ASS. Included so that a vanilla install has it",
+      "origin": "ASS-2.0-Food-MealTicket-L2-Shortcuts.ppf / MealTicket-Throw-70MP.ppf (food features)",
+      "shared": true
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42DD0",
+      "off": "00000000000000000000000000000000",
+      "on": "00000000000000000000000000000000",
+      "vanillaOn": "0b000234000022a62128600210003126",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "2a28e401a87b0f8d0800e0032a78ee01",
+        "why": "Hearts check helper for the L2 shortcuts: slt $a1,$t7,$a0 (HP < max); lw $t7,hearts; jr $ra; slt $t7,$t7,$t6 (hearts < cost)."
+      },
+      "origin": "ASS 2.0 Resource Swap (in the BIN)",
+      "why": "Empty space in ASS 2.0 (dead debug code in vanilla); only written when Healing items use Hearts is on too."
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Safe only together with MP Cost Items (required). All locations hold dead debug code or strings in vanilla, every call goes to an unchanged vanilla DRA function, and the two shared food routines are installed from vanillaOff. In vanilla L2+Triangle uses the Elixir (the slot ASS renamed X-Potion), and L2+Cross throws a random vanilla food that heals its vanilla value.",
+    "vanillaOff": [
+      {
+        "file": "DRA.BIN",
+        "offset": "0x424A0",
+        "bytes": "9c74429498fdbd276402bfaf6002b6af5c02b5af5802b4af5402b3af5002b2af4c02b1af00014230cb0040104802b0af0980023c987442940000000000104230c50040102080053c218800000780043c7cc3848c1000b027e24a000c60008424"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0x3B4E8",
+        "bytes": "6c66206f66660a007267623a253032582c253032582c253032580a0030313a253034782c253034780a00000032333a253034782c253034780a0000006c3d253033782f3130300a00"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0x42DD0",
+        "bytes": "0b000234000022a62128600210003126"
+      }
+    ]
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42D40",
+      "length": 2,
+      "why": "Thrown-food lifetime 0x200 frames (~8.5 s) in 'ori t0,zero,0x200' (balance/timing value)"
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "mp-items",
+      "detail": "Hard dependency (requires). L2+Cross never consumes the Meal Ticket: it spawns its own pickup and subtracts the ticket's mpUsage directly. With MP Cost Items off (MP cost 0, Meal Ticket consumable) it would give unlimited free food. L2+Square/Circle/Triangle go through func_8010EDB8/ReduceWeapon, so they would consume a consumable potion. But the handler temporarily writes the potion into equipment[0] and restores the saved value afterwards, so a hand-equipped last potion would not be used up. The handler's own MP check (MP >= mpUsage) is independent of MP Cost Items' gate."
+    },
+    {
+      "hack": "(not listed) food eaten immediately / on pickup, Meal Ticket throw",
+      "detail": "Same code caves. 0x424A0-0x424FF (food roll) and 0x3B4E8-0x3B52F (heal routine) are used by both. They are included as shared edits with off == on, so they are never reverted in ASS. Not touched: 0x42500-0x425B7 (food overlay helper + AddToInventory hook, Food-MealTicket-L2 / Eat-Food-On-Pickup PPFs), 0x427F0-0x4281F (eat-on-pickup tail), WEAPON0/1 weapon-21 edits, and the hook 0x5D884."
+    },
+    {
+      "hack": "(not listed) X-Potion item",
+      "detail": "The X-Potion description string ('L2+Triangle Costs 200MP') sits at 0x3B3B8-0x3B3D7, right before this hack's 0x3B3D8 code, and item 0xA1 points to it (0x6BBC). Both are left alone. If they were restored, the X-Potion description would turn into a debug path string."
+    },
+    {
+      "hack": "(not listed) Faerie helpers / potion heal helper",
+      "detail": "0x42DA0-0x42DCF (Faerie 20-MP helper) follows the 0x42D90 remnant, and 0x42DE0 (Potion 300 / High Potion 800 HP), which L2 potions use through func_8010EDB8, follows that. Neither is touched."
+    },
+    {
+      "hack": "dark-stats / dark-speed",
+      "detail": "Their cave code starts at 0x42824 (after the eat-on-pickup tail) and ends before 0x42934. It is adjacent to, but does not overlap, the L2 handler (ends 0x427EB) or the spawner (starts 0x42A80)."
+    }
+  ],
+  "confidence": "high",
+  "notes": "History: Reusable Potions.ppf (09-26) added the first L2 shortcuts (L2 Potion 50 MP, Up+L2 High Potion 99 MP, hook 0x6AD60 -> 0x800E2C00). L2 Fix / L2 Timing Fix / Potion Animation patched that handler. X-Potion Shields Spells added Down+L2 (helper 0x42A80). ASS-2.0-Food-MealTicket-L2-Shortcuts.ppf replaced it with the 4-face-button handler at 0x800E25B8 (old handler kept as a trampoline), and MealTicket-Throw-70MP.ppf retargeted the hook straight to 0x800E25B8 and reused the old handler and Down+L2 helper space for the L2+Cross thrown food. 1.3.1 and vanilla have no L2 item shortcut ('off' = the original 'lw v0,0x744c(v0)'). Off restores the original dead debug-function bytes (o == v) wherever the code belongs only to this hack. Only the hook matters at runtime; the rest is cleanup and gives a strong signature. Nothing outside these edits calls 0x800E25B8, 0x800E2A80, 0x800E2BDC or 0x800DB3D8/0x800DB430 (checked all jal/j/branches and lui/addiu pairs in DRA and all overlays). Item IDs and button masks are fixed in code: Square 0x80 -> 0x9F Potion, Circle 0x20 -> 0xA0 High Potion, Triangle 0x10 -> 0xA1 X-Potion, Cross 0x40 -> 0x46 Meal Ticket. MP costs are read from the item table (+0x24), so they are tunable via MP Cost Items and the Stats tab, not here. The description strings that mention 'L2+...' are Stats-tab text and are not part of this spec; after unchecking, the user may want to edit them. Shared edits (marked shared:true, off == on) exist only so that a vanilla install works. A UI may skip them when removing. Verified: every 'on' equals image a; every non-shared 'off' equals o and v; vanillaOff equals v for the shared edits."
+}

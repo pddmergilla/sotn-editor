@@ -1,0 +1,1258 @@
+{
+  "id": "aggressive-enemy",
+  "label": "Aggressive Enemy (detection range increased)",
+  "summary": "Doubles the initial wake-up/detection distance of 37 enemy types (94 thresholds in 23 stage overlays), so they notice Alucard from twice as far away.",
+  "edits": [
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x439E8",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "ARE Blade Master X wake check 128->256 px (slti imm; e_blade_master.c)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x448C8",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "ARE Blade Soldier X wake check 96->192 px (slti imm; e_blade_soldier.c)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x451B4",
+      "off": "c0004228",
+      "on": "80014228",
+      "why": "ARE Bone Musket X wake check 192->384 px (slti imm; e_bone_musket.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x46E90",
+      "off": "68004228",
+      "on": "d0004228",
+      "why": "ARE Owl Knight X wake check 104->208 px (slti imm; e_owl_knight.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x46EA4",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "ARE Owl Knight Y wake check 128->256 px (slti imm; e_owl_knight.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4C06C",
+      "off": "a0004228",
+      "on": "40014228",
+      "why": "ARE Armor Lord X wake check 160->320 px (slti imm; e_armor_lord.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4D23C",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "ARE Hunting Girl X wake check 80->160 px (slti imm; e_hunting_girl.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4D250",
+      "off": "30004228",
+      "on": "60004228",
+      "why": "ARE Hunting Girl Y wake check 48->96 px (slti imm; e_hunting_girl.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4EEEC",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "ARE Flea Armor X wake check 112->224 px (slti imm; e_flea_armor.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4F7DC",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "ARE Flea Man X wake check 96->192 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4F7F0",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "ARE Flea Man Y wake check 64->128 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x540B4",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "ARE Grave Keeper X wake check 96->192 px (slti imm; e_grave_keeper.h)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x4A3A8",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "CAT Discus Lord X wake check 128->256 px (slti imm; e_discus_lord.c)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x4FCAC",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "CAT Lossoth X wake check 96->192 px (slti imm; e_lossoth.c)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x51568",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "CAT Grave Keeper X wake check 96->192 px (slti imm; e_grave_keeper.h)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x54B54",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "CAT Wereskeleton X wake check 112->224 px (slti imm; e_wereskeleton.h)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x55880",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "CAT Thornweed/Corpseweed X wake check 80->160 px (slti imm; e_thornweed_corpseweed.h)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x282B4",
+      "off": "a0004228",
+      "on": "40014228",
+      "why": "CHI Salem Witch X wake check 160->320 px (slti imm; e_salem_witch.h)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x282C8",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "CHI Salem Witch Y wake check 112->224 px (slti imm; e_salem_witch.h)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x2A158",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "CHI Thornweed/Corpseweed X wake check 80->160 px (slti imm; e_thornweed_corpseweed.h)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x53E5C",
+      "off": "6000102a",
+      "on": "c000102a",
+      "why": "DAI Bat X wake check 96->192 px (slti imm; e_bat.h)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x53E6C",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "DAI Bat Y wake check 96->192 px (slti imm; e_bat.h)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x540CC",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "DAI Black Crow X wake check 80->160 px (slti imm; e_crow.c)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x540E0",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "DAI Black Crow Y wake check 64->128 px (slti imm; e_crow.c)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x544D0",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "DAI Raven X wake check 96->192 px (slti imm; e_crow.c)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x544E4",
+      "off": "30004228",
+      "on": "60004228",
+      "why": "DAI Raven Y wake check 48->96 px (slti imm; e_crow.c)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x54820",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "DAI Skelerang X wake check 128->256 px (slti imm; e_skelerang.h)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x559B0",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "DAI Hunting Girl X wake check 80->160 px (slti imm; e_hunting_girl.h)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x559C4",
+      "off": "30004228",
+      "on": "60004228",
+      "why": "DAI Hunting Girl Y wake check 48->96 px (slti imm; e_hunting_girl.h)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x566C8",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "DAI Spectral Sword X wake check 64->128 px (slti imm; e_spectral_sword.c)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x490EC",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "LIB Bloody Zombie X wake check 128->256 px (slti imm; e_bloody_zombie.h)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x4C13C",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "LIB Dhuron X wake check 112->224 px (slti imm; e_dhuron.c)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x4DCA4",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "LIB Thornweed/Corpseweed X wake check 80->160 px (slti imm; e_thornweed_corpseweed.h)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x4FB24",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "LIB Flea Armor X wake check 112->224 px (slti imm; e_flea_armor.h)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x50434",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "LIB Flea Man X wake check 96->192 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x50448",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "LIB Flea Man Y wake check 64->128 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x51AB0",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO0 Skelerang X wake check 128->256 px (slti imm; e_skelerang.h)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x567E4",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO0 Marionette X wake check 128->256 px (slti imm; e_marionette.h)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5BFBC",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "NO0 Ouija Table X wake check 80->160 px (slti imm; e_ouija_table.c)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5BFD0",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "NO0 Ouija Table Y wake check 64->128 px (slti imm; e_ouija_table.c)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5C898",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NO0 Flea Man X wake check 96->192 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5C8AC",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "NO0 Flea Man Y wake check 64->128 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x4DF34",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "NO1 Wereskeleton X wake check 112->224 px (slti imm; e_wereskeleton.h)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x4ED08",
+      "off": "c0004228",
+      "on": "80014228",
+      "why": "NO1 Bone Musket X wake check 192->384 px (slti imm; e_bone_musket.h)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x4FA08",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NO1 Sword Lord X wake check 96->192 px (slti imm; e_sword_lord.h)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x50720",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO1 Bone Archer X wake check 128->256 px (slti imm; e_bone_archer.h)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x52E70",
+      "off": "a0004228",
+      "on": "40014228",
+      "why": "NO1 Armor Lord X wake check 160->320 px (slti imm; e_armor_lord.h)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x36F24",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "NO2 Prisoner X wake check 64->128 px (slti imm; e_prisoner.h)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x42CD0",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO2 Skelerang X wake check 128->256 px (slti imm; e_skelerang.h)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x43E90",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO2 Bloody Zombie X wake check 128->256 px (slti imm; e_bloody_zombie.h)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x45A7C",
+      "off": "68004228",
+      "on": "d0004228",
+      "why": "NO2 Owl Knight X wake check 104->208 px (slti imm; e_owl_knight.h)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x45A90",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO2 Owl Knight Y wake check 128->256 px (slti imm; e_owl_knight.h)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x4DFEC",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "NO2 Spectral Sword X wake check 64->128 px (slti imm; e_spectral_sword.c)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x4E000",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NO2 Spectral Sword Y wake check 96->192 px (slti imm; e_spectral_sword.c)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x4CC68",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO3 Fire Warg X wake check 128->256 px (slti imm; e_fire_warg.h)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x4F994",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO3 Warg X wake check 128->256 px (slti imm; e_warg.c)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x56334",
+      "off": "6000102a",
+      "on": "c000102a",
+      "why": "NO3 Bat X wake check 96->192 px (slti imm; e_bat.h)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x56344",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NO3 Bat Y wake check 96->192 px (slti imm; e_bat.h)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x48F28",
+      "off": "6000102a",
+      "on": "c000102a",
+      "why": "NO4 Bat X wake check 96->192 px (slti imm; e_bat.c)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x48F38",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "NO4 Bat Y wake check 112->224 px (slti imm; e_bat.c)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x5CC24",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NO4 Bone Archer X wake check 128->256 px (slti imm; e_bone_archer.h)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x49A4C",
+      "off": "6000102a",
+      "on": "c000102a",
+      "why": "NP3 Bat X wake check 96->192 px (slti imm; e_bat.h)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x49A5C",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NP3 Bat Y wake check 96->192 px (slti imm; e_bat.h)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x4A894",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NP3 Bloody Zombie X wake check 128->256 px (slti imm; e_bloody_zombie.h)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x4C480",
+      "off": "68004228",
+      "on": "d0004228",
+      "why": "NP3 Owl Knight X wake check 104->208 px (slti imm; e_owl_knight.h)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x4C494",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NP3 Owl Knight Y wake check 128->256 px (slti imm; e_owl_knight.h)"
+    },
+    {
+      "file": "ST/NZ0/NZ0.BIN",
+      "offset": "0x457A8",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NZ0 Bloody Zombie X wake check 128->256 px (slti imm; e_bloody_zombie.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x39BA8",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "NZ1 Skull Lord Y wake check 128->256 px (slti imm; e_skull_lord.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3AAF4",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "NZ1 Harpy X wake check 112->224 px (slti imm; e_harpy.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3AB08",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "NZ1 Harpy Y wake check 64->128 px (slti imm; e_harpy.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3BDB8",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "NZ1 Cloaked Knight X wake check 80->160 px (slti imm; e_cloaked_knight.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3CE48",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NZ1 Sword Lord X wake check 96->192 px (slti imm; e_sword_lord.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3ED84",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "NZ1 Flail Guard X wake check 80->160 px (slti imm; e_flail_guard.c)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3F6C0",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "NZ1 Flea Armor X wake check 112->224 px (slti imm; e_flea_armor.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3FFB0",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "NZ1 Flea Man X wake check 96->192 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3FFC4",
+      "off": "40004228",
+      "on": "80004228",
+      "why": "NZ1 Flea Man Y wake check 64->128 px (slti imm; e_flea_man.h)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x33CDC",
+      "off": "c0000234",
+      "on": "80010234",
+      "why": "RCAT Bat Y spawn init 192->384 px (ori imm; e_bat.h)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x33CE4",
+      "off": "78000234",
+      "on": "f0000234",
+      "why": "RCAT Bat X spawn init 120->240 px (ori imm; e_bat.h)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x3F1A0",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "RCAT Frozen Half X wake check 96->192 px (slti imm; e_frozen_half.c)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x40BAC",
+      "off": "60004228",
+      "on": "c0004228",
+      "why": "RCAT Salome X wake check 96->192 px (slti imm; e_salome.c)"
+    },
+    {
+      "file": "ST/RCHI/RCHI.BIN",
+      "offset": "0x1A984",
+      "off": "60000234",
+      "on": "c0000234",
+      "why": "RCHI Bat X+Y spawn init 96->192 px (ori imm; e_bat.h)"
+    },
+    {
+      "file": "ST/RDAI/RDAI.BIN",
+      "offset": "0x439D8",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "RDAI Imp X wake check 128->256 px (slti imm; e_imp.h)"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x46B34",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "RNO0 Thornweed/Corpseweed X wake check 80->160 px (slti imm; e_thornweed_corpseweed.h)"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x48ED8",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "RNO0 Nova Skeleton X wake check 112->224 px (slti imm; e_nova_skeleton.h)"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x36150",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "RNO1 Nova Skeleton X wake check 112->224 px (slti imm; e_nova_skeleton.h)"
+    },
+    {
+      "file": "ST/RNO2/RNO2.BIN",
+      "offset": "0x47318",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "RNO2 Bloody Zombie X wake check 128->256 px (slti imm; e_bloody_zombie.h)"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x3F5FC",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "RNO3 Fire Warg X wake check 128->256 px (slti imm; e_fire_warg.h)"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x42BA4",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "RNO3 Nova Skeleton X wake check 112->224 px (slti imm; e_nova_skeleton.h)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x40AC8",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "RNZ0 Imp X wake check 128->256 px (slti imm; e_imp.h)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x421AC",
+      "off": "a0004228",
+      "on": "40014228",
+      "why": "RNZ0 Salem Witch X wake check 160->320 px (slti imm; e_salem_witch.h)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x421C0",
+      "off": "70004228",
+      "on": "e0004228",
+      "why": "RNZ0 Salem Witch Y wake check 112->224 px (slti imm; e_salem_witch.h)"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x3A38C",
+      "off": "50004228",
+      "on": "a0004228",
+      "why": "RNZ1 Cloaked Knight X wake check 80->160 px (slti imm; e_cloaked_knight.h)"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x3C038",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "RNZ1 Bomb Knight X wake check 128->256 px (slti imm; e_bomb_knight.c)"
+    },
+    {
+      "file": "ST/RTOP/RTOP.BIN",
+      "offset": "0x2E2A4",
+      "off": "80004228",
+      "on": "00014228",
+      "why": "RTOP Skull Lord Y wake check 128->256 px (slti imm; e_skull_lord.h)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "All 94 instruction words are identical in vanilla and ASS 1.3.1 (and the surrounding +-64 bytes match), and the change is a self-contained immediate, so it can be applied to vanilla as-is.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x439E8",
+      "length": 2,
+      "why": "ARE Blade Master X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x448C8",
+      "length": 2,
+      "why": "ARE Blade Soldier X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x451B4",
+      "length": 2,
+      "why": "ARE Bone Musket X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x180`; vanilla 192)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x46E90",
+      "length": 2,
+      "why": "ARE Owl Knight X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xd0`; vanilla 104)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x46EA4",
+      "length": 2,
+      "why": "ARE Owl Knight Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4C06C",
+      "length": 2,
+      "why": "ARE Armor Lord X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x140`; vanilla 160)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4D23C",
+      "length": 2,
+      "why": "ARE Hunting Girl X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4D250",
+      "length": 2,
+      "why": "ARE Hunting Girl Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x60`; vanilla 48)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4EEEC",
+      "length": 2,
+      "why": "ARE Flea Armor X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4F7DC",
+      "length": 2,
+      "why": "ARE Flea Man X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x4F7F0",
+      "length": 2,
+      "why": "ARE Flea Man Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x540B4",
+      "length": 2,
+      "why": "ARE Grave Keeper X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x4A3A8",
+      "length": 2,
+      "why": "CAT Discus Lord X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x4FCAC",
+      "length": 2,
+      "why": "CAT Lossoth X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x51568",
+      "length": 2,
+      "why": "CAT Grave Keeper X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x54B54",
+      "length": 2,
+      "why": "CAT Wereskeleton X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x55880",
+      "length": 2,
+      "why": "CAT Thornweed/Corpseweed X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x282B4",
+      "length": 2,
+      "why": "CHI Salem Witch X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x140`; vanilla 160)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x282C8",
+      "length": 2,
+      "why": "CHI Salem Witch Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x2A158",
+      "length": 2,
+      "why": "CHI Thornweed/Corpseweed X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x53E5C",
+      "length": 2,
+      "why": "DAI Bat X detection distance in px (int16 LE immediate of `slti $s0, $s0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x53E6C",
+      "length": 2,
+      "why": "DAI Bat Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x540CC",
+      "length": 2,
+      "why": "DAI Black Crow X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x540E0",
+      "length": 2,
+      "why": "DAI Black Crow Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x544D0",
+      "length": 2,
+      "why": "DAI Raven X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x544E4",
+      "length": 2,
+      "why": "DAI Raven Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x60`; vanilla 48)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x54820",
+      "length": 2,
+      "why": "DAI Skelerang X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x559B0",
+      "length": 2,
+      "why": "DAI Hunting Girl X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x559C4",
+      "length": 2,
+      "why": "DAI Hunting Girl Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x60`; vanilla 48)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x566C8",
+      "length": 2,
+      "why": "DAI Spectral Sword X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x490EC",
+      "length": 2,
+      "why": "LIB Bloody Zombie X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x4C13C",
+      "length": 2,
+      "why": "LIB Dhuron X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x4DCA4",
+      "length": 2,
+      "why": "LIB Thornweed/Corpseweed X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x4FB24",
+      "length": 2,
+      "why": "LIB Flea Armor X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x50434",
+      "length": 2,
+      "why": "LIB Flea Man X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x50448",
+      "length": 2,
+      "why": "LIB Flea Man Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x51AB0",
+      "length": 2,
+      "why": "NO0 Skelerang X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x567E4",
+      "length": 2,
+      "why": "NO0 Marionette X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5BFBC",
+      "length": 2,
+      "why": "NO0 Ouija Table X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5BFD0",
+      "length": 2,
+      "why": "NO0 Ouija Table Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5C898",
+      "length": 2,
+      "why": "NO0 Flea Man X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x5C8AC",
+      "length": 2,
+      "why": "NO0 Flea Man Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x4DF34",
+      "length": 2,
+      "why": "NO1 Wereskeleton X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x4ED08",
+      "length": 2,
+      "why": "NO1 Bone Musket X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x180`; vanilla 192)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x4FA08",
+      "length": 2,
+      "why": "NO1 Sword Lord X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x50720",
+      "length": 2,
+      "why": "NO1 Bone Archer X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x52E70",
+      "length": 2,
+      "why": "NO1 Armor Lord X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x140`; vanilla 160)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x36F24",
+      "length": 2,
+      "why": "NO2 Prisoner X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x42CD0",
+      "length": 2,
+      "why": "NO2 Skelerang X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x43E90",
+      "length": 2,
+      "why": "NO2 Bloody Zombie X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x45A7C",
+      "length": 2,
+      "why": "NO2 Owl Knight X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xd0`; vanilla 104)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x45A90",
+      "length": 2,
+      "why": "NO2 Owl Knight Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x4DFEC",
+      "length": 2,
+      "why": "NO2 Spectral Sword X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x4E000",
+      "length": 2,
+      "why": "NO2 Spectral Sword Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x4CC68",
+      "length": 2,
+      "why": "NO3 Fire Warg X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x4F994",
+      "length": 2,
+      "why": "NO3 Warg X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x56334",
+      "length": 2,
+      "why": "NO3 Bat X detection distance in px (int16 LE immediate of `slti $s0, $s0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x56344",
+      "length": 2,
+      "why": "NO3 Bat Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x48F28",
+      "length": 2,
+      "why": "NO4 Bat X detection distance in px (int16 LE immediate of `slti $s0, $s0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x48F38",
+      "length": 2,
+      "why": "NO4 Bat Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x5CC24",
+      "length": 2,
+      "why": "NO4 Bone Archer X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x49A4C",
+      "length": 2,
+      "why": "NP3 Bat X detection distance in px (int16 LE immediate of `slti $s0, $s0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x49A5C",
+      "length": 2,
+      "why": "NP3 Bat Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x4A894",
+      "length": 2,
+      "why": "NP3 Bloody Zombie X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x4C480",
+      "length": 2,
+      "why": "NP3 Owl Knight X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xd0`; vanilla 104)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x4C494",
+      "length": 2,
+      "why": "NP3 Owl Knight Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NZ0/NZ0.BIN",
+      "offset": "0x457A8",
+      "length": 2,
+      "why": "NZ0 Bloody Zombie X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x39BA8",
+      "length": 2,
+      "why": "NZ1 Skull Lord Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3AAF4",
+      "length": 2,
+      "why": "NZ1 Harpy X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3AB08",
+      "length": 2,
+      "why": "NZ1 Harpy Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3BDB8",
+      "length": 2,
+      "why": "NZ1 Cloaked Knight X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3CE48",
+      "length": 2,
+      "why": "NZ1 Sword Lord X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3ED84",
+      "length": 2,
+      "why": "NZ1 Flail Guard X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3F6C0",
+      "length": 2,
+      "why": "NZ1 Flea Armor X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3FFB0",
+      "length": 2,
+      "why": "NZ1 Flea Man X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x3FFC4",
+      "length": 2,
+      "why": "NZ1 Flea Man Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x80`; vanilla 64)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x33CDC",
+      "length": 2,
+      "why": "RCAT Bat Y detection distance in px (int16 LE immediate of `ori $v0, $zero, 0x180`; vanilla 192)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x33CE4",
+      "length": 2,
+      "why": "RCAT Bat X detection distance in px (int16 LE immediate of `ori $v0, $zero, 0xf0`; vanilla 120)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x3F1A0",
+      "length": 2,
+      "why": "RCAT Frozen Half X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x40BAC",
+      "length": 2,
+      "why": "RCAT Salome X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/RCHI/RCHI.BIN",
+      "offset": "0x1A984",
+      "length": 2,
+      "why": "RCHI Bat X+Y detection distance in px (int16 LE immediate of `ori $v0, $zero, 0xc0`; vanilla 96)"
+    },
+    {
+      "file": "ST/RDAI/RDAI.BIN",
+      "offset": "0x439D8",
+      "length": 2,
+      "why": "RDAI Imp X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x46B34",
+      "length": 2,
+      "why": "RNO0 Thornweed/Corpseweed X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x48ED8",
+      "length": 2,
+      "why": "RNO0 Nova Skeleton X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x36150",
+      "length": 2,
+      "why": "RNO1 Nova Skeleton X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/RNO2/RNO2.BIN",
+      "offset": "0x47318",
+      "length": 2,
+      "why": "RNO2 Bloody Zombie X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x3F5FC",
+      "length": 2,
+      "why": "RNO3 Fire Warg X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x42BA4",
+      "length": 2,
+      "why": "RNO3 Nova Skeleton X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x40AC8",
+      "length": 2,
+      "why": "RNZ0 Imp X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x421AC",
+      "length": 2,
+      "why": "RNZ0 Salem Witch X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x140`; vanilla 160)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x421C0",
+      "length": 2,
+      "why": "RNZ0 Salem Witch Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xe0`; vanilla 112)"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x3A38C",
+      "length": 2,
+      "why": "RNZ1 Cloaked Knight X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0xa0`; vanilla 80)"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x3C038",
+      "length": 2,
+      "why": "RNZ1 Bomb Knight X detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    },
+    {
+      "file": "ST/RTOP/RTOP.BIN",
+      "offset": "0x2E2A4",
+      "length": 2,
+      "why": "RTOP Skull Lord Y detection distance in px (int16 LE immediate of `slti $v0, $v0, 0x100`; vanilla 128)"
+    }
+  ],
+  "detection": {
+    "rule": "tunable-differs-from-off",
+    "detail": "Every edit differs from off ONLY in its low halfword (the immediate), and those halfwords are all tunable. Recognise each site by its fixed upper halfword (file bytes +2..+3, opcode+registers: 0x2842 = slti v0,v0 / 0x2A10 = slti s0,s0 / 0x3402 = ori v0,zero) which is identical in on and off. Treat the hack as ON when the fixed halfwords match at (nearly) all 94 sites and the immediate differs from the off immediate at a majority of them (suggest >= 48 of 94); OFF when all immediates equal off. Turning it off writes the full off word; turning it on writes the on word (current doubled values).",
+    "minSitesDiffering": 48
+  },
+  "display": {
+    "kind": "ratio",
+    "detail": "Optional: show average on/off immediate ratio (currently exactly 2.0x at every site)."
+  },
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "none-in-list",
+      "detail": "No other hack in the list (or any other user PPF) writes these 94 words or any byte within +-16 of them; the only o->a diffs within +-64 bytes are other Double-Aggro sites."
+    },
+    {
+      "hack": "minimap / fast-warp (Reawakened source)",
+      "detail": "The Reawakened PPF (source of the MiniMap/Fast Warp ports) also raises 24 of these same thresholds (e.g. Bat 0x60->0xC0, Discus Lord 0x80->0xD8). That part of Reawakened was not ported into ASS 2.0 (bytes equal Double-Aggro values), so no conflict; if it is ever ported the sites would still detect as ON because the immediates differ from vanilla."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Source: SOTN-Alternate-Scarlet-Symphony-2.0-Double-Aggro.ppf + SOTN-Double-Aggro-CHANGES.md (Codex 2026-09-26/referenced-chatgpt-conversation-this-is-an-3). Every row of the CHANGES table was re-checked: v == o == documented old word, a == documented new word (images t and b also carry the new words), raw BIN offsets match. 91 sites are `slti` comparisons right after the distance helpers (e.g. jal 0x801BBDEC / 0x801BBE28 in ARE); 3 are `ori` spawn-time initialisers (RCAT Bat X/Y at 0x33CE4/0x33CDC, RCHI Bat X+Y at 0x1A984). All are code in stage overlays (not entity layout data), so offsets do not move when the map editor re-packs layouts. Doubled values fit the signed 16-bit immediates (max 384). Off = vanilla = ASS 1.3.1 bytes. In-game reach can still be limited by room spawning/culling (per the patch README)."
+}

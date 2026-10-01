@@ -1,0 +1,84 @@
+{
+  "id": "sky-walker",
+  "label": "Sky Walker",
+  "summary": "With the Leap Stone (renamed Sky Walker) Alucard can jump again in midair any number of times, and the dive kick moves to Up+Triangle during any jump.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x702B4",
+      "off": "642f4294",
+      "on": "04000234",
+      "why": "func_8010FDF8 (jump-input checker) Leap Stone branch: lhu g_Player.unk44 -> ori v0,zero,4, so the \"already double-jumped\" bit (unk44&1) always reads 0 -> unlimited midair jumps with Leap Stone"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73080",
+      "off": "2a004010",
+      "on": "00000000",
+      "why": "PlayerStepJump dive-kick block: remove \"return if not double-jumping\" (beqz -> nop), dive kick available in any jump"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73094",
+      "off": "00404230",
+      "on": "00104230",
+      "why": "dive kick held button PAD_DOWN (0x4000) -> PAD_UP (0x1000)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x730AC",
+      "off": "40004230",
+      "on": "10004230",
+      "why": "dive kick tapped button PAD_CROSS (0x40) -> PAD_TRIANGLE (0x10)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Four instruction words in DRA player-control code; vanilla bytes equal the off bytes and nothing else is referenced.",
+    "vanillaOff": []
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "wolf-no-jump",
+      "detail": "No byte overlap (wolf edit is DRA 0x8EABE). The reverted SOTN-Single-High-Jump PPFs touched 0x6EA40/0x704D0 and a cave at 0x42600; both are reverted in a and do not overlap these words."
+    },
+    {
+      "hack": "quick-items, subweapon-weapon",
+      "detail": "No byte overlap; Up+Triangle is not used by the L2 shortcuts or subweapon controls."
+    }
+  ],
+  "confidence": "high",
+  "optionalTextEdits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x403BC",
+      "off": "5765617265722063616e20646f20646f75626c65206a756d70",
+      "on": "4a756d7020616e79776865726520696e206d69646169722020",
+      "why": "Leap Stone description \"Wearer can do double jump\" -> \"Jump anywhere in midair  \""
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x403D8",
+      "off": "4c6561702053746f6e65",
+      "on": "536b792057616c6b6572",
+      "why": "relic name \"Leap Stone\" -> \"Sky Walker\""
+    },
+    {
+      "file": "ST/SEL/SEL.BIN",
+      "offset": "0x2B274",
+      "off": "5765617265722063616e20646f20646f75626c65206a756d70",
+      "on": "4a756d7020616e79776865726520696e206d69646169722020",
+      "why": "SEL copy of the description"
+    },
+    {
+      "file": "ST/SEL/SEL.BIN",
+      "offset": "0x2B290",
+      "off": "4c6561702053746f6e65",
+      "on": "536b792057616c6b6572",
+      "why": "SEL copy of the name"
+    }
+  ],
+  "notes": "ASS 1.3.0/1.3.1 base feature (v->o, unchanged o->a). The double-jump branch in the jump-input checker (6FDF8.c: branchFlags&0x20 && IsRelicActive(LEAP_STONE) && padTapped&CROSS && !(g_Player.unk44&1)) now loads the constant 4 instead of g_Player.unk44, so the test always passes. In vanilla the dive kick (PlayerStepJump, 71830.c) needs a double jump in progress and Down+Cross; ASS removes the requirement and remaps it to Up+Triangle because Cross now always jumps again. The adjacent v->o change at DRA 0x773C8 (Wingsmash timer decrement removed = infinite Wingsmash) is a separate ASS feature and is not included. Relic text (name 'Sky Walker', description 'Jump anywhere in midair') differs from vanilla in DRA and SEL; it is listed under optionalTextEdits but left out of edits because the stats editor owns item/relic text. Same lengths as the vanilla strings, so toggling the text is safe if wanted. RIC.BIN has no jump-related change."
+}

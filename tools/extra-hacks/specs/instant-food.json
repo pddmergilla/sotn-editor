@@ -1,0 +1,106 @@
+{
+  "id": "instant-food",
+  "label": "Instant Food",
+  "summary": "Using a food heals Alucard right away instead of throwing it to catch, and the Meal Ticket throws a random real food (never a Hint) that heals its value when caught instead of going into the inventory.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x98154",
+      "off": "30000296",
+      "on": "2889030c",
+      "why": "Food overlay (weapon 21) step 0, Meal Ticket branch: 'lhu v0,0x30(s0)' -> 'jal 0x800E24A0' (roll a real food, rerolling Hints)",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x9815C",
+      "off": "ff8042303958000c300002a6e763033c3f06633418004300050003342c0003a6c31f0200560000a61020000003210400232083008018040021186400c01803002118640023104300300003960012020025186200300003a6ae00039630000296",
+      "on": "30000896e3ff4924ff800831004a090025400901300008a6ae0002a6050008342c0008a6cfed0508560000a61474848c0480023cb4c7428c0000000009f84000000000000980013c107420ac21202002d5ea050c0100053493ed050800000000",
+      "why": "Meal Ticket branch: store the rolled food id in params/foodId and go to the vanilla throw (step 5) instead of the rand()%41 roll",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x982AC",
+      "off": "2c00029608000334140000a6460003a2c2ed0508470003a2",
+      "on": "4089030c21200002e500401400000000cfed050800000000",
+      "why": "Real-food branch: 'jal 0x800E2500' - a category-6 food goes straight to the heal step; Hints keep the thrown behaviour",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x98ACC",
+      "off": "0480033c4cc8638c",
+      "on": "0e80033ce8b46324",
+      "why": "Thrown Meal Ticket food caught: g_api.AddToInventory -> food heal routine 0x800DB4E8 (heals the food's value)",
+      "origin": "MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x98154",
+      "off": "30000296",
+      "on": "2889030c",
+      "why": "Food overlay (weapon 21) step 0, Meal Ticket branch: 'lhu v0,0x30(s0)' -> 'jal 0x800E24A0' (roll a real food, rerolling Hints)",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x9815C",
+      "off": "ff8042303958000c300002a6e763033c3f06633418004300050003342c0003a6c31f0200560000a61020000003210400232083008018040021186400c01803002118640023104300300003960012020025186200300003a6ae00039630000296",
+      "on": "30000896e3ff4924ff800831004a090025400901300008a6ae0002a6050008342c0008a6cff90508560000a61474848c0480023cb4c7428c0000000009f84000000000000980013c107420ac21202002d5f6050c0100053493f9050800000000",
+      "why": "Meal Ticket branch: store the rolled food id in params/foodId and go to the vanilla throw (step 5) instead of the rand()%41 roll",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf + MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x982AC",
+      "off": "2c00029608000334140000a6460003a2c2f90508470003a2",
+      "on": "4089030c21200002e500401400000000cff9050800000000",
+      "why": "Real-food branch: 'jal 0x800E2500' - a category-6 food goes straight to the heal step; Hints keep the thrown behaviour",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x98ACC",
+      "off": "0480033c4cc8638c",
+      "on": "0e80033ce8b46324",
+      "why": "Thrown Meal Ticket food caught: g_api.AddToInventory -> food heal routine 0x800DB4E8 (heals the food's value)",
+      "origin": "MealTicket-Throw-70MP.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42500",
+      "off": "434a000c21200000eb51023c1f854234180022026666023c1018000067664234c33f1100180022020e80063cb8b3c6240000c28c0400c48c0800c58c1000a2af1400a4af1800a5af0c00c28c1000c48c1400c5841c00a2af2000a4af2400a5a72120000201000534",
+      "on": "ae0088840000000040480800214828018048090021482801804809000a800a3c21482a01124b299106000a3405002a15030008342c0088a4560080a40800e003010002342c00889408000934140080a4460089a0470089a0010008252c0088a40800e00321100000",
+      "why": "0x800E2500 helper for the food overlay: category 6 -> step 3 (heal), return 1; otherwise run the displaced vanilla code (Hints are thrown)",
+      "origin": "Food-MealTicket-L2-Shortcuts.ppf (in the dead DebugCaptureScreen body)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Safe only with Quick Items also checked on vanilla: the code calls the food roll 0x800E24A0 and the food heal 0x800DB4E8, which Quick Items installs on vanilla (in ASS they stay in place when Quick Items is off). All edited bytes are vanilla in 1.3.1, and every vanilla food is category 6, so the roll never rerolls.",
+    "vanillaOff": [],
+    "vanillaRequires": [
+      "quick-items"
+    ]
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "quick-items",
+      "detail": "Uses Quick Items' shared routines DRA 0x424A0 (food roll) and 0x3B4E8 (food heal); no byte overlap. 0x42500-0x42567 sits between Quick Items' 0x424A0+96 and 0x425B8 runs."
+    },
+    {
+      "hack": "eat-food-on-pickup",
+      "detail": "Independent (different hook); both call 0x800DB4E8."
+    },
+    {
+      "hack": "mp-items",
+      "detail": "The Meal Ticket being reusable / costing MP is mp-items; this toggle only changes what the throw does."
+    }
+  ],
+  "confidence": "medium",
+  "notes": "WEAPON0 and WEAPON1 hold the same code for weapon 21 (file offset 0x97000 = 0x8017A000). Hints are ASS items (11 former foods set to category 2 by stat edits); they keep the vanilla thrown-food path. Toadstool is category 6 in ASS, so it heals instead of stunning. off = 1.3.1 = vanilla. Food descriptions and heal amounts are Stats Editor data and are not included."
+}

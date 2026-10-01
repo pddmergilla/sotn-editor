@@ -1,0 +1,106 @@
+{
+  "id": "fast-warp",
+  "label": "Fast Warp",
+  "summary": "Makes warp-room teleports much quicker: the white fade-out/fade-in runs 4-6 times faster in both castles and the inverted-castle warp platform moves 4 times faster.",
+  "edits": [
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0x7870",
+      "off": "02",
+      "on": "08",
+      "why": "WRP EntityWarpRoom step 3: Alucard fade-to-white +2 -> +8 per frame"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0x7918",
+      "off": "02",
+      "on": "0c",
+      "why": "WRP step 4: room fade (prim 1) +2 -> +12 per frame"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0x794C",
+      "off": "02",
+      "on": "0c",
+      "why": "WRP step 4: room fade (prim 2) +2 -> +12 per frame"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0x7B2C",
+      "off": "fc",
+      "on": "f0",
+      "why": "WRP step 7: fade-in from white -4 -> -16 per frame"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x9660",
+      "off": "ff",
+      "on": "fc",
+      "why": "RWRP step 2: warp platform rises 1 -> 4 px per frame"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x96E4",
+      "off": "02",
+      "on": "08",
+      "why": "RWRP step 3: Alucard fade-to-white +2 -> +8"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x978C",
+      "off": "02",
+      "on": "0c",
+      "why": "RWRP step 4: room fade (prim 1) +2 -> +12"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x97C0",
+      "off": "02",
+      "on": "0c",
+      "why": "RWRP step 4: room fade (prim 2) +2 -> +12"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x99B8",
+      "off": "fc",
+      "on": "f0",
+      "why": "RWRP step 7: fade-in from white -4 -> -16"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x9A2C",
+      "off": "01",
+      "on": "04",
+      "why": "RWRP step 8: platform lowers 1 -> 4 px per frame"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x9A74",
+      "off": "01",
+      "on": "04",
+      "why": "RWRP step 8: shoveY follows platform +1 -> +4"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0x9A88",
+      "off": "01",
+      "on": "04",
+      "why": "RWRP step 8: player posY follows platform +1 -> +4"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Only immediate operands of addiu instructions inside EntityWarpRoom change; vanilla bytes equal the off bytes and nothing else is referenced.",
+    "vanillaOff": []
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "damage-colors (not in list)",
+      "detail": "WRP/RWRP also carry the Reawakened damage-number hooks (0xA74, 0x8FC8/0xAF48, 0x9BA8/0xBB28); different bytes, independent."
+    }
+  ],
+  "confidence": "high",
+  "notes": "All 12 bytes are identical to the Reawakened PPF (attributed to \"Sotn - Reawakend - BIN unico.ppf\"); o==v at every location. Every edit is a step-size immediate, so no tunables are marked (marking them would leave nothing to detect). Each changed fade still stops at its clamp (r0 < 0xF0/0xF8, temp < 0 -> 0, platform Y clamped to 0x90/0xC0), so larger steps cannot overshoot."
+}

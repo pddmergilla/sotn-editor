@@ -1,0 +1,4058 @@
+{
+ "id": "subweapon-weapon",
+ "label": "Subweapon Attached to Weapon",
+ "summary": "Alucard's subweapon follows the weapon in his first hand slot (72 mapped weapons) and is shown beside it in the equipment menu, the old DOWN+TRIANGLE subweapon cycling is gone, and Richter changes subweapon with L1/R1.",
+ "edits": [
+  {
+   "file": "DRA.BIN",
+   "offset": "0x2220",
+   "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "on": "1000b0af0400a0140f800b3ccce36b359888020800000000f3f803080000000000000000000000000980033c10800b3c881a6b359888020800000000000000000480083ca0c9098d0000000015002015000000000980083ca074098d000000001f000a340f002a1100000000007c098d00000000a9002a2d08004011000000000a800a3c00234a35215049010000499100000000020000100000000021480000fc7b09ad08006001",
+   "why": "mapping code in unused DRA data (unused_800A21FC): trampolines from func_800FE3C4 / DrawHudSubweapon, then if Alucard (g_PlayableCharacter==0) and g_StageId!=ST0: g_Status.subWeapon = table[g_Status.equipment[0]] (0 if id>=0xA9)",
+   "part": "mapping"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x2300",
+   "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "on": "00000000070000000000000000000000000402010106030300000909020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000905010508020703030505090406040203050205030409010207010902050807040602070603030104050508080807040503020000050100010604000300000000000000000000000000000000000000030101000006",
+   "why": "hand-item -> subweapon table (169 bytes, index = hand item id 0..0xA8, value = subweapon id 0..9)",
+   "part": "mapping"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5E3C4",
+   "off": "e0ffbd271000b0af",
+   "on": "88880208e0ffbd27",
+   "why": "hook func_800FE3C4 entry (subweapon query used by HUD and subweapon use): j 0x800A2220",
+   "part": "mapping"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x61A80",
+   "off": "b0ffbd270980033c",
+   "on": "92880208b0ffbd27",
+   "why": "hook DrawHudSubweapon entry: j 0x800A2248 so the HUD icon follows the equipped weapon every frame",
+   "part": "mapping"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x22CC",
+   "off": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "on": "010008342400a8af2800a0af3800a48f3400a68fe800053441d6030c100007343c00bf8f4000bd270800e003",
+   "why": "menu-icon draw tail: DrawMenuSprite-type call 0x800F5904 at x=0xE8 on the right-hand row, then return",
+   "part": "menuIcon"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x23AC",
+   "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "on": "c0ffbd273c00bfaf3400a6af3800a7af4be2030c3000a4af3000a88f10000934c7ff09150980083c007c098d0a800a3c2150490100234b910c80043cc0ff601180580b0021208b00f852848c00000534c00306343ead030c20010734100008341000a8af1400a0af200008341800a8af730108341c00a8af1f000834a8ff00102000a8af",
+   "why": "menu-icon wrapper: calls original 0x800F892C, and for the right-hand slot icon (id 0x10) loads the mapped subweapon icon (0x800C52F8 table, 0x800EB4F8 to VRAM 0x3C0,0x120) and draws it",
+   "part": "menuIcon"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x59534",
+   "off": "4be2030c",
+   "on": "eb88020c",
+   "why": "equip menu slot-icon loop: jal 0x800F892C -> jal 0x800A23AC",
+   "part": "menuIcon"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5E3EC",
+   "off": "6341000c0980013c",
+   "on": "0980033cfc7b638c",
+   "why": "removes the 1.3.1 hook (jal 0x8001058C) in func_800FE3C4 that forced g_Status.subWeapon from the DOWN+TRIANGLE cycle byte every frame; on = vanilla instructions",
+   "part": "removeDownTriangle",
+   "vanillaOff": "0980033cfc7b638c"
+  },
+  {
+   "file": "SLUS_000.67",
+   "offset": "0xD8C",
+   "off": "91742290400003340c0043140180033c9474229010000334080043140180033c88056590000000000900a6280200c010000000000100a624880566a08805669000000000fc7b26a00980033c0800e003fc7b638c",
+   "on": "43646c47657454440000000043646c476574544e0000000043646c4765746c6f6350000043646c4765746c6f634c00003f00000043646c5365746d6f6465000043646c53657466696c7465720000000043646c44",
+   "why": "removes the 1.3.1 DOWN+TRIANGLE routine at 0x8001058C (cycle byte at 0x80010588); on = vanilla libcd debug strings",
+   "part": "removeDownTriangle",
+   "vanillaOff": "43646c47657454440000000043646c476574544e0000000043646c4765746c6f6350000043646c4765746c6f634c00003f00000043646c5365746d6f6465000043646c53657466696c7465720000000043646c44"
+  },
+  {
+   "file": "SLUS_000.67",
+   "offset": "0xDE0",
+   "off": "00000000000000009474a290040003340180093c0700431408000334e405229100000000090040100900033407000010ffff432406004314e405229109000334020043100000033401004324e40523a1e405239100000000fc7ba3a00980093cfc7b29250800e00321f8010000000000",
+   "on": "00000000000000009474a290040003340180093c0700431408000334e405229100000000090040100900033407000010ffff432406004314e405229109000334020043100000033401004324e40523a1e405239100000000fc7ba3a00980093cfc7b29250800e00321f8010000000000",
+   "why": "Richter L1/R1 subweapon cycling routine at 0x800105E8 (state byte 0x800105E4, 0..9, L1 down / R1 up, copied to g_Status.subWeapon). Present in ASS 1.3.1, so off==on for ASS; vanillaOff restores vanilla strings",
+   "part": "richterL1R1",
+   "vanillaOff": "656d75746500000043646c4d7574650043646c52657365740000000043646c50617573650000000043646c53746f700043646c5374616e646279000043646c526561644e0000000043646c4261636b776f72640043646c466f7277617264000043646c506c61790043646c5365746c6f"
+  },
+  {
+   "file": "BIN/RIC.BIN",
+   "offset": "0x23C8C",
+   "off": "21081f007a41000c0980053c",
+   "on": "21081f007a41000c0980053c",
+   "why": "RIC subweapon query hook: addu at,zero,ra; jal 0x800105E8; lui a1,0x8009 (1.3.1 base; off==on for ASS)",
+   "part": "richterL1R1",
+   "vanillaOff": "0980093cfc7b29250000238d"
+  }
+ ],
+ "vanilla": {
+  "supported": true,
+  "reason": "Safe: the code only calls vanilla functions and reads vanilla globals, the DRA cave 0x2220-0x242F (unused_800A21FC) is zero in vanilla, and the four edits where vanilla differs from off carry vanillaOff (DOWN+TRIANGLE removal: vanilla already equals on; Richter L1/R1: vanillaOff = vanilla bytes, on = the 1.3.1 code, which is valid on vanilla). Candles are not byte edits (see entityEdits), so vanilla keeps its subweapon candles; the mapping overrides their pickups every frame. The menu icon (x=232, right-hand row) was placed on the ASS 1.3.1 equipment layout; its look on vanilla's layout is untested.",
+  "vanillaOff": [
+   {
+    "file": "DRA.BIN",
+    "offset": "0x5E3EC",
+    "bytes": "0980033cfc7b638c"
+   },
+   {
+    "file": "SLUS_000.67",
+    "offset": "0xD8C",
+    "bytes": "43646c47657454440000000043646c476574544e0000000043646c4765746c6f6350000043646c4765746c6f634c00003f00000043646c5365746d6f6465000043646c53657466696c7465720000000043646c44"
+   },
+   {
+    "file": "SLUS_000.67",
+    "offset": "0xDE0",
+    "bytes": "656d75746500000043646c4d7574650043646c52657365740000000043646c50617573650000000043646c53746f700043646c5374616e646279000043646c526561644e0000000043646c4261636b776f72640043646c466f7277617264000043646c506c61790043646c5365746c6f"
+   },
+   {
+    "file": "BIN/RIC.BIN",
+    "offset": "0x23C8C",
+    "bytes": "0980093cfc7b29250000238d"
+   }
+  ]
+ },
+ "tunables": [
+  {
+   "file": "DRA.BIN",
+   "offset": "0x2300",
+   "length": 169,
+   "why": "item->subweapon mapping table; the user already retuned entries (Short Sword->Dagger, Basilard->Axe, Holy Sword->Cross). Detection should ignore it; toggling off writes zeros, toggling on writes the current values."
+  }
+ ],
+ "entityEdits": [
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/ARE/ARE.BIN",
+   "stage": "ARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 224,
+   "y": 154,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x1014",
+   "paramsOn": "0x1001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3110",
+     "paramsOffsetASS": "0x3110",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3784",
+     "paramsOffsetASS": "0x3784",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/CAT/CAT.BIN",
+   "stage": "CAT",
+   "layoutId": 8,
+   "rooms": [
+    25
+   ],
+   "x": 912,
+   "y": 94,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0707",
+   "paramsOff": "0x2014",
+   "paramsOn": "0x2001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x333A",
+     "paramsOffsetASS": "0x2EEE",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3BDE",
+     "paramsOffsetASS": "0x2F34",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/CHI/CHI.BIN",
+   "stage": "CHI",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 40,
+   "y": 910,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0406",
+   "paramsOff": "0x0014",
+   "paramsOn": "0x0001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1BE0",
+     "paramsOffsetASS": "0x1BCC",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x1F96",
+     "paramsOffsetASS": "0x1CC6",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/LIB/LIB.BIN",
+   "stage": "LIB",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 448,
+   "y": 862,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0C5A",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x373E",
+     "paramsOffsetASS": "0x373E",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3EFA",
+     "paramsOffsetASS": "0x3EFA",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": null,
+   "rooms": [],
+   "x": 72,
+   "y": 108,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0800",
+   "paramsOff": "0x100E",
+   "paramsOn": "0x1001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "unreferenced",
+     "paramsOffsetVanilla": "0x2BC2",
+     "paramsOffsetASS": "0x2BC2",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "unreferenced",
+     "paramsOffsetVanilla": "0x3A42",
+     "paramsOffsetASS": "0x3A42",
+     "sameOffsetInVanilla": true
+    }
+   ],
+   "note": "definition sits in a layout list that no room pointer references (inactive), as the original PPF manifest says"
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": null,
+   "rooms": [],
+   "x": 696,
+   "y": 108,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0901",
+   "paramsOff": "0x1010",
+   "paramsOn": "0x1001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "unreferenced",
+     "paramsOffsetVanilla": "0x2BCC",
+     "paramsOffsetASS": "0x2BCC",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "unreferenced",
+     "paramsOffsetVanilla": "0x3A4C",
+     "paramsOffsetASS": "0x3A4C",
+     "sameOffsetInVanilla": true
+    }
+   ],
+   "note": "definition sits in a layout list that no room pointer references (inactive), as the original PPF manifest says"
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 8,
+   "rooms": [
+    15
+   ],
+   "x": 104,
+   "y": 636,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0902",
+   "paramsOff": "0x1014",
+   "paramsOn": "0x1001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x31C8",
+     "paramsOffsetASS": "0x31D2",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x40B6",
+     "paramsOffsetASS": "0x40B6",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 9,
+   "rooms": [
+    7
+   ],
+   "x": 168,
+   "y": 124,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0201",
+   "paramsOff": "0x1012",
+   "paramsOn": "0x1001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3344",
+     "paramsOffsetASS": "0x3344",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x41C4",
+     "paramsOffsetASS": "0x41C4",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 9,
+   "rooms": [
+    7
+   ],
+   "x": 384,
+   "y": 130,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0302",
+   "paramsOff": "0x2013",
+   "paramsOn": "0x2001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3358",
+     "paramsOffsetASS": "0x3358",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x41E2",
+     "paramsOffsetASS": "0x41E2",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO1/NO1.BIN",
+   "stage": "NO1",
+   "layoutId": 1,
+   "rooms": [
+    1
+   ],
+   "x": 224,
+   "y": 127,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0110",
+   "paramsOff": "0x5013",
+   "paramsOn": "0x5001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x39F2",
+     "paramsOffsetASS": "0x357E",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x41BA",
+     "paramsOffsetASS": "0x359C",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO2/NO2.BIN",
+   "stage": "NO2",
+   "layoutId": 3,
+   "rooms": [
+    2
+   ],
+   "x": 156,
+   "y": 368,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0303",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x39FA",
+     "paramsOffsetASS": "0x34F0",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4168",
+     "paramsOffsetASS": "0x3612",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO2/NO2.BIN",
+   "stage": "NO2",
+   "layoutId": 9,
+   "rooms": [
+    8
+   ],
+   "x": 256,
+   "y": 216,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x1136",
+   "paramsOff": "0x0013",
+   "paramsOn": "0x0001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3810",
+     "paramsOffsetASS": "0x3A36",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3F38",
+     "paramsOffsetASS": "0x3C48",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO3/NO3.BIN",
+   "stage": "NO3",
+   "layoutId": 8,
+   "rooms": [
+    7
+   ],
+   "x": 512,
+   "y": 280,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x4348",
+     "paramsOffsetASS": "0x4348",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4A7A",
+     "paramsOffsetASS": "0x4A7A",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NO4/NO4.BIN",
+   "stage": "NO4",
+   "layoutId": 30,
+   "rooms": [
+    11
+   ],
+   "x": 224,
+   "y": 128,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x6012",
+   "paramsOn": "0x6001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3382",
+     "paramsOffsetASS": "0x51AA",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4414",
+     "paramsOffsetASS": "0x5204",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NP3/NP3.BIN",
+   "stage": "NP3",
+   "layoutId": 8,
+   "rooms": [
+    7
+   ],
+   "x": 512,
+   "y": 280,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x411A",
+     "paramsOffsetASS": "0x417E",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4810",
+     "paramsOffsetASS": "0x42A0",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NZ0/NZ0.BIN",
+   "stage": "NZ0",
+   "layoutId": 3,
+   "rooms": [
+    3
+   ],
+   "x": 816,
+   "y": 106,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0817",
+   "paramsOff": "0x2014",
+   "paramsOn": "0x2001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3020",
+     "paramsOffsetASS": "0x3020",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3928",
+     "paramsOffsetASS": "0x3928",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 9,
+   "rooms": [
+    10
+   ],
+   "x": 120,
+   "y": 383,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0C0C",
+   "paramsOff": "0x5014",
+   "paramsOn": "0x5001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x28E8",
+     "paramsOffsetASS": "0x2D84",
+     "sameOffsetInVanilla": false
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3326",
+     "paramsOffsetASS": "0x3108",
+     "sameOffsetInVanilla": false
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RARE/RARE.BIN",
+   "stage": "RARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 288,
+   "y": 102,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x1014",
+   "paramsOn": "0x1001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2070",
+     "paramsOffsetASS": "0x2070",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x25DE",
+     "paramsOffsetASS": "0x25DE",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RCAT/RCAT.BIN",
+   "stage": "RCAT",
+   "layoutId": 8,
+   "rooms": [
+    25
+   ],
+   "x": 368,
+   "y": 162,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0707",
+   "paramsOff": "0x2014",
+   "paramsOn": "0x2001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2D5A",
+     "paramsOffsetASS": "0x2D5A",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x38BA",
+     "paramsOffsetASS": "0x38BA",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RCAT/RCAT.BIN",
+   "stage": "RCAT",
+   "layoutId": 22,
+   "rooms": [
+    21
+   ],
+   "x": 232,
+   "y": 144,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0505",
+   "paramsOff": "0x2012",
+   "paramsOn": "0x2001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x268E",
+     "paramsOffsetASS": "0x268E",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x31D0",
+     "paramsOffsetASS": "0x31D0",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RCAT/RCAT.BIN",
+   "stage": "RCAT",
+   "layoutId": 23,
+   "rooms": [
+    22
+   ],
+   "x": 96,
+   "y": 152,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x2013",
+   "paramsOn": "0x2001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2602",
+     "paramsOffsetASS": "0x2602",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3130",
+     "paramsOffsetASS": "0x3130",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RCAT/RCAT.BIN",
+   "stage": "RCAT",
+   "layoutId": 23,
+   "rooms": [
+    22
+   ],
+   "x": 160,
+   "y": 152,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x2014",
+   "paramsOn": "0x2001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x260C",
+     "paramsOffsetASS": "0x260C",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3126",
+     "paramsOffsetASS": "0x3126",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RCHI/RCHI.BIN",
+   "stage": "RCHI",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 216,
+   "y": 114,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0406",
+   "paramsOff": "0x0014",
+   "paramsOn": "0x0001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1BB6",
+     "paramsOffsetASS": "0x1BB6",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x1F12",
+     "paramsOffsetASS": "0x1F12",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RDAI/RDAI.BIN",
+   "stage": "RDAI",
+   "layoutId": 3,
+   "rooms": [
+    2
+   ],
+   "x": 456,
+   "y": 136,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0505",
+   "paramsOff": "0x1013",
+   "paramsOn": "0x1001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2092",
+     "paramsOffsetASS": "0x2092",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2A08",
+     "paramsOffsetASS": "0x2A08",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RLIB/RLIB.BIN",
+   "stage": "RLIB",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 832,
+   "y": 162,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x130C",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1C66",
+     "paramsOffsetASS": "0x1C66",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2102",
+     "paramsOffsetASS": "0x2102",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 8,
+   "rooms": [
+    15
+   ],
+   "x": 408,
+   "y": 132,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0902",
+   "paramsOff": "0x1014",
+   "paramsOn": "0x1001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x425A",
+     "paramsOffsetASS": "0x425A",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x51E8",
+     "paramsOffsetASS": "0x51E8",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 9,
+   "rooms": [
+    7
+   ],
+   "x": 384,
+   "y": 126,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0302",
+   "paramsOff": "0x2013",
+   "paramsOn": "0x2001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x411A",
+     "paramsOffsetASS": "0x411A",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x513E",
+     "paramsOffsetASS": "0x513E",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 9,
+   "rooms": [
+    7
+   ],
+   "x": 600,
+   "y": 132,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0201",
+   "paramsOff": "0x1012",
+   "paramsOn": "0x1001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x4156",
+     "paramsOffsetASS": "0x4156",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x5152",
+     "paramsOffsetASS": "0x5152",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO1/RNO1.BIN",
+   "stage": "RNO1",
+   "layoutId": 2,
+   "rooms": [
+    2
+   ],
+   "x": 288,
+   "y": 81,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0110",
+   "paramsOff": "0x5013",
+   "paramsOn": "0x5001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1FB6",
+     "paramsOffsetASS": "0x1FB6",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x268E",
+     "paramsOffsetASS": "0x268E",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO2/RNO2.BIN",
+   "stage": "RNO2",
+   "layoutId": 3,
+   "rooms": [
+    2
+   ],
+   "x": 612,
+   "y": 144,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0303",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2518",
+     "paramsOffsetASS": "0x2518",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2CD4",
+     "paramsOffsetASS": "0x2CD4",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO2/RNO2.BIN",
+   "stage": "RNO2",
+   "layoutId": 9,
+   "rooms": [
+    8
+   ],
+   "x": 1280,
+   "y": 808,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x1136",
+   "paramsOff": "0x0013",
+   "paramsOn": "0x0001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x28CE",
+     "paramsOffsetASS": "0x28CE",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x30C6",
+     "paramsOffsetASS": "0x30C6",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNO3/RNO3.BIN",
+   "stage": "RNO3",
+   "layoutId": 8,
+   "rooms": [
+    7
+   ],
+   "x": 256,
+   "y": 232,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x0012",
+   "paramsOn": "0x0001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2F1A",
+     "paramsOffsetASS": "0x2F1A",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x35FA",
+     "paramsOffsetASS": "0x35FA",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNZ0/RNZ0.BIN",
+   "stage": "RNZ0",
+   "layoutId": 3,
+   "rooms": [
+    3
+   ],
+   "x": 208,
+   "y": 150,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0807",
+   "paramsOff": "0x2014",
+   "paramsOn": "0x2001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x278A",
+     "paramsOffsetASS": "0x278A",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x30A6",
+     "paramsOffsetASS": "0x30A6",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "ass+vanilla",
+   "origin": "user PPF SOTN-No-Subweapon-Switch-Big-Heart-Candles (o->a)",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 9,
+   "rooms": [
+    10
+   ],
+   "x": 120,
+   "y": 383,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0C0C",
+   "paramsOff": "0x5014",
+   "paramsOn": "0x5001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2A70",
+     "paramsOffsetASS": "0x2A70",
+     "sameOffsetInVanilla": true
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3300",
+     "paramsOffsetASS": "0x3300",
+     "sameOffsetInVanilla": true
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/ARE/ARE.BIN",
+   "stage": "ARE",
+   "layoutId": 5,
+   "rooms": [
+    4
+   ],
+   "x": 213,
+   "y": 170,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x1016",
+   "paramsOn": "0x1001",
+   "dropOff": "Agunea",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x350C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3B8A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/ARE/ARE.BIN",
+   "stage": "ARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 128,
+   "y": 154,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x100F",
+   "paramsOn": "0x1001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x30E8"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x377A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/ARE/ARE.BIN",
+   "stage": "ARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 304,
+   "y": 154,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0303",
+   "paramsOff": "0x1011",
+   "paramsOn": "0x1001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3138"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x378E"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/ARE/ARE.BIN",
+   "stage": "ARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 416,
+   "y": 154,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x100E",
+   "paramsOn": "0x1001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3160"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3798"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/CAT/CAT.BIN",
+   "stage": "CAT",
+   "layoutId": 18,
+   "rooms": [
+    17
+   ],
+   "x": 55,
+   "y": 133,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0100",
+   "paramsOff": "0x100F",
+   "paramsOn": "0x1001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3498"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3D8C"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "subweapon candle in 1.3.1 that the ASS 2.0 map editor later removed; convert on vanilla for consistency",
+   "file": "ST/CAT/CAT.BIN",
+   "stage": "CAT",
+   "layoutId": 22,
+   "rooms": [
+    21
+   ],
+   "x": 280,
+   "y": 368,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0505",
+   "paramsOff": "0x2012",
+   "paramsOn": "0x2001",
+   "dropOff": "Stopwatch",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2CBE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x35B2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "subweapon candle in 1.3.1 that the ASS 2.0 map editor later removed; convert on vanilla for consistency",
+   "file": "ST/CAT/CAT.BIN",
+   "stage": "CAT",
+   "layoutId": 23,
+   "rooms": [
+    22
+   ],
+   "x": 96,
+   "y": 104,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x2014",
+   "paramsOn": "0x2001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2C64"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3544"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "subweapon candle in 1.3.1 that the ASS 2.0 map editor later removed; convert on vanilla for consistency",
+   "file": "ST/CAT/CAT.BIN",
+   "stage": "CAT",
+   "layoutId": 23,
+   "rooms": [
+    22
+   ],
+   "x": 160,
+   "y": 104,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x2013",
+   "paramsOn": "0x2001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2C6E"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x354E"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/CAT/CAT.BIN",
+   "stage": "CAT",
+   "layoutId": 24,
+   "rooms": [
+    23
+   ],
+   "x": 679,
+   "y": 277,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x0015",
+   "paramsOn": "0x0001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3178"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x39F4"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/CHI/CHI.BIN",
+   "stage": "CHI",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 56,
+   "y": 766,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0406",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1B40"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x1ECE"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/CHI/CHI.BIN",
+   "stage": "CHI",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 224,
+   "y": 270,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0100",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1C12"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x1F64"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "subweapon candle in 1.3.1 that the ASS 2.0 map editor later removed; convert on vanilla for consistency",
+   "file": "ST/DAI/DAI.BIN",
+   "stage": "DAI",
+   "layoutId": 3,
+   "rooms": [
+    2
+   ],
+   "x": 824,
+   "y": 120,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0505",
+   "paramsOff": "0x1013",
+   "paramsOn": "0x1001",
+   "dropOff": "Bible",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2B24"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x348E"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/DAI/DAI.BIN",
+   "stage": "DAI",
+   "layoutId": 25,
+   "rooms": [
+    14
+   ],
+   "x": 608,
+   "y": 900,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x1015",
+   "paramsOn": "0x1001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2FAC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x395C"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 304,
+   "y": 652,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x1F1F",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2E44"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3E36"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 1408,
+   "y": 576,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2FC0"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3DA0"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 5,
+   "rooms": [
+    4
+   ],
+   "x": 152,
+   "y": 76,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0201",
+   "paramsOff": "0x100E",
+   "paramsOn": "0x1001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3286"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4106"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 7,
+   "rooms": [
+    6
+   ],
+   "x": 88,
+   "y": 108,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0100",
+   "paramsOff": "0x1011",
+   "paramsOn": "0x1001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x35EC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x446C"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO0/NO0.BIN",
+   "stage": "NO0",
+   "layoutId": 11,
+   "rooms": [
+    8
+   ],
+   "x": 3600,
+   "y": 152,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0F0F",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x34F2"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x434A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO1/NO1.BIN",
+   "stage": "NO1",
+   "layoutId": 4,
+   "rooms": [
+    4
+   ],
+   "x": 75,
+   "y": 383,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x500E",
+   "paramsOn": "0x5001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x37F4"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4020"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO2/NO2.BIN",
+   "stage": "NO2",
+   "layoutId": 8,
+   "rooms": [
+    7
+   ],
+   "x": 192,
+   "y": 159,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 4,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x400E",
+   "paramsOn": "0x4001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x34FA"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3C68"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO2/NO2.BIN",
+   "stage": "NO2",
+   "layoutId": 9,
+   "rooms": [
+    8
+   ],
+   "x": 904,
+   "y": 936,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0605",
+   "paramsOff": "0x100F",
+   "paramsOn": "0x1001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x38A6"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4028"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO2/NO2.BIN",
+   "stage": "NO2",
+   "layoutId": 16,
+   "rooms": [
+    15
+   ],
+   "x": 624,
+   "y": 127,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 4,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x4011",
+   "paramsOn": "0x4001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3716"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3E02"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO3/NO3.BIN",
+   "stage": "NO3",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 80,
+   "y": 168,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0104",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3EB6"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4642"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO3/NO3.BIN",
+   "stage": "NO3",
+   "layoutId": 6,
+   "rooms": [
+    5
+   ],
+   "x": 127,
+   "y": 96,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0607",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3EDE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x466A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO4/NO4.BIN",
+   "stage": "NO4",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 128,
+   "y": 1168,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0808",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3530"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x45C2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO4/NO4.BIN",
+   "stage": "NO4",
+   "layoutId": 6,
+   "rooms": [
+    5
+   ],
+   "x": 40,
+   "y": 232,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x342C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x44D2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NO4/NO4.BIN",
+   "stage": "NO4",
+   "layoutId": 29,
+   "rooms": [
+    9
+   ],
+   "x": 264,
+   "y": 132,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0402",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x347C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x44FA"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NP3/NP3.BIN",
+   "stage": "NP3",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 452,
+   "y": 256,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0129",
+   "paramsOff": "0x0010",
+   "paramsOn": "0x0001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3FE4"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x46A8"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NP3/NP3.BIN",
+   "stage": "NP3",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 80,
+   "y": 168,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0104",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3C56"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4392"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NP3/NP3.BIN",
+   "stage": "NP3",
+   "layoutId": 6,
+   "rooms": [
+    5
+   ],
+   "x": 127,
+   "y": 96,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0607",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3C7E"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x43BA"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NP3/NP3.BIN",
+   "stage": "NP3",
+   "layoutId": 10,
+   "rooms": [
+    9
+   ],
+   "x": 864,
+   "y": 152,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0405",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3D46"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x4496"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ0/NZ0.BIN",
+   "stage": "NZ0",
+   "layoutId": 2,
+   "rooms": [
+    2
+   ],
+   "x": 176,
+   "y": 122,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0413",
+   "paramsOff": "0x2011",
+   "paramsOn": "0x2001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2F76"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x38D8"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ0/NZ0.BIN",
+   "stage": "NZ0",
+   "layoutId": 11,
+   "rooms": [
+    11
+   ],
+   "x": 128,
+   "y": 170,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0414",
+   "paramsOff": "0x200F",
+   "paramsOn": "0x2001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x28DC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x31F8"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ0/NZ0.BIN",
+   "stage": "NZ0",
+   "layoutId": 14,
+   "rooms": [
+    14
+   ],
+   "x": 128,
+   "y": 554,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0417",
+   "paramsOff": "0x200E",
+   "paramsOn": "0x2001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x29FE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3324"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ0/NZ0.BIN",
+   "stage": "NZ0",
+   "layoutId": 20,
+   "rooms": [
+    20
+   ],
+   "x": 384,
+   "y": 634,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0817",
+   "paramsOff": "0x2015",
+   "paramsOn": "0x2001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2C24"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3554"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 1248,
+   "y": 410,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x070A",
+   "paramsOff": "0x100E",
+   "paramsOn": "0x1001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2C9E"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3696"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 8,
+   "rooms": [
+    6
+   ],
+   "x": 56,
+   "y": 496,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0312",
+   "paramsOff": "0x6015",
+   "paramsOn": "0x6001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x249C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2F16"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 8,
+   "rooms": [
+    6
+   ],
+   "x": 128,
+   "y": 116,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0413",
+   "paramsOff": "0x6011",
+   "paramsOn": "0x6001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2528"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2E8A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 9,
+   "rooms": [
+    10
+   ],
+   "x": 88,
+   "y": 1199,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0B0B",
+   "paramsOff": "0x500F",
+   "paramsOn": "0x5001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x28D4"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x35A6"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 9,
+   "rooms": [
+    10
+   ],
+   "x": 1456,
+   "y": 632,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x1514",
+   "paramsOff": "0x0010",
+   "paramsOn": "0x0001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2B9A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x33C6"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 64,
+   "y": 424,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0312",
+   "paramsOff": "0x6011",
+   "paramsOn": "0x6001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x25DC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x306A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 64,
+   "y": 488,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0413",
+   "paramsOff": "0x6015",
+   "paramsOn": "0x6001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x25E6"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3074"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 208,
+   "y": 224,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0110",
+   "paramsOff": "0x6015",
+   "paramsOn": "0x6001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x26AE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x301A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 208,
+   "y": 285,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0211",
+   "paramsOff": "0x6011",
+   "paramsOn": "0x6001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x26B8"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3042"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/NZ1/NZ1.BIN",
+   "stage": "NZ1",
+   "layoutId": 16,
+   "rooms": [
+    8
+   ],
+   "x": 104,
+   "y": 127,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 4,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x400E",
+   "paramsOn": "0x4001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x271C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3100"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RARE/RARE.BIN",
+   "stage": "RARE",
+   "layoutId": 5,
+   "rooms": [
+    4
+   ],
+   "x": 1067,
+   "y": 86,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x1016",
+   "paramsOn": "0x1001",
+   "dropOff": "Agunea",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x20D4"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2642"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RARE/RARE.BIN",
+   "stage": "RARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 96,
+   "y": 102,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x100E",
+   "paramsOn": "0x1001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2048"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x25F2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RARE/RARE.BIN",
+   "stage": "RARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 208,
+   "y": 102,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0303",
+   "paramsOff": "0x1011",
+   "paramsOn": "0x1001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x205C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x25E8"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RARE/RARE.BIN",
+   "stage": "RARE",
+   "layoutId": 14,
+   "rooms": [
+    13
+   ],
+   "x": 384,
+   "y": 102,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x100F",
+   "paramsOn": "0x1001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x207A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x25D4"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RCAT/RCAT.BIN",
+   "stage": "RCAT",
+   "layoutId": 18,
+   "rooms": [
+    17
+   ],
+   "x": 201,
+   "y": 379,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0100",
+   "paramsOff": "0x100F",
+   "paramsOn": "0x1001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2CBA"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x37DE"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RCAT/RCAT.BIN",
+   "stage": "RCAT",
+   "layoutId": 24,
+   "rooms": [
+    23
+   ],
+   "x": 89,
+   "y": 235,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x0015",
+   "paramsOn": "0x0001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x28B4"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3414"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RCHI/RCHI.BIN",
+   "stage": "RCHI",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 200,
+   "y": 258,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0406",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x19CC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x1DE6"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RCHI/RCHI.BIN",
+   "stage": "RCHI",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 32,
+   "y": 754,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0100",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1ABC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x200C"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RDAI/RDAI.BIN",
+   "stage": "RDAI",
+   "layoutId": 25,
+   "rooms": [
+    14
+   ],
+   "x": 416,
+   "y": 124,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x1015",
+   "paramsOn": "0x1001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x245C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2D8C"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 128,
+   "y": 192,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0A0B",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3738"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x481A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 1232,
+   "y": 116,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x1F19",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3990"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x47FC"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 7,
+   "rooms": [
+    6
+   ],
+   "x": 936,
+   "y": 148,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0100",
+   "paramsOff": "0x1011",
+   "paramsOn": "0x1001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x446C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x54B8"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO0/RNO0.BIN",
+   "stage": "RNO0",
+   "layoutId": 11,
+   "rooms": [
+    8
+   ],
+   "x": 3600,
+   "y": 104,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0F0F",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x43FE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x5382"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO1/RNO1.BIN",
+   "stage": "RNO1",
+   "layoutId": 4,
+   "rooms": [
+    4
+   ],
+   "x": 693,
+   "y": 385,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x500E",
+   "paramsOn": "0x5001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x20EC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x276A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO2/RNO2.BIN",
+   "stage": "RNO2",
+   "layoutId": 8,
+   "rooms": [
+    7
+   ],
+   "x": 1344,
+   "y": 97,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 4,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x400E",
+   "paramsOn": "0x4001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2662"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2E14"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO2/RNO2.BIN",
+   "stage": "RNO2",
+   "layoutId": 9,
+   "rooms": [
+    8
+   ],
+   "x": 904,
+   "y": 88,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x0605",
+   "paramsOff": "0x100F",
+   "paramsOn": "0x1001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x281A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2EF0"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO2/RNO2.BIN",
+   "stage": "RNO2",
+   "layoutId": 16,
+   "rooms": [
+    15
+   ],
+   "x": 1168,
+   "y": 129,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 4,
+   "entityRoomIndex": "0x0606",
+   "paramsOff": "0x4011",
+   "paramsOn": "0x4001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2B8A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3328"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO3/RNO3.BIN",
+   "stage": "RNO3",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 60,
+   "y": 512,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0129",
+   "paramsOff": "0x0010",
+   "paramsOn": "0x0001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2F88"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x36C2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO3/RNO3.BIN",
+   "stage": "RNO3",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 176,
+   "y": 88,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0104",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2D3A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x33F2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO3/RNO3.BIN",
+   "stage": "RNO3",
+   "layoutId": 6,
+   "rooms": [
+    5
+   ],
+   "x": 897,
+   "y": 160,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0607",
+   "paramsOff": "0x0011",
+   "paramsOn": "0x0001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x329E"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3906"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO3/RNO3.BIN",
+   "stage": "RNO3",
+   "layoutId": 10,
+   "rooms": [
+    9
+   ],
+   "x": 672,
+   "y": 104,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0405",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x3096"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3712"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO4/RNO4.BIN",
+   "stage": "RNO4",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 128,
+   "y": 1392,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0808",
+   "paramsOff": "0x000F",
+   "paramsOn": "0x0001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2FA0"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3ED2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO4/RNO4.BIN",
+   "stage": "RNO4",
+   "layoutId": 6,
+   "rooms": [
+    5
+   ],
+   "x": 216,
+   "y": 280,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x000E",
+   "paramsOn": "0x0001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2ECE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3DF6"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO4/RNO4.BIN",
+   "stage": "RNO4",
+   "layoutId": 29,
+   "rooms": [
+    9
+   ],
+   "x": 248,
+   "y": 124,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 0,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x0010",
+   "paramsOn": "0x0001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2F00"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3E46"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNO4/RNO4.BIN",
+   "stage": "RNO4",
+   "layoutId": 30,
+   "rooms": [
+    11
+   ],
+   "x": 544,
+   "y": 128,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0202",
+   "paramsOff": "0x6010",
+   "paramsOn": "0x6001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2DE8"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3CE8"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ0/RNZ0.BIN",
+   "stage": "RNZ0",
+   "layoutId": 2,
+   "rooms": [
+    2
+   ],
+   "x": 336,
+   "y": 134,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0413",
+   "paramsOff": "0x2011",
+   "paramsOn": "0x2001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2758"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x301A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ0/RNZ0.BIN",
+   "stage": "RNZ0",
+   "layoutId": 11,
+   "rooms": [
+    11
+   ],
+   "x": 128,
+   "y": 1110,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0414",
+   "paramsOff": "0x200F",
+   "paramsOn": "0x2001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2190"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2A98"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ0/RNZ0.BIN",
+   "stage": "RNZ0",
+   "layoutId": 14,
+   "rooms": [
+    14
+   ],
+   "x": 128,
+   "y": 214,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0417",
+   "paramsOff": "0x200E",
+   "paramsOn": "0x2001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x22BC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2B6A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ0/RNZ0.BIN",
+   "stage": "RNZ0",
+   "layoutId": 20,
+   "rooms": [
+    20
+   ],
+   "x": 128,
+   "y": 134,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0817",
+   "paramsOff": "0x2015",
+   "paramsOn": "0x2001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x246A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2D40"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 4,
+   "rooms": [
+    3
+   ],
+   "x": 544,
+   "y": 102,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 1,
+   "entityRoomIndex": "0x070A",
+   "paramsOff": "0x100E",
+   "paramsOn": "0x1001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2BEC"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x344A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 8,
+   "rooms": [
+    6
+   ],
+   "x": 128,
+   "y": 908,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0413",
+   "paramsOff": "0x6011",
+   "paramsOn": "0x6001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x26D8"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2FAE"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 8,
+   "rooms": [
+    6
+   ],
+   "x": 200,
+   "y": 528,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0312",
+   "paramsOff": "0x6015",
+   "paramsOn": "0x6001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2728"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2F18"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 9,
+   "rooms": [
+    10
+   ],
+   "x": 88,
+   "y": 1151,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 5,
+   "entityRoomIndex": "0x0B0B",
+   "paramsOff": "0x500F",
+   "paramsOn": "0x5001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2A66"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x33A0"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 48,
+   "y": 483,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0211",
+   "paramsOff": "0x6011",
+   "paramsOn": "0x6001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2796"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3094"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 48,
+   "y": 544,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0110",
+   "paramsOff": "0x6015",
+   "paramsOn": "0x6001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x278C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x30B2"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 192,
+   "y": 280,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0413",
+   "paramsOff": "0x6015",
+   "paramsOn": "0x6001",
+   "dropOff": "Vibhuti",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2872"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3044"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 15,
+   "rooms": [
+    7
+   ],
+   "x": 192,
+   "y": 344,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0312",
+   "paramsOff": "0x6011",
+   "paramsOn": "0x6001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2868"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x3058"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RNZ1/RNZ1.BIN",
+   "stage": "RNZ1",
+   "layoutId": 16,
+   "rooms": [
+    8
+   ],
+   "x": 152,
+   "y": 641,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 4,
+   "entityRoomIndex": "0x0404",
+   "paramsOff": "0x400E",
+   "paramsOn": "0x4001",
+   "dropOff": "Dagger",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x291C"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x31AC"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RTOP/RTOP.BIN",
+   "stage": "RTOP",
+   "layoutId": 1,
+   "rooms": [
+    2
+   ],
+   "x": 480,
+   "y": 1152,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 3,
+   "entityRoomIndex": "0x1D2C",
+   "paramsOff": "0x3010",
+   "paramsOn": "0x3001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1B20"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x20D4"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/RTOP/RTOP.BIN",
+   "stage": "RTOP",
+   "layoutId": 1,
+   "rooms": [
+    2
+   ],
+   "x": 1264,
+   "y": 1104,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x1625",
+   "paramsOff": "0x2011",
+   "paramsOn": "0x2001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x1C2E"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2066"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/ST0/ST0.BIN",
+   "stage": "ST0",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 16,
+   "y": 176,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x0101",
+   "paramsOff": "0x2011",
+   "paramsOn": "0x2001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x26DE"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x28DC"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/ST0/ST0.BIN",
+   "stage": "ST0",
+   "layoutId": 1,
+   "rooms": [
+    0
+   ],
+   "x": 800,
+   "y": 128,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 3,
+   "entityRoomIndex": "0x0808",
+   "paramsOff": "0x3010",
+   "paramsOn": "0x3001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x276A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x28AA"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/TOP/TOP.BIN",
+   "stage": "TOP",
+   "layoutId": 1,
+   "rooms": [
+    2
+   ],
+   "x": 784,
+   "y": 944,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 2,
+   "entityRoomIndex": "0x1625",
+   "paramsOff": "0x2011",
+   "paramsOn": "0x2001",
+   "dropOff": "Holy Water",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x219A"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x275A"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "subweapon candle in 1.3.1 that the ASS 2.0 map editor later replaced with a Blue Axe Knight (entity 0x28); convert on vanilla for consistency",
+   "file": "ST/TOP/TOP.BIN",
+   "stage": "TOP",
+   "layoutId": 1,
+   "rooms": [
+    2
+   ],
+   "x": 856,
+   "y": 1920,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x0A19",
+   "paramsOff": "0x6014",
+   "paramsOn": "0x6001",
+   "dropOff": "Rebound Stone",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x21C2"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x28E0"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/TOP/TOP.BIN",
+   "stage": "TOP",
+   "layoutId": 1,
+   "rooms": [
+    2
+   ],
+   "x": 1568,
+   "y": 896,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 3,
+   "entityRoomIndex": "0x1D2C",
+   "paramsOff": "0x3010",
+   "paramsOn": "0x3001",
+   "dropOff": "Cross",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x22D0"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x2746"
+    }
+   ]
+  },
+  {
+   "scope": "vanillaOnly",
+   "origin": "already converted in ASS 1.3.1 (v->o); needed on vanilla so no subweapon candles remain",
+   "file": "ST/TOP/TOP.BIN",
+   "stage": "TOP",
+   "layoutId": 1,
+   "rooms": [
+    2
+   ],
+   "x": 1867,
+   "y": 378,
+   "entityId": "0xA001",
+   "entityType": "E_BREAKABLE (id 1, candle/lamp/torch)",
+   "breakableType": 6,
+   "entityRoomIndex": "0x1423",
+   "paramsOff": "0x600F",
+   "paramsOn": "0x6001",
+   "dropOff": "Axe",
+   "dropOn": "Big Heart",
+   "records": [
+    {
+     "list": "H",
+     "paramsOffsetVanilla": "0x2334"
+    },
+    {
+     "list": "V",
+     "paramsOffsetVanilla": "0x267E"
+    }
+   ]
+  }
+ ],
+ "optionalTextEdits": [
+  {
+   "file": "DRA.BIN",
+   "offset": "0x3E76C",
+   "off": "444f574e817b545249414e474c4520737562206368616e676500000000000000",
+   "on": "576561706f6e732061726520617474616368656420746f205375620000000000",
+   "offText": "DOWN+TRIANGLE sub change",
+   "onText": "Weapons are attached to Sub",
+   "why": "description of item 30 (HINT1 in ASS, desc ptr 0x800DE76C at DRA 0x5120). ASS-only: in vanilla item 30 is Apple and this is its description, so never write it on vanilla. Editable in the stats editor; leave out of detection."
+  }
+ ],
+ "overlaps": [
+  {
+   "hack": "mp-items",
+   "detail": "No byte overlap. DrawHudSubweapon (0x80101A80) is hooked at its entry by this hack (DRA 0x61A80) and at 0x61D3C by the MP-regen cave 0x42B08; the 0x42BA0 cave hooked from 0x6F214 (item MP gating) and the unattributed THROW_1 category checks at DRA 0x54D70-0x54D84 / 0x5E83C-0x5E84B belong to the MP/consumable work, not this hack. The two hooks are independent. 0x6F214/0x42BA0 are in the mp-items spec; 0x42B08 (MP regen), 0x61D3C, 0x54D70 and 0x5E83C are claimed by no spec yet."
+  },
+  {
+   "hack": "quick-items",
+   "detail": "No byte overlap (L2 code at DRA 0x424A0.., hook 0x5D884). Input interaction only when this hack is OFF: the restored 1.3.1 DOWN+TRIANGLE check needs Down as the only d-pad button and Triangle as the only newly pressed face/shoulder button, so Down + held L2 + Triangle would fire both the cycle and the L2+Triangle X-Potion."
+  },
+  {
+   "hack": "agunea-limit",
+   "detail": "No byte overlap; 10 mapped weapons select Agunea (subweapon 9), whose strike limit that hack controls."
+  },
+  {
+   "hack": "richter-ai",
+   "detail": "No overlap: that edits the Richter boss (BOSS/BO6); L1/R1 lives in SLUS_000.67 and the player overlay BIN/RIC.BIN."
+  },
+  {
+   "hack": "richter-no-flinch",
+   "detail": "No overlap (boss Richter, not player Richter)."
+  },
+  {
+   "hack": "sky-walker",
+   "detail": "Input only: Up+Triangle dropkick vs the 1.3.1 Down+Triangle cycle restored when this hack is off; different d-pad direction, no conflict."
+  }
+ ],
+ "confidence": "high",
+ "notes": "Sources: SOTN_RightHand_Subweapons_72(.ppf, _FIX_APPLIED, _v3_FIX_CURRENT; v3_FULL/FROM_V1 manifests), SOTN_ShortSword_Dagger_Basilard_Axe, SOTN-ASS-2.0-RightHand-Subweapon-Menu-Icon (its UNDO PPF also reverts Holy Sword 0x2373 Cross->Bible), SOTN-No-Subweapon-Switch-Big-Heart-Candles (manifest + build_patch.py rule: E_BREAKABLE, drop 0x0E-0x16, breakable type <= 6; type 7 urn-style breakables deliberately kept). | OFF = ASS 1.3.1 behaviour: no weapon mapping, no menu icon, DOWN+TRIANGLE cycling restored (DRA 0x5E3EC hook + SLUS 0xD8C routine), Richter keeps L1/R1. The candle conversion is NOT toggled by the byte edits (see the candle note). | Richter L1/R1 is NOT the user's patch: SLUS 0xDE0-0xE4F and RIC 0x23C8C are identical in o and a (v->o change). Kept when the bundle is off (off==on), because 1.3.1 also turned the prologue (ST0) and most castle subweapon candles into hearts, so removing L1/R1 alone would leave Richter with almost no subweapon source. Included so that turning the bundle on in vanilla adds it. | Candles (removal of subweapon pickups) are stage entity-layout data and are kept OUT of edits on purpose: fixed offsets would make the hack read unknown on any later ASS build whose stage layouts the map editor re-packs (it already moved records in CAT, CHI, NO0, NO1, NO2, NO4, NP3, NZ1 after the candle PPF), and 17 of the 68 ASS offsets hold other records in vanilla. In play the candle part is nearly cosmetic in both states: the mapping (2.0) and the DOWN+TRIANGLE routine (1.3.1) both rewrite g_Status.subWeapon every frame, so a candle subweapon is replaced at once and the dropped one turns into a Big Heart when touched. entityEdits lists them for an optional entity-level implementation: match stage + layoutId + x/y + entityId + entityRoomIndex + current params, patch params (paramsOff <-> paramsOn) in both the H and V copy, skip if not found. 35 definitions in the PPF; 34 remain in ASS 2.0 (68 records; 2 objects in NO0 unreferenced lists). The TOP candle at x=0x358 y=0x780 is now a Blue Axe Knight (map editor). | Vanilla candle set (entityEdits): 34 user objects + 86 converted by 1.3.1 + 5 that are gone from ASS 2.0 (CAT rooms 21/22, DAI room 2, TOP) = 125 objects / 250 records; every vanilla type<=6 subweapon candle becomes a Big Heart. \"rooms\" = room indices whose objLayoutId uses that layout; records[].sameOffsetInVanilla tells whether the ASS offset holds the same record in vanilla (51 of 68 do). | Text: HINT1 description at DRA 0x3E76C (\"DOWN+TRIANGLE sub change\" -> \"Weapons are attached to Sub\") is left out of edits (stats-editor string, and in vanilla that address is the Apple description); it is listed in optionalTextEdits for ASS-only use. The Orange description at 0x3E794 (1.3.1 \"DOWN+TRIANGLE sub change\", now \"Heals 376HP\") belongs to the food work and is untouched. | Mapping details: runs for Alucard only (g_PlayableCharacter 0x8003C9A0 == 0) outside ST0 (g_StageId 0x800974A0 != 0x1F); reads g_Status.equipment[0] at 0x80097C00 (first/right-hand slot); ids >= 0xA9 or unmapped -> no subweapon. func_800FE3C4 hook skips the mapping when called with an explicit subweapon id (a1 != 0). Hooked call sites replicate the displaced instructions. | Not mine (checked as asked): DRA 0x54D70-0x54D84 and 0x5E83C-0x5E84B make THROW_1 items take the food/medicine path (consumable/MP work); cave 0x42B00-0x42BDB (MP regen from 0x61D3C, item MP check from 0x6F214) is the MP/hearts work. | Attribution artifact: attrib.pkl credits NP3 0x411A (value 01) to the candle PPF, but after the map editor re-packed NP3 that byte now belongs to the vanilla Big-Heart candle at x=0xC0 y=0x138; it is not part of this hack. | Not verified in an emulator: menu-icon appearance on vanilla's equipment layout; vanilla Richter-mode/prologue play with L1/R1."
+}

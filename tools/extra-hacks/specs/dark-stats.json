@@ -1,0 +1,179 @@
+{
+  "id": "dark-stats",
+  "label": "Dark Metamorphosis stat buff",
+  "summary": "While Dark Metamorphosis is active Alucard gets +25 ATK (non-zero attack values, capped at 999), +25 INT (shown and effective) and +25 DEF (capped at 999).",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42824",
+      "off": "b8fdbd273402b1af21880000030005340480043cf8c984244402bfaf4002b4af3c02b3af3802b2af3002b0af0000838c2310b100a0006214010031260400222afaff4014040084241380023cd862428c0000000052004014000000000980023c94744294000000001000423092004010218800001000b027eb51023c1f854234180022026666023c1018000067664234c33f1100180022020e80063cf0b3c6240000c28c0400c48c0800c58c1000a2af1400a4af1800a5af0c00c28c1000c48c1400c5841c00a2af2000a4af2400a5a72120000201000534431903001e00a2932318670021104300",
+      "on": "0800e003000000000b004010000000000780083c162f088500000000060000190000000019004224e80348280200001500000000e70302240800e00300000000f0ffbd270c00bfaff4d3030c000000000780083c162f08850000000012000019000000000980093cd07b2a8d0000000019004a25d07b2aade07b2a8d0000000019004a25e07b2aad247c2a8d0000000019004a25e8034b290200601500000000e7030a24247c2aad0c00bf8f000000001000bd270800e00300000000f0ffbd270c00bfafba24040c00000000e9d4030c000000000c00bf8f000000001000bd270800e00300000000",
+      "why": "Code cave in DebugCaptureVideo (0x800E2824, never called in US): entry stub `jr ra; nop` + attackBonus @0x800E282C, statsBonus @0x800E2864, refreshBonus @0x800E28E0 (ends 0x800E290B)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x54F40",
+      "off": "0800e003",
+      "on": "0b8a0308",
+      "why": "CalcAttack shared epilogue `jr $ra` -> `j 0x800E282C` (attackBonus); delay-slot nop kept"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x553BC",
+      "off": "f4d3030c",
+      "on": "198a030c",
+      "why": "make_all: `jal CalcDefense 0x800F4FD0` -> `jal 0x800E2864` (statsBonus)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x693A4",
+      "off": "ba24040c",
+      "on": "388a030c",
+      "why": "`jal func_801092E8` -> `jal 0x800E28E0` (refreshBonus); delay slot unchanged"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x697C0",
+      "off": "ba24040c",
+      "on": "388a030c",
+      "why": "`jal func_801092E8` -> `jal 0x800E28E0` (refreshBonus)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6A448",
+      "off": "ba24040c",
+      "on": "388a030c",
+      "why": "`jal func_801092E8` -> `jal 0x800E28E0` (refreshBonus)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6A9F4",
+      "off": "ba24040c",
+      "on": "388a030c",
+      "why": "`jal func_801092E8` -> `jal 0x800E28E0` (refreshBonus)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6AB34",
+      "off": "ba24040c",
+      "on": "388a030c",
+      "why": "`jal func_801092E8` -> `jal 0x800E28E0` (refreshBonus)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6FBBC",
+      "off": "ba24040c",
+      "on": "388a030c",
+      "why": "`jal func_801092E8` -> `jal 0x800E28E0` (refreshBonus; Dark Metamorphosis start, right after timer store)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "All hook words and the cave are identical in vanilla and ASS 1.3.1; the cave is the unused DebugCaptureVideo body and the code only calls vanilla functions (CalcDefense 0x800F4FD0, func_801092E8, make_all 0x800F53A4) and reads vanilla RAM (timer 0x80072F16, g_Status 0x80097BD0/0x80097BE0/0x80097C24).",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42848",
+      "length": 2,
+      "why": "ATK bonus: int16 LE immediate of `addiu $v0,$v0,25` (attackBonus, applied to every non-zero CalcAttack result)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42894",
+      "length": 2,
+      "why": "INT bonus (displayed): int16 LE immediate of `addiu $t2,$t2,25` added to g_Status.statsEquip[INT] 0x80097BD0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x428A4",
+      "length": 2,
+      "why": "INT bonus (effective): int16 LE immediate of `addiu $t2,$t2,25` added to g_Status.statsTotal[INT] 0x80097BE0 (keep equal to 0x42894)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x428B4",
+      "length": 2,
+      "why": "DEF bonus: int16 LE immediate of `addiu $t2,$t2,25` added to g_Status.defenseEquip 0x80097C24"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4284C",
+      "length": 2,
+      "why": "ATK cap + 1: immediate of `slti $t0,$v0,1000`"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42858",
+      "length": 2,
+      "why": "ATK cap: immediate of `addiu $v0,$zero,999`"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x428B8",
+      "length": 2,
+      "why": "DEF cap + 1: immediate of `slti $t3,$t2,1000`"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x428C4",
+      "length": 2,
+      "why": "DEF cap: immediate of `addiu $t2,$zero,999`"
+    }
+  ],
+  "display": {
+    "detail": "All values are signed 16-bit little-endian immediates in DRA.BIN (low halfword of the instruction word).",
+    "values": [
+      {
+        "label": "ATK",
+        "file": "DRA.BIN",
+        "offset": "0x42848",
+        "type": "s16le",
+        "instruction": "0x24420019 addiu $v0,$v0,imm @0x800E2848"
+      },
+      {
+        "label": "INT",
+        "file": "DRA.BIN",
+        "offset": "0x42894",
+        "type": "s16le",
+        "instruction": "0x254A0019 addiu $t2,$t2,imm @0x800E2894 (statsEquip INT; 0x428A4 statsTotal INT holds the same value)"
+      },
+      {
+        "label": "DEF",
+        "file": "DRA.BIN",
+        "offset": "0x428B4",
+        "type": "s16le",
+        "instruction": "0x254A0019 addiu $t2,$t2,imm @0x800E28B4"
+      },
+      {
+        "label": "DEF cap",
+        "file": "DRA.BIN",
+        "offset": "0x428C4",
+        "type": "s16le",
+        "instruction": "0x240A03E7 addiu $t2,$zero,imm @0x800E28C4 (ATK cap at 0x42858)"
+      }
+    ]
+  },
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "dark-speed",
+      "detail": "Independent. Both use the DebugCaptureVideo cave but byte-disjoint (16: 0x42824-0x4290B, 17: 0x42910-0x4292F); no shared hook sites (16 hooks CalcAttack/make_all/func_801092E8 calls, 17 hooks seven SetSpeedX calls); neither calls the other. Both just read timer 0x80072F16. The 16 entry stub `jr ra; nop` is not needed by 17 because DebugCaptureVideo has no callers in US. All four on/off combinations are valid."
+    },
+    {
+      "hack": "mp-cost-items / quick-items (Faerie buff + Meal Ticket cave code)",
+      "detail": "Same cave, byte-disjoint: Faerie stat-buff code at 0x4290C (dead leftover word) and 0x42930-0x42A7F (entered from SERVANT/TT_002 at 0x800E2934/29E4/2A08/2A1C), Meal-Ticket-Throw code at 0x42A80-0x42AFC; Food/Meal-Ticket L2 code fills the preceding function 0x424A0-0x42820. None of it references 0x800E2824-0x800E290B, so turning 16 off/on does not affect them."
+    },
+    {
+      "hack": "subweapon-attached (unattributed CalcAttack change)",
+      "detail": "An unattributed edit inside CalcAttack at 0x54D70-0x54D83 (equip-category test rewritten) is in the same function as the 0x54F40 epilogue hook but byte-disjoint; no interaction."
+    },
+    {
+      "hack": "minimap / fast-warp (Reawakened source)",
+      "detail": "Reawakened itself also puts code at 0x42824 and hooks func_801092E8 calls 0x693A4/0x6AB34; those Reawakened parts are NOT in ASS 2.0, so no conflict now, but they would collide if ever ported."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Source: Dark-Metamorphosis-Plus25-Alternate-Scarlet-Symphony-2.0.ppf + manifest + work/implementation-plan.md (Codex 2026-09-26/check-sotn-decomp-github-and-base-2). All PPF bytes verified in a (and t, b); off = o = v for every byte (the cave region 0x42824-0x42B00 is unchanged vanilla in ASS 1.3.1). Cave check: DebugCaptureVideo = 0x800E2824-0x800E2AFF (vanilla epilogue jr ra at 0x42AF8); decomp DebugUpdate calls it only for VERSION_HD/PC. A scan of every code file (DRA, RIC, SLUS, SERVANT/*, WEAPON*, MONSTER, all ST/BOSS overlays) in v, o, t, b and a found no jal/j or 32-bit pointer (and no lui/addiu-style pair: all code files in v and a, DRA in o/t/b) to 0x800E2824 and no reference into 0x800E282C-0x800E290B other than this hack's own hooks. Off restores the vanilla DebugCaptureVideo prologue/body bytes, which is safe because it is never called. Behaviour: attackBonus adds 25 only when v0 != 0 and the timer (lh 0x80072F16) > 0; statsBonus runs CalcDefense then adds the bonuses; refreshBonus runs func_801092E8 (a0 preserved) then make_all so stats refresh when the spell starts/ends."
+}

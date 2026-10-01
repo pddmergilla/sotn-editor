@@ -1,0 +1,29 @@
+{
+ "id": "richter-no-flinch",
+ "label": "No Flinch Richter",
+ "summary": "Boss Richter no longer goes into his hit-stun when Alucard hits him; his damage, defeat/save route and AI are unchanged.",
+ "edits": [
+  {
+   "file": "BOSS/BO6/BO6.BIN",
+   "offset": "0x3548C",
+   "off": "17004010",
+   "on": "17000010",
+   "why": "RicMain hitFlags 1..3 check: 'beqz v0,0x801B54EC' -> 'b 0x801B54EC' (always skips the block ending in RicSetStep(0xB))"
+  }
+ ],
+ "vanilla": {
+  "supported": true,
+  "reason": "Vanilla BO6 holds the off bytes here and the patch only makes an existing branch unconditional, so it is safe on vanilla.",
+  "vanillaOff": []
+ },
+ "tunables": [],
+ "entityEdits": [],
+ "overlaps": [
+  {
+   "hack": "richter-ai",
+   "detail": "No shared bytes and no dependency. The AI chain only rewrote BO6 sectors 2, 77, 107-109, 118 and 134; this byte is in sector 106 (RicMain), which no AI PPF wrote, and the AI keeps RichterThinking's entry at 0x801B5A2C, so the branch was neither moved nor rewritten. All 4 combinations are valid: like vanilla RichterThinking, the AI treats g_Ric.status & 0x10000 (set only while RIC.step == PL_S_HIT) as 'got hit' and drops its current combo. With No Flinch on that never happens, so hits do not interrupt AI combos or the finisher (which still ends on completion or its 1500-frame cap); with No Flinch off, hits interrupt them as the AI was designed to handle."
+  }
+ ],
+ "confidence": "high",
+ "notes": "Source: scarlet_symphony_2_dop10_hp_x4_title_2_0_richter_no_flinch.ppf + README (Codex 2026-09-26/referenced-chatgpt-conversation-this-is-an): BO6 0x3548C 17004010 -> 17000010; decomp src/boss/bo6/richter.c RicMain. That PPF also carries Doppelganger 10 HP x4 (DRA 0xB08C) and the SEL title '2.0' text, which are NOT part of this hack and stay. Neighbouring kept patch: Richter-Save (BO6 0x353DC 'j 0x801B5440', lethal damage -> saved-Richter cutscene route) is 0xB0 bytes earlier in RicMain, not overlapping. Test image t (2026-09-27) already had this byte without any AI, i.e. the 'No Flinch on / AI off' combination existed as a real build."
+}

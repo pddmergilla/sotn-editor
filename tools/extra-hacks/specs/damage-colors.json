@@ -1,0 +1,1764 @@
+{
+  "id": "damage-colors",
+  "label": "Damage Number Colors",
+  "summary": "With the Spirit Orb's damage numbers, hits on an enemy's weakness show in one new colour and resisted hits in another, and absorb/heal numbers use a steady colour instead of flashing.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5F248",
+      "off": "10008296",
+      "on": "c0380308",
+      "why": "DealDamage resist/weak block: 'lhu v0,0x10(s4)' -> 'j 0x800CE300' (cave re-runs the vanilla halve/double and records which one applied)",
+      "origin": "Reawakened port (no PPF)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E300",
+      "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "0d80083cb0e300a110008296000000002410a20024106200050082140000000042981300020008340d80093cb0e328a10e008296000000002410c200050040100000000040981300010008340d80093cb0e328a19ffc0308",
+      "why": "Cave in blank g_GfxEquipIcon space: flag byte 0x800CE3B0 = 0; resisted -> halve damage, flag 2; weak -> double damage, flag 1; j 0x800FF27C",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EAC0",
+      "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "0600633003006010860009920800e003000000008d01083401000a3403002a1102000a3404002a158e0108341400ff270800e003000000000800e003000000000000000000000000000000001000a7970d80083cb0e30991b0e300a1860029a20800e003",
+      "why": "Cave: 0x800CEAC0 palette picker for EntityDamageDisplay (plain damage numbers: flag 1 -> CLUT 0x18D, flag 2 -> CLUT 0x18E, skipping the table load); 0x800CEB0C copies the flag into the new damage-number entity (+0x86) and clears it",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BIN/F_GAME.BIN",
+      "offset": "0x411A2",
+      "off": "e0031a10e0031a20e0031a30e003e0031a48e0031a58e0031a68e0031a780000e0031a10e0031a20e0031a30e003e0031a48e0031a58e0031a68e0031a78",
+      "on": "7f8401807f849f8cbf907f847f847f847f84308055845a847f84bf901f9d000022fe008422fe24fe45fe22fe22fe22fe22fe01c161d5c2e922fe45fe68fe",
+      "why": "CLUTs 0x18D/0x18E: the two new damage-number palettes (weak / resisted)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO0/BO0.BIN",
+      "offset": "0x3CEBC",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO0/BO0.BIN",
+      "offset": "0x3DA9C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO0/BO0.BIN",
+      "offset": "0x185C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO1/BO1.BIN",
+      "offset": "0x26380",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO1/BO1.BIN",
+      "offset": "0x26F60",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO1/BO1.BIN",
+      "offset": "0x1424",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO2/BO2.BIN",
+      "offset": "0x28450",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO2/BO2.BIN",
+      "offset": "0x29030",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO2/BO2.BIN",
+      "offset": "0x10A8",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO3/BO3.BIN",
+      "offset": "0x274E4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO3/BO3.BIN",
+      "offset": "0x280C4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO3/BO3.BIN",
+      "offset": "0x14DC",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO4/BO4.BIN",
+      "offset": "0x3779C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO4/BO4.BIN",
+      "offset": "0x3837C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO4/BO4.BIN",
+      "offset": "0xA94",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO5/BO5.BIN",
+      "offset": "0x27994",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO5/BO5.BIN",
+      "offset": "0x28574",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO5/BO5.BIN",
+      "offset": "0x1144",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x2A934",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x2B514",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0xACC",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO7/BO7.BIN",
+      "offset": "0x17428",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO7/BO7.BIN",
+      "offset": "0x18008",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/BO7/BO7.BIN",
+      "offset": "0xCCC",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/MAR/MAR.BIN",
+      "offset": "0xDD50",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/MAR/MAR.BIN",
+      "offset": "0xE930",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/MAR/MAR.BIN",
+      "offset": "0xB48",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO0/RBO0.BIN",
+      "offset": "0x1AE44",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO0/RBO0.BIN",
+      "offset": "0x1BA24",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO0/RBO0.BIN",
+      "offset": "0x1214",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO1/RBO1.BIN",
+      "offset": "0x15F24",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO1/RBO1.BIN",
+      "offset": "0x16B04",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO1/RBO1.BIN",
+      "offset": "0xDD4",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO2/RBO2.BIN",
+      "offset": "0x22860",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO2/RBO2.BIN",
+      "offset": "0x23440",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO2/RBO2.BIN",
+      "offset": "0x1014",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO3/RBO3.BIN",
+      "offset": "0x13F78",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO3/RBO3.BIN",
+      "offset": "0x14B58",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO3/RBO3.BIN",
+      "offset": "0xB34",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO4/RBO4.BIN",
+      "offset": "0x19BEC",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO4/RBO4.BIN",
+      "offset": "0x1A7CC",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO4/RBO4.BIN",
+      "offset": "0xC40",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO5/RBO5.BIN",
+      "offset": "0x366D0",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO5/RBO5.BIN",
+      "offset": "0x372B0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO5/RBO5.BIN",
+      "offset": "0xB20",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x2629C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x26E7C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0xD28",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x16CB4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x17894",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0xB8C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x1AB78",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x1B758",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x1BC0",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x394B4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x3A094",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x13FC",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x3C484",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x3D064",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x1B7C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CEN/CEN.BIN",
+      "offset": "0x11C2C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CEN/CEN.BIN",
+      "offset": "0x1280C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CEN/CEN.BIN",
+      "offset": "0xB9C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1EC54",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1F834",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0xE04",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x46D68",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x47948",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x1454",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x17D70",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0x18950",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0xD60",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x3FF10",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x40AF0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x2060",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/MAD/MAD.BIN",
+      "offset": "0xF74C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/MAD/MAD.BIN",
+      "offset": "0x10314",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/MAD/MAD.BIN",
+      "offset": "0x9CC",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x44568",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x45148",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x1520",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x427D0",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x433B0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x1E40",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x394F4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x3A0D4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x140C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x4262C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x4320C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x20A4",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x4B3D0",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x4BFB0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x1DD8",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x39E9C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x3AA7C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x1A30",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NZ0/NZ0.BIN",
+      "offset": "0x3A2B4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NZ0/NZ0.BIN",
+      "offset": "0x3AE94",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NZ0/NZ0.BIN",
+      "offset": "0x1958",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x2D4C0",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x2E0A0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x16FC",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RARE/RARE.BIN",
+      "offset": "0x27920",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RARE/RARE.BIN",
+      "offset": "0x28500",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RARE/RARE.BIN",
+      "offset": "0xEC4",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x34D30",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x35910",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x1948",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCEN/RCEN.BIN",
+      "offset": "0x2124C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCEN/RCEN.BIN",
+      "offset": "0x21E2C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCEN/RCEN.BIN",
+      "offset": "0xE70",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCHI/RCHI.BIN",
+      "offset": "0x1B9D4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCHI/RCHI.BIN",
+      "offset": "0x1C5B4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RCHI/RCHI.BIN",
+      "offset": "0xD00",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RDAI/RDAI.BIN",
+      "offset": "0x3540C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RDAI/RDAI.BIN",
+      "offset": "0x35FEC",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RDAI/RDAI.BIN",
+      "offset": "0x117C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RLIB/RLIB.BIN",
+      "offset": "0x23940",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RLIB/RLIB.BIN",
+      "offset": "0x24520",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RLIB/RLIB.BIN",
+      "offset": "0x1018",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x38104",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x38CE4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x144C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x2AA7C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x2B65C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x11F0",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO2/RNO2.BIN",
+      "offset": "0x37AD0",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO2/RNO2.BIN",
+      "offset": "0x386B0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO2/RNO2.BIN",
+      "offset": "0x132C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x34C90",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x35870",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x1530",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO4/RNO4.BIN",
+      "offset": "0x4AFC4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO4/RNO4.BIN",
+      "offset": "0x4BBA4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNO4/RNO4.BIN",
+      "offset": "0x1B8C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x2D9E4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x2E5C4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x11A4",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x2DC80",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x2E860",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x1730",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RTOP/RTOP.BIN",
+      "offset": "0x232D4",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RTOP/RTOP.BIN",
+      "offset": "0x23EB4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RTOP/RTOP.BIN",
+      "offset": "0xD14",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0xAF48",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0xBB28",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0xA74",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/ST0/ST0.BIN",
+      "offset": "0x32EB0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/ST0/ST0.BIN",
+      "offset": "0x1970",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE1/TE1.BIN",
+      "offset": "0x40410",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE1/TE1.BIN",
+      "offset": "0x40FD8",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE1/TE1.BIN",
+      "offset": "0x1200",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x42A84",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4364C",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x1088",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE3/TE3.BIN",
+      "offset": "0x3A9D0",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE3/TE3.BIN",
+      "offset": "0x3B598",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE3/TE3.BIN",
+      "offset": "0xFF0",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE4/TE4.BIN",
+      "offset": "0x3F4E8",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE4/TE4.BIN",
+      "offset": "0x400B0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE4/TE4.BIN",
+      "offset": "0x105C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE5/TE5.BIN",
+      "offset": "0x3E41C",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE5/TE5.BIN",
+      "offset": "0x3EFE4",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TE5/TE5.BIN",
+      "offset": "0xE7C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TOP/TOP.BIN",
+      "offset": "0x2E410",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TOP/TOP.BIN",
+      "offset": "0x2EFF0",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/TOP/TOP.BIN",
+      "offset": "0x122C",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0x8FC8",
+      "off": "1000a797",
+      "on": "c33a030c",
+      "why": "Damage-number spawn (collision code): 'lhu a3,0x10(sp)' -> 'jal 0x800CEB0C' (replays the load, tags the entity with the weak/resist flag)",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0x9BA8",
+      "off": "421b030006006330",
+      "on": "b03a030c421b0300",
+      "why": "EntityDamageDisplay palette select: 'srl v1,v1,13; andi v1,v1,6' -> 'jal 0x800CEAC0; srl v1,v1,13'",
+      "origin": "Reawakened port"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0xA74",
+      "off": "b401b501",
+      "on": "b801b801",
+      "why": "g_eDamageDisplayClut[4..5] (absorb/heal numbers) 0x1B4/0x1B5 -> 0x1B8",
+      "origin": "Reawakened port"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Every edited location holds vanilla bytes in ASS 1.3.1, the caves are blank equipment-icon space (zeros) in vanilla, and the code only calls/returns into vanilla DealDamage and EntityDamageDisplay; the palettes are added to F_GAME.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "BIN/F_GAME.BIN",
+      "offset": "0x411A2",
+      "length": 62,
+      "why": "Palette colours of the weak/resisted damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO0/BO0.BIN",
+      "offset": "0x185C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO1/BO1.BIN",
+      "offset": "0x1424",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO2/BO2.BIN",
+      "offset": "0x10A8",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO3/BO3.BIN",
+      "offset": "0x14DC",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO4/BO4.BIN",
+      "offset": "0xA94",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO5/BO5.BIN",
+      "offset": "0x1144",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0xACC",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/BO7/BO7.BIN",
+      "offset": "0xCCC",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/MAR/MAR.BIN",
+      "offset": "0xB48",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO0/RBO0.BIN",
+      "offset": "0x1214",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO1/RBO1.BIN",
+      "offset": "0xDD4",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO2/RBO2.BIN",
+      "offset": "0x1014",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO3/RBO3.BIN",
+      "offset": "0xB34",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO4/RBO4.BIN",
+      "offset": "0xC40",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO5/RBO5.BIN",
+      "offset": "0xB20",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0xD28",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0xB8C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x1BC0",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/ARE/ARE.BIN",
+      "offset": "0x13FC",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/CAT/CAT.BIN",
+      "offset": "0x1B7C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/CEN/CEN.BIN",
+      "offset": "0xB9C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0xE04",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/DAI/DAI.BIN",
+      "offset": "0x1454",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/DRE/DRE.BIN",
+      "offset": "0xD60",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x2060",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/MAD/MAD.BIN",
+      "offset": "0x9CC",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NO0/NO0.BIN",
+      "offset": "0x1520",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NO1/NO1.BIN",
+      "offset": "0x1E40",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NO2/NO2.BIN",
+      "offset": "0x140C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NO3/NO3.BIN",
+      "offset": "0x20A4",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NO4/NO4.BIN",
+      "offset": "0x1DD8",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NP3/NP3.BIN",
+      "offset": "0x1A30",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NZ0/NZ0.BIN",
+      "offset": "0x1958",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x16FC",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RARE/RARE.BIN",
+      "offset": "0xEC4",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RCAT/RCAT.BIN",
+      "offset": "0x1948",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RCEN/RCEN.BIN",
+      "offset": "0xE70",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RCHI/RCHI.BIN",
+      "offset": "0xD00",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RDAI/RDAI.BIN",
+      "offset": "0x117C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RLIB/RLIB.BIN",
+      "offset": "0x1018",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x144C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x11F0",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNO2/RNO2.BIN",
+      "offset": "0x132C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNO3/RNO3.BIN",
+      "offset": "0x1530",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNO4/RNO4.BIN",
+      "offset": "0x1B8C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x11A4",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x1730",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RTOP/RTOP.BIN",
+      "offset": "0xD14",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/RWRP/RWRP.BIN",
+      "offset": "0xA74",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/ST0/ST0.BIN",
+      "offset": "0x1970",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/TE1/TE1.BIN",
+      "offset": "0x1200",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x1088",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/TE3/TE3.BIN",
+      "offset": "0xFF0",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/TE4/TE4.BIN",
+      "offset": "0x105C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/TE5/TE5.BIN",
+      "offset": "0xE7C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/TOP/TOP.BIN",
+      "offset": "0x122C",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    },
+    {
+      "file": "ST/WRP/WRP.BIN",
+      "offset": "0xA74",
+      "length": 4,
+      "why": "CLUT ids of the absorb/heal damage numbers (cosmetic)"
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "minimap",
+      "detail": "Same Reawakened port, no shared bytes."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Ported byte-for-byte from Reawakened (DRA 0x2E300-0x2E357, 0x2EAC0-0x2EB23, 0x5F248, F_GAME and the overlay hooks equal the Reawakened PPF applied to vanilla; Reawakened has extra code at 0x2E35C/0x2EB28 that ASS did not port). 57 overlays hooked; ST0 has only the palette hook (its spawn code differs). Damage numbers only appear with the Spirit Orb relic. The flag byte lives at 0x800CE3B0 inside the blank icon area. Hooks are in overlay .text and the CLUT table in overlay .data (not entity layouts), so map-editor repacks do not move them. Added between image t (09-27) and b (10-01) without a PPF. Not emulator-tested by this audit."
+}

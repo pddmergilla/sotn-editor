@@ -1,0 +1,595 @@
+{
+  "id": "mp-items",
+  "label": "MP Cost Items instead of consumables (includes MP gating)",
+  "summary": "Potions, X-Potion, Meal Ticket, Library Card, Antivenom/Uncurse/Hammer and the throwable items, bombs, Monster Vials and Karma Coin are no longer used up; using one costs its MP value instead (Potion 30, High Potion 70, X-Potion 200, Meal Ticket 50, Antivenom/Uncurse/Hammer 20, Karma Coin 10), and any hand item whose MP cost is higher than your current MP can't be used.",
+  "requires": [],
+  "requiredBy": [
+    "quick-items"
+  ],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6F214",
+      "off": "ffff66325500c010",
+      "on": "e88a030cffff6632",
+      "why": "Hook in the hand-item attack routine (func_8010EDB8, after CheckChainLimit): 'andi a2,s3,0xffff; beqz a2,empty-hand' -> 'jal 0x800E2BA0; andi a2,s3,0xffff' (MP gate)",
+      "origin": "ASS 2.0 (build-stuff.js weaponCode, applied without PPF)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42BA0",
+      "off": "211049005746000c218048001380023cc862428c00000000801002000a80013c210822004401258c0e80043c40b484245746000c000000001380023c",
+      "on": "0a00c0102138e003240024962dfa030c212800000700401421f8e0000800e003ffff66320000000000000000dc3c040800000000b13e040821100000",
+      "why": "MP gate code (weaponCode) in dead debug function func_800E2B00: empty hand -> 0x8010F370; if g_Status.mp < g_EquipDefs[item].mpUsage (+0x24) return false via 0x8010FAC4; else continue. off = original (dead) debug bytes Since the Resource Swap update it checks the cost with HasEnoughMp(mpUsage, 0) (and restores $a2 after the call, Weapon-ID-Fix), so heart-flagged costs work; the older form that read MP directly reads as on too.",
+      "origin": "ASS 2.0 (build-stuff.js weaponCode, applied without PPF)",
+      "onAlt": [
+        "0a00c01000000000240022960980033cb07b638c000000002a10620005004014000000000800e00300000000dc3c040800000000b13e040821100000"
+      ],
+      "with": {
+        "feature": "heal-hearts",
+        "on": "0a00c0102138e003240024962dfa030c212800000700401421f8e0000800e003ffff66320000000000000000dc3c040800000000b13e040821100000",
+        "why": "Re-written when Healing items use Hearts is turned on, so an image with the older gate gets the HasEnoughMp form."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4B51",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x01] Monster Vial 1 isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4B85",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x02] Monster Vial 2 isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4BB9",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x03] Monster Vial 3 isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4FFD",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x18] Karma Coin isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5008",
+      "off": "0000",
+      "on": "0a00",
+      "why": "g_EquipDefs[0x18] Karma Coin mpUsage (+0x24) = 10 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 1.3.1 base"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5031",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x19] Magic Missile isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5955",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x46] Meal Ticket isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5960",
+      "off": "0000",
+      "on": "3200",
+      "why": "g_EquipDefs[0x46] Meal Ticket mpUsage (+0x24) = 50 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 (PPF value later changed in the stats editor)",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "f481",
+        "why": "Healing items use Hearts: bit 0x8000 marks the cost as hearts (Potion 300, High Potion 700, X-Potion 1500, Meal Ticket 500)."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5989",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x47] Neutron Bomb isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x59BD",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x48] Power of Sire isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x59F1",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x49] Pentagram isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5A25",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x4A] Bat Pentagram isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5A59",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x4B] Shuriken isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5A8D",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x4C] Cross Shuriken isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5AC1",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x4D] Buffalo Star isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5AF5",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x4E] Flame Star isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5B29",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x4F] TNT isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5B5D",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x50] Bwaka Knife isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5B91",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x51] Boomerang isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5BC5",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x52] Javelin isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6655",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x86] Fire Boomerang isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6689",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x87] Iron Ball isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6725",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x8A] Dynamite isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x685D",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x90] Antivenom isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6868",
+      "off": "0000",
+      "on": "1400",
+      "why": "g_EquipDefs[0x90] Antivenom mpUsage (+0x24) = 20 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6891",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x91] Uncurse isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x689C",
+      "off": "0000",
+      "on": "1400",
+      "why": "g_EquipDefs[0x91] Uncurse mpUsage (+0x24) = 20 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x68F9",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x93] Hammer isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 1.3.1 base (vanilla consumable, 1.3.1 reusable)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6904",
+      "off": "0000",
+      "on": "1400",
+      "why": "g_EquipDefs[0x93] Hammer mpUsage (+0x24) = 20 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B69",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0x9F] Potion isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B74",
+      "off": "0000",
+      "on": "1e00",
+      "why": "g_EquipDefs[0x9F] Potion mpUsage (+0x24) = 30 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 (PPF value later changed in the stats editor)",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "2c81",
+        "why": "Healing items use Hearts: bit 0x8000 marks the cost as hearts (Potion 300, High Potion 700, X-Potion 1500, Meal Ticket 500)."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B9D",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0xA0] High Potion isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6BA8",
+      "off": "0000",
+      "on": "4600",
+      "why": "g_EquipDefs[0xA0] High Potion mpUsage (+0x24) = 70 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 (PPF value later changed in the stats editor)",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "bc82",
+        "why": "Healing items use Hearts: bit 0x8000 marks the cost as hearts (Potion 300, High Potion 700, X-Potion 1500, Meal Ticket 500)."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6BD1",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0xA1] X-Potion (vanilla Elixir slot) isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 2.0 private patch"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6BDC",
+      "off": "0000",
+      "on": "c800",
+      "why": "g_EquipDefs[0xA1] X-Potion (vanilla Elixir slot) mpUsage (+0x24) = 200 MP; vanilla func_8010EDB8 subtracts mpUsage on every use even when the item is consumable, so it must be 0 when the hack is off",
+      "origin": "ASS 2.0 private patch",
+      "with": {
+        "feature": "heal-hearts",
+        "on": "dc85",
+        "why": "Healing items use Hearts: bit 0x8000 marks the cost as hearts (Potion 300, High Potion 700, X-Potion 1500, Meal Ticket 500)."
+      }
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6CD5",
+      "off": "01",
+      "on": "00",
+      "why": "g_EquipDefs[0xA6] Library Card isConsumable (+0x19): 1 = used up (vanilla), 0 = reusable",
+      "origin": "ASS 2.0 private patch"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Safe: every location holds the vanilla bytes in a US image (flags 1, MP 0, original hook and dead debug code). The gate only calls vanilla DRA addresses, and the cave is inside a debug function that nothing calls. The MP costs are ASS-sized (X-Potion=Elixir 200 MP), so in vanilla they may need retuning in the Stats tab.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4B51",
+      "length": 1,
+      "why": "Monster Vial 1 consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4B85",
+      "length": 1,
+      "why": "Monster Vial 2 consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4BB9",
+      "length": 1,
+      "why": "Monster Vial 3 consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4FFD",
+      "length": 1,
+      "why": "Karma Coin consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5008",
+      "length": 2,
+      "why": "Karma Coin MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5031",
+      "length": 1,
+      "why": "Magic Missile consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5955",
+      "length": 1,
+      "why": "Meal Ticket consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5960",
+      "length": 2,
+      "why": "Meal Ticket MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 50"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5989",
+      "length": 1,
+      "why": "Neutron Bomb consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x59BD",
+      "length": 1,
+      "why": "Power of Sire consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x59F1",
+      "length": 1,
+      "why": "Pentagram consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5A25",
+      "length": 1,
+      "why": "Bat Pentagram consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5A59",
+      "length": 1,
+      "why": "Shuriken consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5A8D",
+      "length": 1,
+      "why": "Cross Shuriken consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5AC1",
+      "length": 1,
+      "why": "Buffalo Star consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5AF5",
+      "length": 1,
+      "why": "Flame Star consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5B29",
+      "length": 1,
+      "why": "TNT consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5B5D",
+      "length": 1,
+      "why": "Bwaka Knife consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5B91",
+      "length": 1,
+      "why": "Boomerang consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5BC5",
+      "length": 1,
+      "why": "Javelin consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6655",
+      "length": 1,
+      "why": "Fire Boomerang consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6689",
+      "length": 1,
+      "why": "Iron Ball consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6725",
+      "length": 1,
+      "why": "Dynamite consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x685D",
+      "length": 1,
+      "why": "Antivenom consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6868",
+      "length": 2,
+      "why": "Antivenom MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6891",
+      "length": 1,
+      "why": "Uncurse consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x689C",
+      "length": 2,
+      "why": "Uncurse MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x68F9",
+      "length": 1,
+      "why": "Hammer consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6904",
+      "length": 2,
+      "why": "Hammer MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B69",
+      "length": 1,
+      "why": "Potion consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B74",
+      "length": 2,
+      "why": "Potion MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 30"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B9D",
+      "length": 1,
+      "why": "High Potion consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6BA8",
+      "length": 2,
+      "why": "High Potion MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 70"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6BD1",
+      "length": 1,
+      "why": "X-Potion (vanilla Elixir slot) consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6BDC",
+      "length": 2,
+      "why": "X-Potion (vanilla Elixir slot) MP cost (balance value, Stats tab 'MP cost'); off writes 0 (vanilla), on writes the current value 200"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6CD5",
+      "length": 1,
+      "why": "Library Card consumable flag; editable in the Stats tab (Consumable). Ignore for detection, but write off/on when toggling."
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "quick-items",
+      "detail": "Quick Items requires this hack. Its L2 handler reads the same mpUsage fields (+0x24): Square/Circle/Triangle call func_8010EDB8, which passes through this hack's gate hook at 0x6F214 and the vanilla MP subtraction; L2+Cross subtracts the Meal Ticket's MP itself and never consumes the ticket. No shared bytes. Quick Items' L2+Cross entity code starts at 0x42BDC, right after this gate cave (0x42BA0-0x42BDB)."
+    },
+    {
+      "hack": "(not listed) heart regeneration +2/60 frames",
+      "detail": "Same build-stuff.js build as this gate: 0x42B00 'jr ra; nop' (disables the dead debug viewer) + heart code 0x42B08-0x42B9B + hook 0x61D3C. These bytes are not part of this spec and are kept as they are when this hack is toggled."
+    },
+    {
+      "hack": "(not listed) Faerie familiar medicines/potions/buffs",
+      "detail": "The Faerie never reads these table fields. Its medicines use a hard-coded 20-MP check and deduction (DRA helper 0x42DA0 + TT_002 edits from Faerie Items 20MP.ppf). Its potion and buff paths have their MP checks nopped (Faerie-Free-Buff-Potion.ppf), and its inventory decrement is removed (TT_002 0x6414 and the Faerie Items 20MP edits). With this hack off, Alucard's potions/medicines are consumed again, but the Faerie still uses them without consuming. That is Faerie behaviour and is left alone."
+    },
+    {
+      "hack": "(not listed) X-Potion item / Library Card PPF",
+      "detail": "X-Potion Shields Spells.ppf and SOTN-Library-Card-Nonconsumable.ppf also wrote the X-Potion/Library Card flag bytes (0x6BD1, 0x6BDC, 0x6CD5). This spec owns those bytes. The X-Potion name, its 2500 HP heal (0x80D34) and its description are not part of it."
+    },
+    {
+      "hack": "(not listed) Meal Ticket throw / food",
+      "detail": "Using a Meal Ticket from the hand still throws a random food (WEAPON0/1 weapon 21 + DRA 0x424A0) with this hack on or off. With the hack off the ticket is consumed and costs no MP, like vanilla."
+    },
+    {
+      "hack": "dark-stats",
+      "detail": "Adds 'jal 0x800E28E0' at 0x6FBBC inside the same function func_8010EDB8. No byte overlap and no interaction."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Mechanism (decomp src/dra/6E42C.c func_8010EDB8 + 5D5BC.c ReduceWeapon/HasEnoughMp): after an item is used, ReduceWeapon(hand) decrements equipHandCount only if isConsumable (+0x19), and HasEnoughMp(mpUsage,1) subtracts mpUsage (+0x24) unconditionally, but only when you have enough MP. Vanilla never refuses a base-item use for lack of MP. The unattributed gate at 0x42BA0 (generated by build-stuff.js weaponCode, present since the 09-27 test image) adds that refusal for every hand item, including 1.3.1 weapons with MP costs (Iron Fist 2, Marsil 3, Dark Blade 31, Heaven Sword 1, Runesword 4). Those weapon MP values are 1.3.1 stats and are NOT in this spec. With the hack off they go back to 1.3.1 behaviour: MP is taken if you have it, and you can still attack without it. Paths that jump past the hook to 0x8010F218 (weapon specials and the Combat Knife follow-up: 0x6F02C/0x6F044/0x6F13C/0x6F1C0) are not gated; they keep vanilla behaviour (QCF specials check MP themselves). 0x6EF74 'j 0x8010F214' (dual-hand combo) passes through the gate after its own vanilla MP check. Items affected (28, all items whose flag is 1 in vanilla and 0 in ASS 2.0): ASS 2.0 patches made Potion 0x9F, High Potion 0xA0, X-Potion 0xA1, Meal Ticket 0x46 and Library Card 0xA6 reusable (Reusable Potions, X-Potion Shields Spells, Library-Card-Nonconsumable and Food-MealTicket PPFs). ASS 1.3.1 had already made Monster Vials 1-3, Karma Coin, Magic Missile, Neutron Bomb, Power of Sire, Pentagram, Bat Pentagram, Shuriken, Cross Shuriken, Buffalo Star, Flame Star, TNT, Bwaka Knife, Boomerang, Javelin, Fire Boomerang, Iron Ball, Dynamite, Antivenom, Uncurse and Hammer reusable. For those 23 items 'off' is the vanilla value 01, not the 1.3.1 value (edits marked origin 'ASS 1.3.1 base'). If the user wants unchecking to affect only the 2.0 part, drop those edits and Karma Coin's MP edit. MP cost fields must change with the toggle, because vanilla code subtracts mpUsage even from consumable items: with flags restored and costs kept, a Potion would be consumed AND cost 30 MP. They are tunables (Stats tab values: Potion and High Potion were 50/99 in the PPFs and are 30/70 now; Meal Ticket 70 in the throw PPF, 50 now; Antivenom/Uncurse/Hammer 20 from Faerie Items 20MP.ppf; Karma Coin 10 from 1.3.1). Consumable flags are tunable too, because the Stats tab edits them. So detection uses only the hook (0x6F214) and the 60-byte gate cave, which together are unique; toggling still writes every table byte. Left out on purpose: item descriptions (e.g. 'L2+Square Costs 30MP'), which are Stats-tab text shared with Quick Items, so the user should edit them after toggling; Library shop prices for Potion/High Potion (LIB.BIN 0x1358=500, 0x1360=1500, set by Reusable Potions.ppf; 1.3.1 had 20/50); the dead Faerie MP code at DRA 0x42E20-0x42E7B from Reusable Potions.ppf (nothing calls it now); and the potion heal helper 0x42DE0 + hook 0x80D18 (Potion 300 / High Potion 800 HP, not listed). Faerie behaviour does not change with this toggle. Verified: every 'on' equals image a; hook and cave 'off' equal o and v; for the table edits off = vanilla (equals o only for the five 2.0 items' flags and for every MP field except Karma Coin)."
+}

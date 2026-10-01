@@ -1,0 +1,52 @@
+{
+  "id": "heart-regen",
+  "label": "Heart Regeneration",
+  "summary": "Alucard slowly regains hearts on his own: +2 hearts every second while below the maximum.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x61D3C",
+      "off": "c4c8428c",
+      "on": "c28a030c",
+      "why": "HUD MP-regen code: 'lw v0,g_GameTimer' -> 'jal 0x800E2B08' (the cave reloads g_GameTimer into v0)",
+      "origin": "unattributed (same build as the mp-items gate)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42B00",
+      "off": "c0ffbd270100093cf44f29350100073cf43fe7341380053cb462a58c0980033c2c79638c1480063c0c90c68c0780083c7cc3088d0e80043c30b484243c00bfaf3800beaf3400b7af3000b6af2c00b5af2800b4af2400b3af2000b2af1c00b1af1800b0af401003002110430080100200740c42240980033c4479638c21b0480000190300211867000980073c4879e78c219868008010070021104700",
+      "on": "0800e00300000000f0ffbd270000a3af0400a8af0800a9af0480083cc4c8098d3c0003241b002301000000001018000013006014000000000980083ca87b098dac7b038d000000002a1823010c0060100000000002002925ac7b038d000000002a1869000300601000000000ac7b098d00000000a87b09ad01000010000000000480023cc4c8428c0000a38f0400a88f0800a98f0800e0031000bd27",
+      "why": "0x800E2B00 'jr ra; nop' stub over an unreferenced debug function + 0x800E2B08: every 60 frames, if hearts < max, hearts += 2 (capped at max)",
+      "origin": "unattributed"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Both locations hold vanilla bytes in 1.3.1 (0x42B00 is an unreferenced debug function) and the code only reads g_GameTimer and g_Status hearts/heartsMax.",
+    "vanillaOff": []
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42B20",
+      "length": 2,
+      "why": "Interval in frames (addiu v1,zero,60)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42B54",
+      "length": 2,
+      "why": "Hearts per tick (addiu t1,t1,2)"
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "mp-items",
+      "detail": "No byte overlap: mp-items' gate cave starts at 0x42BA0 right after this cave (0x42B9C is unchanged). With this off, 0x42B00-0x42B9B go back to the dead debug function; nothing calls it."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Runs from the HUD regen path, i.e. only when the MP-regen code runs (not while 0x80097BF8 bit 0 is set). No PPF found; mp-items.json already lists it as an unlisted hack."
+}

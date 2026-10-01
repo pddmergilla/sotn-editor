@@ -1,0 +1,151 @@
+{
+  "id": "stopwatch-rework",
+  "label": "Stopwatch slows bosses",
+  "summary": "The Stopwatch's freeze is shorter (2 ticks instead of 5), and Lesser Demon, Minotaur, Werewolf, Slogra, Gaibon, Karasuman, both Doppelgangers and Richter are slowed to quarter speed by it instead of ignoring it.",
+  "requires": [],
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8AAD8",
+      "off": "05000234",
+      "on": "02000234",
+      "why": "EntityStopwatch: freeze countdown 'ori v0,zero,5' -> 2",
+      "origin": "Alucard-Rebalance.ppf"
+    },
+    {
+      "file": "BOSS/BO4/BO4.BIN",
+      "offset": "0x41B04",
+      "off": "0780013c",
+      "on": "00024234",
+      "why": "Doppelganger 10 init: redundant 'lui at,0x8007' -> 'ori v0,v0,0x200' (flags 0x18400200: slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf"
+    },
+    {
+      "file": "BOSS/RBO5/RBO5.BIN",
+      "offset": "0x40A38",
+      "off": "0780013c",
+      "on": "00024234",
+      "why": "Doppelganger 40 init: same as BO4",
+      "origin": "Alucard-Rebalance.ppf"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x34BD8",
+      "off": "00206334",
+      "on": "00026334",
+      "why": "Richter flags 'ori v1,v1,0x2000' (ignores the Stopwatch) -> 0x200 (slowed)",
+      "origin": "Alucard-Rebalance.ppf"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8CBD",
+      "off": "14",
+      "on": "16",
+      "why": "Enemy table flags byte 1 (Lesser Demon): +0x200 (slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf",
+      "vanillaOn": "16"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xA8DD",
+      "off": "14",
+      "on": "16",
+      "why": "Enemy table flags byte 1 (Minotaur): +0x200 (slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf",
+      "vanillaOn": "12"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xA955",
+      "off": "14",
+      "on": "16",
+      "why": "Enemy table flags byte 1 (Werewolf): +0x200 (slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf",
+      "vanillaOn": "12"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xAF1D",
+      "off": "14",
+      "on": "16",
+      "why": "Enemy table flags byte 1 (Slogra): +0x200 (slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf",
+      "vanillaOn": "12"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB0D5",
+      "off": "14",
+      "on": "16",
+      "why": "Enemy table flags byte 1 (Gaibon): +0x200 (slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf",
+      "vanillaOn": "12"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB4E5",
+      "off": "14",
+      "on": "16",
+      "why": "Enemy table flags byte 1 (Karasuman): +0x200 (slowed by the Stopwatch)",
+      "origin": "Alucard-Rebalance.ppf",
+      "vanillaOn": "16"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "The code edits are on vanilla bytes. The six enemy-table bytes differ in vanilla (ASS 1.3.1 rewrote those bosses' flags), so each has a vanillaOn value that sets 0x200 and clears the 0x2000 'ignore Stopwatch' bit on the vanilla flags.",
+    "vanillaOff": [
+      {
+        "file": "DRA.BIN",
+        "offset": "0x8CBD",
+        "bytes": "16"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0xA8DD",
+        "bytes": "30"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0xA955",
+        "bytes": "30"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0xAF1D",
+        "bytes": "12"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0xB0D5",
+        "bytes": "12"
+      },
+      {
+        "file": "DRA.BIN",
+        "offset": "0xB4E5",
+        "bytes": "34"
+      }
+    ]
+  },
+  "tunables": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8AAD8",
+      "length": 2,
+      "why": "Stopwatch duration in ticks (ori v0,zero,N)"
+    }
+  ],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "richter-ai",
+      "detail": "BO6 0x34BD8 is outside every richter-ai run."
+    },
+    {
+      "hack": "dopplegangers",
+      "detail": "BO4 0x41B04 / RBO5 0x40A38 are outside the No Flinch Doppelganger words (0x425A8 / 0x414F8)."
+    }
+  ],
+  "confidence": "medium",
+  "notes": "From the Alucard-Rebalance README/offsets.json (Codex 2026-09-27/read-c-users-omergilla-downloads-castlevania). Stage update: while the Stopwatch runs, entities with flag 0x2000 update normally, flag 0x200 every 4th frame, the rest freeze. The enemy-table flag bytes are Stats-Editor-adjacent data; if the Stats Editor exposes enemy flags, they could be left out and only the 4 code words kept. BO4 0x41B04 drops a redundant 'lui at,0x8007' ($at already holds 0x80070000 from 0x41AF8). Vanilla Lesser Demon already has 0x200 (vanillaOn = vanilla byte). Mist 1 MP is the mist-1mp spec; Cross/High Potion/spell costs from the same PPF are Stats Editor data."
+}

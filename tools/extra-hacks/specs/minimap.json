@@ -1,0 +1,61 @@
+{
+  "id": "minimap",
+  "label": "MiniMap",
+  "summary": "Draws a small map window in the top-right corner during normal play, centred on Alucard's current map square.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42F3C",
+      "off": "0c80023cc0d1428ce8ffbd27990040101000bfaf0980023c9874429400000000000142303d004010000000001380053cdc62a58c0e80043c4cb484245746000c000000001380053ce062a58c0e80043c58b484245746000c000000001380053ce462a58c0e80043c64b484245746000c000000001380053ce862a58c0e80043c70b484245746000c000000001380053cec62a58c0e80043c7cb484245746000c000000001380053cf062a58c0e80043c88b484245746000c000000001380053cf862a58c0e80043c94b484245746000c000000001380053cf462a58c0e80043ca0b484245746000c000000001380053cfc62a58c0e80043cacb484245746000c",
+      "on": "d0ffbd272c00bfaf2800beaf2400b5af2000b4af1c00b3af1800b2af1400b1af1000b0af25f0a0030480013c34c7218c0200022484002214000000000480013ca4c9218c010002247f002214000000000980013ca074258c1f0001247a00a110000000000380013ce7c02134000021900000000074002014000000000780013c843021243000228c0980033cf473638c00000000031a0300211862002c00218c0980023cf073428c0000000003120200210841003b0008242a30010104002d2880500100000002240200a01500000724f2ff47252a400301ff000f240200c014ff000c2412004c25804e050002000015802803001200af2404800e3cc35f0900",
+      "why": "minimap routine + its two GPU packet buffers (overwrites unused US debug PrintGpuInfo/PrintHBlankInfo at 0x800E2F3C-0x800E3263)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4303C",
+      "off": "000000000a80053c3824a58c0e80043cb8b484245746000c000000001480033cb08f638c0300023442006214010002341380033cc462638c000000000b0062100000000005006010020002340b00621000000000328c0308000000000e80043cc4b48424308c0308000000000e80043cc8b48424308c0308000000000e80043cd0b484245746000c000000001480023c0c90428c1380033cc062638c0011020021104300401002000780013c21082200cccb229400000000008042300e80043ce4b4842403004010000000000e80043cd8b484245746000c000000000e80043cf0b484241480023c0c90428c1380033cc062638c00110200211043000780033c",
+      "on": "0300c01404006928158c0308f8000624e501012423302a0080c4030004c1d925ff006e31030020151d00033c1e8c03081d000b3c2b00013c23583800800330970300a0152688ee01258c0308d8000d24e600012423682a00ff00133c07800f3c26c8ee0026388e0100a410000300001500821100308c03083d00113c2a01013c23883800ffff683600030a3c00100c3c7cc3f58d25c0070225906601fcff6f360300201525a03403f2ff61362110a10026084e00000a01000000a28e000000002b10550025281902254881022530260225702d0225586d018068020000c9020025682d038011020025104d000e800d3cbc31ad252110a20108004bac100052ac",
+      "why": "minimap routine + its two GPU packet buffers (overwrites unused US debug PrintGpuInfo/PrintHBlankInfo at 0x800E2F3C-0x800E3263)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4313C",
+      "off": "cccb6324401002002110430000004594000047941f00a530423107001f00c630823a07005746000c1f00e7306c8c0308000000000780053c84c3a58c0780063c88c3c68c0e80043c04b584245746000c000000000780053c8cc3a58c0780063c90c3c68c0e80043c14b584245746000c000000001000bf8f1800bd270800e003000000000c80023cc0d1428ce8ffbd271400bfaf240040101000b0af1480033cb08f638c030002341f006210000000000480023c98c9428c00000000010042300b004010000000000e80103c24b510261380053cd462a58c5746000c212000021380053cd062a58c938c0308000000000e80103c24b510261380053cd062a58c",
+      "on": "18004eac200046ac0c0049ac1c0045ac240058ac2508e10025082300140041ac4400412424082f0025082c00f007838c000041ac24084f002418680025186a00440043acf00781ac178e030c0000000025e8c0031000b08f1400b18f1800b28f1c00b38f2000b48f2400b58f2800be8f2c00bf8f000000000800e0033000bd27000000108080802e0000000000000000000000000000000000000000000000000000000000000000a8988848d7001c00f9001c00f9003e00d7003e00d7001c000050005000000003ffffff60e7002c0003000300000000108080802e0000000000000000000000000000000000000000000000000000000000000000a8988848",
+      "why": "minimap routine + its two GPU packet buffers (overwrites unused US debug PrintGpuInfo/PrintHBlankInfo at 0x800E2F3C-0x800E3263)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4323C",
+      "off": "5746000c212000021380053cd462a58c5746000c212000021380023cd462428c1380013cd06222ac",
+      "on": "d7001c00f9001c00f9003e00d7003e00d7001c000050005000000003ffffff60e7002c0003000300",
+      "why": "minimap routine + its two GPU packet buffers (overwrites unused US debug PrintGpuInfo/PrintHBlankInfo at 0x800E2F3C-0x800E3263)"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x43DAC",
+      "off": "178e030c",
+      "on": "cf8b030c",
+      "why": "MainGame hook: jal func_800E385C(g_CurrentOT) -> jal 0x800E2F3C (minimap draws, then tail-calls func_800E385C)"
+    }
+  ],
+  "vanilla": {
+    "supported": true,
+    "reason": "Self-contained: the routine only reads vanilla globals (g_GameState, g_GameEngineStep, g_StageId, castle flag 0x2FB, g_Tilemap, g_PlayerX/Y, g_ClutIds, g_CurrentBuffer), uses its own packet buffers inside the patched range, and replaces debug code that the US game never calls; vanilla bytes equal the off bytes.",
+    "vanillaOff": []
+  },
+  "tunables": [],
+  "entityEdits": [],
+  "overlaps": [
+    {
+      "hack": "quick-items",
+      "detail": "No byte overlap. The L2-shortcut/Meal-Ticket code cave (and Dark Metamorphosis/Faerie caves) ends at DRA 0x42E7C, just below the minimap at 0x42F3C; both reuse the same unused debug-code area of DRA."
+    },
+    {
+      "hack": "damage-colors (not in list)",
+      "detail": "The rest of the Reawakened port (DRA 0x2E300-0x2E358, 0x2EAC0-0x2EB24, 0x5F248, F_GAME.BIN palettes 0x18D/0x18E at 0x411A2-0x411E0, and three hooks in every stage/boss overlay) is the coloured damage-number feature; the minimap does not use any of it."
+    }
+  ],
+  "confidence": "high",
+  "notes": "Ported from Reawakened 2.79 (Track 1 PPF): DRA 0x42F3C-0x43264 is byte-identical to Reawakened. ASS changed only the hook target: Reawakened calls its own dispatcher at 0x800B5858 from 0x800E3DAC, ASS calls the minimap at 0x800E2F3C directly (o/v word 0x0C038E17 -> 0x0C038BCF). Nothing else in a references 0x800E2F3C-0x800E3263 and nothing jumps into it. The routine returns early unless g_GameState==2 (Game_Play), g_GameEngineStep==1, g_StageId!=0x1F (prologue ST0) and castle-flag byte 0x8003C0E7 (flag 0x2FB) is 0; Reawakened toggles that flag from its pause menu, but ASS did not port the toggle, so the minimap is always on. It reads the castle-map image the game keeps in VRAM (CLUT g_ClutIds[0x1C0]), draws a textured quad + a 0x8898A8 polyline frame at screen (0xD7..0xF9, 0x1C..0x3E) and a 3x3 white player dot, double-buffered via two 0x54-byte packet blocks at 0x800E31BC/0x800E3210. Not part of the minimap (identified while checking): F_GAME 0x411A2-0x411E0 = damage-number palettes; LIB 0x135D/0x139D/0x13FD-0x1416 = Librarian shop entry fields (shop edit that happens to equal Reawakened); NZ1 0x238A = one byte of Clock Tower room-table data (0x0C->0x04) copied from Reawakened. Added between image t (09-27) and b (10-01) without a PPF. Not emulator-tested by this research."
+}
