@@ -5,9 +5,9 @@ window.SotnAss2Release = {
  "ppf": {
   "file": "ass2/Alternate-Scarlet-Symphony-2.0.ppf",
   "name": "Alternate-Scarlet-Symphony-2.0.ppf",
-  "size": 3717612,
-  "sha256": "148E16407623D05BFF2DFA50490948E8EF83DCDB9115ED17A37680F1F080E44B",
-  "records": 187460,
+  "size": 3717543,
+  "sha256": "EF04AFCD0ECBC17A5872DFAE3844BE05BC681DC1C8E06E7391237CC37FDACB5E",
+  "records": 187459,
   "sectors": 174204
  },
  "vanilla": {
@@ -19,8 +19,8 @@ window.SotnAss2Release = {
  "result": {
   "name": "Castlevania - Alternate Scarlet Symphony 2.0 (Track 1).bin",
   "size": 538655040,
-  "sha256": "20126D9DDDA83DB5E62AA680E8D8535D8F99D55D2303C8B5DB322E37D2E25051",
-  "crc32": "AFEA0F96"
+  "sha256": "8349F8E6D517B04176A1DF5A4220CFE1CDE9FDD317F8786C735EA9DCAC2EA74B",
+  "crc32": "A35443AD"
  },
  "disc": {
   "filesChanged": 68,

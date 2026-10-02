@@ -1,6 +1,7 @@
 {
   "id": "richter-save",
   "label": "Richter always saved",
+  "wip": true,
   "summary": "Defeating Richter always takes the 'Richter saved' route (the Shaft's-orb cutscene that opens the Inverted Castle) instead of his normal defeat.",
   "requires": [],
   "edits": [
@@ -31,5 +32,5 @@
     }
   ],
   "confidence": "medium",
-  "notes": "README: Codex 2026-09-27/read-c-users-omergilla-downloads-castlevania/outputs/Richter-Save-Alternate-Scarlet-Symphony-2.0.README.md. Not emulator-verified by its author. In vanilla the save route needs the Holy Glasses and Shaft's orb; with this the bad-ending branch is skipped."
+  "notes": "README: Codex 2026-09-27/read-c-users-omergilla-downloads-castlevania/outputs/Richter-Save-Alternate-Scarlet-Symphony-2.0.README.md. Not emulator-verified by its author. In vanilla the save route needs the Holy Glasses and Shaft's orb; with this the bad-ending branch is skipped. WIP: off in ASS 2.0 because it does not work yet (planned for a later release); the catalog accepts it off in the reference BIN."
 }

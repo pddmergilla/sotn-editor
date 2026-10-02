@@ -124,27 +124,56 @@
     setBuildStatus("bad", `${state.name} isn't an unmodified US Track 1: ${fmt(c.vanillaMismatch)} of ${fmt(c.records)} patched regions don't match. Open the vanilla BIN instead.`);
   }
 
-  // ---- content
+  // ---- content (descriptive, no raw values: the numbers live in the Stats Editor and the Extra Hacks tab)
   const n = R.numbers;
-  const pair = ([a, b], unit = "") => el("span", {class: "ass2Pair"}, el("s", {text: fmt(a)}), el("span", {class: "ass2Arrow", text: "→"}), el("b", {text: fmt(b) + unit}));
-  const hacks = () => window.SotnExtraHacks?.features || [];
+  // Hacks that ship in ASS 2.0 (work-in-progress hacks are off in the release).
+  const hacks = () => (window.SotnExtraHacks?.features || []).filter(f => !f.wip);
+  const BLURBS = {
+    "minimap": "A small map in the corner keeps track of where you are.",
+    "fast-warp": "Warp rooms send you on your way almost instantly.",
+    "damage-colors": "Damage numbers show at a glance whether you hit a weakness or a resistance.",
+    "mist-gas-swap": "Power of Mist and Gas Cloud trade places, and your route through the castle changes with them.",
+    "aggressive-enemy": "Enemies spot you from much farther away.",
+    "karasuman": "Karasuman keeps coming no matter how hard you hit him.",
+    "slogra": "Slogra stands his ground when you hit him.",
+    "dopplegangers": "Both Doppelgangers fight straight through your hits.",
+    "succubus": "Succubus fights faster and only flinches if you catch her during her clone attack.",
+    "richter-no-flinch": "Richter shrugs off your hits.",
+    "richter-ai": "Richter gets a whole new fighting brain: combos, crashes and a furious second phase.",
+    "quick-items": "Hold L2 and tap a face button to use a healing item without opening the menu.",
+    "mp-items": "Potions and other healing items are never used up. Each use costs a resource instead.",
+    "heal-hearts": "Healing items cost hearts, so every candle counts.",
+    "instant-food": "Food heals the moment you use it, and the Meal Ticket serves up a random dish.",
+    "eat-food-on-pickup": "Food you find is eaten on the spot.",
+    "hint-items-no-attack": "Hint items are just hints and no longer count as weapons.",
+    "subweapon-mp": "Subweapons draw on your MP instead of your hearts.",
+    "agunea-limit": "Agunea's lightning chain has a limit, so it can't run forever.",
+    "stopwatch-rework": "The Stopwatch slows down the bosses that used to ignore it.",
+    "holy-water-richter": "Holy Water flies in Richter's arc, and its fire races along the floor.",
+    "wolf-no-jump": "Turning into the Wolf no longer makes you hop.",
+    "subweapon-weapon": "Your subweapon comes with the weapon you hold, and its icon sits right beside it in the menu.",
+    "all-cloaks-hearts": "Every cloak turns the damage you survive into hearts.",
+    "heart-regen": "Hearts slowly come back on their own.",
+    "dark-stats": "Dark Metamorphosis makes you stronger, smarter and tougher.",
+    "dark-speed": "Dark Metamorphosis makes you faster on your feet.",
+    "sky-walker": "The Leap Stone becomes Sky Walker: jump in midair as often as you like.",
+    "faerie-behavior": "The Faerie stops using up your items and casts buffs when you get hit."
+  };
 
   function hero() {
-    const top = Math.max(...n.bosses.map(b => b.hp[1]));
     return el("section", {class: "ass2Hero"},
       el("div", {class: "ass2HeroInner"},
         el("p", {class: "ass2Kicker", text: "Castlevania: Symphony of the Night"}),
         el("h2", {class: "ass2Title"}, "Alternate Scarlet Symphony ", el("span", {text: "2.0"})),
-        el("p", {class: "ass2Tagline", text: "The castle you know, rebuilt to hit back. Bigger numbers, bosses that won't flinch, a Richter with a new brain, and an arsenal reworked down to the last Holy Water flame."}),
+        el("p", {class: "ass2Tagline", text: "The castle you know, rebuilt to hit back. Harder fights, bosses that won't flinch, a Richter with a new brain, and an arsenal reworked down to the last Holy Water flame."}),
         el("div", {class: "ass2Cta"},
           el("a", {class: "ass2Button primary", href: R.ppf.file, download: R.ppf.name}, "Download the PPF ", el("small", {text: mb(R.ppf.size)})),
           el("a", {class: "ass2Button", href: "#ass2Install", onclick: e => { e.preventDefault(); $("ass2Install")?.scrollIntoView({behavior: "smooth"}); }}, "Build it from your vanilla BIN")),
         el("p", {class: "ass2Fine", text: "For the US release (Track 1). You need your own copy of the game: the patch only holds the mod's changes."})),
       el("div", {class: "ass2Ribbon"},
-        stat(hacks().length || 30, "gameplay hacks"),
+        stat(hacks().length, "gameplay hacks"),
         stat(fmt(n.changedValues), "rebalanced values"),
-        stat(R.disc.stagesChanged, "stage & boss files changed"),
-        stat(fmt(top), "HP on the toughest bosses")));
+        stat(R.disc.stagesChanged, "stage & boss files changed")));
   }
   const stat = (big, small) => el("div", {class: "ass2Stat"}, el("strong", {text: String(big)}), el("span", {text: small}));
 
@@ -156,54 +185,25 @@
   }
 
   function features() {
-    const p = n.potions, a = n.alucard, pk = n.pickups;
-    const heal = p.map(x => `${x.name} ${fmt(x.ass)} HP`).join(", ");
-    const costs = p.map(x => fmt(x.cost)).join(" / ");
-    const anyHearts = p.some(x => x.costHearts);
     return el("section", {class: "ass2Section"},
       el("h2", {class: "ass2H", text: "What's new"}),
       el("div", {class: "ass2Features"},
-        feature("⚔", "BigNumbers combat", `Alucard wakes up with ${fmt(a.hpMax[1])} HP, ${fmt(a.mpMax[1])} MP and ${a.str[1]} in every stat, and every Life Max Up adds ${pk.hpMaxUp[1]}. ${n.enemies[0]} enemy entries, all ${n.hand[1]} hand items and every spell were retuned to match.`,
-          ["Heart cap " + fmt(a.heartsMax[1]), `Small/Big Heart ${pk.smallHeart[1]}/${pk.bigHeart[1]}`, `Soul Steal orbs heal ${n.soulSteal[1]}`]),
-        feature("☠", "Bosses that hold their ground", "Karasuman, Slogra, both Doppelgangers and Richter shrug off hit-stun. Succubus only flinches during her clone attack and fights faster. The Stopwatch's freeze is shorter, but the bosses that used to ignore it are now slowed to quarter speed.",
+        feature("⚔", "Re-Rebalanced combat", "Enemies hit hard. Alucard hits hard too. Every enemy, weapon, spell and item has been retuned so every fight matters. This game is hard, but not too hard. Think Order of Ecclesia hard.",
+          ["Retuned enemies", "Retuned gear", "Retuned spells"]),
+        feature("☗", "A castle that's never empty", "New enemy placements fill the new areas, and no room sits empty anymore. Enemies will ambush you, gang up on you, and sometimes vanish without a trace. Keep your guard up. You've been warned.",
+          ["New placements", "No empty rooms", "Ambushes"]),
+        feature("☠", "Bosses that hold their ground", "Karasuman, Slogra, both Doppelgangers and Richter shrug off hit-stun. Succubus only flinches during her clone attack and fights faster. The Stopwatch's freeze is shorter, but the bosses that used to ignore it are now slowed by it.",
           ["No Flinch", "Faster Succubus", "Stopwatch slows bosses"]),
-        feature("✠", "Epic Richter", `A completely new boss AI: distance-based combos, slide kicks, blade dashes and backflips, every subweapon and item crash, a faster aggressive phase after Hydro Storm, and a stopwatch-and-dagger finisher. ${fmt(bossHp("Richter Belmont"))} HP, and beating him always opens the Inverted Castle.`,
-          ["New AI", "Always saved", "Item crashes"]),
-        feature("✦", "Your weapon picks your subweapon", "The subweapon follows the weapon in your first hand: 72 weapons carry one, and its icon sits beside the weapon in the equipment menu. Subweapon candles drop Big Hearts instead, Holy Water flies in Richter's arc with flames that race along the floor, and Agunea's chain is capped.",
-          ["72 weapon pairings", "Richter-style Holy Water", "Agunea Limit"]),
-        feature("✚", "Healing, reinvented", `Potions are never used up. ${heal}, paid for with ${anyHearts ? "hearts" : "MP"} (${costs}). Hold L2 and tap a face button to drink without opening the menu. Food is eaten the moment you use it or pick it up, hearts trickle back on their own, and every cloak turns survived damage into hearts.`,
+        feature("✠", "Epic Richter", "A completely new boss AI: distance-based combos, slide kicks, blade dashes and backflips, every subweapon and item crash, and a faster aggressive phase after Hydro Storm.",
+          ["New AI", "No Flinch", "Item crashes"]),
+        feature("✦", "Your weapon picks your subweapon", "The subweapon follows the weapon in your first hand, and its icon sits beside the weapon in the equipment menu. Subweapon candles drop Big Hearts instead, Holy Water flies in Richter's arc with flames that race along the floor, and Agunea's chain is capped.",
+          ["Weapon pairings", "Richter-style Holy Water", "Agunea Limit"]),
+        feature("✚", "Healing, reinvented", "Potions are never used up. Hold L2 and tap a face button to drink without opening the menu. Food is eaten the moment you use it or pick it up, hearts trickle back on their own, and every cloak turns survived damage into hearts.",
           ["Quick Items (L2)", "Eat Food on Pickup", "Heart Regeneration", "All Cloaks give Hearts"]),
-        feature("☾", "Dark Metamorphosis unleashed", "Dark Metamorphosis now raises ATK, INT and DEF and speeds up walking, jumping, falling and backdashing while it lasts. Spells hit like they mean it: " +
-          n.spells.filter(s => s.attack && s.attack[1] > s.attack[0]).sort((x, y) => y.attack[1] - x.attack[1]).slice(0, 3).map(s => `${s.name} ${fmt(s.attack[1])}`).join(", ") + " attack.",
+        feature("☾", "Dark Metamorphosis unleashed", "Dark Metamorphosis now raises ATK, INT and DEF and speeds up walking, jumping, falling and backdashing while it lasts. Spells hit like they mean it.",
           ["Stat buff", "SpeedUp"]),
-        feature("✧", "Move like a vampire lord", `The Leap Stone becomes Sky Walker: jump again in midair as often as you like, with the dive kick on Up+Triangle. The Wolf no longer hops when you transform${n.mistDrain ? `, and Mist drains only ${n.mistDrain[1]} MP` : ""}. Power of Mist and Gas Cloud have traded pedestals.`,
-          ["Sky Walker", "No Jump Wolf", "Mist & Gas swap"]),
-        feature("❖", "A sharper castle", "37 enemy types notice you from twice as far away. A MiniMap tracks your square, warp rooms teleport in a blink, and damage numbers color-code weaknesses and resistances. Your Faerie stops using up your items and casts a random +20 stat buff when you take a hit.",
-          ["MiniMap", "Fast Warp", "Damage Number Colors", "Faerie buffs"])));
-  }
-  const bossHp = name => n.bosses.find(b => b.name === name)?.hp[1] ?? 0;
-
-  function numbers() {
-    const a = n.alucard, top = Math.max(...n.bosses.map(b => b.hp[1]));
-    const row = (label, p, unit) => el("tr", {}, el("th", {text: label}), el("td", {}, pair(p, unit)));
-    return el("section", {class: "ass2Section ass2Split"},
-      el("div", {},
-        el("h2", {class: "ass2H", text: "Bosses, rebuilt"}),
-        el("table", {class: "ass2Bosses"},
-          el("thead", {}, el("tr", {}, el("th", {text: "Boss"}), el("th", {text: "Vanilla"}), el("th", {text: "ASS 2.0"}), el("th", {"aria-hidden": "true"}))),
-          el("tbody", {}, n.bosses.map(b => el("tr", {},
-            el("th", {text: b.name}), el("td", {class: "num", text: fmt(b.hp[0])}), el("td", {class: "num hot", text: fmt(b.hp[1])}),
-            el("td", {class: "bar"}, el("span", {style: `width:${(100 * b.hp[1] / top).toFixed(1)}%`}))))))),
-      el("div", {},
-        el("h2", {class: "ass2H", text: "Alucard by the numbers"}),
-        el("table", {class: "ass2Compare"}, el("tbody", {},
-          row("Starting HP", a.hpMax), row("Starting MP", a.mpMax), row("Max hearts", a.heartsMax),
-          row("STR / CON / INT / LCK", a.str), row("Life Max Up", n.pickups.hpMaxUp, " HP"), row("Heart Max Up", n.pickups.heartMaxUp),
-          row("Small Heart", n.pickups.smallHeart), row("Big Heart", n.pickups.bigHeart),
-          ...n.potions.filter(p => p.vanilla).map(p => row(p.name, [p.vanilla, p.ass], " HP")))),
-        el("h2", {class: "ass2H small", text: "Subweapons"}),
-        el("table", {class: "ass2Compare"}, el("tbody", {},
-          n.subweapons.filter(s => s.attack[1] !== s.attack[0]).map(s => row(`${s.name} damage`, s.attack))))));
+        feature("❖", "A sharper castle", "Enemies notice you from much farther away. A MiniMap tracks your position, warp rooms teleport in a blink, and damage numbers color-code weaknesses and resistances. And an actual underwater level!",
+          ["MiniMap", "Fast Warp", "Damage Number Colors", "Underwater level"])));
   }
 
   function hackList() {
@@ -212,20 +212,23 @@
     return el("section", {class: "ass2Section"},
       el("h2", {class: "ass2H", text: `All ${list.length} gameplay hacks`}),
       el("p", {class: "ass2Lead", text: "Every one of these is in ASS 2.0. The Extra Hacks tab can also add most of them to a vanilla BIN one at a time, or remove them from ASS 2.0."}),
-      el("div", {class: "ass2Hacks"}, list.map(f => el("details", {class: "ass2Hack"},
-        el("summary", {}, el("strong", {text: f.label}), f.subtitle ? el("span", {text: f.subtitle}) : null),
-        el("p", {text: f.summary || ""})))));
+      el("div", {class: "ass2Hacks"}, list.map(f => el("div", {class: "ass2Hack"},
+        el("strong", {text: f.label}), el("p", {text: BLURBS[f.id] || f.subtitle || ""})))));
   }
 
+  // ass2/screenshots/screenshots.json: [{file | url, caption?, source?}]
   function gallery() {
     const box = el("section", {class: "ass2Section hidden", id: "ass2Gallery"},
-      el("h2", {class: "ass2H", text: "Screenshots"}), el("div", {class: "ass2Shots"}));
+      el("h2", {class: "ass2H", text: "Screenshots"}), el("div", {class: "ass2Shots"}), el("p", {class: "ass2Fine ass2ShotSource"}));
     fetch("ass2/screenshots/screenshots.json", {cache: "no-store"}).then(r => r.ok ? r.json() : []).then(shots => {
       if (!Array.isArray(shots) || !shots.length) return;
+      const src = s => s.url || `ass2/screenshots/${s.file}`;
       box.querySelector(".ass2Shots").replaceChildren(...shots.map(s => el("figure", {class: "ass2Shot"},
-        el("a", {href: `ass2/screenshots/${s.file}`, target: "_blank", rel: "noopener"},
-          el("img", {src: `ass2/screenshots/${s.file}`, alt: s.caption || "Alternate Scarlet Symphony 2.0 screenshot", loading: "lazy"})),
+        el("a", {href: src(s), target: "_blank", rel: "noopener noreferrer"},
+          el("img", {src: src(s), alt: s.caption || "Alternate Scarlet Symphony screenshot", loading: "lazy", referrerpolicy: "no-referrer"})),
         s.caption ? el("figcaption", {text: s.caption}) : null)));
+      const sources = [...new Set(shots.map(s => s.source).filter(Boolean))];
+      box.querySelector(".ass2ShotSource").textContent = sources.length ? `Screenshots: ${sources.join(", ")}.` : "";
       box.classList.remove("hidden");
     }).catch(() => {});
     return box;
@@ -259,7 +262,7 @@
 
   function credits() {
     return el("section", {class: "ass2Section ass2Credits"},
-      el("p", {text: "Alternate Scarlet Symphony 2.0 builds on Alternate Scarlet Symphony 1.3.1 and the BigNumbers rebalance. Damage Number Colors are ported from Reawakened. Research used the sotn-decomp project. Castlevania: Symphony of the Night is © Konami; this is an unofficial fan modification."}),
+      el("p", {text: "Alternate Scarlet Symphony 2.0 builds on Alternate Scarlet Symphony 1.3.1 and the BigNumbers rebalance. QoL features such as MiniMap, Fast Warp and Damage Number Colors are ported from Reawakened. Research used the sotn-decomp project. Castlevania: Symphony of the Night is © Konami; this is an unofficial fan modification. And yes, this page is designed by Opus 5.5."}),
       el("p", {class: "ass2Fine", text: `Release data built ${R.built}.`}));
   }
 
@@ -268,7 +271,7 @@
     if (!view) return;
     if (!R || !Core) { view.replaceChildren(el("p", {class: "ass2Fine", text: "The ASS 2.0 release data is missing."})); return; }
     if (!rendered) {
-      view.replaceChildren(el("div", {class: "ass2Page"}, hero(), features(), numbers(), gallery(), hackList(), install(), credits()));
+      view.replaceChildren(el("div", {class: "ass2Page"}, hero(), features(), gallery(), hackList(), install(), credits()));
       rendered = true;
     }
     updateBuild();

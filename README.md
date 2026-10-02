@@ -73,7 +73,8 @@ The **Alternate Scarlet Symphony 2.0** tab presents the mod: its features, boss 
   ```
 
   The builder checks that the PPF turns vanilla into the ASS BIN byte for byte. Most of the patch is the Form 2 (XA/STR) sector EDC, which differs in about 173,000 sectors. Keeping it makes the result an exact copy of ASS 2.0.
-- **Screenshots.** Put images in `ass2/screenshots/` and list them in `ass2/screenshots/screenshots.json` as `[{"file": "castle.png", "caption": "..."}]`. The gallery stays hidden while the list is empty.
+- **Screenshots.** Put images in `ass2/screenshots/` and list them in `ass2/screenshots/screenshots.json` as `[{"file": "castle.png", "caption": "...", "source": "..."}]`. Use `"url"` instead of `"file"` for an image hosted elsewhere. The list currently links to five screenshots from the Romhack Plaza page as placeholders. The gallery stays hidden while the list is empty.
+- **Copy.** Feature text describes the changes without exact values; those live in the Stats Editor and Extra Hacks tabs. Work-in-progress hacks (marked `wip`, currently Richter always saved) are left out of the hack count and list.
 - The build needs the page served over http (`node serve.js` or the hosted editor). From a `file://` page only the download link works.
 
 ## Extra Hacks (v6.1)
@@ -108,7 +109,7 @@ Hacks with a dependency move together: **Quick Items** and **Healing items use H
 | Dark Metamorphosis stat buff / SpeedUp | unused `DebugCaptureVideo` body + hooks | no bonus / normal speed | adds it |
 | Sky Walker | Leap Stone check and dive-kick input | single double jump, Down+Cross dive kick | adds it (relic text unchanged) |
 | Damage Number Colors | DRA hook and caves in blank icon space, `F_GAME` palettes, two hooks and a colour table in every stage (ported from Reawakened) | vanilla damage numbers | adds it |
-| Richter always saved | one jump in BO6 | defeating Richter needs the Holy Glasses route again | adds it |
+| Richter always saved (WIP) | one jump in BO6 | defeating Richter needs the Holy Glasses route again | adds it. Work in progress: it does not work yet, so ASS 2.0 ships with it off and the card is marked WIP |
 | Instant Food | Meal Ticket and food entities in `WEAPON0/1`, DRA food roll | food is thrown and caught as in vanilla | adds it (also checks Quick Items, whose food routines it calls) |
 | Eat Food on Pickup | DRA pickup and `AddToInventory` hooks | picked-up food goes to the inventory | adds it (also checks Quick Items) |
 | Hint items have no attack | category check in the attack calculation | Hint items (category 2) get weapon attack again | not available (vanilla category 2 is Heaven Sword, Shakram, Runesword) |

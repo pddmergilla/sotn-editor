@@ -419,7 +419,9 @@
       input.disabled = phase !== "ready" || !entry?.canToggle;
       input.addEventListener("change", () => toggle(feature.id, input.checked));
       const text = element("span", "extraHackText");
-      text.append(element("span", "extraHackName", feature.label));
+      const name = element("span", "extraHackName", feature.label);
+      if (feature.wip) name.append(" ", element("span", "extraHackWip", "WIP"));
+      text.append(name);
       if (feature.subtitle) text.append(element("span", "extraHackSubtitle", feature.subtitle));
       label.append(input, text);
       card.append(label);

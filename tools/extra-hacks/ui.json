@@ -221,5 +221,10 @@
   "label": "Richter-style Holy Water",
   "subtitle": "Traveling flames",
   "summary": "Alucard throws Holy Water in Richter's angled arc. When the bottle breaks, the fire travels along the ground for about 80 frames, leaving a flame every 4th frame, instead of burning in one spot. Damage, hit cooldown, Max on screen and the heart (or MP) cost still come from the Holy Water rows in the Stats Editor."
+ },
+ "richter-save": {
+  "label": "Richter always saved",
+  "subtitle": "WIP: not working yet",
+  "summary": "Work in progress: this doesn't work yet, so it is off in ASS 2.0 and planned for a later release. When it's finished, defeating Richter will always take the 'Richter saved' route (the Shaft's-orb cutscene that opens the Inverted Castle) instead of his normal defeat."
  }
 }

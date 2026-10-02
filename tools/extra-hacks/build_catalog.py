@@ -70,7 +70,9 @@ def convert(spec):
         a = read(f, 'a')
         with_on = bytes.fromhex(e['with']['on']) if e.get('with') else None
         # ASS 2.0 holds either the plain form or, where another hack changes this one's bytes, the combined form.
-        assert a[off:off + len(on)] in (on, with_on), f"{spec['id']}: on bytes do not match ASS 2.0 at {f} {off:#x}"
+        # A work-in-progress hack ("wip") may be left off in ASS 2.0.
+        allowed = (on, with_on, of) if spec.get('wip') else (on, with_on)
+        assert a[off:off + len(on)] in allowed, f"{spec['id']}: on bytes do not match ASS 2.0 at {f} {off:#x}"
         rec = {'file': f, 'offset': off, 'off': of.hex().upper(), 'on': on.hex().upper()}
         if with_on is not None:
             assert len(with_on) == len(on)
@@ -222,7 +224,7 @@ def main():
                 owner[key] = s['id']
         vanilla = s.get('vanilla', {})
         feat = {'id': s['id'], 'label': s.get('label', s['id'])}
-        for k in ('subtitle', 'summary', 'requires', 'valueTemplate', 'defaults', 'values', 'contextReason', 'partialIsOn', 'vanillaNote'):
+        for k in ('wip', 'subtitle', 'summary', 'requires', 'valueTemplate', 'defaults', 'values', 'contextReason', 'partialIsOn', 'vanillaNote'):
             if s.get(k):
                 feat[k] = s[k]
         if vanilla.get('vanillaRequires'):

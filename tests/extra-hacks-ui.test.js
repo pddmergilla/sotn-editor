@@ -160,28 +160,30 @@ async function imageChecks(catalog) {
   if (loaded.ass) {
     const {analysis, files} = loaded.ass;
     assert.equal(analysis.profile, "ass");
-    assert.deepEqual(Object.entries(states(analysis)).filter(([, s]) => s !== "on"), [], "ASS 2.0 has every hack on");
+    // Work-in-progress hacks ship off in ASS 2.0; every other hack is on.
+    const wip = new Set(catalog.features.filter(f => f.wip).map(f => f.id));
+    assert.deepEqual(Object.entries(states(analysis)).filter(([id, s]) => s !== (wip.has(id) ? "off" : "on")), [], "ASS 2.0 has every finished hack on and WIP hacks off");
     for (const [id, counts] of Object.entries(entityCounts(analysis))) assert.ok(counts.total > 0 && counts.on === counts.total, `ASS ${id} entities ${JSON.stringify(counts)}`);
     const off = applyAll(catalog, analysis, files, () => false);
     const again = H.analyze(catalog, off.files);
     for (const [id, counts] of Object.entries(entityCounts(again))) assert.equal(counts.off, counts.total, `ASS without ${id} restores its entities`);
     assert.equal(again.profile, "ass", "ASS with every hack removed is still ASS");
     assert.deepEqual(Object.values(states(again)).filter(s => s !== "off"), [], `ASS without hacks: ${JSON.stringify(states(again))}`);
-    const back = applyAll(catalog, again, off.files, () => true);
+    const back = applyAll(catalog, again, off.files, entry => !entry.feature.wip);
     assert.ok(sameFiles(back.files, files), "ASS: removing then re-adding every hack restores the files");
-    for (const feature of catalog.features.filter(item => !skip.has(item.id))) {
-      const one = applyAll(catalog, analysis, files, entry => entry.feature.id !== feature.id && !(feature.id && entry.feature.requires.includes(feature.id)));
+    for (const feature of catalog.features.filter(item => !skip.has(item.id) && !wip.has(item.id))) {
+      const one = applyAll(catalog, analysis, files, entry => !entry.feature.wip && entry.feature.id !== feature.id && !(feature.id && entry.feature.requires.includes(feature.id)));
       const check = H.analyze(catalog, one.files);
       assert.equal(check.profile, "ass");
       assert.equal(states(check)[feature.id], "off", `ASS minus ${feature.id}`);
     }
-    console.log(`ASS 2.0: all ${total} hacks detected on; each can be removed alone; remove/re-add round trip restores the files.`);
+    console.log(`ASS 2.0: ${total - wip.size} hacks detected on, ${wip.size} WIP off; each can be removed alone; remove/re-add round trip restores the files.`);
 
     // Healing items use Hearts off: costs go back to MP, the L2 shortcuts read MP, MP Cost Items and Quick Items stay on.
     const u16 = (b, at) => b[at] | b[at + 1] << 8;
     const COSTS = {potion: 0x6B74, high: 0x6BA8, x: 0x6BDC, meal: 0x5960};
     if (catalog.features.some(item => item.id === "heal-hearts")) {
-      const noHearts = applyAll(catalog, analysis, files, entry => entry.feature.id !== "heal-hearts");
+      const noHearts = applyAll(catalog, analysis, files, entry => !entry.feature.wip && entry.feature.id !== "heal-hearts");
       const dra = noHearts.files.get("DRA.BIN");
       assert.deepEqual(Object.values(COSTS).map(at => u16(dra, at)), [30, 70, 200, 50], "MP costs without hearts");
       const u32 = (b, at) => (u16(b, at) | u16(b, at + 2) << 16) >>> 0;
@@ -197,7 +199,7 @@ async function imageChecks(catalog) {
       assert.ok([...values].filter(([at]) => !Object.values(COSTS).includes(at)).every(([, v]) => v === null), "other item costs are left alone");
       assert.ok(H.plan(catalog, analysis, noHearts.selected, {statsOwned: () => true}).every(edit => !edit.stats), "stats-owned costs are not byte edits");
       // Back on from that image: identical to the original.
-      const back = applyAll(catalog, check, noHearts.files, () => true);
+      const back = applyAll(catalog, check, noHearts.files, entry => !entry.feature.wip);
       assert.ok(sameFiles(back.files, files), "Healing items use Hearts: off then on restores the files");
       console.log("ASS 2.0: Healing items use Hearts toggles alone; costs and the L2 shortcuts switch between hearts and MP.");
     }
@@ -223,10 +225,10 @@ async function imageChecks(catalog) {
     }
     const later = H.analyze(catalog, future);
     assert.equal(later.profile, "ass", `retuned ASS build: ${later.reason}`);
-    assert.deepEqual(Object.entries(states(later)).filter(([, s]) => s !== "on"), [], "retuned ASS build keeps every hack on");
+    assert.deepEqual(Object.entries(states(later)).filter(([id, s]) => s !== (wip.has(id) ? "off" : "on")), [], "retuned ASS build keeps every hack as it was");
     const darkStats = later.features.find(item => item.id === "dark-stats");
     if (darkStats?.values) assert.equal(darkStats.values.atk, 30, "the UI reads the retuned buff");
-    console.log(`retuned ASS build (${changedData} data bytes and 4 values changed): still ASS, all hacks on.`);
+    console.log(`retuned ASS build (${changedData} data bytes and 4 values changed): still ASS, every hack as it was.`);
   }
   if (loaded.assOld) {
     const {analysis, files} = loaded.assOld;
