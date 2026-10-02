@@ -13,6 +13,6 @@ The **Alternate Scarlet Symphony 2.0** tab presents the mod: its features, every
   ```
 
   The builder checks that the PPF turns vanilla into the ASS BIN byte for byte. Most of the patch is the Form 2 (XA/STR) sector EDC, which differs in about 173,000 sectors. Keeping it makes the result an exact copy of ASS 2.0.
-- **Screenshots.** Put images in `ass2/screenshots/` and list them in `ass2/screenshots/screenshots.json` as `[{"file": "castle.png", "caption": "...", "source": "..."}]`. Use `"url"` instead of `"file"` for an image hosted elsewhere. The list currently links to five screenshots from the Romhack Plaza page as placeholders. The gallery stays hidden while the list is empty.
+- **Screenshots.** Put images in `ass2/screenshots/` and list them in `ass2/screenshots/screenshots.json` as `[{"file": "castle.png", "caption": "...", "source": "..."}]`. Use `"url"` instead of `"file"` for an image hosted elsewhere. It currently holds four ASS 2.0 screenshots. The gallery stays hidden while the list is empty.
 - **Copy.** Feature text describes the changes without exact values; those live in the Stats Editor and Extra Hacks tabs. Work-in-progress hacks (marked `wip`, currently Richter always saved) are left out of the hack count and list.
 - The build needs the page served over http (`node serve.js` or the hosted editor). From a `file://` page only the download link works.

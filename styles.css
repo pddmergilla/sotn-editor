@@ -284,9 +284,10 @@ input:disabled, select:disabled { opacity:.55; }
 .ass2Feature p { margin:0; color:#d6c7b8; font-size:13px; line-height:1.6; }
 .ass2Tags { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 0; padding:0; list-style:none; }
 .ass2Tags li { padding:3px 8px; border:1px solid #4a2c2f; border-radius:999px; color:var(--gold); font-size:11px; background:#1d1317; }
-.ass2Shots { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+.ass2Shots { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+@media(max-width:700px) { .ass2Shots { grid-template-columns:1fr; } }
 .ass2Shot { margin:0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#000; }
-.ass2Shot img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; image-rendering:pixelated; }
+.ass2Shot img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; }
 .ass2Shot figcaption { padding:8px 10px; color:var(--mute); font-size:12px; background:#140e12; }
 .ass2Hacks { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:8px; align-items:start; }
 .ass2Hack { padding:10px 12px; border:1px solid #2c1d21; border-radius:8px; background:#120d11; }
