@@ -9,6 +9,10 @@ h1 { margin:0; font-size:22px; white-space:nowrap; }
 h1 span { font-size:11px; padding:3px 7px; border:1px solid #647186; border-radius:10px; vertical-align:middle; }
 header p { margin:4px 0 0; color:#95a1b2; font-size:12px; }
 .toolbar { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+.donateButton { display:inline-flex; align-items:center; gap:5px; padding:7px 11px; border:1px solid #c2456a; border-radius:6px;
+  background:linear-gradient(180deg,#d9507a,#9c2a4d); color:#fff4f7; font-size:13px; font-weight:600; text-decoration:none; white-space:nowrap; }
+.donateButton:hover { background:linear-gradient(180deg,#e5628a,#ad3157); border-color:#e5628a; }
+.donateButton:focus-visible { outline:2px solid #ffb3c9; outline-offset:2px; }
 button, input, select {
   background:#222a35; color:#e9edf4; border:1px solid #3d4859; border-radius:6px; padding:7px 9px;
 }
@@ -307,3 +311,4 @@ input:disabled, select:disabled { opacity:.55; }
   .ass2InstallGrid { grid-template-columns:1fr; }
 }
 @media(prefers-reduced-motion:reduce) { .ass2Feature { transition:none; } .ass2Feature:hover { transform:none; } }
+.ass2Support { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:14px 0 6px !important; color:var(--ink); font-size:13px; }

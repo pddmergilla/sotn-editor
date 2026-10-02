@@ -263,6 +263,8 @@
   function credits() {
     return el("section", {class: "ass2Section ass2Credits"},
       el("p", {text: "Alternate Scarlet Symphony 2.0 builds on Alternate Scarlet Symphony 1.3.1 and the BigNumbers rebalance. QoL features such as MiniMap, Fast Warp and Damage Number Colors are ported from Reawakened. Research used the sotn-decomp project. Castlevania: Symphony of the Night is © Konami; this is an unofficial fan modification. And yes, this page is designed by Opus 5.5."}),
+      el("p", {class: "ass2Support"}, "Enjoying Alternate Scarlet Symphony? ",
+        el("a", {class: "donateButton", href: "https://buymeacoffee.com/nukesheart", target: "_blank", rel: "noopener noreferrer"}, "Donate ♥️")),
       el("p", {class: "ass2Fine", text: `Release data built ${R.built}.`}));
   }
 

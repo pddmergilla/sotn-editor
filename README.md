@@ -79,6 +79,10 @@ To regenerate generated files:
 - **After changing a hack spec**, run `python tools/extra-hacks/build_catalog.py`. It needs the vanilla, ASS 1.3.1 and ASS 2.0 BINs.
 - **After changing the ASS 2.0 BIN**, run `node tools/ass2/build-release.js`.
 
+## Support
+
+If you enjoy the editor or Alternate Scarlet Symphony, you can [donate ♥️ on Buy Me a Coffee](https://buymeacoffee.com/nukesheart).
+
 ## Credits
 
 - Game data structures, names and function references come from [Xeeynamo/sotn-decomp](https://github.com/Xeeynamo/sotn-decomp).
