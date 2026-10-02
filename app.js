@@ -242,6 +242,7 @@
       state.disc=disc;state.discHandle=handle;state.discName=file.name;
       state.root=null;state.discStage=null;state.discStages.clear();clearUndo();
       window.SotnExtraHacksUI?.setDisc(disc);
+      window.SotnAss2UI?.setDisc(disc,{name:file.name,handle});
       state.areaCatalog=catalog.sort((a,b)=>AREA_NAMES[a.code].localeCompare(AREA_NAMES[b.code]));
       const select=$("areaSelect");select.replaceChildren();
       for(const [label,areas] of [["Normal Castle",state.areaCatalog.filter(a=>!a.code.startsWith("R"))],["Reverse Castle",state.areaCatalog.filter(a=>a.code.startsWith("R"))]]) {
@@ -1132,10 +1133,12 @@
     $("statsView").classList.toggle("hidden",tab!=="stats");
     $("shopView")?.classList.toggle("hidden",tab!=="shop");
     $("extraHacksView")?.classList.toggle("hidden",tab!=="extraHacks");
+    $("ass2View")?.classList.toggle("hidden",tab!=="ass2");
     document.body.classList.toggle("statsTab",tab!=="map");
     if(tab==="stats")window.SotnStatsUI?.render();
     if(tab==="shop")window.SotnShopUI?.render();
     if(tab==="extraHacks")window.SotnExtraHacksUI?.refresh();
+    if(tab==="ass2")window.SotnAss2UI?.render();
     if(tab==="map"){setCopyTile(false);setCopyCollision(false);redraw();}
   }
   document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>setTab(b.dataset.tab));

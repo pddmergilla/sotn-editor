@@ -15,6 +15,7 @@ The editor changes stage maps, collisions, entity placements, game stats, the Li
 - Toggle 30 optional gameplay hacks for supported vanilla and Alternate Scarlet Symphony images.
 - Build a new BIN or export a PPF3 patch containing only your changes.
 - Undo map, entity, stat, shop, and hack edits in the browser.
+- Download Alternate Scarlet Symphony 2.0 as a PPF3, or build it from your vanilla US BIN in the browser.
 
 ## Compatibility and safety
 
@@ -58,6 +59,22 @@ Use the up/down buttons beside zoom to move through tall rooms. Ctrl+C arms Copy
 Use the toolbar Undo button or Ctrl+Z to reverse edits. A tile brush stroke is one undo step. Undo history is cleared when opening another BIN or saving asset-folder edits.
 
 **Build BIN** writes a new image with the edits. **Export PPF3** writes a PPF 3.0 patch against the loaded image. The source file is never overwritten. For raw 2352-byte sectors, changed sectors receive updated Mode 1 or Mode 2 Form 1 EDC/ECC before either output is made.
+
+## Alternate Scarlet Symphony 2.0 tab
+
+The **Alternate Scarlet Symphony 2.0** tab presents the mod: its features, boss and stat numbers, every gameplay hack, screenshots, and downloads.
+
+- **Download the PPF.** `ass2/Alternate-Scarlet-Symphony-2.0.ppf` is a PPF3 from the US Track 1 BIN to ASS 2.0. It has a block check and undo data, so PPF3 patchers can verify the input and undo it. The tab lists the input, output and patch SHA-256 hashes.
+- **Build it here.** Open the vanilla US Track 1 with **Open SOTN BIN**. The tab compares every patched region with the patch's undo bytes, so it says whether the BIN is untouched vanilla, already ASS 2.0, or something else. **Build** streams the patched image to the file you choose in 8 MB windows. It saves only when the output CRC32 matches the release. Your BIN is only read, and unsaved editor changes are not included. A `.cue` that pairs the new Track 1 with the vanilla Track 2 can be downloaded.
+- **Release data.** The numbers on the page come from `ass2/ass2-release.js`, and the hack list comes from the Extra Hacks catalog. After changing the ASS 2.0 BIN, rebuild the PPF and the data with:
+
+  ```text
+  node tools/ass2/build-release.js [--vanilla PATH] [--ass PATH]
+  ```
+
+  The builder checks that the PPF turns vanilla into the ASS BIN byte for byte. Most of the patch is the Form 2 (XA/STR) sector EDC, which differs in about 173,000 sectors. Keeping it makes the result an exact copy of ASS 2.0.
+- **Screenshots.** Put images in `ass2/screenshots/` and list them in `ass2/screenshots/screenshots.json` as `[{"file": "castle.png", "caption": "..."}]`. The gallery stays hidden while the list is empty.
+- The build needs the page served over http (`node serve.js` or the hosted editor). From a `file://` page only the download link works.
 
 ## Extra Hacks (v6.1)
 
@@ -191,7 +208,10 @@ node tests/stats-core.test.js
 node tests/prize-drops.test.js
 node tests/stats-bin.test.js
 node tests/extra-hacks-ui.test.js
+node tests/ass2.test.js
 ```
+
+`ass2.test.js` checks the PPF parser and windowed builder on a synthetic image, that the shipped PPF matches the release data, and, when the images are present, that vanilla builds to the exact ASS 2.0 BIN.
 
 `extra-hacks-ui.test.js` runs its unit checks always. With the reference images present it also checks:
 

@@ -15,6 +15,7 @@
       <button class="tab" type="button" role="tab" data-tab="stats" aria-selected="false">Stats Editor <span id="statsBadge" class="badge hidden">0</span></button>
       <button class="tab" type="button" role="tab" data-tab="shop" aria-selected="false">Library Shop Editor <span id="shopBadge" class="badge hidden">0</span></button>
       <button class="tab" type="button" role="tab" data-tab="extraHacks" aria-selected="false">Extra Hacks</button>
+      <button class="tab ass2Tab" type="button" role="tab" data-tab="ass2" aria-selected="false">Alternate Scarlet Symphony 2.0</button>
     </nav>
   </div>
   <div class="toolbar">
@@ -218,6 +219,8 @@
   <div id="extraHacksList" class="extraHacksList" aria-label="Available Extra Hacks"></div>
 </section>
 
+<section id="ass2View" class="ass2View hidden" aria-label="Alternate Scarlet Symphony 2.0"></section>
+
 <dialog id="iconPicker" class="iconPicker">
   <div class="iconPickerHead"><strong id="iconPickerTitle">Icon</strong>
     <label>Palette <input id="iconPickerPalette" type="number" min="0" max="319" step="1"></label>
@@ -238,6 +241,9 @@
 <script src="shop-ui.js"></script>
 <script src="extra-hacks-catalog.js"></script>
 <script src="extra-hacks-ui.js"></script>
+<script src="ass2/ass2-release.js"></script>
+<script src="ass2-core.js"></script>
+<script src="ass2-ui.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
