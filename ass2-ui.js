@@ -7,6 +7,9 @@
   const $ = id => document.getElementById(id);
   const fmt = n => Number(n).toLocaleString("en-US");
   const mb = n => `${(n / 1048576).toFixed(1)} MB`;
+  // "ASS 2.0.03": the build number goes up with every release of the BIN (tools/ass2/build-release.js).
+  const VERSION = R?.version ? `ASS ${R.version}` : "ASS 2.0";
+  const PPF_DOWNLOAD = R?.version ? `Alternate-Scarlet-Symphony-${R.version}.ppf` : R?.ppf.name;
 
   function el(tag, attrs = {}, ...kids) {
     const node = document.createElement(tag);
@@ -113,7 +116,7 @@
     button.disabled = !ready;
     if (state.busy) return;
     if (state.built?.error) return setBuildStatus("bad", state.built.error);
-    if (state.built) return setBuildStatus("ok", `Saved ${state.built.name}. CRC32 ${state.built.crc} matches the release, so it is byte-for-byte Alternate Scarlet Symphony 2.0.`,
+    if (state.built) return setBuildStatus("ok", `Saved ${state.built.name}. CRC32 ${state.built.crc} matches the release, so it is byte-for-byte ${VERSION}.`,
       el("button", {type: "button", class: "ass2Link", onclick: () => downloadCue(state.built.name), text: "Download a .cue for it"}));
     if (state.ppfError) return setBuildStatus("bad", state.ppfError);
     if (!state.disc) return setBuildStatus("idle", "Open your vanilla US BIN (Track 1) with Open SOTN BIN at the top, then build here.");
@@ -167,7 +170,7 @@
         el("h2", {class: "ass2Title"}, "Alternate Scarlet Symphony ", el("span", {text: "2.0"})),
         el("p", {class: "ass2Tagline", text: "The castle you know, rebuilt to hit back. Harder fights, bosses that won't flinch, a Richter with a new brain, and an arsenal reworked down to the last Holy Water flame."}),
         el("div", {class: "ass2Cta"},
-          el("a", {class: "ass2Button primary", href: R.ppf.file, download: R.ppf.name}, "Download the PPF ", el("small", {text: mb(R.ppf.size)})),
+          el("a", {class: "ass2Button primary", href: R.ppf.file, download: PPF_DOWNLOAD}, "Download the PPF ", el("small", {text: `${VERSION} · ${mb(R.ppf.size)}`})),
           el("a", {class: "ass2Button", href: "#ass2Install", onclick: e => { e.preventDefault(); $("ass2Install")?.scrollIntoView({behavior: "smooth"}); }}, "Build it from your vanilla BIN")),
         el("p", {class: "ass2Fine", text: "For the US release (Track 1). You need your own copy of the game: the patch only holds the mod's changes."})),
       el("div", {class: "ass2Ribbon"},
@@ -237,6 +240,8 @@
   function install() {
     return el("section", {class: "ass2Section ass2Install", id: "ass2Install"},
       el("h2", {class: "ass2H", text: "Get it"}),
+      el("p", {class: "ass2Build"}, el("span", {class: "ass2BuildTag", text: "Current build"}), el("strong", {text: VERSION}),
+        el("span", {class: "ass2Fine", text: `Released ${R.built}. Rebuild or re-download when the build number changes.`})),
       el("div", {class: "ass2InstallGrid"},
         el("div", {class: "ass2Panel"},
           el("h3", {text: "Build it here"}),
@@ -244,16 +249,17 @@
             el("li", {}, "Select ", el("b", {text: "Open SOTN BIN"}), " and choose your US ", el("code", {text: "(Track 1).bin"}), "."),
             el("li", {text: "Come back to this tab. The editor checks every patched byte against vanilla."}),
             el("li", {text: "Select Build, pick where to save, and keep Track 2 next to it."})),
-          el("button", {id: "ass2Build", class: "ass2Button primary", type: "button", disabled: true, onclick: buildBin}, "Build Alternate Scarlet Symphony 2.0"),
+          el("button", {id: "ass2Build", class: "ass2Button primary", type: "button", disabled: true, onclick: buildBin}, `Build ${VERSION}`),
           el("div", {id: "ass2BuildStatus", class: "ass2Status idle"}),
           el("p", {class: "ass2Fine", text: "Your BIN is only read. The new image is checked against the release CRC32 before it is saved. Unsaved editor changes are not included."})),
         el("div", {class: "ass2Panel"},
           el("h3", {text: "Or patch it yourself"}),
           el("ol", {class: "ass2Steps"},
-            el("li", {}, el("a", {href: R.ppf.file, download: R.ppf.name, text: "Download the PPF"}), ` (${mb(R.ppf.size)}).`),
+            el("li", {}, el("a", {href: R.ppf.file, download: PPF_DOWNLOAD, text: `Download the ${VERSION} PPF`}), ` (${mb(R.ppf.size)}).`),
             el("li", {}, "Apply it to ", el("code", {text: R.vanilla.name}), " with PPF-O-Matic or any other PPF3 patcher."),
             el("li", {}, "Point your .cue at the patched Track 1 and play. ", el("button", {type: "button", class: "ass2Link", onclick: () => downloadCue(R.result.name), text: "Download a .cue"}))),
           el("dl", {class: "ass2Hashes"},
+            el("dt", {text: "Build"}), el("dd", {}, el("code", {text: VERSION})),
             el("dt", {text: "Input: US Track 1"}), el("dd", {}, el("code", {text: `SHA-256 ${R.vanilla.sha256}`})),
             el("dt", {text: "Output: ASS 2.0"}), el("dd", {}, el("code", {text: `SHA-256 ${R.result.sha256}`}), el("code", {text: `CRC32 ${R.result.crc32}`})),
             el("dt", {text: "Patch"}), el("dd", {}, el("code", {text: `SHA-256 ${R.ppf.sha256}`}))),

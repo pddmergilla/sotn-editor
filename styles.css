@@ -319,3 +319,7 @@ input:disabled, select:disabled { opacity:.55; }
 }
 @media(prefers-reduced-motion:reduce) { .ass2Feature { transition:none; } .ass2Feature:hover { transform:none; } }
 .ass2Support { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:14px 0 6px !important; color:var(--ink); font-size:13px; }
+.ass2Build { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin:-4px 0 16px; }
+.ass2Build strong { color:var(--gold); font:600 22px/1.2 "Palatino Linotype",Georgia,serif; }
+.ass2Build .ass2Fine { margin:0; }
+.ass2BuildTag { padding:2px 8px; border:1px solid #6b3a33; border-radius:999px; color:var(--mute); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
