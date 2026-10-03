@@ -2,8 +2,9 @@ const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const vm=require("node:vm");
 const C=require("../play-core.js");
-function page({locked=false,storageFails=false,preset=null}={}){
-  const elements=new Map(),handlers={},records=new Map(),scripts=[],timers=[];
+const Card=require("../play-card.js");
+function page({locked=false,storageFails=false,preset=null,records=new Map()}={}){
+  const elements=new Map(),handlers={},scripts=[],timers=[];
   if(preset)records.set("keyboardPreset",preset);
   const get=id=>{
     if(!elements.has(id))elements.set(id,{textContent:"",hidden:false,disabled:false,checked:false,files:[],querySelectorAll:()=>[],setAttribute(name,value){this[name]=value;}});
@@ -12,19 +13,21 @@ function page({locked=false,storageFails=false,preset=null}={}){
   const opener={postMessage(){}},window={opener,addEventListener:(name,fn)=>handlers[name]=fn};
   const document={getElementById:get,createElement:()=>({}),head:{appendChild:script=>scripts.push(script)},addEventListener:(name,fn)=>handlers[name]=fn};
   let released=false,syncFailure=false,flushes=0;
-  window.SotnPlayCore=C;
+  window.SotnPlayCore=C;window.SotnPlayCard=Card;
   window.SotnPlayStore={get:async key=>records.get(key),put:async(key,value)=>{if(storageFails)throw Error("Quota exceeded");records.set(key,value);},delete:async key=>records.delete(key)};
-  let loadedState;
+  let loadedState,card=new Uint8Array([77,67,1]),cardFile,cardPath="/data/saves/sotn-editor-test.srm";
   const speeds=[];
   const manager={getState:()=>new Uint8Array([1,2,3]),loadState:bytes=>loadedState=bytes,
-    saveSaveFiles:()=>flushes++,toggleMainLoop(){},FS:{syncfs:(_,cb)=>cb(syncFailure?Error("Disk full"):null)}};
+    getSaveFile:()=>card,saveSaveFiles:()=>flushes++,toggleMainLoop(){},
+    getSaveFilePath:()=>cardPath,writeFile(path,bytes){assert.equal(path,cardPath);cardFile=bytes.slice();},loadSaveFiles(){card=cardFile;},
+    FS:{syncfs:(_,cb)=>cb(syncFailure?Error("Disk full"):null)}};
   vm.runInNewContext(fs.readFileSync(require.resolve("../play.js"),"utf8"),{
     window,document,location:{hash:"#test-token",origin:"http://localhost"},Blob,URL,Uint8Array,TextDecoder,Date,console,
     navigator:{locks:{request:async(_,options,callback)=>{await callback(locked?null:{});released=true;}},storage:{persist:async()=>true}},
     setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},setTimeout(){}
   });
   const deliver=(overrides={})=>handlers.message({origin:"http://localhost",source:opener,data:{type:"sotn-play-build",token:"test-token",blob:new Blob([new Uint8Array(2352)]),sectorSize:2352,dataOffset:24,name:"sample.bin"},...overrides});
-  return {get,window,document,deliver,scripts,records,handlers,manager,timers,speeds,emulator:{gameManager:manager,isFastForward:true,changeSettingOption(name,value){if(name==="fastForward")this.isFastForward=value==="enabled";speeds.push([name,value]);}},setSyncFailure:value=>syncFailure=value,flushes:()=>flushes,released:()=>released,loadedState:()=>loadedState};
+  return {get,window,document,deliver,scripts,records,handlers,manager,timers,speeds,emulator:{gameManager:manager,isFastForward:true,changeSettingOption(name,value){if(name==="fastForward")this.isFastForward=value==="enabled";speeds.push([name,value]);}},setSyncFailure:value=>syncFailure=value,flushes:()=>flushes,released:()=>released,loadedState:()=>loadedState,card:()=>card,setCard:bytes=>card=bytes,setCardPath:path=>cardPath=path};
 }
 (async()=>{
   const p=page();
@@ -78,10 +81,33 @@ function page({locked=false,storageFails=false,preset=null}={}){
   p.handlers.keydown(key());assert.equal(p.window.EJS_emulator.isFastForward,false);
   p.handlers.pagehide();await new Promise(resolve=>setImmediate(resolve));assert(p.released());
 
+  const reopened=page({records:p.records});reopened.deliver();await reopened.get("start").onclick();
+  reopened.window.EJS_emulator=reopened.emulator;reopened.window.EJS_onGameStart();
+  assert.match(reopened.get("saveStatus").textContent,/Saved memory card loaded/);
+  assert.deepEqual(reopened.card(),p.card());
+  const progress=new Uint8Array([77,67,42,8]);reopened.setCard(progress);
+  await reopened.get("stop").onclick();reopened.handlers.pagehide();
+  const rebuilt=page({records:p.records});
+  rebuilt.deliver({data:{type:"sotn-play-build",token:"test-token",blob:new Blob([new Uint8Array(2352).fill(7)]),sectorSize:2352,dataOffset:24,name:"edited.bin"}});
+  await rebuilt.get("start").onclick();assert.notEqual(rebuilt.window.EJS_gameName,p.window.EJS_gameName);
+  rebuilt.setCardPath("/data/saves/another-core-path.srm");
+  rebuilt.window.EJS_emulator=rebuilt.emulator;rebuilt.window.EJS_onGameStart();assert.deepEqual(rebuilt.card(),progress);
+  await rebuilt.get("stop").onclick();rebuilt.handlers.pagehide();
+  const damagedRecords=new Map(p.records);damagedRecords.set("memoryCard",{...p.records.get("memoryCard"),hash:"bad"});
+  const damaged=page({records:damagedRecords});damaged.deliver();await damaged.get("start").onclick();
+  assert.match(damaged.get("status").textContent,/damaged/);assert.equal(damaged.scripts.length,0);
+  const restoreFailed=page({records:p.records});restoreFailed.deliver();await restoreFailed.get("start").onclick();
+  restoreFailed.window.EJS_emulator=restoreFailed.emulator;restoreFailed.manager.loadSaveFiles=()=>{throw Error("Card read failed");};
+  restoreFailed.window.EJS_onGameStart();assert.match(restoreFailed.get("status").textContent,/Could not restore/);
+  assert.equal(restoreFailed.timers.length,0);restoreFailed.handlers.pagehide();
+
   const blocked=page({locked:true});blocked.deliver();await blocked.get("start").onclick();
   assert.match(blocked.get("status").textContent,/Another play tab/);assert.equal(blocked.scripts.length,0);
   const full=page({storageFails:true});full.deliver();full.get("keepBuild").checked=true;await full.get("start").onclick();
   assert.equal(full.scripts.length,1);assert.match(full.get("saveStatus").textContent,/could not be stored/);
+  full.window.EJS_emulator=full.emulator;full.window.EJS_onGameStart();await full.get("stop").onclick();
+  assert.match(full.get("status").textContent,/Quota exceeded/);assert.equal(full.get("stop").disabled,false);
+  assert.notEqual(full.get("game").hidden,true);assert.equal(full.records.get("memoryCard"),undefined);
   full.handlers.pagehide();
   const keyboard=page({preset:"wasd"});
   await new Promise(resolve=>setImmediate(resolve));
@@ -98,5 +124,5 @@ function page({locked=false,storageFails=false,preset=null}={}){
   keyboard.handlers.keydown(key());assert.equal(keyboard.window.EJS_emulator.isFastForward,true);
   keyboard.handlers.blur();assert.equal(keyboard.window.EJS_emulator.isFastForward,false);
   keyboard.handlers.pagehide();
-  console.log("Play page checks passed: fast-forward controls, keyboard layouts, persistent states, checked imports, storage failures, locks and flush retry/stop.");
+  console.log("Play page checks passed: card reload/rebuilt copies, card failure protection, fast-forward, keyboard layouts, states, locks and flush retry/stop.");
 })().catch(error=>{console.error(error);process.exitCode=1;});

@@ -22,6 +22,7 @@ node tests/ass2.test.js
 node tests/ass2-downloads.test.js
 node tests/play.test.js
 node tests/play-page.test.js
+node tests/play-card.test.js
 ```
 
 `file-picker.test.js` checks native and fallback file selection, cancel/retry, downloads, and source-file protection. Manually verify Open SOTN BIN, Build BIN and Export PPF3 in Firefox.
@@ -36,9 +37,13 @@ node tests/play-page.test.js
 
 `play-page.test.js` checks the fast-forward button and backtick shortcut in both keyboard layouts, repeated-key and typing guards, focus/stop reset, player setup, saved-state round trips, mismatched/corrupt state rejection, retained-copy storage failure, memory-card lock contention, failed sync/retry, and saving before stop with a simulated emulator.
 
+`play-card.test.js` checks durable card capture, reload into a fresh core, legacy-card fallback, damaged cards, failed writes and restore failures. The player checks also reopen a saved card in a new page, including a changed build and core save path, and prevent failed card restores from starting autosaves.
+
 Browser acceptance: test an unchanged disc and an edited disc; verify a change in gameplay; save in a save room, stop, rebuild and load the card; save/load a browser state and verify changed builds have separate states; export/import both kinds of saves; reload an optionally stored test copy; test a controller and BIOS, CDN failure, storage failure, and a second simultaneous play tab. Unit checks alone do not establish gameplay or persistence.
 
 Verified locally on 2026-10-03: the fast-forward button and backtick shortcut toggle the real core at the title screen in both keyboard layouts; stopping saves the card and hides the speed control. The supplied ASS 2.0 BIN boots to its title screen through the browser handoff, the player confirms a memory-card filesystem sync, a stored test image reloads, and a savestate restores after a page reload with the real core. Controller hardware, supplied BIOS/Track 2, an actual save-room recovery, and downloaded backup files still need manual acceptance in Chrome/Edge.
+
+The explicit memory-card copy and restore added on 2026-10-03 passes the automated checks; the browser permission controls blocked its real-core reopen check, so save-room recovery after closing the tab remains unverified.
 
 `extra-hacks-ui.test.js` runs its unit checks always. With the reference images present it also checks:
 

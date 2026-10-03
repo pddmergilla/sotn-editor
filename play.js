@@ -1,8 +1,8 @@
 (() => {
   "use strict";
-  const C=window.SotnPlayCore,S=window.SotnPlayStore,$=id=>document.getElementById(id);
+  const C=window.SotnPlayCore,S=window.SotnPlayStore,Card=window.SotnPlayCard,$=id=>document.getElementById(id);
   const token=location.hash.slice(1),origin=location.origin,urls=[];
-  let build=null,bios=null,audio=null,running=false,starting=false,releaseLock=null,saveTimer=null,saving=null,identity=null,stateBusy=false;
+  let build=null,bios=null,audio=null,running=false,starting=false,releaseLock=null,saveTimer=null,saving=null,identity=null,stateBusy=false,cardBytes=null;
   const status=text=>$("status").textContent=text;
   const objectURL=blob=>{const url=URL.createObjectURL(blob);urls.push(url);return url;};
   let keyboardTouched=false;
@@ -64,8 +64,7 @@
     const manager=window.EJS_emulator?.gameManager;
     if(!running||!manager)return Promise.resolve();
     saving=(async()=>{
-      manager.saveSaveFiles();
-      await new Promise((resolve,reject)=>manager.FS.syncfs(false,error=>error?reject(error):resolve()));
+      await Card.save(manager,S,C);
       $("saveStatus").textContent=`Memory card synced at ${new Date().toLocaleTimeString()}.`;
     })().finally(()=>{saving=null;});
     return saving;
@@ -155,6 +154,7 @@
     let loaderAdded=false;
     try{
       await acquireLock();
+      cardBytes=await Card.read(S,C);
       for(const el of $("setup").querySelectorAll("input,button"))el.disabled=true;
       status("Identifying this build so its savestates stay separate…");
       const parts=[C.VERSION,await C.fingerprint(build.blob),build.sectorSize,build.dataOffset];
@@ -182,6 +182,9 @@
       window.EJS_defaultOptions={"save-state-location":"browser","save-save-interval":"30"};
       window.EJS_Buttons={exitEmulation:false,saveState:false,loadState:false};
       window.EJS_onGameStart=()=>{
+        try{Card.restore(window.EJS_emulator.gameManager,cardBytes);}
+        catch(error){starting=false;status("Could not restore the memory card; close this tab and try again: "+error.message);return;}
+        $("saveStatus").textContent=cardBytes?"Saved memory card loaded; select your save in the game.":"Memory card ready; save in a save room to keep progress.";
         running=true;starting=false;$("stop").hidden=false;$("setup").hidden=true;$("stateControls").hidden=false;
         updateKeyboard();setFastForward(false);$("playControls").hidden=false;
         status("Game running — controller and keyboard ready.");
