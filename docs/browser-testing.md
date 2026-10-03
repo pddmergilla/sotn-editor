@@ -14,6 +14,8 @@ In the play tab:
 
 The **Keyboard layout** selector works before starting or while playing and remembers your choice. **Classic** keeps arrows, Z/X/A/S face buttons, Q/E for L1/R1, W/R for L2/R2, Shift for Select and Enter for Start. **WASD + I/J/K/L** uses WASD to move, I/J/K/L for Triangle/Square/Cross/Circle, U/7/O/9 for L1/L2/R1/R2, Space for Select and Enter for Start. Switching releases held inputs and preserves controller mappings.
 
+**⏩ Fast forward** or the backtick key (`) toggles 3× speed in either keyboard layout; press again to return to normal speed. The button shows whether it is on. Speed resets when the tab loses focus, becomes hidden, or stops; actual speed depends on your device.
+
 **Download test BIN** saves an optional copy for external testing. Nothing is automatically written to your original BIN or a backup next to it. The ASS 2.0 tab's release Build is separate: open its resulting BIN in the editor before selecting Test.
 
 ## Memory cards and savestates

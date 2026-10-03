@@ -4,5 +4,6 @@ section,details{background:#1b2130;border:1px solid #343e54;border-radius:10px;p
 .options{display:grid;gap:12px}.options label:not(.check){display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{font:inherit;background:#303d59;color:#fff;border:1px solid #607294;border-radius:6px;padding:8px 14px;cursor:pointer}
 button:disabled{opacity:.45;cursor:default}select{font:inherit;padding:6px;background:#1b2130;color:#e4e8f1;border:1px solid #607294;border-radius:6px}#start{background:#315eac}#game{width:100%;height:min(70vh,720px);min-height:360px;background:#000;border-radius:8px;overflow:hidden}#game:empty{display:none}
+#playControls{align-items:center;margin-bottom:12px}#fastForward[aria-pressed="true"]{background:#315eac;border-color:#a8c6ff}
 #stop{margin-top:16px}input{font:inherit}a{color:#a8c6ff}.muted,footer{color:#a5afc3;font-size:13px}summary{cursor:pointer;font-weight:600}[hidden]{display:none!important}
 @media(max-width:600px){main{padding:12px}#game{min-height:260px;height:55vh}}

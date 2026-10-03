@@ -17,6 +17,27 @@
     try{await S.put("keyboardPreset",keyboardPreset());}
     catch(error){$("saveStatus").textContent="Keyboard layout applies now, but could not be remembered: "+error.message;}
   };
+  function setFastForward(enabled){
+    const emulator=window.EJS_emulator;
+    if(!running||!emulator?.gameManager)return;
+    if(enabled)emulator.changeSettingOption("ff-ratio","3.0");
+    emulator.changeSettingOption("fastForward",enabled?"enabled":"disabled");
+    $("fastForward").setAttribute("aria-pressed",String(enabled));
+    $("fastForward").textContent="⏩ Fast forward: "+(enabled?"on (3×)":"off");
+  }
+  $("fastForward").onclick=()=>setFastForward(!window.EJS_emulator?.isFastForward);
+  window.addEventListener("keydown",event=>{
+    if(!running||event.key!=="`"||event.ctrlKey||event.altKey||event.metaKey||event.shiftKey||event.isComposing)return;
+    if(event.target?.isContentEditable||event.target?.closest?.("input,textarea,select,[role='textbox']"))return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(!event.repeat)$("fastForward").onclick();
+  },true);
+  window.addEventListener("keyup",event=>{
+    if(running&&event.key==="`"&&!event.target?.isContentEditable&&!event.target?.closest?.("input,textarea,select,[role='textbox']")){
+      event.preventDefault();event.stopImmediatePropagation();
+    }
+  },true);
+  window.addEventListener("blur",()=>setFastForward(false));
   function acceptBuild(value){
     if(!(value?.blob instanceof Blob)||!value.blob.size||![2048,2352].includes(value.sectorSize))throw new Error("The test copy is invalid; build it again in the editor.");
     build={blob:value.blob,name:String(value.name||"SOTN.bin"),sectorSize:value.sectorSize,dataOffset:value.dataOffset};
@@ -162,7 +183,7 @@
       window.EJS_Buttons={exitEmulation:false,saveState:false,loadState:false};
       window.EJS_onGameStart=()=>{
         running=true;starting=false;$("stop").hidden=false;$("setup").hidden=true;$("stateControls").hidden=false;
-        updateKeyboard();
+        updateKeyboard();setFastForward(false);$("playControls").hidden=false;
         status("Game running — controller and keyboard ready.");
         saveTimer=setInterval(()=>flushCard().catch(error=>$("saveStatus").textContent="Memory card sync failed; export a backup: "+error.message),5000);
       };
@@ -181,12 +202,13 @@
   $("stop").onclick=async()=>{
     $("stop").disabled=true;
     try{
+      setFastForward(false);
       clearInterval(saveTimer);
       window.EJS_emulator.gameManager.toggleMainLoop(0);
       if(saving)await saving;
       await flushCard();running=false;
       $("game").hidden=true;
-      $("stateControls").hidden=true;
+      $("stateControls").hidden=true;$("playControls").hidden=true;
       status("Memory card saved; close this tab, then return to the editor for your next test.");
     }catch(error){
       window.EJS_emulator.gameManager.toggleMainLoop(1);
@@ -195,7 +217,7 @@
     }
   };
   window.addEventListener("beforeunload",event=>{if(running){event.preventDefault();event.returnValue="";}});
-  document.addEventListener("visibilitychange",()=>{if(document.hidden)flushCard().catch(error=>$("saveStatus").textContent="Memory card sync failed: "+error.message);});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){setFastForward(false);flushCard().catch(error=>$("saveStatus").textContent="Memory card sync failed: "+error.message);}});
   window.addEventListener("pagehide",()=>{clearInterval(saveTimer);urls.forEach(url=>URL.revokeObjectURL(url));releaseLock?.();});
   (async()=>{
     try{

@@ -34,11 +34,11 @@ node tests/play-page.test.js
 
 `play.test.js` checks disc/BIOS archives, all-byte build identities, source preservation, controller defaults, origin/source/token checks, popup handling, and failed builds. `tests/play-harness.html` exercises the real disc parser and browser handoff using an ordinary file input for automation environments that cannot operate the editor's native picker.
 
-`play-page.test.js` checks player setup, saved-state round trips, mismatched/corrupt state rejection, retained-copy storage failure, memory-card lock contention, failed sync/retry, and saving before stop with a simulated emulator.
+`play-page.test.js` checks the fast-forward button and backtick shortcut in both keyboard layouts, repeated-key and typing guards, focus/stop reset, player setup, saved-state round trips, mismatched/corrupt state rejection, retained-copy storage failure, memory-card lock contention, failed sync/retry, and saving before stop with a simulated emulator.
 
 Browser acceptance: test an unchanged disc and an edited disc; verify a change in gameplay; save in a save room, stop, rebuild and load the card; save/load a browser state and verify changed builds have separate states; export/import both kinds of saves; reload an optionally stored test copy; test a controller and BIOS, CDN failure, storage failure, and a second simultaneous play tab. Unit checks alone do not establish gameplay or persistence.
 
-Verified locally on 2026-10-03: the supplied ASS 2.0 BIN boots to its title screen through the browser handoff, the player confirms a memory-card filesystem sync, a stored test image reloads, and a savestate restores after a page reload with the real core. Controller hardware, supplied BIOS/Track 2, an actual save-room recovery, and downloaded backup files still need manual acceptance in Chrome/Edge.
+Verified locally on 2026-10-03: the fast-forward button and backtick shortcut toggle the real core at the title screen in both keyboard layouts; stopping saves the card and hides the speed control. The supplied ASS 2.0 BIN boots to its title screen through the browser handoff, the player confirms a memory-card filesystem sync, a stored test image reloads, and a savestate restores after a page reload with the real core. Controller hardware, supplied BIOS/Track 2, an actual save-room recovery, and downloaded backup files still need manual acceptance in Chrome/Edge.
 
 `extra-hacks-ui.test.js` runs its unit checks always. With the reference images present it also checks:
 
