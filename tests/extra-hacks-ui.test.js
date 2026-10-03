@@ -168,7 +168,13 @@ async function imageChecks(catalog) {
       const name = "BOSS/BO6/BO6.BIN";
       const earlier = new Map(files);
       earlier.set(name, files.get(name).slice());
-      for (const edit of richter.edits) if (edit.onAlt.length) earlier.get(name).set(edit.onAlt[0], edit.offset);
+      for (const edit of richter.edits) {
+        const alt = edit.onAlt.find(bytes => Buffer.compare(Buffer.from(bytes), Buffer.from(edit.vanillaOn)) !== 0);
+        if (alt) earlier.get(name).set(alt, edit.offset);
+      }
+      const earlierBytes = Buffer.concat(richter.edits.map(edit => Buffer.from(earlier.get(name).subarray(edit.offset, edit.offset + edit.on.length))));
+      assert.equal(require("node:crypto").createHash("sha256").update(earlierBytes).digest("hex"),
+        "5e99fcfde3afa496c4ff9188bf20a3f2acbbcdbf9f4b1de12019c0e4ff7e7308", "earlier Epic Richter bytes match the reviewed version");
       assert.equal(H.featureState(richter, earlier, "ass").state, "on", "earlier Epic Richter stays recognized");
       const olderAnalysis = H.analyze(catalog, earlier);
       assert.equal(H.availability(catalog, olderAnalysis).get("richter-ai").canToggle, true);
