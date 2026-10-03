@@ -1,4 +1,4 @@
-# SOTN Editor
+# SOTN Editor v7.0
 
 Build your own *Castlevania: Symphony of the Night* ROM hack in the browser. Edit maps, stats, shops and gameplay, then save a new BIN or a PPF3 patch.
 

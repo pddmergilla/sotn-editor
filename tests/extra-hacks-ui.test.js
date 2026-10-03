@@ -163,6 +163,26 @@ async function imageChecks(catalog) {
     // Work-in-progress hacks ship off in ASS 2.0; every other hack is on.
     const wip = new Set(catalog.features.filter(f => f.wip).map(f => f.id));
     assert.deepEqual(Object.entries(states(analysis)).filter(([id, s]) => s !== (wip.has(id) ? "off" : "on")), [], "ASS 2.0 has every finished hack on and WIP hacks off");
+    const richter = catalog.features.find(feature => feature.id === "richter-ai");
+    if (richter) {
+      const name = "BOSS/BO6/BO6.BIN";
+      const earlier = new Map(files);
+      earlier.set(name, files.get(name).slice());
+      for (const edit of richter.edits) if (edit.onAlt.length) earlier.get(name).set(edit.onAlt[0], edit.offset);
+      assert.equal(H.featureState(richter, earlier, "ass").state, "on", "earlier Epic Richter stays recognized");
+      const olderAnalysis = H.analyze(catalog, earlier);
+      assert.equal(H.availability(catalog, olderAnalysis).get("richter-ai").canToggle, true);
+      const olderOff = applyAll(catalog, olderAnalysis, earlier, entry => !entry.feature.wip && entry.feature.id !== "richter-ai");
+      assert.equal(H.featureState(richter, olderOff.files, "ass").state, "off");
+      const current = applyAll(catalog, H.analyze(catalog, olderOff.files), olderOff.files, entry => !entry.feature.wip);
+      assert.ok(sameFiles(current.files, files), "re-adding Epic Richter installs the current AI");
+      const damaged = new Map(files);
+      damaged.set(name, files.get(name).slice());
+      damaged.get(name)[0x165C] = 0x55;
+      const unknown = H.analyze(catalog, damaged);
+      assert.equal(H.featureState(richter, damaged, "ass").state, "unknown", "unknown Richter code is rejected");
+      assert.equal(H.availability(catalog, unknown).get("richter-ai").canToggle, false);
+    }
     for (const [id, counts] of Object.entries(entityCounts(analysis))) assert.ok(counts.total > 0 && counts.on === counts.total, `ASS ${id} entities ${JSON.stringify(counts)}`);
     const off = applyAll(catalog, analysis, files, () => false);
     const again = H.analyze(catalog, off.files);

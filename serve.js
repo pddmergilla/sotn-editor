@@ -18,7 +18,7 @@ http.createServer((req,res)=>{
     .pipe(res);
 }).listen(port,"127.0.0.1",()=>{
   const url=`http://127.0.0.1:${port}`;
-  console.log(`SOTN Editor v6.1: ${url}`);
+  console.log(`SOTN Editor v7.0: ${url}`);
   if(process.argv.includes("--open")&&process.platform==="win32"){
     execFile("cmd.exe",["/c","start","",url],{windowsHide:true},error=>{
       if(error)console.error(`Open ${url} in your browser.`);

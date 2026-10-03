@@ -7,7 +7,7 @@ Only needed when a hack is added or changed; stat, text and map edits in later b
 
 usage: python build_catalog.py [--out PATH] [--allow-missing]
 """
-import json, struct, sys, zlib
+import hashlib, json, struct, sys, zlib
 from pathlib import Path
 from sotn import *
 
@@ -259,7 +259,8 @@ def main():
     sizes = {}
     for f in sorted({e['file'] for ft in features for e in ft['edits']} | set(MARKER_FILES)):
         sizes[f] = files_v_size(f)
-    catalog = {'version': 2, 'built': 'from ASS 1.3.1, ASS 2.0 (1AEA50A7) and vanilla US', 'files': sizes,
+    source_hash = hashlib.sha256(IMAGES['a'].read_bytes()).hexdigest().upper()[:8]
+    catalog = {'version': 2, 'built': f'from ASS 1.3.1, ASS 2.0 ({source_hash}) and vanilla US', 'files': sizes,
                'fingerprint': fp, 'features': features}
     text = '// Extra Hacks catalog (generated). Byte signatures per hack, plus a code fingerprint for vanilla US / ASS.\n'
     text += 'window.SotnExtraHacks = ' + json.dumps(catalog, separators=(',', ':')) + ';\n'

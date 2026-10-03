@@ -1102,7 +1102,7 @@
       setStatus("Checking edited overlays and disc sectors...");
       const changes=await collectChanges();
       const stem=state.discName.replace(/\.[^.]+$/,"");
-      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v6.1"):C.modifiedBlob(state.disc.file,changes);
+      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v7.0"):C.modifiedBlob(state.disc.file,changes);
       await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`);
       setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} saved (${changes.length} changed sectors).`);
     } catch(e){if(e.name!=="AbortError"){console.error(e);if(e.extraHackConflict)window.SotnExtraHacksUI?.setConflict(e.message);setStatus(e.message||String(e));alert(e.message||e);}}

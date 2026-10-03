@@ -43,6 +43,7 @@ Verified locally on 2026-10-03: the supplied ASS 2.0 BIN boots to its title scre
 `extra-hacks-ui.test.js` runs its unit checks always. With the reference images present it also checks:
 
 - detection on vanilla, ASS 2.0 and ASS 1.3.1;
+- current and earlier Epic Richter AI detection, upgrade after re-adding, and rejection of unknown AI bytes;
 - add and remove round trips that must restore the files byte for byte;
 - removing each hack on its own, and Healing items use Hearts off then on (costs and the L2 shortcuts switch to MP and back; adding it in a second build gives the same bytes as adding everything at once);
 - a simulated later ASS build with retuned values and edited data;

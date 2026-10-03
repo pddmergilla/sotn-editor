@@ -11,6 +11,8 @@ Recognition does not depend on the whole-image hash, so a later ASS build where 
 - An image that is neither vanilla US nor ASS (for example another mod) shows **This imported BIN doesn't support this feature.** and the whole tab is locked. A hack whose bytes were changed by something else is locked the same way, on its own.
 - ASS 1.3.1 is recognized too: hacks it already had read as on, the 2.0 additions as off.
 
+**Epic Richter AI** recognizes the updated code in ASS 2.0.06 and its earlier supported AI versions. Leaving it checked preserves the loaded version; removing and re-adding it installs the current AI. Its toggle preserves the separate No Flinch Richter hack, room edits and stats. Unknown code changes still lock the checkbox.
+
 Hacks with a dependency move together: **Quick Items** and **Healing items use Hearts** need **MP Cost Items**, so checking either checks MP Cost Items, and unchecking MP Cost Items unchecks both. Dark Metamorphosis stat buff, SpeedUp and Agunea Limit show the values read from the loaded BIN (for example +25 ATK, +25 INT, +25 DEF, capped at 999). A hack edit that collides with a map, stats or shop edit on the same byte stops the build with a message naming the file and offset.
 
 | Hack | Where | Unchecked on an ASS BIN means | On vanilla |
