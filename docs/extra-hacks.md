@@ -13,6 +13,8 @@ Recognition does not depend on the whole-image hash, so a later ASS build where 
 
 **Epic Richter AI** recognizes the updated code in ASS 2.0.06 and its earlier supported AI versions. Leaving it checked preserves the loaded version; removing and re-adding it installs the current AI. Its toggle preserves the separate No Flinch Richter hack, room edits and stats. Unknown code changes still lock the checkbox.
 
+**Heart Regeneration** in ASS 2.0.07 restores `floor(total CON / 20) + 1` hearts every 60 gameplay frames, including equipment bonuses and capped at maximum hearts: CON 0–19 gives 1, 20–39 gives 2, and 40–59 gives 3. Earlier fixed-gain versions remain recognized. Leaving the checkbox checked preserves the loaded version; removing and re-adding installs the CON version. Each version guards its own code and allows only its reviewed tuning values to change. Existing HUD pause and regeneration-disable behavior is retained. Gameplay still needs emulator verification.
+
 Hacks with a dependency move together: **Quick Items** and **Healing items use Hearts** need **MP Cost Items**, so checking either checks MP Cost Items, and unchecking MP Cost Items unchecks both. Dark Metamorphosis stat buff, SpeedUp and Agunea Limit show the values read from the loaded BIN (for example +25 ATK, +25 INT, +25 DEF, capped at 999). A hack edit that collides with a map, stats or shop edit on the same byte stops the build with a message naming the file and offset.
 
 | Hack | Where | Unchecked on an ASS BIN means | On vanilla |
@@ -41,7 +43,7 @@ Hacks with a dependency move together: **Quick Items** and **Healing items use H
 | Stopwatch slows bosses | Stopwatch timer, boss Stopwatch checks, six enemy-table flag bytes | 5-tick freeze; those bosses ignore the Stopwatch | adds it |
 | Richter-style Holy Water | jump at the Holy Water entity entry, plus a replacement entity in zero padding after the first DRA sound bank | the bottle drops and burns in one spot (4 flames) | adds it; blocked where that padding is not free |
 | All Cloaks give Hearts | Blood Cloak check plus a divider in spare text padding | only the Blood Cloak gives hearts, one per point of damage | not available (the spare space holds description text in vanilla and 1.3.1) |
-| Heart Regeneration | DRA frame hook and a cave in dead debug code | no heart regeneration | adds it |
+| Heart Regeneration | DRA frame hook and a cave in dead debug code; gain uses total CON including equipment | no heart regeneration | adds CON-based regeneration |
 | Faerie Behavior | `SERVANT/TT_002.BIN` item checks, item use and on-hit hook, DRA helpers in dead debug code | the Faerie uses up Hammers, Uncurses, Antivenoms and potions again and gives no buffs | adds it |
 
 A few hacks need another one only on vanilla (the food hacks call routines that Quick Items installs there; ASS keeps them in place anyway), and a hack that lives in spare space, such as All Cloaks give Hearts in freed item-text padding, locks itself in an image where that space holds other data.

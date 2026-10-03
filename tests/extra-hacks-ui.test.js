@@ -163,6 +163,39 @@ async function imageChecks(catalog) {
     // Work-in-progress hacks ship off in ASS 2.0; every other hack is on.
     const wip = new Set(catalog.features.filter(f => f.wip).map(f => f.id));
     assert.deepEqual(Object.entries(states(analysis)).filter(([id, s]) => s !== (wip.has(id) ? "off" : "on")), [], "ASS 2.0 has every finished hack on and WIP hacks off");
+    const hearts = catalog.features.find(feature => feature.id === "heart-regen");
+    if (hearts) {
+      const name = "DRA.BIN", cave = hearts.edits.find(edit => edit.offset === 0x42B00);
+      const legacy = new Map(files);
+      legacy.set(name, files.get(name).slice());
+      legacy.get(name).set(cave.onAlt[0], cave.offset);
+      legacy.get(name)[0x42B54] = 7;
+      assert.equal(H.featureState(hearts, legacy, "ass").state, "on", "retuned fixed heart gain stays recognized");
+      const legacyAnalysis = H.analyze(catalog, legacy);
+      const unchanged = applyAll(catalog, legacyAnalysis, legacy, entry => !entry.feature.wip);
+      assert.ok(sameFiles(unchanged.files, legacy), "leaving legacy hearts selected preserves its version");
+      const removed = applyAll(catalog, legacyAnalysis, legacy, entry => !entry.feature.wip && entry.feature.id !== hearts.id);
+      assert.equal(H.featureState(hearts, removed.files, "ass").state, "off");
+      const upgraded = applyAll(catalog, H.analyze(catalog, removed.files), removed.files, entry => !entry.feature.wip);
+      assert.ok(sameFiles(upgraded.files, files), "re-adding legacy hearts installs CON regeneration only");
+      const retuned = new Map(files);
+      retuned.set(name, files.get(name).slice());
+      for (const [at, value] of [[0x42B20, 30], [0x42B4C, 10], [0x42B5C, 2]]) retuned.get(name)[at] = value;
+      assert.equal(H.featureState(hearts, retuned, "ass").state, "on", "CON formula tuning stays recognized");
+      for (const [input, at] of [[files, 0x42B54], [legacy, 0x42B4C]]) {
+        const damaged = new Map(input);
+        damaged.set(name, input.get(name).slice());
+        damaged.get(name)[at] ^= 1;
+        assert.equal(H.featureState(hearts, damaged, "ass").state, "unknown", "each heart version guards its own fixed code");
+        assert.equal(H.availability(catalog, H.analyze(catalog, damaged)).get(hearts.id).canToggle, false);
+      }
+      const record = await loaded.ass.disc.findPath([name]);
+      const edits = await C.changedSectors(loaded.ass.disc, record, files.get(name), removed.files.get(name));
+      const exported = await C.DiscImage.open(C.modifiedBlob(loaded.ass.disc.file, edits));
+      assert.deepEqual(await exported.readFile(await exported.findPath([name])), removed.files.get(name), "export contains disabled heart bytes");
+      assert.deepEqual(await loaded.ass.disc.readFile(record), files.get(name), "heart export preserves the original image");
+      console.log("Heart Regeneration: CON and fixed versions recognized; upgrade, tuning guards and export passed.");
+    }
     const richter = catalog.features.find(feature => feature.id === "richter-ai");
     if (richter) {
       const name = "BOSS/BO6/BO6.BIN";

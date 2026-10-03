@@ -44,6 +44,7 @@ Verified locally on 2026-10-03: the supplied ASS 2.0 BIN boots to its title scre
 
 - detection on vanilla, ASS 2.0 and ASS 1.3.1;
 - current and earlier Epic Richter AI detection, upgrade after re-adding, and rejection of unknown AI bytes;
+- CON-based and earlier fixed Heart Regeneration detection, preservation while selected, upgrade after re-adding, version-specific tuning guards, and exported bytes without changing the source;
 - add and remove round trips that must restore the files byte for byte;
 - removing each hack on its own, and Healing items use Hearts off then on (costs and the L2 shortcuts switch to MP and back; adding it in a second build gives the same bytes as adding everything at once);
 - a simulated later ASS build with retuned values and edited data;

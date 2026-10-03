@@ -104,9 +104,13 @@ def convert(spec):
             rec['tunable'] = tun
         alts = list(e.get('onAlt', [])) + OVERRIDES.get(spec['id'], {}).get('onAlt', {}).get(f'{f}:{off:#x}', [])
         for alt in alts:
-            assert len(bytes.fromhex(alt)) == len(on), (spec['id'], f, hex(off))
+            data = alt['bytes'] if isinstance(alt, dict) else alt
+            assert len(bytes.fromhex(data)) == len(on), (spec['id'], f, hex(off))
+            if isinstance(alt, dict):
+                for start, length in alt.get('tunable', []):
+                    assert start >= 0 and length > 0 and start + length <= len(on), (spec['id'], alt)
         if alts:
-            rec['onAlt'] = [x.upper() for x in alts]
+            rec['onAlt'] = [dict(x, bytes=x['bytes'].upper()) if isinstance(x, dict) else x.upper() for x in alts]
         vpatch = OVERRIDES.get(spec['id'], {}).get('vanillaOnPatch', {}).get(f'{f}:{off:#x}')
         if vpatch:
             von = bytearray(on)

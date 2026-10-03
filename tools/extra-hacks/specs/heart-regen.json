@@ -1,7 +1,7 @@
 {
   "id": "heart-regen",
   "label": "Heart Regeneration",
-  "summary": "Alucard slowly regains hearts on his own: +2 hearts every second while below the maximum.",
+  "summary": "Alucard regains 1 heart plus 1 for every 20 total CON each second, including equipment bonuses, without exceeding maximum hearts.",
   "requires": [],
   "edits": [
     {
@@ -16,14 +16,29 @@
       "file": "DRA.BIN",
       "offset": "0x42B00",
       "off": "c0ffbd270100093cf44f29350100073cf43fe7341380053cb462a58c0980033c2c79638c1480063c0c90c68c0780083c7cc3088d0e80043c30b484243c00bfaf3800beaf3400b7af3000b6af2c00b5af2800b4af2400b3af2000b2af1c00b1af1800b0af401003002110430080100200740c42240980033c4479638c21b0480000190300211867000980073c4879e78c219868008010070021104700",
-      "on": "0800e00300000000f0ffbd270000a3af0400a8af0800a9af0480083cc4c8098d3c0003241b002301000000001018000013006014000000000980083ca87b098dac7b038d000000002a1823010c0060100000000002002925ac7b038d000000002a1869000300601000000000ac7b098d00000000a87b09ad01000010000000000480023cc4c8428c0000a38f0400a88f0800a98f0800e0031000bd27",
-      "why": "0x800E2B00 'jr ra; nop' stub over an unreferenced debug function + 0x800E2B08: every 60 frames, if hearts < max, hearts += 2 (capped at max)",
-      "origin": "unattributed"
+      "on": "0800e00300000000f0ffbd270000a3af0400a8af0800a9af0480083cc4c8028d3c0003241b0043000980083c1018000011006014a87b098dac7b028d000000002a1822010c006010dc7b038d140002241b006200ac7b028d1218000001006324214823012a184900020060100000000021484000a87b09ad0480023cc4c8428c0000a38f0400a88f0800a98f0800e0031000bd270000000000000000",
+      "why": "Every 60 frames, add floor(total CON / 20) + 1 hearts, capped at maximum; restore the timer for the HUD caller.",
+      "origin": "Live ASS BIN B478C2A8, correlated with SOTN-ASS2-CON-Heart-Regeneration-manifest.json",
+      "onAlt": [
+        {
+          "bytes": "0800e00300000000f0ffbd270000a3af0400a8af0800a9af0480083cc4c8098d3c0003241b002301000000001018000013006014000000000980083ca87b098dac7b038d000000002a1823010c0060100000000002002925ac7b038d000000002a1869000300601000000000ac7b098d00000000a87b09ad01000010000000000480023cc4c8428c0000a38f0400a88f0800a98f0800e0031000bd27",
+          "tunable": [
+            [
+              32,
+              2
+            ],
+            [
+              84,
+              2
+            ]
+          ]
+        }
+      ]
     }
   ],
   "vanilla": {
     "supported": true,
-    "reason": "Both locations hold vanilla bytes in 1.3.1 (0x42B00 is an unreferenced debug function) and the code only reads g_GameTimer and g_Status hearts/heartsMax.",
+    "reason": "The hook and unused debug routine match vanilla; the replacement reads the timer, total CON and heart counts from the existing status structure.",
     "vanillaOff": []
   },
   "tunables": [
@@ -31,13 +46,19 @@
       "file": "DRA.BIN",
       "offset": "0x42B20",
       "length": 2,
-      "why": "Interval in frames (addiu v1,zero,60)"
+      "why": "Interval in frames"
     },
     {
       "file": "DRA.BIN",
-      "offset": "0x42B54",
+      "offset": "0x42B4C",
       "length": 2,
-      "why": "Hearts per tick (addiu t1,t1,2)"
+      "why": "CON per additional heart"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42B5C",
+      "length": 2,
+      "why": "Base hearts per tick"
     }
   ],
   "entityEdits": [],
@@ -48,5 +69,5 @@
     }
   ],
   "confidence": "high",
-  "notes": "Runs from the HUD regen path, i.e. only when the MP-regen code runs (not while 0x80097BF8 bit 0 is set). No PPF found; mp-items.json already lists it as an unlisted hack."
+  "notes": "Current version uses total CON at 0x80097BDC including equipment; floor(CON / 20) + 1 every 60 frames. Earlier fixed +2 code remains recognized with its own tunable offsets. Leaving either version checked preserves loaded bytes; removing then re-adding installs the current CON version. HUD pause and disable gating is retained. Adjacent item code at 0x42B9C is outside these edits. Emulator gameplay remains unverified."
 }

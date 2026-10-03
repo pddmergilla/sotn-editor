@@ -68,12 +68,21 @@ function collector() {
     assert.equal(crc, release.result.crc32);
     assert.equal(sha(sink.bytes()), release.result.sha256);
     console.log(`vanilla BIN -> ASS 2.0: CRC32 ${crc}, SHA-256 matches`);
+    const restored = sink.bytes();
+    for (let i = 0; i < real.offsets.length; i++) {
+      const offset = real.offsets[i], length = real.lengths[i], data = real.data[i];
+      assert.ok(restored.subarray(offset, offset + length).equals(shipped.subarray(data, data + length)), "undo checks the target bytes");
+      restored.set(shipped.subarray(data + length, data + 2 * length), offset);
+    }
+    assert.equal(sha(restored), release.vanilla.sha256, "PPF undo restores the exact vanilla image");
+    console.log("release PPF undo: vanilla SHA-256 restored");
   }
   if (fs.existsSync(modded)) {
     const m = await fs.openAsBlob(modded);
     const r = await A.inspect(m, real, {size: release.vanilla.size});
     console.log(`current ASS BIN: ${r.status} (${r.patchedMismatch} of ${r.records} records differ from the release)`);
-    assert.notEqual(r.status, "vanilla");
+    assert.equal(r.status, "patched", "current ASS BIN exactly matches the release patch");
+    assert.equal(sha(fs.readFileSync(modded)), release.result.sha256, "release targets the entire current BIN");
   }
   console.log("ASS 2.0 release tests passed.");
 })().catch(e => { console.error(e); process.exit(1); });

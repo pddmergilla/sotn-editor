@@ -47,12 +47,20 @@
     const tunable = new Uint8Array(on.length);
     for (const [start, length] of edit.tunable || []) tunable.fill(1, start, start + length);
     // onAlt: other byte forms that older releases used for the same hack; they read as on.
-    const onAlt = (edit.onAlt || []).map(hexBytes).filter(alt => alt && alt.length === on.length);
+    const onAlt = [], onAltTunable = [];
+    for (const form of edit.onAlt || []) {
+      const alt = hexBytes(typeof form === "string" ? form : form.bytes);
+      if (!alt || alt.length !== on.length) throw new Error(`Extra Hacks catalog: invalid alternate in ${feature.id}.`);
+      const mask = typeof form === "string" ? tunable : new Uint8Array(on.length);
+      if (typeof form !== "string") for (const [start, length] of form.tunable || []) mask.fill(1, start, start + length);
+      onAlt.push(alt);
+      onAltTunable.push(mask);
+    }
     // vanillaOn: the form written when the hack is added to a vanilla image (for example
     // damage values scaled for vanilla stats); it reads as on in either image.
     const vanillaOn = edit.vanillaOn ? hexBytes(edit.vanillaOn) : on;
     if (!vanillaOn || vanillaOn.length !== on.length) throw new Error(`Extra Hacks catalog: invalid vanillaOn in ${feature.id}.`);
-    if (vanillaOn !== on) onAlt.push(vanillaOn);
+    if (vanillaOn !== on) { onAlt.push(vanillaOn); onAltTunable.push(tunable); }
     // with: the form these bytes take when another hack is on too (for example the L2 shortcuts
     // spending hearts when Healing items use Hearts is on). Either form reads as on.
     let withEdit = null;
@@ -60,13 +68,14 @@
       withEdit = {feature: edit.with.feature, on: hexBytes(edit.with.on)};
       if (!withEdit.on || withEdit.on.length !== on.length) throw new Error(`Extra Hacks catalog: invalid with-bytes in ${feature.id}.`);
       onAlt.push(withEdit.on);
+      onAltTunable.push(tunable);
     }
     // Written when toggling but not used to decide whether the hack is present: edits made only of
     // tunable bytes (item-table values the Stats Editor can change), and install-only code that
     // other ASS features share (its ASS off bytes equal its on bytes).
     const detect = tunable.some(flag => !flag) && on.some((value, i) => value !== off[i]);
     // stats: an item cost the Stats Editor shows; the app writes it through the stats model.
-    return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, detect, with: withEdit, stats: !!edit.stats, free: !!edit.free};
+    return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, onAltTunable, detect, with: withEdit, stats: !!edit.stats, free: !!edit.free};
   }
 
   // Stage entity-layout records are 10 bytes: x, y, entity id, slot, params (u16 each). The map
@@ -171,7 +180,7 @@
     const exactOff = matches(actual, offBytes);
     if (exactOn && exactOff) return "same";
     if (exactOff) return "off";
-    if (exactOn || matches(actual, edit.on, edit.tunable) || edit.onAlt.some(alt => matches(actual, alt, edit.tunable))) return "on";
+    if (exactOn || matches(actual, edit.on, edit.tunable) || edit.onAlt.some((alt, i) => matches(actual, alt, edit.onAltTunable[i]))) return "on";
     if (matches(actual, offBytes, edit.tunable)) return "off";
     return "unknown";
   }
