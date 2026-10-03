@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SOTN — Test in browser</title>
+  <link rel="stylesheet" href="play.css">
+</head>
+<body>
+  <main>
+    <h1>Test in browser</h1>
+    <p id="status" role="status">Waiting for a test copy from the editor…</p>
+    <label>Keyboard layout
+      <select id="keyboardPreset">
+        <option value="classic">Classic — arrows + Z/X/A/S</option>
+        <option value="wasd">WASD + I/J/K/L</option>
+      </select>
+    </label>
+    <p id="keyboardHelp"></p>
+    <section id="setup" aria-label="Game setup">
+      <p>Your edits are already applied to this copy; your original disc stays unchanged.</p>
+      <div class="options">
+        <label>PS1 BIOS (optional)<input id="bios" type="file" accept=".bin"></label>
+        <span id="biosName">No BIOS selected; compatibility without one is not guaranteed.</span>
+        <button id="forgetBios" type="button">Forget BIOS</button>
+        <label>Original US Track 2 (optional)<input id="audio" type="file" accept=".bin"></label>
+        <span>For the standard two-file US rip, including its 2-second audio pregap.</span>
+        <label class="check"><input id="keepBuild" type="checkbox">Keep this test copy for page reloads (uses disc-sized browser storage)</label>
+      </div>
+      <div class="actions">
+        <button id="start" type="button" disabled>Start game</button>
+        <button id="download" type="button" disabled>Download test BIN</button>
+        <button id="resume" type="button" hidden>Load last test copy</button>
+        <button id="forgetBuild" type="button">Forget stored test copy</button>
+      </div>
+    </section>
+    <div id="game" aria-label="PlayStation emulator"></div>
+    <button id="stop" type="button" hidden>Save memory card &amp; stop</button>
+    <div id="stateControls" class="actions" hidden>
+      <button id="saveState" type="button">Save state</button>
+      <button id="loadState" type="button">Load state</button>
+      <button id="exportState" type="button">Export state</button>
+      <label>Import state <input id="importState" type="file" accept=".sotnstate"></label>
+    </div>
+    <p id="stateStatus" role="status"></p>
+    <p id="saveStatus" role="status"></p>
+    <details open>
+      <summary>Controls and saves</summary>
+      <p>Connect your controller and press a button to activate it, then click the game; use the emulator’s Controls menu to remap it.</p>
+      <p>Choose either keyboard layout above, before starting or while playing; your choice is remembered in this browser.</p>
+      <p>Save at an in-game save room for a memory-card save, shared across test builds; use Save memory card &amp; stop before closing this tab.</p>
+      <p>Save state / Load state keeps a snapshot for this exact build and BIOS; Export state / Import state transfers a checked .sotnstate backup.</p>
+      <p>Imported states must match the build and BIOS they came from; after changing game data, start fresh and load your memory card.</p>
+      <p>Saves stay in this browser on this site; clearing site data or private browsing can erase them, so use the emulator’s Export Save File / Import Save File menu for backups.</p>
+    </details>
+    <p class="muted">Emulator files load from the EmulatorJS CDN; your disc and BIOS stay local. Internet access is required. Close this tab to release game memory.</p>
+    <footer><a href="https://github.com/EmulatorJS/EmulatorJS/tree/v4.2.3" target="_blank" rel="noopener">EmulatorJS 4.2.3 source &amp; license</a> · <a href="https://github.com/EmulatorJS/pcsx_rearmed" target="_blank" rel="noopener">PCSX-ReARMed source</a></footer>
+  </main>
+  <script src="play-core.js"></script>
+  <script src="play-store.js"></script>
+  <script src="play.js"></script>
+</body>
+</html>

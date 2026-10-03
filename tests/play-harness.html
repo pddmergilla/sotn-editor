@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Browser play integration check</title>
+<h1>Browser play integration check</h1>
+<p>Developer check: loads a local image through the same disc parser and test-copy builder.</p>
+<label>Test disc <input id="disc" type="file" accept=".bin,.iso"></label>
+<button id="launch" disabled>Test loaded disc</button>
+<p id="result" role="status">Choose a disc.</p>
+<script src="../sotn-core.js"></script>
+<script src="../play-launcher.js"></script>
+<script>
+  let disc;
+  document.getElementById('disc').onchange=async event=>{
+    try{
+      disc=await SotnCore.DiscImage.open(event.target.files[0]);
+      document.getElementById('launch').disabled=false;
+      document.getElementById('result').textContent='Disc parsed; ready.';
+    }catch(error){document.getElementById('result').textContent=error.message;}
+  };
+  document.getElementById('launch').onclick=()=>SotnPlayLauncher.launch(async()=>({
+    blob:SotnCore.modifiedBlob(disc.file,[]),name:disc.file.name,sectorSize:disc.sectorSize,dataOffset:disc.dataOffset
+  }),text=>document.getElementById('result').textContent=text);
+</script>
+</html>

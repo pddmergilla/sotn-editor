@@ -31,12 +31,12 @@ Every edit can be undone with the toolbar Undo button or Ctrl+Z.
 
 ## Quick start
 
-1. Open the [hosted editor](https://pddmergilla.github.io/sotn-editor/) in desktop Chrome or Edge.
+1. Open the [hosted editor](https://pddmergilla.github.io/sotn-editor/) in desktop Chrome, Edge or Firefox.
 2. Select **Open SOTN BIN** and choose your disc image: a 2352-byte sector BIN or a 2048-byte sector ISO.
 3. Make your changes in any tab.
 4. Select **Build BIN** to save a new image, or **Export PPF3** to save a patch with only your changes.
 
-Test the result in an emulator before you share it.
+Select **▶ Test in browser** to run a patched copy without overwriting the source. This also works before making any edits. The separate play tab supports controllers, memory cards, and savestates; see [browser testing](docs/browser-testing.md).
 
 ### Run it locally
 
@@ -46,7 +46,7 @@ You need [Node.js](https://nodejs.org/) 22 or later. In the repository folder, r
 node serve.js
 ```
 
-Then open `http://127.0.0.1:8765` in desktop Chrome or Edge. Serve the folder like this rather than opening `index.html` from disk, because the ASS 2.0 build needs the page to be served over http.
+Then open `http://127.0.0.1:8765` in desktop Chrome, Edge or Firefox. Serve the folder like this rather than opening `index.html` from disk, because the ASS 2.0 build needs the page to be served over http.
 
 ## Compatibility
 
@@ -54,15 +54,16 @@ Then open `http://127.0.0.1:8765` in desktop Chrome or Edge. Serve the folder li
 - An already modded BIN can be the input. Exports then contain only the changes made in the editor.
 - Data the editor doesn't recognize is rejected rather than guessed. For example, Extra Hacks locks itself on images from other mods.
 - Raw 2352-byte sectors get recalculated EDC/ECC, so the output stays a valid disc image.
-- Opening and saving files uses the File System Access API, which is available in Chromium browsers.
+- Chrome and Edge use native open/save dialogs; Firefox opens files with a standard file picker and saves BINs and patches as downloads. The legacy Asset folder tools require Chrome or Edge.
 
 ## For developers
 
-The editor is plain HTML, CSS and JavaScript with no build step and no dependencies.
+The editor is plain HTML, CSS and JavaScript with no build step. Browser testing loads the pinned EmulatorJS 4.2.3 runtime and PCSX-ReARMed core from its CDN.
 
 | Path | Contents |
 |---|---|
 | `index.html`, `app.js`, `styles.css` | Page layout, tabs, disc loading and export |
+| `play*.js`, `play.html`, `play.css` | Patched-copy handoff, browser emulator, and saved test copies |
 | `sotn-core.js`, `disc-stage.js` | ISO9660 reading, stage overlays, EDC/ECC, PPF3 output |
 | `entity-*.js` | Entity catalog, templates and editing model |
 | `stats-*.js`, `shop-*.js` | Stats and Library shop models and UI |

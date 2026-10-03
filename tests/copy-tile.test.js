@@ -89,6 +89,14 @@ const document={
 };
 const sandbox={window,document,console,alert:()=>{},confirm:()=>true,
   showOpenFilePicker:async()=>[{getFile:async()=>({name:"test.bin"})}]};
+const core=require("../sotn-core.js");
+disc.file=new Blob([new Uint8Array(64)]);disc.sectorSize=2048;disc.dataOffset=0;
+stage.record={extent:0};stage.bytes=new Uint8Array(64);
+window.SotnCore.modifiedBlob=core.modifiedBlob;
+window.SotnCore.changedSectors=async(_,record,before,after)=>[{start:0,modified:after}];
+window.SotnStage.buildOverlay=stage=>{const bytes=stage.bytes.slice();bytes[0]=stage.rooms[0].entityGfxId;return bytes;};
+let testBuild;
+window.SotnPlayLauncher={launch:async builder=>{testBuild=await builder();}};
 vm.runInNewContext(fs.readFileSync(require.resolve("../entity-catalog.js"),"utf8"),sandbox);
 vm.runInNewContext(fs.readFileSync(require.resolve("../entity-editor-model.js"),"utf8"),sandbox);
 vm.runInNewContext(fs.readFileSync(require.resolve("../entity-templates.js"),"utf8"),sandbox);
@@ -96,10 +104,17 @@ vm.runInNewContext(fs.readFileSync(require.resolve("../app.js"),"utf8"),sandbox)
 
 (async()=>{
   await get("openDisc").onclick();
+  assert.equal(get("testGame").disabled,false);
+  await get("testGame").onclick();
+  assert.equal(testBuild.blob.size,disc.file.size);
+  assert.deepEqual(new Uint8Array(await testBuild.blob.arrayBuffer()),new Uint8Array(64));
   assert.equal(get("templateRoom").disabled,false);
   get("templateRoom").value="1";get("templateRoom").onchange();
   assert.equal(stage.rooms[0].entityGfxId,3);
   assert.equal(get("buildBin").disabled,false);
+  await get("testGame").onclick();
+  assert.equal(new Uint8Array(await testBuild.blob.arrayBuffer())[0],3);
+  assert.equal(new Uint8Array(await disc.file.arrayBuffer())[0],0);
   assert(get("newEntityType").children.some(group=>group.children.some(option=>option.value.startsWith("62:"))));
   get("undoEdit").onclick();
   assert.equal(stage.rooms[0].entityGfxId,0);

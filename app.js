@@ -37,6 +37,7 @@
     state.dirty = mapDirty || !!state.statsModel?.dirty() || !!window.SotnExtraHacksUI?.hasChanges();
     const hasChanges=state.dirty;
     $("buildBin").disabled = !hasChanges || !state.disc;
+    $("testGame").disabled = !state.disc;
     $("exportPpf").disabled = !hasChanges || !state.disc;
     $("saveAll").disabled = !mapDirty || !!state.discStage;
   }
@@ -227,8 +228,23 @@
   }
 
   async function chooseFile() {
-    const [h]=await showOpenFilePicker({multiple:false});
-    return {handle:h,file:await h.getFile()};
+    if(typeof showOpenFilePicker === "function") {
+      const [h]=await showOpenFilePicker({multiple:false});
+      return {handle:h,file:await h.getFile()};
+    }
+    return new Promise((resolve,reject)=>{
+      const input=document.createElement("input");
+      input.type="file";input.hidden=true;
+      const finish=file=>{
+        input.remove();
+        if(file)resolve({handle:null,file});
+        else reject(new DOMException("No file selected.","AbortError"));
+      };
+      input.onchange=()=>finish(input.files?.[0]);
+      input.oncancel=()=>finish(null);
+      document.body.appendChild(input);
+      try{input.click();}catch(error){input.remove();reject(error);}
+    });
   }
 
   async function openDisc() {
@@ -1038,7 +1054,7 @@
     }catch(e){console.error(e);alert("Save failed: "+(e.message||e));}
   }
 
-  async function collectChanges() {
+  async function collectChanges(allowUnchanged=false) {
     if(!state.disc)throw new Error("Load a SOTN BIN first.");
     const files=new Map();
     for(const stage of state.discStages.values()) {
@@ -1067,18 +1083,18 @@
     const changes=[];
     for(const file of files.values())changes.push(...await C.changedSectors(state.disc,file.record,file.before,file.after));
     changes.sort((a,b)=>a.start-b.start);
-    if(!changes.length)throw new Error("There are no byte changes to export.");
+    if(!changes.length&&!allowUnchanged)throw new Error("There are no byte changes to export.");
     return changes;
   }
   async function saveBlob(blob,name) {
     if(window.showSaveFilePicker) {
       const handle=await showSaveFilePicker({suggestedName:name});
-      if(await handle.isSameEntry(state.discHandle))throw new Error("Choose a different file name so the source BIN stays intact.");
+      if(state.discHandle&&await handle.isSameEntry(state.discHandle))throw new Error("Choose a different file name so the source BIN stays intact.");
       const stream=await handle.createWritable();
       await stream.write(blob);await stream.close();
     } else {
       const url=URL.createObjectURL(blob),a=document.createElement("a");
-      a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+      a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
     }
   }
   async function exportResult(kind) {
@@ -1092,6 +1108,10 @@
     } catch(e){if(e.name!=="AbortError"){console.error(e);if(e.extraHackConflict)window.SotnExtraHacksUI?.setConflict(e.message);setStatus(e.message||String(e));alert(e.message||e);}}
   }
 
+  if(typeof showDirectoryPicker !== "function") {
+    $("openFolder").disabled=true;
+    $("openFolder").title="Asset folders require Chrome or Edge; Open SOTN BIN works here.";
+  }
   $("openFolder").onclick=openAreaFolder;$("openDisc").onclick=openDisc;$("openStageGfx").onclick=openStageGraphics;$("saveAll").onclick=saveAll;
   $("undoEdit").onclick=undoEdit;
   document.addEventListener("keydown",e=>{
@@ -1106,6 +1126,16 @@
   });
   $("areaSelect").onchange=e=>selectDiscArea(e.target.value);
   $("buildBin").onclick=()=>exportResult("bin");
+  $("testGame").onclick=()=>window.SotnPlayLauncher.launch(async()=>{
+    finishPainting();finishEntityDrag();
+    setStatus("Preparing a patched test copy...");
+    const disc=state.disc,name=state.discName;
+    const changes=await collectChanges(true);
+    if(state.disc!==disc)throw new Error("The source changed; please test again.");
+    const blob=C.modifiedBlob(disc.file,changes);
+    setStatus(`Test copy ready (${changes.length} changed sectors). Your source is unchanged.`);
+    return {blob,name,sectorSize:disc.sectorSize,dataOffset:disc.dataOffset};
+  },setStatus);
   $("exportPpf").onclick=()=>exportResult("ppf");
   ["showFg","showBg","showEntities","showGrid","showCollision"].forEach(id=>$(id).onchange=redraw);
   $("paintLayer").onchange=()=>{redrawPalette();updateTileInfo();};
