@@ -19,6 +19,7 @@ node tests/spell-mp.test.js
 node tests/file-picker.test.js
 node tests/extra-hacks-ui.test.js
 node tests/ass2.test.js
+node tests/ass2-downloads.test.js
 node tests/play.test.js
 node tests/play-page.test.js
 ```
@@ -28,6 +29,8 @@ node tests/play-page.test.js
 `spell-mp.test.js` checks exported spell-cost bytes and runs the recognized CastSpell instructions on vanilla and the current modded BIN: Soul Steal at 1 MP accepts 29 current MP and spends 1, with max MP still 29. It also checks insufficient MP, zero cost, and increased costs. This does not verify combo input or emulator loading; boot the edited BIN afresh and load a memory-card save rather than an old savestate.
 
 `ass2.test.js` checks the PPF parser and windowed builder on a synthetic image, that the shipped PPF matches the release data, and, when the images are present, that vanilla builds to the exact ASS 2.0 BIN.
+
+`ass2-downloads.test.js` checks matching release downloads, zero counts, missing releases, rate limits, network errors, mismatched patches, and publishing/retry behavior without contacting GitHub. `node tools/ass2/publish-release.js --check` verifies the shipped patch without publishing. After pushing, confirm the release workflow succeeds and the ASS tab shows this build's count; try a download and check GitHub's updated count. Browser builds and fallback downloads are excluded.
 
 `play.test.js` checks disc/BIOS archives, all-byte build identities, source preservation, controller defaults, origin/source/token checks, popup handling, and failed builds. `tests/play-harness.html` exercises the real disc parser and browser handoff using an ordinary file input for automation environments that cannot operate the editor's native picker.
 

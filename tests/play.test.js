@@ -15,14 +15,14 @@ async function archiveEntry(blob){
   return {name:new TextDecoder().decode(bytes.slice(30,start)),data:bytes.slice(start,central),crc:view.getUint32(14,true)};
 }
 function launcher({blocked=false,protocol="http:"}={}){
-  const handlers=new Map(),messages=[],statuses=[];
+  const handlers=new Map(),messages=[],statuses=[],alerts=[];
   const target={closed:false,focus(){this.focused=true;},postMessage:(message,origin)=>messages.push({message,origin})};
-  const window={open:()=>blocked?null:target,addEventListener:(name,fn)=>handlers.set(name,fn),removeEventListener:name=>handlers.delete(name)};
+  const window={open:()=>blocked?null:target,alert:text=>alerts.push(text),addEventListener:(name,fn)=>handlers.set(name,fn),removeEventListener:name=>handlers.delete(name)};
   vm.runInNewContext(fs.readFileSync(require.resolve("../play-launcher.js"),"utf8"),{
     window,document:{currentScript:{src:"http://localhost/subpath/play-launcher.js"}},URL,crypto,
     location:{origin:"http://localhost",protocol},setTimeout,clearTimeout
   });
-  return {target,messages,statuses,launch:builder=>window.SotnPlayLauncher.launch(builder,text=>statuses.push(text)),
+  return {target,messages,statuses,alerts,launch:builder=>window.SotnPlayLauncher.launch(builder,text=>statuses.push(text)),
     ready(overrides={}){handlers.get("message")?.({source:target,origin:"http://localhost",data:{type:"sotn-play-ready",token:this.token},...overrides});},
     window,handlers};
 }
@@ -73,7 +73,11 @@ function launcher({blocked=false,protocol="http:"}={}){
   assert.equal(l.messages[0].origin,"http://localhost");assert.equal(l.handlers.size,0);
   await l.launch(async()=>{built++;});assert.equal(built,1);assert.equal(l.target.focused,true);
   const b=launcher({blocked:true});await b.launch(async()=>{throw Error("should not build");});assert.match(b.statuses[0],/pop-ups/);
-  const f=launcher({protocol:"file:"});await f.launch(async()=>{throw Error("should not build");});assert.match(f.statuses[0],/serve/);
+  const f=launcher({protocol:"file:"});
+  f.window.open=()=>{throw Error("should not open");};
+  await f.launch(async()=>{throw Error("should not build");});
+  assert.match(f.statuses[0],/Start Editor.cmd/);assert.deepEqual(f.alerts,f.statuses);
+  assert.match(f.alerts[0],/export them before switching/);
   const failure=launcher();await failure.launch(async()=>{throw Error("Invalid edit");});
   assert.match(failure.statuses[0],/Invalid edit/);assert.equal(failure.messages[0].message.type,"sotn-play-error");
   console.log("Browser play checks passed: archives, identities, source preservation, controls, handoff and failure paths.");

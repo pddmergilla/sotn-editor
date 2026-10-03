@@ -5,7 +5,8 @@
   window.SotnPlayLauncher={async launch(build,status){
     if(pending)return;
     if(location.protocol!=="http:"&&location.protocol!=="https:"){
-      status("Run the editor with node serve.js or open the hosted editor to test games.");return;
+      const message="Test needs the editor opened through its local server. Double-click Start Editor.cmd in the editor folder, then reopen your BIN in the browser that opens. Keep the server window open. Unsaved edits stay in this tab; export them before switching.";
+      status(message);window.alert(message);return;
     }
     if(player&&!player.closed){player.focus();status("Close the previous play tab before building another test copy.");return;}
     const token=crypto.randomUUID();

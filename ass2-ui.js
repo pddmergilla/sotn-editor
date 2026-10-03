@@ -28,6 +28,20 @@
   const state = {disc: null, name: "", handle: null, ppf: null, ppfError: null, check: null, checking: null, busy: false, built: null};
   let rendered = false;
 
+  async function loadDownloads() {
+    const count = $("ass2DownloadCount");
+    try {
+      const result = await window.SotnAss2Downloads.load(R);
+      for (const link of document.querySelectorAll(".ass2PpfDownload")) {
+        link.href = result.url;
+        link.removeAttribute("download");
+      }
+      count.textContent = `${fmt(result.count)} PPF downloads for ${VERSION}.`;
+    } catch {
+      count.textContent = "Download count unavailable.";
+    }
+  }
+
   async function loadPpf() {
     if (state.ppf || state.ppfError) return state.ppf;
     try {
@@ -170,7 +184,7 @@
         el("h2", {class: "ass2Title"}, "Alternate Scarlet Symphony ", el("span", {text: "2.0"})),
         el("p", {class: "ass2Tagline", text: "The castle you know, rebuilt to hit back. Harder fights, bosses that won't flinch, a Richter with a new brain, and an arsenal reworked down to the last Holy Water flame."}),
         el("div", {class: "ass2Cta"},
-          el("a", {class: "ass2Button primary", href: R.ppf.file, download: PPF_DOWNLOAD}, "Download the PPF ", el("small", {text: `${VERSION} · ${mb(R.ppf.size)}`})),
+          el("a", {class: "ass2Button primary ass2PpfDownload", href: R.ppf.file, download: PPF_DOWNLOAD}, "Download the PPF ", el("small", {text: `${VERSION} · ${mb(R.ppf.size)}`})),
           el("a", {class: "ass2Button", href: "#ass2Install", onclick: e => { e.preventDefault(); $("ass2Install")?.scrollIntoView({behavior: "smooth"}); }}, "Build it from your vanilla BIN")),
         el("p", {class: "ass2Fine", text: "For the US release (Track 1). You need your own copy of the game: the patch only holds the mod's changes."})),
       el("div", {class: "ass2Ribbon"},
@@ -242,6 +256,8 @@
       el("h2", {class: "ass2H", text: "Get it"}),
       el("p", {class: "ass2Build"}, el("span", {class: "ass2BuildTag", text: "Current build"}), el("strong", {text: VERSION}),
         el("span", {class: "ass2Fine", text: `Released ${R.built}. Rebuild or re-download when the build number changes.`})),
+      el("p", {class: "ass2Fine", id: "ass2DownloadCount", "aria-live": "polite", text: "Checking download count…"}),
+      el("p", {class: "ass2Fine", text: "Counts cover PPF downloads from this release; browser builds and earlier website downloads are excluded."}),
       el("div", {class: "ass2InstallGrid"},
         el("div", {class: "ass2Panel"},
           el("h3", {text: "Build it here"}),
@@ -255,7 +271,7 @@
         el("div", {class: "ass2Panel"},
           el("h3", {text: "Or patch it yourself"}),
           el("ol", {class: "ass2Steps"},
-            el("li", {}, el("a", {href: R.ppf.file, download: PPF_DOWNLOAD, text: `Download the ${VERSION} PPF`}), ` (${mb(R.ppf.size)}).`),
+            el("li", {}, el("a", {class: "ass2PpfDownload", href: R.ppf.file, download: PPF_DOWNLOAD, text: `Download the ${VERSION} PPF`}), ` (${mb(R.ppf.size)}).`),
             el("li", {}, "Apply it to ", el("code", {text: R.vanilla.name}), " with PPF-O-Matic or any other PPF3 patcher."),
             el("li", {}, "Point your .cue at the patched Track 1 and play. ", el("button", {type: "button", class: "ass2Link", onclick: () => downloadCue(R.result.name), text: "Download a .cue"}))),
           el("dl", {class: "ass2Hashes"},
@@ -281,6 +297,7 @@
     if (!rendered) {
       view.replaceChildren(el("div", {class: "ass2Page"}, hero(), features(), gallery(), hackList(), install(), credits()));
       rendered = true;
+      loadDownloads();
     }
     updateBuild();
     checkDisc();

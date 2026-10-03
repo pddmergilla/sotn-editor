@@ -2,6 +2,8 @@
 
 Open your BIN, make edits, then select **▶ Test in browser**. The editor validates the same changes as Build BIN, including repaired sector checksums, and sends a separate patched Blob to a play tab. The source file is never written. Unchanged discs can also be tested; a bad edit stops the launch rather than silently running the original.
 
+If you opened `index.html` directly, Test shows a message explaining how to start the local server. On Windows, double-click **Start Editor.cmd** in the editor folder and keep that window open, then reopen your BIN in the browser that opens. Export unsaved edits before switching tabs. Other systems can run `node serve.js` and open `http://127.0.0.1:8765`.
+
 In the play tab:
 
 1. Optionally select your own 512 KB PS1 BIOS, such as `scph5501.bin`; it is remembered in this browser. No BIOS is supplied, and booting without one is not guaranteed.
