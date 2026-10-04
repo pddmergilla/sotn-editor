@@ -18,9 +18,9 @@ function element(id = "") {
   };
 }
 
-const markerArcs=[];
+const markerArcs=[],brushRects=[];
 const context = {
-  save(){},restore(){},clearRect(){},fillRect(){},strokeRect(){},drawImage(){},
+  save(){},restore(){},clearRect(){},fillRect(){},strokeRect(...args){brushRects.push(args);},drawImage(){},
   beginPath(){},arc(x,y,radius){markerArcs.push({x,y,radius});},fill(){},stroke(){},fillText(){},moveTo(){},lineTo(){}
 };
 const elements = new Map();
@@ -201,6 +201,8 @@ vm.runInNewContext(fs.readFileSync(require.resolve("../app.js"),"utf8"),sandbox)
   copy.onclick();
   assert.equal(copy.attributes["aria-pressed"],"true");
   canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  assert.equal(copy.attributes["aria-pressed"],"true");
+  windowHandlers.mouseup();
   assert.equal(get("tileId").value,11);
   assert.equal(copy.attributes["aria-pressed"],"false");
   assert.equal(get("paintLayer").value,"fg");
@@ -208,6 +210,7 @@ vm.runInNewContext(fs.readFileSync(require.resolve("../app.js"),"utf8"),sandbox)
 
   copy.onclick();
   canvas.handlers.mousedown({button:0,clientX:24,clientY:8});
+  windowHandlers.mouseup();
   assert.equal(get("tileId").value,23);
   assert.equal(get("paintLayer").value,"bg");
   assert.equal(copy.attributes["aria-pressed"],"false");
@@ -219,6 +222,131 @@ vm.runInNewContext(fs.readFileSync(require.resolve("../app.js"),"utf8"),sandbox)
   assert.equal(get("undoEdit").disabled,false);
   get("undoEdit").onclick();
   assert.equal(bg[2],0);
+
+  get("paintLayer").value="fg";get("paintLayer").onchange();
+  fg[0]=11;fg[1]=0;fg[16]=12;fg[17]=13;
+  const beforeChunk=fg.slice();
+  const priorSaveDisabled=get("buildBin").disabled;
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  windowHandlers.mousemove({clientX:24,clientY:24});
+  assert.equal(copy.attributes["aria-pressed"],"true");
+  assert.deepEqual(fg,beforeChunk);
+  windowHandlers.mouseup({button:0,clientX:24,clientY:24});
+  assert.equal(copy.attributes["aria-pressed"],"false");
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  assert.equal(get("buildBin").disabled,priorSaveDisabled);
+  fg[4]=31;fg[5]=31;fg[20]=31;fg[21]=31;
+  const beforePaint=fg.slice();
+  brushRects.length=0;
+  canvas.handlers.mousemove({clientX:72,clientY:8});
+  assert(brushRects.some(rect=>rect.join() === "65,1,30,30"));
+  assert.deepEqual(fg,beforePaint);
+
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:24,clientY:24});
+  windowHandlers.mousemove({clientX:-100,clientY:-100});
+  windowHandlers.mouseup();
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  assert.deepEqual(fg,beforePaint);
+
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  windowHandlers.blur();windowHandlers.mouseup();
+  assert.equal(copy.attributes["aria-pressed"],"true");
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  documentHandlers.keydown({key:"Escape"});
+
+  get("paintLayer").value="bg";get("paintLayer").onchange();
+  assert.doesNotMatch(get("tileInfo").textContent,/Copied brush/);
+  get("showFg").checked=false;
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  windowHandlers.mouseup({button:0,clientX:24,clientY:24});
+  assert.equal(get("paintLayer").value,"bg");
+  const beforeBackground=bg.slice();
+  canvas.handlers.mousedown({button:0,clientX:72,clientY:8});
+  windowHandlers.mouseup();
+  assert.deepEqual([bg[4],bg[5],bg[20],bg[21]],[22,23,0,0]);
+  assert.deepEqual(fg,beforePaint);
+  get("undoEdit").onclick();
+  assert.deepEqual(bg,beforeBackground);
+  get("showFg").checked=true;
+  get("tilePalette").handlers.mousedown({clientX:8,clientY:8});
+  assert.doesNotMatch(get("tileInfo").textContent,/Copied brush/);
+
+  get("paintLayer").value="fg";get("paintLayer").onchange();
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  windowHandlers.mouseup({button:0,clientX:24,clientY:24});
+  const originalDefinition=stage.tiledefs.get(3);
+  stage.tiledefs.set(4,{...originalDefinition,name:"other-definition"});
+  stage.layers.push({...stage.layers[0],fg:{...stage.layers[0].fg,tiledef:"tiledef:4"}});
+  stage.rooms[1].layerId=1;
+  await get("roomList").children[1].onclick();
+  assert.doesNotMatch(get("tileInfo").textContent,/Copied brush/);
+  stage.rooms[1].layerId=0;
+  await get("roomList").children[0].onclick();
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  windowHandlers.mouseup({button:0,clientX:24,clientY:24});
+  canvas.handlers.mousedown({button:0,clientX:72,clientY:8});
+  canvas.handlers.mousemove({clientX:104,clientY:8});
+  windowHandlers.mouseup();
+  assert.deepEqual([fg[4],fg[5],fg[20],fg[21]],[11,0,12,13]);
+  assert.deepEqual([fg[6],fg[7],fg[22],fg[23]],[11,0,12,13]);
+  get("undoEdit").onclick();
+  assert.deepEqual(fg,beforePaint);
+  assert.equal(get("buildBin").disabled,priorSaveDisabled);
+
+  canvas.handlers.mousedown({button:0,clientX:72,clientY:8});
+  canvas.handlers.mousemove({clientX:88,clientY:8});
+  windowHandlers.mouseup();
+  assert.deepEqual([fg[4],fg[5],fg[6],fg[20],fg[21],fg[22]],[11,11,0,12,12,13]);
+  get("undoEdit").onclick();
+  assert.deepEqual(fg,beforePaint);
+
+  canvas.handlers.mousedown({button:0,clientX:248,clientY:248});
+  windowHandlers.mouseup();
+  assert.equal(fg[255],11);
+  assert.equal(fg[240],beforePaint[240]);
+  get("undoEdit").onclick();
+  assert.deepEqual(fg,beforePaint);
+
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:24,clientY:24});
+  windowHandlers.mousemove({clientX:8,clientY:8});
+  windowHandlers.mouseup();
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  await get("roomList").children[1].onclick();
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  canvas.handlers.mousedown({button:0,clientX:72,clientY:8});
+  windowHandlers.mouseup();
+  assert.deepEqual([fg[4],fg[5],fg[20],fg[21]],[11,0,12,13]);
+  get("undoEdit").onclick();
+  assert.deepEqual(fg,beforePaint);
+
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:8,clientY:8});
+  windowHandlers.mousemove({clientX:1000,clientY:1000});
+  documentHandlers.keydown({key:"Escape"});
+  windowHandlers.mouseup();
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  assert.deepEqual(fg,beforePaint);
+
+  get("zoomIn").onclick();
+  copy.onclick();
+  canvas.handlers.mousedown({button:0,clientX:5,clientY:5});
+  windowHandlers.mouseup({button:0,clientX:25,clientY:25});
+  assert.match(get("tileInfo").textContent,/2 × 2/);
+  get("zoomOut").onclick();
+  get("tileId").value="14";get("tileId").onchange();
+  assert.doesNotMatch(get("tileInfo").textContent,/Copied brush/);
+  canvas.handlers.mousedown({button:0,clientX:72,clientY:8});
+  windowHandlers.mouseup();
+  assert.equal(fg[4],14);assert.equal(fg[5],31);
+  get("undoEdit").onclick();
+  assert.deepEqual(fg,beforePaint);
 
   copy.onclick();
   canvas.handlers.mousedown({button:0,clientX:300,clientY:8});

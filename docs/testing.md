@@ -29,6 +29,8 @@ node tests/play-card.test.js
 
 `file-picker.test.js` checks native and fallback file selection, cancel/retry, downloads, and source-file protection. Manually verify Open SOTN BIN, Build BIN and Export PPF3 in Firefox.
 
+`copy-tile.test.js` checks rectangle capture on release, reverse drags, selection cancellation, zoom, foreground and background chunks, empty tiles, edge clipping, overlapping stamps, preview bounds, grouped undo, single-tile reset, and clearing chunks when a room uses different tile definitions. Browser-verified locally on 2026-10-04 with the current ASS BIN: a 4 × 4 rectangle copies on release, its artwork appears in the cursor preview, clicking and dragging paint the chunk, and one Undo restores the clean map after either action.
+
 `spell-mp.test.js` checks exported spell-cost bytes and runs the recognized CastSpell instructions on vanilla and the current modded BIN: Soul Steal at 1 MP accepts 29 current MP and spends 1, with max MP still 29. It also checks insufficient MP, zero cost, and increased costs. This does not verify combo input or emulator loading; boot the edited BIN afresh and load a memory-card save rather than an old savestate.
 
 `ass2.test.js` checks the PPF parser and windowed builder on a synthetic image, that the shipped PPF matches the release data, and, when the images are present, that vanilla builds to the exact ASS 2.0 BIN.

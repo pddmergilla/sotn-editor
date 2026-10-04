@@ -17,12 +17,14 @@
     disc:null, discHandle:null, discName:null, discStage:null, discStages:new Map(), areaCatalog:[],
     zoom:1, mode:"tiles", copyTileActive:false, copyCollisionActive:false, selectedEntity:null, draggingEntity:false,
     painting:false, paintStroke:null, entityDrag:null, pan:null, dirty:false, tileCanvasCache:new Map(), undoStack:[],
+    tileBrush:null, copySelection:null, brushHover:null,
     tab:"map", statsModel:null
   };
 
   const $ = id => document.getElementById(id);
   const canvas = $("mapCanvas");
   const ctx = canvas.getContext("2d", {alpha:true});
+  const mapBase = document.createElement("canvas");
   const paletteCanvas = $("tilePalette");
   const pctx = paletteCanvas.getContext("2d", {alpha:true});
 
@@ -205,6 +207,8 @@
   }
 
   async function selectRoom(i) {
+    finishPainting();
+    state.brushHover=null;
     setCopyTile(false);
     setCopyCollision(false);
     state.roomIndex=i; state.room=state.rooms[i]; state.selectedEntity=null;
@@ -216,6 +220,7 @@
     state.bgEntry=lr.bg?.data?await loadTilemap(lr.bg.data):null;
     state.fgTileDef=lr.fg?.tiledef?await loadTileDef(lr.fg.tiledef):null;
     state.bgTileDef=lr.bg?.tiledef?await loadTileDef(lr.bg.tiledef):null;
+    if(state.tileBrush&&state.tileBrush.td!==currentPaintLayer().td)state.tileBrush=null;
     updateCollisionAvailability();
     refreshEntityFields(); redraw(); redrawPalette();
     $("canvasWrap").scrollTop=0;
@@ -533,6 +538,40 @@
     if($("showBg").checked)drawTileLayer(state.bgEntry,lr.bg,state.bgTileDef,1);
     if($("showFg").checked)drawTileLayer(state.fgEntry,lr.fg,state.fgTileDef,1);
     drawCollision();drawGrid();drawEntities();$("zoomLabel").textContent=`${Math.round(state.zoom*100)}%`;
+    mapBase.width=canvas.width;mapBase.height=canvas.height;
+    mapBase.getContext("2d").drawImage(canvas,0,0);
+    drawBrushOverlay();
+  }
+
+  function drawBrushOverlay() {
+    if(!state.room||state.mode!=="tiles")return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(mapBase,0,0);
+    const s=TILE_PX*state.zoom,selection=state.copySelection;
+    ctx.save();ctx.imageSmoothingEnabled=false;
+    ctx.strokeStyle="#ffd45a";ctx.lineWidth=2;
+    if(selection) {
+      const bounds=copyBounds(selection);
+      ctx.fillStyle="rgba(255,212,90,.2)";
+      ctx.fillRect(bounds.x*s,bounds.y*s,bounds.width*s,bounds.height*s);
+      ctx.strokeRect(bounds.x*s+1,bounds.y*s+1,bounds.width*s-2,bounds.height*s-2);
+    } else if(!state.copyTileActive&&state.tileBrush&&state.brushHover) {
+      const cur=currentPaintLayer(),d=layerDims(cur.layer),brush=state.tileBrush;
+      if(d&&cur.td===brush.td) {
+        const {x,y}=state.brushHover;
+        const width=Math.min(brush.width,d.tilesW-x),height=Math.min(brush.height,d.tilesH-y);
+        ctx.globalAlpha=.65;
+        for(let row=0;row<height;row++)for(let col=0;col<width;col++) {
+          if((y+row)*d.tilesW+x+col>=cur.entry.values.length)continue;
+          const id=brush.values[row*brush.width+col];
+          const tc=id?makeTileCanvas(cur.td,id,!!(cur.layer.flags&CLUT_ALT_FLAG)):null;
+          if(tc)ctx.drawImage(tc,(x+col)*s,(y+row)*s,s,s);
+          else {ctx.fillStyle=id?fallbackColor(id):"#111720";ctx.fillRect((x+col)*s,(y+row)*s,s,s);}
+        }
+        ctx.globalAlpha=1;
+        ctx.strokeRect(x*s+1,y*s+1,width*s-2,height*s-2);
+      }
+    }
+    ctx.restore();
   }
 
   function currentPaintLayer(which=$("paintLayer").value) {
@@ -560,6 +599,7 @@
   }
 
   function updateTileInfo(){
+    if(state.tileBrush){$("tileInfo").textContent=`Copied brush: ${state.tileBrush.width} × ${state.tileBrush.height} tiles`;return;}
     const cur=currentPaintLayer(),td=cur.td,id=Number($("tileId").value)||0;
     if(!td||id>=td.tiles.length){$("tileInfo").textContent="No tile definition.";return;}
     $("tileInfo").textContent=`cell 0x${td.tiles[id].toString(16).padStart(2,"0")} • page ${td.pages[id]} • CLUT 0x${td.cluts[id].toString(16).padStart(2,"0")}`;
@@ -569,21 +609,23 @@
     const r=paletteCanvas.getBoundingClientRect(),sx=paletteCanvas.width/r.width,sy=paletteCanvas.height/r.height;
     const x=(e.clientX-r.left)*sx,y=(e.clientY-r.top)*sy,cell=32,cols=8;
     const id=Math.floor(y/cell)*cols+Math.floor(x/cell);
-    $("tileId").value=id;redrawPalette();
+    state.tileBrush=null;$("tileId").value=id;redrawPalette();redraw();
   });
 
   function mousePos(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
   function tileAt(pos,which=$("paintLayer").value) {
     const cur=currentPaintLayer(which);if(!cur.entry||!cur.layer)return null;
     const d=layerDims(cur.layer),s=TILE_PX*state.zoom,x=Math.floor(pos.x/s),y=Math.floor(pos.y/s);
-    if(x<0||y<0||x>=d.tilesW||y>=d.tilesH)return null;
+    if(x<0||y<0||x>=d.tilesW||y>=d.tilesH||y*d.tilesW+x>=cur.entry.values.length)return null;
     return {...cur,which,x,y,idx:y*d.tilesW+x};
   }
   function setCopyTile(active) {
+    finishPainting();state.copySelection=null;
     state.copyTileActive=active;
     $("copyTile").classList.toggle("active",active);
     $("copyTile").setAttribute("aria-pressed",String(active));
-    canvas.classList.toggle("copying",active);
+    canvas.classList.toggle("copying",active||state.copyCollisionActive);
+    drawBrushOverlay();
   }
   function setCopyCollision(active) {
     state.copyCollisionActive=active;
@@ -606,15 +648,39 @@
     setCopyCollision(false);
     setStatus(`Copied collision ${value} from tile ${id}.`);
   }
-  function copyTileAt(pos) {
+  function startTileCopy(pos) {
     const fg=$("showFg").checked?tileAt(pos,"fg"):null;
     const bg=$("showBg").checked?tileAt(pos,"bg"):null;
     const t=[fg,bg].find(hit=>hit&&hit.entry.values[hit.idx]!==0)||tileAt(pos);
     if(!t)return;
-    $("paintLayer").value=t.which;
-    $("tileId").value=t.entry.values[t.idx];
+    state.copySelection={...t,endX:t.x,endY:t.y};
+    state.brushHover=null;drawBrushOverlay();
+  }
+  function moveTileCopy(pos) {
+    const selection=state.copySelection;if(!selection)return;
+    const d=layerDims(selection.layer),s=TILE_PX*state.zoom;
+    selection.endX=Math.max(0,Math.min(d.tilesW-1,Math.floor(pos.x/s)));
+    selection.endY=Math.max(0,Math.min(d.tilesH-1,Math.floor(pos.y/s)));
+    drawBrushOverlay();
+  }
+  function copyBounds(selection) {
+    return {x:Math.min(selection.x,selection.endX),y:Math.min(selection.y,selection.endY),
+      width:Math.abs(selection.x-selection.endX)+1,height:Math.abs(selection.y-selection.endY)+1};
+  }
+  function finishTileCopy() {
+    const selection=state.copySelection;if(!selection)return;
+    const bounds=copyBounds(selection),d=layerDims(selection.layer);
+    const values=new Uint16Array(bounds.width*bounds.height);
+    for(let y=0;y<bounds.height;y++)for(let x=0;x<bounds.width;x++) {
+      const idx=(bounds.y+y)*d.tilesW+bounds.x+x;
+      if(idx>=selection.entry.values.length){state.copySelection=null;drawBrushOverlay();return;}
+      values[y*bounds.width+x]=selection.entry.values[idx];
+    }
+    state.tileBrush={width:bounds.width,height:bounds.height,values,td:selection.td};
+    $("paintLayer").value=selection.which;$("tileId").value=values[0];
+    state.brushHover={x:selection.endX,y:selection.endY};
     setCopyTile(false);redrawPalette();
-    setStatus(`Copied tile ${$("tileId").value} from ${t.which==="fg"?"foreground":"background"}.`);
+    setStatus(`Copied ${bounds.width} × ${bounds.height} tiles from ${selection.which==="fg"?"foreground":"background"}. Click or drag to paint.`);
   }
   function entityAt(pos) {
     if(!state.room)return null;let best=null,bestD=144;
@@ -623,15 +689,23 @@
   }
   function paintAt(pos) {
     const t=tileAt(pos);if(!t)return;
-    const value=Number($("tileId").value)&0xffff,old=t.entry.values[t.idx];
-    if(old===value)return;
-    const stroke=state.paintStroke;
-    if(stroke) {
-      if(!stroke.changes.has(t.entry))stroke.changes.set(t.entry,new Map());
-      if(!stroke.dirty.has(t.entry))stroke.dirty.set(t.entry,t.entry.dirty);
-      if(!stroke.changes.get(t.entry).has(t.idx))stroke.changes.get(t.entry).set(t.idx,old);
+    const brush=state.tileBrush,d=layerDims(t.layer),stroke=state.paintStroke;
+    if(brush&&brush.td!==t.td)return;
+    let changed=false;
+    for(let y=0;y<(brush?.height||1);y++)for(let x=0;x<(brush?.width||1);x++) {
+      if(t.x+x>=d.tilesW||t.y+y>=d.tilesH)continue;
+      const idx=(t.y+y)*d.tilesW+t.x+x;
+      if(idx>=t.entry.values.length)continue;
+      const value=brush?brush.values[y*brush.width+x]:Number($("tileId").value)&0xffff;
+      const old=t.entry.values[idx];if(old===value)continue;
+      if(stroke) {
+        if(!stroke.changes.has(t.entry))stroke.changes.set(t.entry,new Map());
+        if(!stroke.dirty.has(t.entry))stroke.dirty.set(t.entry,t.entry.dirty);
+        if(!stroke.changes.get(t.entry).has(idx))stroke.changes.get(t.entry).set(idx,old);
+      }
+      t.entry.values[idx]=value;changed=true;
     }
-    t.entry.values[t.idx]=value;t.entry.dirty=true;markDirty("tiles");redraw();
+    if(changed){t.entry.dirty=true;markDirty("tiles");redraw();}
   }
   function finishPainting() {
     state.painting=false;
@@ -685,7 +759,7 @@
   canvas.addEventListener("mousedown",e=>{
     if(e.button===2)return;
     if(!state.room)return;const p=mousePos(e);
-    if(state.copyTileActive){if(e.button===0)copyTileAt(p);return;}
+    if(state.copyTileActive){if(e.button===0)startTileCopy(p);return;}
     if(state.copyCollisionActive){if(e.button===0)copyCollisionAt(p);return;}
     if(state.mode==="entities"){
       state.selectedEntity=entityAt(p);state.draggingEntity=!!state.selectedEntity&&e.button===0;
@@ -693,15 +767,24 @@
       refreshEntityFields();redraw();return;
     }
     if(state.mode==="collision") {if(e.button===0)paintCollisionAt(p);return;}
-    if(e.button===0){state.painting=true;state.paintStroke={changes:new Map(),dirty:new Map()};paintAt(p);}
+    if(e.button===0){
+      const t=tileAt(p);state.brushHover=t?{x:t.x,y:t.y}:null;
+      state.painting=true;state.paintStroke={changes:new Map(),dirty:new Map()};paintAt(p);
+    }
   });
   window.addEventListener("mousemove",e=>{
+    if(state.copySelection){moveTileCopy(mousePos(e));return;}
     if(!state.pan)return;
     canvasWrap.scrollLeft=state.pan.left+state.pan.x-e.clientX;
     canvasWrap.scrollTop=state.pan.top+state.pan.y-e.clientY;
   });
   canvas.addEventListener("mousemove",e=>{
     const p=mousePos(e);
+    if(state.copySelection){moveTileCopy(p);return;}
+    if(state.mode==="tiles") {
+      const t=tileAt(p);state.brushHover=t?{x:t.x,y:t.y}:null;
+      if(state.tileBrush)drawBrushOverlay();
+    }
     if(state.mode==="entities"&&state.draggingEntity&&state.selectedEntity){
       const local=EM.localPositionAtCanvasPoint(p,state.zoom);
       state.selectedEntity.x=local.x;state.selectedEntity.y=local.y;
@@ -709,8 +792,16 @@
       renderEntityList();markDirty("entities");redraw();
     } else if(state.mode==="tiles"&&state.painting){paintAt(p);}
   });
-  window.addEventListener("mouseup",()=>{state.pan=null;canvasWrap.classList.remove("panning");finishPainting();finishEntityDrag();});
-  window.addEventListener("blur",()=>{state.pan=null;canvasWrap.classList.remove("panning");});
+  canvas.addEventListener("mouseleave",()=>{state.brushHover=null;drawBrushOverlay();});
+  window.addEventListener("mouseup",e=>{
+    if(e?.button!==undefined&&e.button!==0&&state.copySelection){state.pan=null;canvasWrap.classList.remove("panning");return;}
+    if(state.copySelection&&Number.isFinite(e?.clientX)&&Number.isFinite(e?.clientY))moveTileCopy(mousePos(e));
+    finishTileCopy();state.pan=null;canvasWrap.classList.remove("panning");finishPainting();finishEntityDrag();
+  });
+  window.addEventListener("blur",()=>{
+    state.copySelection=null;state.brushHover=null;drawBrushOverlay();
+    state.pan=null;canvasWrap.classList.remove("panning");finishPainting();finishEntityDrag();
+  });
 
   function renderEntityList(){
     const list=$("entityList"),scrollTop=list.scrollTop,areaCode=activeEntityAreaCode(),entities=editableEntities();
@@ -1121,7 +1212,7 @@
     const key=e.key.toLowerCase();
     if(key==="z"&&state.undoStack.length){e.preventDefault();undoEdit();}
     if(key==="c"&&state.tab==="map"&&state.mode==="tiles"&&state.room&&!String(window.getSelection?.()||"")){
-      e.preventDefault();setCopyTile(true);setStatus("Click a map tile to copy it.");
+      e.preventDefault();setCopyTile(true);setStatus("Drag a rectangle of tiles to copy; release to use the brush.");
     }
   });
   $("areaSelect").onchange=e=>selectDiscArea(e.target.value);
@@ -1138,10 +1229,10 @@
   },setStatus);
   $("exportPpf").onclick=()=>exportResult("ppf");
   ["showFg","showBg","showEntities","showGrid","showCollision"].forEach(id=>$(id).onchange=redraw);
-  $("paintLayer").onchange=()=>{redrawPalette();updateTileInfo();};
+  $("paintLayer").onchange=()=>{state.tileBrush=null;setCopyTile(false);redrawPalette();redraw();};
   $("collisionLayer").onchange=()=>{setCopyCollision(false);updateCollisionAvailability();redraw();};
-  $("tileId").onchange=()=>{redrawPalette();updateTileInfo();};
-  $("copyTile").onclick=()=>setCopyTile(!state.copyTileActive);
+  $("tileId").onchange=()=>{state.tileBrush=null;redrawPalette();redraw();};
+  $("copyTile").onclick=()=>{setCopyTile(!state.copyTileActive);if(state.copyTileActive)setStatus("Drag a rectangle of tiles to copy; release to use the brush.");};
   $("copyCollision").onclick=()=>setCopyCollision(!state.copyCollisionActive);
   $("zoomIn").onclick=()=>{state.zoom=Math.min(2,state.zoom*1.25);redraw();};
   $("zoomOut").onclick=()=>{state.zoom=Math.max(.25,state.zoom/1.25);redraw();};

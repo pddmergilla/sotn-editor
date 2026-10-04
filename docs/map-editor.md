@@ -14,7 +14,9 @@ A template supplies entity ID, upper flags, and parameters. A new instance gets 
 
 Entity coordinates are local to the room. Drag a marker or edit its local X/Y to move it. Add and Duplicate are available only when the fixed stage layout-data span can hold the changed X/Y banks and a free entity slot exists. The editor reuses byte-identical banks and updates their pointers; it does not grow the stage file. Asset-folder layouts do not support insertion because their BIN capacity is unknown.
 
-**Copy Tile** selects the visible foreground or background tile from the next map click, switches the paint layer to match, and turns itself off so painting can resume.
+**Copy Tile** lets you drag a rectangle of tiles and copies it when you release the left mouse button. The starting tile chooses the visible foreground or background layer, and the entire rectangle comes from that layer, including empty tiles. A click still copies one tile. The button turns off after copying and switches the paint layer to match.
+
+The copied chunk appears as a preview under the mouse, with its top-left tile at the cursor. Click or drag to paint it repeatedly. At the map edges, only tiles inside the layer are painted. Choose a palette tile, enter a Tile ID, or change the paint layer to return to a single tile. Copied chunks can be used in other rooms with the same tile definitions; changing to incompatible tile definitions clears the chunk.
 
 In Collision mode, choose a layer and use **Copy Collision** to sample a tile's collision value from the next map click. It then turns off, leaving that value ready to paint. Esc cancels either copy mode. Right-drag the map view to pan in any mode.
 
