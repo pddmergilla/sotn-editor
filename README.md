@@ -29,7 +29,7 @@ Keep the original Track 2 next to the patched Track 1. The tab can also download
 
 Every edit can be undone with the toolbar Undo button or Ctrl+Z.
 
-Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at the bottom left of the title screen, including builds with a single stat edit. Exported PPF3 patches and browser tests include the same credit. The existing title line is preserved: ordinary edits to vanilla do not add the Alternate Scarlet Symphony title. Unsupported title-screen changes stop the export instead of overwriting artwork.
+Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at the bottom left of the title screen, including builds with a single stat edit. Exported PPF3 patches and browser tests include the same credit. ASS builds place their existing Alternate Scarlet Symphony 2.0 title below the Symphony of the Night logo; ordinary edits to vanilla preserve its copyright line and do not add the ASS title. Earlier editor exports adopt the new layout when rebuilt. Unsupported title-screen changes stop the export instead of overwriting artwork.
 
 ## Quick start
 
