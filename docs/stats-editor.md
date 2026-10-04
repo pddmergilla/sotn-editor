@@ -24,8 +24,13 @@ The **Stats Editor** tab reads the loaded BIN's own values, so an already modded
 | Hand items | name, icon, icon palette, description, ATK, DEF, MP cost (shown as heart cost when the cost has bit `0x8000`, the Healing items use Hearts flag), critical rate, how many can be out at once (thrown weapons, bombs and food), stun frames, element, hit cooldown and whether hits steal souls (weapons and their specials), special effect; for weapons a moveset: basic attack, category, the ↓↘→ and ←→ specials with their damage, MP cost and element | `g_EquipDefs` rows 0-168, specials in rows 169-216 |
 | Head gear, armor, cloaks, accessories | name, icon, icon palette, description, ATK, DEF, STR, CON, INT, LCK, weak/resist/immune/absorb, special effect | `g_AccessoryDefs` |
 | Special effects | which item grants each coded effect | `CheckEquipmentItemCount` calls in DRA and every stage/boss overlay |
+| Sunstone and Moonstone | separate STR, CON, INT and LCK bonuses per stone (0–99), on their accessory cards and under Special effects | guarded day/night hooks and a bonus table in unused sound-bank padding |
 
 Click an item's icon to pick from all 320 item icons in the BIN.
+
+**Stats up by day** (Sunstone, 6:00–18:00) and **Stats up by night** (Moonstone, 18:00–6:00) each expose four independent bonuses. Two equipped stones grant twice their configured bonuses. The effect can still be assigned to another accessory. Values initially read +5 per stat; exported images reopen with their edited values. Equipment bonuses still follow the game's existing cap and CON/INT scaling.
+
+**Dark Metamorphosis stat buff**, in Extra Hacks, exposes ATK and DEF bonuses (0–999) and STR, CON, INT and LCK bonuses (0–99). Enable that hack to edit its controls. Existing ATK/INT/DEF values are read from the loaded image; STR/CON/LCK initially read zero. STR and CON apply before attack and defense are calculated; INT updates both its displayed and effective values. Bonuses refresh when the spell starts or ends and do not accumulate on repeated refreshes. Undo also covers these edits.
 
 ## Weapon movesets
 

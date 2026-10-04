@@ -10,6 +10,7 @@ usage: python build_catalog.py [--out PATH] [--allow-missing]
 import hashlib, json, struct, sys, zlib
 from pathlib import Path
 from sotn import *
+from stat_buffs import dark_extension, write_stones, stone_edits
 
 OUT = Path(__file__).resolve().parents[2] / 'extra-hacks-catalog.js'
 SPECS = HERE / 'specs'
@@ -53,6 +54,16 @@ def load_specs(allow_missing):
             raise SystemExit(f'missing spec {p}')
         s = json.loads(p.read_text(encoding='utf-8'))
         s.update(ui.get(fid, {}))
+        if fid == 'dark-stats':
+            extension, values = dark_extension()
+            s['edits'] += extension
+            s['values'] += values
+            s['defaults'].update(str=0, con=0, lck=0)
+            for value in s['values']:
+                if value['key'] in ('atk', 'int', 'def'):
+                    value.update(editable=True, min=0, max=999 if value['key'] != 'int' else 99)
+            s['values'][1]['offsets'] = [0x42894, 0x428a4]
+            s['tunables'] += [dict(file=v['file'], offset=off, length=2) for v in values for off in v['offsets']]
         specs.append(s)
     return specs
 
@@ -71,9 +82,11 @@ def convert(spec):
         with_on = bytes.fromhex(e['with']['on']) if e.get('with') else None
         # ASS 2.0 holds either the plain form or, where another hack changes this one's bytes, the combined form.
         # A work-in-progress hack ("wip") may be left off in ASS 2.0.
-        allowed = (on, with_on, of) if spec.get('wip') else (on, with_on)
+        allowed = (on, with_on, of) if spec.get('wip') or e.get('optional') else (on, with_on)
         assert a[off:off + len(on)] in allowed, f"{spec['id']}: on bytes do not match ASS 2.0 at {f} {off:#x}"
         rec = {'file': f, 'offset': off, 'off': of.hex().upper(), 'on': on.hex().upper()}
+        if e.get('optional'):
+            rec['optional'] = True
         if with_on is not None:
             assert len(with_on) == len(on)
             rec['with'] = {'feature': e['with']['feature'], 'on': with_on.hex().upper()}
@@ -174,6 +187,8 @@ def exclusion_map(specs):
         for c in s.get('context', []) or []:
             mark(c['file'], h(c['offset']), h(c['offset']) + int(c['length']))
     # InitStatsAndGear can be rewritten by the Stats Editor.
+    for edit in stone_edits():
+        mark(edit['file'], h(edit['offset']), h(edit['offset']) + len(edit['on']) // 2)
     dra = read('DRA.BIN', 'v')
     init = struct.unpack_from('<I', dra, 0x8003C854 - 0x8003C770)[0] - 0x800A0000
     mark('DRA.BIN', init, init + 0x1400, 0)
@@ -215,6 +230,7 @@ def fingerprint(specs):
 
 def main():
     allow = '--allow-missing' in sys.argv
+    write_stones()
     specs = load_specs(allow)
     features = []
     owner = {}

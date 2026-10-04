@@ -490,7 +490,8 @@
       const slot = slotOfItem(kind, item), held = effectsFor(slot, item.index);
       const blocks = held.map(id => el("div", {class: "effectRow"},
         el("div", {}, el("strong", {text: F(id).label}), el("span", {class: "sfNote", text: F(id).desc || ""})),
-        sf("Held by", id)));
+        sf("Held by", id),
+        F(id).bonuses ? grid(...F(id).bonuses.map(bonus => sf(F(bonus).label, bonus))) : null));
       const others = (model.effects || []).filter(id => F(id).slot === slot && val(id) !== item.index && !F(id).readOnly);
       let add = null;
       if (others.length) {
@@ -654,6 +655,7 @@
         ...list.map(id => card(el("strong", {text: F(id).label}), `${slotName[F(id).slot]} · ${F(id).sites.length} check${F(id).sites.length === 1 ? "" : "s"}`,
           el("p", {class: "statHint", text: F(id).desc || ""}),
           grid(sf("Granted by", id, {wide: true})),
+          F(id).bonuses ? grid(...F(id).bonuses.map(bonus => sf(F(bonus).label, bonus))) : null,
           F(id).hint ? el("p", {class: "statWarn", text: F(id).hint}) : null,
           F(id).readOnly ? el("p", {class: "statWarn", text: F(id).readOnly}) : null)),
         model.unverifiedSites?.length ? el("p", {class: "statWarn wideHint", text: `Unverified equipment checks left unchanged: ${model.unverifiedSites.map(s => `${s.file} ${hex(s.call, 5)}`).join(", ")}.`}) : null
@@ -689,7 +691,7 @@
     function sectionIds(id) {
       const ids = [];
       const walk = v => {
-        if (typeof v === "string" && model.fields.has(v)) ids.push(v);
+        if (typeof v === "string" && model.fields.has(v)) { ids.push(v); F(v).bonuses?.forEach(walk); }
         else if (v instanceof Set) v.forEach(walk);
         else if (Array.isArray(v)) v.forEach(walk);
         else if (v && typeof v === "object") Object.values(v).forEach(walk);

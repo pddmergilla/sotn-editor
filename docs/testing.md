@@ -18,6 +18,7 @@ node tests/stats-bin.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
 node tests/extra-hacks-ui.test.js
+node tests/stat-buffs.test.js
 node tests/ass2.test.js
 node tests/ass2-downloads.test.js
 node tests/play.test.js
@@ -54,5 +55,7 @@ The explicit memory-card copy and restore added on 2026-10-03 passes the automat
 - removing each hack on its own, and Healing items use Hearts off then on (costs and the L2 shortcuts switch to MP and back; adding it in a second build gives the same bytes as adding everything at once);
 - a simulated later ASS build with retuned values and edited data;
 - that another mod (the Reawakened PPF) is rejected.
+
+`stat-buffs.test.js` checks independent Sunstone/Moonstone bonuses, zero/one/two-stone stacking, configured Dark Metamorphosis export/reopen and removal, unknown/partial helper rejection, unchanged source bytes, and Extra Hacks recognition on vanilla, ASS 1.3.1 and ASS 2.0. It executes the emitted helpers with PlayStation branch/load delays to check expiry, repeated refreshes, STR before attack and CON before defense, zero attacks and the ATK cap. Original stat recalculation and attack/defense calls are simulated; emulator gameplay remains a manual check. `tests/stat-buffs-harness.html` opens the full editor with an ordinary file picker for browser automation.
 
 Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.

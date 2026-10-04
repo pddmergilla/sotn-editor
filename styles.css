@@ -164,6 +164,7 @@ input:disabled, select:disabled { opacity:.55; }
 .sfMore summary { cursor:pointer; font-size:11px; color:#afbac9; margin-bottom:6px; }
 .effectRow { display:grid; grid-template-columns:minmax(0,1fr) minmax(150px,.9fr); gap:8px; align-items:end; padding:4px 0; }
 .effectRow strong { display:block; font-size:12px; }
+.effectRow > .sfGrid { grid-column:1 / -1; }
 .effectBox > select { width:100%; margin-top:6px; }
 .statHint { margin:8px 0 0; color:#8997a9; font-size:11px; line-height:1.45; }
 .statWarn { margin:8px 0 0; padding:7px 9px; border-left:2px solid #c7a865; background:#211f1a; color:#d7c79f; font-size:11px; line-height:1.4; }

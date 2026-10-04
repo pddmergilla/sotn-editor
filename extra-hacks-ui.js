@@ -75,7 +75,7 @@
     // other ASS features share (its ASS off bytes equal its on bytes).
     const detect = tunable.some(flag => !flag) && on.some((value, i) => value !== off[i]);
     // stats: an item cost the Stats Editor shows; the app writes it through the stats model.
-    return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, onAltTunable, detect, with: withEdit, stats: !!edit.stats, free: !!edit.free};
+    return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, onAltTunable, detect, with: withEdit, stats: !!edit.stats, free: !!edit.free, optional: !!edit.optional};
   }
 
   // Stage entity-layout records are 10 bytes: x, y, entity id, slot, params (u16 each). The map
@@ -187,17 +187,23 @@
 
   function featureState(feature, files, profile) {
     let on = 0, off = 0;
+    const optional = [];
     for (const edit of editsFor(feature, profile)) {
       const bytes = files.get(edit.file);
       if (!bytes || edit.offset + edit.on.length > bytes.length) return {state: "unknown", mismatch: edit};
       if (!edit.detect) continue;
       const state = editState(bytes.subarray(edit.offset, edit.offset + edit.on.length), edit, profile);
       if (state === "unknown") return {state, mismatch: edit};
+      if (edit.optional) {
+        optional.push(matches(bytes.subarray(edit.offset, edit.offset + edit.on.length), edit.off) ? "off" : "on");
+        continue;
+      }
       if (state === "on") on++;
       else if (state === "off") off++;
     }
     // A hack made of independent tuning values (for example detection ranges) stays on when a
     // later build resets some of them to vanilla.
+    if (new Set(optional).size > 1 || (!on && optional.includes("on"))) return {state: "unknown"};
     if (on && off) return {state: feature.partialIsOn ? "on" : "mixed"};
     return {state: on ? "on" : "off"};
   }
@@ -219,6 +225,10 @@
   function readValues(feature, files) {
     const values = {};
     for (const value of feature.values || []) {
+      if (value.optional && feature.edits.filter(e => e.optional).every(e => matches(files.get(e.file)?.subarray(e.offset, e.offset + e.off.length) || NONE, e.off))) {
+        values[value.key] = feature.defaults?.[value.key] ?? 0;
+        continue;
+      }
       const bytes = files.get(value.file);
       if (!bytes || value.offset + 2 > bytes.length) continue;
       let v = bytes[value.offset] | bytes[value.offset + 1] << 8;
@@ -305,6 +315,7 @@
       if (!info || (info.state !== "on" && info.state !== "off")) continue;
       const want = !!selected.get(feature.id), self = changed(feature.id);
       for (const edit of editsFor(feature, analysis.profile)) {
+        if (want && edit.optional) continue;
         if (!self && !(want && edit.with && changed(edit.with.feature))) continue;
         const bytes = !want ? (vanilla ? edit.vanillaOff : edit.off) :
           edit.with && selected.get(edit.with.feature) ? edit.with.on : (vanilla ? edit.vanillaOn : edit.on);
@@ -320,7 +331,34 @@
   // Byte edits for a build. options.statsOwned(file, offset) is true for item costs the Stats
   // Editor writes itself (see statsValues).
   function plan(catalog, analysis, selected, options = {}) {
-    return plannedEdits(catalog, analysis, selected).filter(edit => !(edit.stats && options.statsOwned?.(edit.file, edit.offset)));
+    const edits = plannedEdits(catalog, analysis, selected).filter(edit => !(edit.stats && options.statsOwned?.(edit.file, edit.offset)));
+    for (const feature of catalog.features) {
+      const tuning = options.tuning?.get(feature.id);
+      if (!selected.get(feature.id) || !tuning || !Object.keys(tuning).length) continue;
+      const info = analysis.features.find(f => f.id === feature.id);
+      if (!info || !["on", "off"].includes(info.state)) throw new Error(`${feature.label}: bonus code is not recognized.`);
+      const baseline = info.state === "on" ? info.values : feature.defaults;
+      const install = (feature.values || []).some(v => v.optional && tuning[v.key] !== undefined && tuning[v.key] !== baseline[v.key]);
+      if (install) for (const edit of feature.edits.filter(e => e.optional)) {
+        if (!edits.some(e => e.file === edit.file && e.offset === edit.offset)) edits.push({file: edit.file, offset: edit.offset, bytes: edit.on.slice(), label: feature.label});
+      }
+      for (const def of feature.values || []) {
+        if (!def.editable) continue;
+        const value = tuning[def.key] ?? baseline?.[def.key] ?? feature.defaults?.[def.key];
+        if (tuning[def.key] !== undefined && (!Number.isInteger(value) || value < def.min || value > def.max)) throw new Error(`${def.key.toUpperCase()} bonus must be between ${def.min} and ${def.max}.`);
+        for (const offset of def.offsets || [def.offset]) {
+          const existing = edits.find(e => e.file === def.file && e.offset <= offset && e.offset + e.bytes.length >= offset + 2);
+          if (existing) {
+            existing.bytes = existing.bytes.slice();
+            existing.bytes[offset - existing.offset] = value & 255;
+            existing.bytes[offset - existing.offset + 1] = value >> 8 & 255;
+          } else if (tuning[def.key] !== undefined && value !== baseline?.[def.key]) {
+            edits.push({file: def.file, offset, bytes: Uint8Array.of(value & 255, value >> 8 & 255), label: feature.label});
+          }
+        }
+      }
+    }
+    return edits;
   }
   // Item costs (u16) for the Stats Editor: [{file, offset, value}], value null where the selection
   // leaves the cost as the BIN has it.
@@ -372,6 +410,7 @@
   let catalogError = "";
   let disc = null, records = new Map(), files = new Map();
   let analysis = null, avail = new Map(), selected = new Map();
+  let tuning = new Map();
   let phase = "empty", statusText = "Open a BIN to inspect Extra Hacks.", noteText = "";
   let loadToken = 0;
 
@@ -392,7 +431,7 @@
   // Values come from the loaded BIN when the hack is already there, otherwise from what a build adds.
   function valueText(feature, info) {
     if (!feature.valueTemplate) return "";
-    const values = {...(feature.defaults || {}), ...(info?.state === "on" ? info.values : {})};
+    const values = {...(feature.defaults || {}), ...(info?.state === "on" ? info.values : {}), ...tuning.get(feature.id)};
     // Item costs follow the Stats Editor, which also holds what this selection sets.
     for (const def of feature.values || []) {
       const current = hooks.currentValue?.(def.file, def.offset);
@@ -448,6 +487,35 @@
       }
       const values = on ? valueText(feature, info) : "";
       if (values) card.append(element("p", "extraHackDetail extraHackBonus", values));
+      if ((feature.values || []).some(v => v.editable)) {
+        const controls = element("div", "sfGrid");
+        for (const def of feature.values.filter(v => v.editable)) {
+          const label = element("label", "sf");
+          label.append(element("span", "sfLabel", `${def.key.toUpperCase()} bonus`));
+          const input = element("input", "sfNum");
+          input.type = "number"; input.min = def.min; input.max = def.max; input.step = 1;
+          const original = info?.state === "on" ? info.values[def.key] : feature.defaults[def.key];
+          input.value = tuning.get(feature.id)?.[def.key] ?? original;
+          input.disabled = !on || phase !== "ready" || !entry?.canToggle;
+          input.classList.toggle("changed", Number(input.value) !== original);
+          input.addEventListener("change", () => {
+            const value = Number(input.value);
+            if (!input.value.trim() || !Number.isInteger(value) || value < def.min || value > def.max) {
+              input.classList.add("invalid"); noteText = `${def.key.toUpperCase()} bonus must be between ${def.min} and ${def.max}.`; renderStatus(); return;
+            }
+            const before = tuning;
+            tuning = new Map(tuning);
+            const next = {...tuning.get(feature.id)};
+            if (value === original) delete next[def.key]; else next[def.key] = value;
+            tuning.set(feature.id, next); noteText = "";
+            hooks.pushUndo?.(`${def.key.toUpperCase()} bonus edit`, () => { tuning = before; noteText = ""; render(); });
+            render(); hooks.onChange?.();
+          });
+          label.append(input); controls.append(label);
+        }
+        card.append(controls);
+        if (!on) card.append(element("p", "extraHackDetail", "Enable this hack to configure its bonuses."));
+      }
       if (on && analysis?.profile === "vanilla" && feature.vanillaNote) card.append(element("p", "extraHackDetail", feature.vanillaNote));
       const needs = requiresFor(feature, analysis?.profile);
       if (needs.length) {
@@ -490,7 +558,8 @@
   }
 
   function hasChanges() {
-    return phase === "ready" && [...avail.values()].some(entry => !!selected.get(entry.feature.id) !== entry.source);
+    return phase === "ready" && ([...avail.values()].some(entry => !!selected.get(entry.feature.id) !== entry.source) ||
+      [...tuning].some(([id, values]) => selected.get(id) && Object.keys(values).length));
   }
 
   async function readCatalogFiles(target) {
@@ -509,7 +578,7 @@
   async function setDisc(nextDisc) {
     const token = ++loadToken;
     disc = nextDisc || null;
-    files = new Map(); records = new Map(); analysis = null; avail = new Map(); selected = new Map(); noteText = "";
+    files = new Map(); records = new Map(); analysis = null; avail = new Map(); selected = new Map(); tuning = new Map(); noteText = "";
     phase = "empty";
     hooks.onSelection?.({selected: new Map(), statsValues: []});
     if (!disc) { phase = "empty"; statusText = "Open a BIN to inspect Extra Hacks."; render(); hooks.onReady?.(); return; }
@@ -547,7 +616,7 @@
   function pendingEdits() {
     if (!hasChanges()) return [];
     const byFile = new Map();
-    for (const edit of plan(catalog, analysis, selected, {statsOwned: hooks.statsOwned})) {
+    for (const edit of plan(catalog, analysis, selected, {statsOwned: hooks.statsOwned, tuning})) {
       if (!byFile.has(edit.file)) byFile.set(edit.file, {path: edit.file, record: records.get(edit.file), edits: []});
       byFile.get(edit.file).edits.push(edit);
     }
@@ -569,6 +638,6 @@
   global.SotnExtraHacksUI = api;
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = {UNSUPPORTED, crc32, maskedCopy, hexBytes, prepareCatalog, filesUsed, fingerprint, featureState, analyze, availability, cascade, plan, statsValues, applyEdits, api};
+    module.exports = {UNSUPPORTED, crc32, maskedCopy, hexBytes, prepareCatalog, filesUsed, fingerprint, featureState, readValues, analyze, availability, cascade, plan, statsValues, applyEdits, api};
   }
 })(typeof window !== "undefined" ? window : globalThis);

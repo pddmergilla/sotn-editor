@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Stat bonus browser checks</title>
+<script>
+fetch("../index.html").then(response => response.text()).then(html => {
+  // Use the ordinary file picker for browser checks.
+  window.showOpenFilePicker = undefined;
+  window.showSaveFilePicker = undefined;
+  document.open();
+  document.write(html.replace("<head>", '<head><base href="/">'));
+  document.close();
+});
+</script>

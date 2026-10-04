@@ -2,6 +2,7 @@
   "use strict";
   const K = global.SotnStatsCore || (typeof require === "function" ? require("./stats-core.js") : null);
   const CAT = global.SotnStatsCatalog || (typeof require === "function" ? require("./stats-catalog.js") : null);
+  const BUFFS = global.SotnStatBuffs || (typeof require === "function" ? require("./stats-buffs-data.js") : null);
   const {u16, s16, u32, put16, put32} = K;
 
   const DRA_BASE = 0x800A0000, RIC_BASE = 0x8013C000, OVERLAY_BASE = 0x80180000;
@@ -164,6 +165,7 @@
       } catch (error) { m.notes.push(error.message); }
     } else m.notes.push("BIN/RIC.BIN was not found, so Richter's attacks are unavailable.");
     parseEffects(ctx);
+    parseStoneBuffs(ctx);
     parseStageValues(ctx);
     parsePotions(ctx);
     parseForms(ctx);
@@ -765,6 +767,37 @@
     }
   }
   const findBody = (m, index) => Object.values(m.sections.body).flat().find(i => i.index === index);
+  const buffBytes = value => Uint8Array.from(value.match(/../g), byte => parseInt(byte, 16));
+  function buffMatches(bytes, edit, form) {
+    const expected = buffBytes(edit[form]), masks = form === "on" ? edit.tunable || [] : [];
+    return expected.every((byte, n) => masks.some(([at, len]) => n >= at && n < at + len) || bytes[Number(edit.offset) + n] === byte);
+  }
+  function parseStoneBuffs({m, dra}) {
+    if (!BUFFS) return;
+    const old = BUFFS.edits.every(e => buffMatches(dra, e, "off"));
+    const added = BUFFS.edits.every(e => buffMatches(dra, e, "on"));
+    m.stoneBuffs = {found: old || added, added};
+    if (!old && !added) { m.notes.push("Moonstone and Sunstone bonus code is not recognized; their bonus values are unavailable."); return; }
+    for (const [group, at] of [["sunstone", BUFFS.table], ["moonstone", BUFFS.table + 8]]) {
+      const effect = m.field(`effect:${group}`);
+      if (!effect) continue;
+      effect.bonuses = ["str", "con", "int", "lck"].map((key, n) => m.add({
+        id: `stone:${group}:${key}`, kind: "stoneBuff", file: "DRA", key, label: `${key.toUpperCase()} bonus`,
+        group, original: added ? s16(dra, at + n * 2) : 5, off: at + n * 2, min: 0, max: 99}));
+    }
+  }
+  function writeStoneBuffs(model, need) {
+    const b = need("DRA");
+    for (const edit of BUFFS.edits) {
+      const offset = Number(edit.offset), size = edit.on.length / 2;
+      for (let n = 0; n < size; n++) if (b[offset + n] !== model.files.DRA.bytes[offset + n]) {
+        throw new Error("Moonstone or Sunstone bonus code was changed by another edit.");
+      }
+      if (!buffMatches(b, edit, model.stoneBuffs.added ? "on" : "off")) throw new Error("Moonstone or Sunstone bonus code is not recognized.");
+    }
+    for (const edit of BUFFS.edits) b.set(buffBytes(edit.on), Number(edit.offset));
+    for (const f of model.fields.values()) if (f.kind === "stoneBuff") put16(b, f.off, f.value);
+  }
   const bodySlotOf = (m, index) => { const it = findBody(m, index); return it ? [1, 2, 3, 4][it.type] : null; };
 
   function scanApiSites(code, key) {
@@ -949,10 +982,12 @@
       if (error) throw new Error(error);
     }
     const blocks = new Map();
+    if (changed.some(f => f.kind === "stoneBuff")) writeStoneBuffs(model, need);
     for (const f of changed) {
       if (f.readOnly) throw new Error(`${f.label} is read-only: ${f.readOnly}`);
       const error = validate(f, f.value);
       if (error) throw new Error(error);
+      if (f.kind === "stoneBuff") continue;
       if (f.kind === "stat") { if (!blocks.has(f.block)) blocks.set(f.block, []); blocks.get(f.block).push(f); continue; }
       if (f.kind === "effect") { writeEffect(model, f, need); continue; }
       if (f.kind === "sites") { writeSites(model, f, need); continue; }

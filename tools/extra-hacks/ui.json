@@ -144,8 +144,8 @@
    "def": 25,
    "cap": 999
   },
-  "valueTemplate": "Bonus in this BIN: +{atk} ATK, +{int} INT, +{def} DEF (ATK and DEF capped at {cap}).",
-  "summary": "Alucard's ATK, INT (shown and effective) and DEF go up while Dark Metamorphosis is active; ATK applies to non-zero attack values."
+  "valueTemplate": "Bonuses: +{atk} ATK, +{def} DEF, +{str} STR, +{con} CON, +{int} INT, +{lck} LCK (ATK and DEF capped at {cap}).",
+  "summary": "Choose the temporary ATK, DEF, STR, CON, INT and LCK bonuses while Dark Metamorphosis is active. ATK applies to non-zero attack values."
  },
  "dark-speed": {
   "label": "Dark Metamorphosis SpeedUp",
