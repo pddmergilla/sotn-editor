@@ -77,9 +77,9 @@
   }
 
   // Streams the patched image to writer.write(Uint8Array) in order. Returns the output CRC32 (hex).
-  async function build(file, ppf, writer, {onProgress} = {}) {
+  async function build(file, ppf, writer, {onProgress, changes} = {}) {
     const n = ppf.offsets.length, b = ppf.bytes;
-    let i = 0, crc = 0;
+    let i = 0, crc = 0, releaseCrc = 0;
     for (let ws = 0; ws < file.size; ws += WINDOW) {
       const we = Math.min(file.size, ws + WINDOW);
       const win = await readSlice(file, ws, we);
@@ -89,14 +89,46 @@
         const from = Math.max(off, ws), to = Math.min(off + len, we);
         win.set(b.subarray(d + (from - off), d + (to - off)), from - ws);
       }
+      if (changes) {
+        releaseCrc = crc32(win, releaseCrc);
+        for (const change of changes) {
+          const from = Math.max(ws, change.start), to = Math.min(we, change.start + change.modified.length);
+          if (from < to) win.set(change.modified.subarray(from - change.start, to - change.start), from - ws);
+        }
+      }
       crc = crc32(win, crc);
       await writer.write(win);
       onProgress?.(we / file.size);
     }
-    return hex(crc);
+    return changes ? {crc: hex(crc), releaseCrc: hex(releaseCrc)} : hex(crc);
   }
 
-  const api = {parsePpf, inspect, build, crc32, hex};
+  function patchedFile(file, ppf) {
+    return {size: file.size, slice(start, end) { return {async arrayBuffer() {
+      const bytes = await readSlice(file, start, end);
+      let lo = 0, hi = ppf.offsets.length;
+      while (lo < hi) { const mid = (lo + hi) >>> 1; if (ppf.offsets[mid] + ppf.lengths[mid] <= start) lo = mid + 1; else hi = mid; }
+      for (let i = lo; i < ppf.offsets.length && ppf.offsets[i] < end; i++) {
+        const from = Math.max(start, ppf.offsets[i]), to = Math.min(end, ppf.offsets[i] + ppf.lengths[i]);
+        const data = ppf.data[i];
+        bytes.set(ppf.bytes.subarray(data + from - ppf.offsets[i], data + to - ppf.offsets[i]), from - start);
+      }
+      return bytes.buffer;
+    } }; } };
+  }
+
+  async function buildWithCredits(file, ppf, writer, {expectedCrc, onProgress} = {}) {
+    const node = typeof module !== "undefined" && module.exports;
+    const C = node ? require("./sotn-core.js") : global.SotnCore;
+    const T = node ? require("./title-credits.js") : global.SotnTitleCredits;
+    const disc = await C.DiscImage.open(patchedFile(file, ppf));
+    const changes = await T.add(disc);
+    const result = await build(file, ppf, writer, {changes, onProgress});
+    if (result.releaseCrc !== expectedCrc) throw new Error(`The release check failed (${result.releaseCrc}); nothing was saved.`);
+    return result;
+  }
+
+  const api = {parsePpf, inspect, build, buildWithCredits, patchedFile, crc32, hex};
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else global.SotnAss2Core = api;
 })(typeof window !== "undefined" ? window : globalThis);

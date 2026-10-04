@@ -20,6 +20,7 @@ node tests/file-picker.test.js
 node tests/extra-hacks-ui.test.js
 node tests/stat-buffs.test.js
 node tests/ass2.test.js
+node tests/title-credits.test.js
 node tests/ass2-downloads.test.js
 node tests/play.test.js
 node tests/play-page.test.js
@@ -31,6 +32,8 @@ node tests/play-card.test.js
 `spell-mp.test.js` checks exported spell-cost bytes and runs the recognized CastSpell instructions on vanilla and the current modded BIN: Soul Steal at 1 MP accepts 29 current MP and spends 1, with max MP still 29. It also checks insufficient MP, zero cost, and increased costs. This does not verify combo input or emulator loading; boot the edited BIN afresh and load a memory-card save rather than an old savestate.
 
 `ass2.test.js` checks the PPF parser and windowed builder on a synthetic image, that the shipped PPF matches the release data, and, when the images are present, that vanilla builds to the exact ASS 2.0 BIN.
+
+`title-credits.test.js` checks the actual export collector with one stat edit on vanilla and ASS, the literal link at the left edge, existing title preservation, repeated builds, PPF/BIN equality, reversal, sector checksums, neighboring edits, and rejection of unknown code or occupied artwork. It also verifies that the ASS browser builder produces the shipped release plus the credit and rejects a failed release check. `stat-buffs.test.js` checks independent Sunstone/Moonstone bonuses, zero/one/two-stone stacking, configured Dark Metamorphosis export/reopen and removal, unknown/partial helper rejection, unchanged source bytes, and Extra Hacks recognition on vanilla, ASS 1.3.1 and ASS 2.0. It executes the emitted helpers with PlayStation branch/load delays to check expiry, repeated refreshes, STR before attack and CON before defense, zero attacks and the ATK cap. Original stat recalculation and attack/defense calls are simulated; emulator gameplay remains a manual check. `tests/stat-buffs-harness.html` opens the full editor with an ordinary file picker for browser automation.
 
 `ass2-downloads.test.js` checks matching release downloads, zero counts, missing releases, rate limits, network errors, mismatched patches, and publishing/retry behavior without contacting GitHub. `node tools/ass2/publish-release.js --check` verifies the shipped patch without publishing. After pushing, confirm the release workflow succeeds and the ASS tab shows this build's count; try a download and check GitHub's updated count. Browser builds and fallback downloads are excluded.
 

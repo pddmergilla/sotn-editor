@@ -90,12 +90,8 @@
     try {
       target = await saveTarget(R.result.name);
       state.busy = true; state.built = null; updateBuild();
-      const crc = await Core.build(state.disc.file, state.ppf, target,
-        {onProgress: p => setBuildStatus("busy", `Building Alternate Scarlet Symphony 2.0… ${Math.round(p * 100)}%`)});
-      if (crc !== R.result.crc32) {
-        await target.abort();
-        throw new Error(`The built image's CRC32 is ${crc}, not ${R.result.crc32}; nothing was saved.`);
-      }
+      const {crc} = await Core.buildWithCredits(state.disc.file, state.ppf, target,
+        {expectedCrc: R.result.crc32, onProgress: p => setBuildStatus("busy", `Building Alternate Scarlet Symphony 2.0… ${Math.round(p * 100)}%`)});
       await target.done();
       state.built = {name: target.name, crc};
     } catch (e) {
@@ -130,7 +126,7 @@
     button.disabled = !ready;
     if (state.busy) return;
     if (state.built?.error) return setBuildStatus("bad", state.built.error);
-    if (state.built) return setBuildStatus("ok", `Saved ${state.built.name}. CRC32 ${state.built.crc} matches the release, so it is byte-for-byte ${VERSION}.`,
+    if (state.built) return setBuildStatus("ok", `Saved ${state.built.name}: verified ${VERSION} with the editor link on its title screen. Output CRC32 ${state.built.crc}.`,
       el("button", {type: "button", class: "ass2Link", onclick: () => downloadCue(state.built.name), text: "Download a .cue for it"}));
     if (state.ppfError) return setBuildStatus("bad", state.ppfError);
     if (!state.disc) return setBuildStatus("idle", "Open your vanilla US BIN (Track 1) with Open SOTN BIN at the top, then build here.");
@@ -267,7 +263,7 @@
             el("li", {text: "Select Build, pick where to save, and keep Track 2 next to it."})),
           el("button", {id: "ass2Build", class: "ass2Button primary", type: "button", disabled: true, onclick: buildBin}, `Build ${VERSION}`),
           el("div", {id: "ass2BuildStatus", class: "ass2Status idle"}),
-          el("p", {class: "ass2Fine", text: "Your BIN is only read. The new image is checked against the release CRC32 before it is saved. Unsaved editor changes are not included."})),
+          el("p", {class: "ass2Fine", text: "Your BIN is only read. The release is verified, then the editor link is added to the title screen. Unsaved editor changes are not included."})),
         el("div", {class: "ass2Panel"},
           el("h3", {text: "Or patch it yourself"}),
           el("ol", {class: "ass2Steps"},

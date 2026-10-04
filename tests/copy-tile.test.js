@@ -74,6 +74,7 @@ const modes=["tiles","entities","collision"].map(mode=>Object.assign(element(`mo
 const window={
   SotnCore:{DiscImage:{open:async()=>disc},decodeStagePages:()=>[],renderTileRGBA:()=>null},
   SotnStage:{parseOverlay:()=>stage,entityRepackCapacity:()=>0},
+  SotnTitleCredits:{add:async(_,changes)=>changes},
   addEventListener(name,fn){windowHandlers[name]=fn;}
 };
 const documentHandlers={};
