@@ -15,8 +15,10 @@ function pixel(bytes, x, y) {
 async function graphics(disc) { return disc.readFile(await disc.findPath(["BIN", "F_TITLE1.BIN"])); }
 function checkLines(before, after, moved = false) {
   for (let i = 0; i < 4; i++) for (let y = 0; y < 8; y++) for (let x = 0; x < (i < 3 ? 128 : 100); x++) {
+    const from = i * 128 + x - (moved ? 56 : 0);
+    const expected = from < 0 ? 0 : pixel(before, 128 + from % 128, 144 + Math.floor(from / 128) * 8 + y);
     assert.equal(pixel(after, moved ? 1536 + i * 128 + x : 1664 + x, moved ? 144 + y : 144 + i * 16 + y),
-      pixel(before, 128 + x, 144 + i * 8 + y), "original title lettering preserved");
+      expected, "original lettering inside the requested area beneath the subtitle");
   }
   for (let j = 0; j < 484; j++) for (let y = 0; y < 8; y++) {
     let expected = 0;
@@ -83,6 +85,20 @@ function app(disc, statsModel = null) {
     checkLines(before, await graphics(upgraded), moved);
     assert.deepEqual(await T.add(upgraded), [], "earlier exports upgrade once");
     assert.deepEqual(await graphics(upgraded), await graphics(edited), "migration keeps the same artwork");
+    if (moved) {
+      const record = await edited.findPath(["BIN", "F_TITLE1.BIN"]), old = await graphics(edited);
+      for (const offset of [0, 12]) {
+        const earlier = old.slice();
+        for (let y = 0; y < 8; y++) for (let x = 0; x < 512; x++) {
+          const from = x - offset;
+          putPixel(earlier, 1536 + x, 144 + y, from >= 0 && from < 484 ? pixel(before, 128 + from % 128, 144 + Math.floor(from / 128) * 8 + y) : 0);
+        }
+        const previousLayout = await C.DiscImage.open(C.modifiedBlob(edited.file, await C.changedSectors(edited, record, old, earlier)));
+        const realigned = await C.DiscImage.open(C.modifiedBlob(previousLayout.file, await T.add(previousLayout)));
+        assert.deepEqual(await graphics(realigned), old, "earlier layouts realign once without moving credits");
+        assert.deepEqual(await T.add(realigned), [], "alignment does not drift on another build");
+      }
+    }
     assert.equal((await M.loadFromDisc(edited, C.normalizeIsoName)).get(field), value, "single stat edit survives");
     assert.deepEqual(await T.add(edited), [], "rebuild is idempotent");
     for (const change of changes) {

@@ -43,6 +43,11 @@
     }
     return line;
   }
+  function shiftRight(line, amount) {
+    const shifted = new Uint8Array(line.length);
+    for (let y = 0; y < 8; y++) shifted.set(line.subarray(y * 484, (y + 1) * 484 - amount), y * 484 + amount);
+    return shifted;
+  }
 
   async function add(disc, changes = []) {
     // Keep edits that share title sectors.
@@ -63,10 +68,13 @@
       }
     }
     const assHeading = textLine(titleBytes, "Alternate Scarlet Symphony 2.0", true);
-    const moveTitle = relocated || heading.every((value, i) => value === assHeading[i]);
+    const centeredAss = heading.every((value, i) => value === assHeading[i]);
+    const earlierAligned = shiftRight(assHeading, 12), alignedAss = shiftRight(assHeading, 56);
+    const knownAss = centeredAss || heading.every((value, i) => value === earlierAligned[i]) || heading.every((value, i) => value === alignedAss[i]);
+    const moveTitle = relocated || knownAss;
     const link = textLine(titleBytes, URL), height = moveTitle ? 84 : 16;
     const line = new Uint8Array(484 * height);
-    line.set(heading); line.set(link, (height - 8) * 484);
+    line.set(knownAss ? alignedAss : heading); line.set(link, (height - 8) * 484);
     // Check earlier editor artwork before moving it.
     if (installed) for (let i = 0; i < 4; i++) for (let y = 0; y < 16; y++) for (let x = 0; x < 128; x++) {
       const at = i * 128 + x;
