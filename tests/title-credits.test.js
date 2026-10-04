@@ -39,6 +39,10 @@ function putPixel(bytes, x, y, value) {
 }
 async function earlierExport(disc) {
   const record = await disc.findPath(["BIN", "F_TITLE1.BIN"]), before = await disc.readFile(record), after = before.slice();
+  const sel = await disc.findPath(["ST", "SEL", "SEL.BIN"]), oldCode = await disc.readFile(sel), newCode = oldCode.slice();
+  if ((new DataView(oldCode.buffer).getUint32(0x34250, true) & 0xffff) === 146) {
+    for (let y = 144; y < 228; y++) for (let x = 1536; x < 2048; x++) putPixel(after, x, y, 0);
+  }
   for (let i = 0; i < 4; i++) for (let y = 0; y < 16; y++) for (let x = 0; x < 128; x++) {
     const at = i * 128 + x;
     let value = at < 484 && y < 8 ? pixel(before, 128 + x, 144 + i * 8 + y) : 0;
@@ -48,7 +52,9 @@ async function earlierExport(disc) {
     }
     putPixel(after, 1664 + x, 144 + i * 16 + y, value);
   }
-  const sel = await disc.findPath(["ST", "SEL", "SEL.BIN"]), oldCode = await disc.readFile(sel), newCode = oldCode.slice();
+  const vanillaDisc = await C.DiscImage.open(await fs.openAsBlob(vanilla));
+  const vanillaCode = await vanillaDisc.readFile(await vanillaDisc.findPath(["ST", "SEL", "SEL.BIN"]));
+  newCode.set(vanillaCode.subarray(0x34250, 0x342c0), 0x34250);
   const view = new DataView(newCode.buffer);
   for (const [off, word] of [[0x34260, 0x3409001e], [0x3426c, 0x34050010], [0x34294, 0x24840010]]) view.setUint32(off, word, true);
   const changes = [...await C.changedSectors(disc, record, before, after), ...await C.changedSectors(disc, sel, oldCode, newCode)].sort((a, b) => a.start - b.start);
@@ -122,10 +128,10 @@ function app(disc, statsModel = null) {
     selAfter[0x34260] ^= 1;
     await assert.rejects(T.add(disc, await C.changedSectors(disc, sel, selBefore, selAfter)), /unsupported changes/);
     const title = await disc.findPath(["BIN", "F_TITLE1.BIN"]), occupied = before.slice();
-    occupied[27 * 8192 + 16 * 64] = 1;
+    putPixel(occupied, 1664, 160, 1);
     await assert.rejects(T.add(disc, await C.changedSectors(disc, title, before, occupied)), /already in use/);
     await assert.rejects(app(disc).collect(), /no byte changes/);
-    assert((await app(disc).collect(true)).length, "browser preview uses title credit");
+    assert.equal((await app(disc).collect(true)).length, (await T.add(disc)).length, "preview adds credits only when needed");
     assert.equal(hash(fs.readFileSync(path)), sourceHash, "source unchanged");
     console.log(`${label}: one-stat export, footer, checksums, PPF, reversal, repeat build and guards passed`);
   }

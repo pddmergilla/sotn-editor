@@ -13,7 +13,7 @@ This editor is also home to **Alternate Scarlet Symphony 2.0**, a hard-hitting r
 You can get it two ways:
 
 - **Build it in the browser.** Open your vanilla US BIN with **Open SOTN BIN**, go to the **Alternate Scarlet Symphony 2.0** tab, and select **Build**. The editor checks your BIN against vanilla before it writes anything.
-- **Patch it yourself.** Use the download button in the **Alternate Scarlet Symphony 2.0** tab and apply the PPF to `Castlevania - Symphony of the Night (USA) (Track 1).bin` with any PPF3 patcher. The button uses the matching [GitHub Release](https://github.com/pddmergilla/sotn-editor/releases) when available so downloads are counted; the [website copy](ass2/Alternate-Scarlet-Symphony-2.0.ppf) remains a fallback.
+- **Patch it yourself.** Use the download button in the **Alternate Scarlet Symphony 2.0** tab and apply the PPF to `Castlevania - Symphony of the Night (USA) (Track 1).bin` with any PPF3 patcher. The button uses the matching [GitHub Release](https://github.com/pddmergilla/sotn-editor/releases) when available so downloads are counted; the page shows the total tracked PPF downloads across all builds. The [website copy](ass2/Alternate-Scarlet-Symphony-2.0.ppf) remains a fallback.
 
 Keep the original Track 2 next to the patched Track 1. The tab can also download a matching `.cue`. [More about the ASS 2.0 tab](docs/ass2.md).
 

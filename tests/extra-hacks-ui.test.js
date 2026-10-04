@@ -99,12 +99,12 @@ async function readFiles(catalog, disc) {
   return files;
 }
 
-function applyAll(catalog, analysis, files, want) {
+function applyAll(catalog, analysis, files, want, tuning) {
   const avail = H.availability(catalog, analysis);
   const selected = new Map();
   for (const [id, entry] of avail) selected.set(id, entry.canToggle ? want(entry) : entry.source);
   const out = new Map([...files].map(([name, bytes]) => [name, bytes.slice()]));
-  const edits = H.plan(catalog, analysis, selected);
+  const edits = H.plan(catalog, analysis, selected, {tuning});
   for (const edit of edits) {
     const bytes = out.get(edit.file);
     H.applyEdits({before: files.get(edit.file), after: bytes}, [edit], edit.file);
@@ -228,15 +228,17 @@ async function imageChecks(catalog) {
     for (const [id, counts] of Object.entries(entityCounts(again))) assert.equal(counts.off, counts.total, `ASS without ${id} restores its entities`);
     assert.equal(again.profile, "ass", "ASS with every hack removed is still ASS");
     assert.deepEqual(Object.values(states(again)).filter(s => s !== "off"), [], `ASS without hacks: ${JSON.stringify(states(again))}`);
-    const back = applyAll(catalog, again, off.files, entry => !entry.feature.wip);
-    assert.ok(sameFiles(back.files, files), "ASS: removing then re-adding every hack restores the files");
+    const tuning = new Map(analysis.features.filter(info => catalog.features.find(f => f.id === info.id).values?.some(v => v.editable))
+      .map(info => [info.id, info.values]));
+    const back = applyAll(catalog, again, off.files, entry => !entry.feature.wip, tuning);
+    assert.ok(sameFiles(back.files, files), "ASS: re-adding hacks with their configured bonuses restores the files");
     for (const feature of catalog.features.filter(item => !skip.has(item.id) && !wip.has(item.id))) {
       const one = applyAll(catalog, analysis, files, entry => !entry.feature.wip && entry.feature.id !== feature.id && !(feature.id && entry.feature.requires.includes(feature.id)));
       const check = H.analyze(catalog, one.files);
       assert.equal(check.profile, "ass");
       assert.equal(states(check)[feature.id], "off", `ASS minus ${feature.id}`);
     }
-    console.log(`ASS 2.0: ${total - wip.size} hacks detected on, ${wip.size} WIP off; each can be removed alone; remove/re-add round trip restores the files.`);
+    console.log(`ASS 2.0: ${total - wip.size} hacks detected on, ${wip.size} WIP off; removal and configured re-addition restore the files.`);
 
     // Healing items use Hearts off: costs go back to MP, the L2 shortcuts read MP, MP Cost Items and Quick Items stay on.
     const u16 = (b, at) => b[at] | b[at + 1] << 8;

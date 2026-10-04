@@ -71,7 +71,7 @@ function edited(dra, analysis, selected, tuning) {
     for (const [group, bonuses] of [["sunstone", [1, 2, 3, 4]], ["moonstone", [9, 8, 7, 6]]]) {
       for (const [n, key] of ["str", "con", "int", "lck"].entries()) {
         const id = `stone:${group}:${key}`;
-        assert.equal(model.get(id), 5);
+        assert.equal(model.get(id), model.stoneBuffs.added ? K.s16(dra, B.table + (group === "moonstone" ? 8 : 0) + n * 2) : 5);
         model.set(id, bonuses[n]);
         assert.throws(() => model.set(id, 100));
         assert.throws(() => model.set(id, -1));
@@ -110,7 +110,7 @@ function edited(dra, analysis, selected, tuning) {
     assert.throws(() => H.plan(catalog, analysis, selected, {tuning: new Map([[dark.id, {str: 100}]])}));
     const damaged = after.slice(); damaged[0x42e98] ^= 1;
     assert.equal(analyze(damaged, profile).features[0].state, "unknown");
-    const partial = after.slice(); partial.set(original.subarray(0x553ac, 0x553b0), 0x553ac);
+    const partial = after.slice(); partial.set(dark.edits.find(e => e.offset === 0x553ac).off, 0x553ac);
     assert.equal(analyze(partial, profile).features[0].state, "unknown");
     const hooks = new Map([
       [0x800f4994, (r, mem) => { for (let k = 0; k < 4; k++) { mem.set(equip + k * 4, 5); mem.set(total + k * 4, 10); } }],

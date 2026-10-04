@@ -1,4 +1,4 @@
-// Release downloads for the current build.
+// Patch downloads across all builds.
 (function (root, factory) {
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
@@ -33,5 +33,32 @@
     return {url: info.url, count: asset.download_count};
   }
 
-  return {repository, details, matches, load};
+  async function total(fetcher = fetch) {
+    let count = 0;
+    const seen = new Set();
+    for (let page = 1; ; page++) {
+      const response = await fetcher(`https://api.github.com/repos/${repository}/releases?per_page=100&page=${page}`,
+        {headers: {Accept: "application/vnd.github+json"}, signal: AbortSignal.timeout(8000)});
+      if (!response.ok) throw new Error(`GitHub HTTP ${response.status}`);
+      const releases = await response.json();
+      if (!Array.isArray(releases)) throw new Error("Invalid download history.");
+      for (const release of releases) {
+        const version = /^ass2-v(2\.0\.\d{2,})$/.exec(release.tag_name || "")?.[1];
+        if (!version || release.draft || release.prerelease) continue;
+        const info = details({version});
+        for (const asset of release.assets || []) {
+          if (asset.name !== info.name || asset.state !== "uploaded" || asset.browser_download_url !== info.url) continue;
+          if (!Number.isSafeInteger(asset.id) || asset.id < 1 || !Number.isSafeInteger(asset.download_count) || asset.download_count < 0)
+            throw new Error("Invalid download count.");
+          if (seen.has(asset.id)) continue;
+          seen.add(asset.id);
+          count += asset.download_count;
+          if (!Number.isSafeInteger(count)) throw new Error("Invalid download total.");
+        }
+      }
+      if (releases.length < 100) return count;
+    }
+  }
+
+  return {repository, details, matches, load, total};
 });

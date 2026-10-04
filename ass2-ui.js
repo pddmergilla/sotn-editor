@@ -30,16 +30,16 @@
 
   async function loadDownloads() {
     const count = $("ass2DownloadCount");
-    try {
-      const result = await window.SotnAss2Downloads.load(R);
+    const [published, total] = await Promise.allSettled([
+      window.SotnAss2Downloads.load(R), window.SotnAss2Downloads.total()
+    ]);
+    if (published.status === "fulfilled") {
       for (const link of document.querySelectorAll(".ass2PpfDownload")) {
-        link.href = result.url;
+        link.href = published.value.url;
         link.removeAttribute("download");
       }
-      count.textContent = `${fmt(result.count)} PPF downloads for ${VERSION}.`;
-    } catch {
-      count.textContent = "Download count unavailable.";
     }
+    count.textContent = total.status === "fulfilled" ? `${fmt(total.value)} total PPF downloads across all builds.` : "Download count unavailable.";
   }
 
   async function loadPpf() {
@@ -253,7 +253,7 @@
       el("p", {class: "ass2Build"}, el("span", {class: "ass2BuildTag", text: "Current build"}), el("strong", {text: VERSION}),
         el("span", {class: "ass2Fine", text: `Released ${R.built}. Rebuild or re-download when the build number changes.`})),
       el("p", {class: "ass2Fine", id: "ass2DownloadCount", "aria-live": "polite", text: "Checking download count…"}),
-      el("p", {class: "ass2Fine", text: "Counts cover PPF downloads from this release; browser builds and earlier website downloads are excluded."}),
+      el("p", {class: "ass2Fine", text: "Total tracked PPF downloads since tracking began, across all builds. Browser builds and untracked website downloads are excluded."}),
       el("div", {class: "ass2InstallGrid"},
         el("div", {class: "ass2Panel"},
           el("h3", {text: "Build it here"}),

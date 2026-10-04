@@ -9,14 +9,14 @@ const patch = Buffer.from("test patch");
 const release = {build: 5, version: "2.0.05", ppf: {size: patch.length,
   sha256: crypto.createHash("sha256").update(patch).digest("hex").toUpperCase()}};
 const info = D.details(release);
-const asset = {name: info.name, size: patch.length, state: "uploaded", digest: `sha256:${release.ppf.sha256.toLowerCase()}`,
+const asset = {id: 456, name: info.name, size: patch.length, state: "uploaded", digest: `sha256:${release.ppf.sha256.toLowerCase()}`,
   browser_download_url: info.url, download_count: 42};
 const published = {id: 123, tag_name: info.tag, draft: false, prerelease: false, assets: [asset]};
 const response = (data, status = 200) => ({ok: status === 200, status, json: async () => data});
 const missing = () => Object.assign(new Error("Not found"), {status: 404});
 const options = {repository: D.repository, commit: "a".repeat(40)};
 
-function page(data, failure = false) {
+function page(data, failure = false, history = [data], currentMissing = false, historyFailure = false) {
   const elements = [];
   class Element {
     constructor(tag) { this.tag = tag; this.nodeType = 1; this.children = []; this.attrs = {}; this.textContent = ""; elements.push(this); }
@@ -37,6 +37,8 @@ function page(data, failure = false) {
   const fetcher = async url => {
     if (url.includes("screenshots")) return response([]);
     if (failure) throw new Error("Offline");
+    if (url.includes("/releases?")) return historyFailure ? response({}, 403) : response(history);
+    if (currentMissing) return response({}, 404);
     return response(data);
   };
   const context = vm.createContext({window, document, fetch: fetcher, AbortSignal, console});
@@ -61,6 +63,28 @@ function page(data, failure = false) {
     await assert.rejects(D.load(release, async () => response({...published, assets: [{...asset, ...changes}]})), /match/);
   for (const changes of [{tag_name: "ass2-v2.0.04"}, {draft: true}, {prerelease: true}, {assets: []}])
     await assert.rejects(D.load(release, async () => response({...published, ...changes})), /match/);
+
+  const olderInfo = D.details({version: "2.0.04"});
+  const older = {...published, id: 122, tag_name: olderInfo.tag,
+    assets: [{...asset, id: 455, name: olderInfo.name, browser_download_url: olderInfo.url, download_count: 3}]};
+  const history = [published, older];
+  assert.equal(await D.total(async () => response(history)), 45);
+  assert.equal(await D.total(async () => response([])), 0);
+  assert.equal(await D.total(async () => response([...history, published, {...older, draft: true}, {...older, prerelease: true},
+    {...older, tag_name: "other"}, {...older, assets: [{...older.assets[0], name: "other.ppf"}]}])), 45);
+  const pages = [];
+  assert.equal(await D.total(async url => {
+    pages.push(url);
+    return response(pages.length === 1 ? [published, ...Array.from({length: 99}, () => ({tag_name: "other"}))] : [published, older]);
+  }), 45);
+  assert.equal(pages.length, 2);
+  assert(pages[1].endsWith("page=2"));
+  for (const status of [403, 429, 500]) await assert.rejects(D.total(async () => response({}, status)), new RegExp(String(status)));
+  await assert.rejects(D.total(async () => { throw Error("Offline"); }), /Offline/);
+  await assert.rejects(D.total(async () => response({})), /history/);
+  for (const download_count of [-1, "42", Number.MAX_SAFE_INTEGER + 1])
+    await assert.rejects(D.total(async () => response([{...published, assets: [{...asset, download_count}]}])), /count/);
+  await assert.rejects(D.total(async url => url.endsWith("page=1") ? response(Array(100).fill(published)) : response({}, 403)), /403/);
 
   assert.throws(() => P.validate(release, Buffer.from("other")), /match/);
   assert.throws(() => P.validate({...release, build: 6}, patch), /differ/);
@@ -114,7 +138,8 @@ function page(data, failure = false) {
   const realAsset = {...asset, name: realInfo.name, size: real.ppf.size, digest: `sha256:${real.ppf.sha256.toLowerCase()}`,
     browser_download_url: realInfo.url};
   for (const failure of [false, true]) {
-    const p = page({...published, tag_name: realInfo.tag, assets: [realAsset]}, failure);
+    const data = {...published, tag_name: realInfo.tag, assets: [realAsset]};
+    const p = page(data, failure, [data, older]);
     await new Promise(resolve => setImmediate(resolve));
     const links = p.document.querySelectorAll(".ass2PpfDownload");
     assert.equal(links.length, 2);
@@ -123,9 +148,17 @@ function page(data, failure = false) {
       assert.equal(link.attrs.download, failure ? realInfo.name : undefined);
     }
     assert.equal(p.document.getElementById("ass2DownloadCount").textContent,
-      failure ? "Download count unavailable." : `42 PPF downloads for ASS ${real.version}.`);
+      failure ? "Download count unavailable." : "45 total PPF downloads across all builds.");
     p.window.SotnAss2UI.render();
     assert.equal(p.document.querySelectorAll(".ass2PpfDownload").length, 2);
   }
+  const data = {...published, tag_name: realInfo.tag, assets: [realAsset]};
+  const unpublished = page(data, false, [older], true);
+  const unavailable = page(data, false, [data, older], false, true);
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(unpublished.document.getElementById("ass2DownloadCount").textContent, "3 total PPF downloads across all builds.");
+  assert(unpublished.document.querySelectorAll(".ass2PpfDownload").every(link => link.href === real.ppf.file));
+  assert.equal(unavailable.document.getElementById("ass2DownloadCount").textContent, "Download count unavailable.");
+  assert(unavailable.document.querySelectorAll(".ass2PpfDownload").every(link => link.href === realInfo.url));
   console.log("ASS download checks passed: matching counts, fallback links, safe publishing and preserved counts.");
 })().catch(error => { console.error(error); process.exitCode = 1; });
