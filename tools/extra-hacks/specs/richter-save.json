@@ -8,15 +8,21 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x353DC",
-      "off": "00009594",
-      "on": "10d50608",
-      "why": "RicMain lethal-damage path: 'lhu s5,(a0)' -> 'j 0x801B5440' (the existing RicSetStep(0x70) PL_S_ENDING_4 call)",
-      "origin": "Richter-Save-Alternate-Scarlet-Symphony-2.0.ppf"
+      "off": "000095941d80023ca416428c0780033cb8c3638c020042341d80013ca41622ac49006290",
+      "on": "10d506081d80023c3400628e0780033c0c63638c1d80013c251043000a01070800000000",
+      "why": "Redirect lethal damage to the saved pose; reuse the skipped death block to combine Richter and orb death flags."
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x40420",
+      "off": "3400628e1d80013c",
+      "on": "f9d4060800000000",
+      "why": "Orb death check calls the helper, then resumes its normal signal reset and death sequence."
     }
   ],
   "vanilla": {
     "supported": true,
-    "reason": "The replaced word and the jump-target code (0x801B5440 'jal RicSetStep; ori a0,zero,0x70') are identical in vanilla.",
+    "reason": "The guarded Richter and orb code is identical in vanilla US and the current ASS image.",
     "vanillaOff": []
   },
   "tunables": [],
@@ -32,5 +38,38 @@
     }
   ],
   "confidence": "medium",
-  "notes": "README: Codex 2026-09-27/read-c-users-omergilla-downloads-castlevania/outputs/Richter-Save-Alternate-Scarlet-Symphony-2.0.README.md. Not emulator-verified by its author. In vanilla the save route needs the Holy Glasses and Shaft's orb; with this the bad-ending branch is skipped. WIP: off in ASS 2.0 because it does not work yet (planned for a later release); the catalog accepts it off in the reference BIN."
+  "notes": "Fix for the old sitting-only patch: the orb now sees lethal Richter damage and runs its native step 20, emits D_us_801D169C once, creates factories 0x49 and 0x4B, and destroys itself in step 21. The native signal sends both stock and Epic Richter thinking to step 0x28. No early castle-unlock write. The helper occupies only the normal death block skipped by this hack, and removal restores it. onVersions recognizes only the complete old broken jump with unchanged helper and orb hook. Keep WIP/off in the shipped release until fresh-boot gameplay confirms dialogue and Inverted Castle access.",
+  "onVersions": [
+    [
+      "10d506081d80023ca416428c0780033cb8c3638c020042341d80013ca41622ac49006290",
+      "3400628e1d80013c"
+    ]
+  ],
+  "context": [
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353ac",
+      "length": 48
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x3542c",
+      "length": 36
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x39928",
+      "length": 24
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x40428",
+      "length": 144
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x40830",
+      "length": 68
+    }
+  ]
 }

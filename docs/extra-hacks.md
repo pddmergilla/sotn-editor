@@ -13,6 +13,8 @@ Recognition does not depend on the whole-image hash, so a later ASS build where 
 
 **Epic Richter AI** recognizes the updated code in ASS 2.0.06 and its earlier supported AI versions. Leaving it checked preserves the loaded version; removing and re-adding it installs the current AI. Its toggle preserves the separate No Flinch Richter hack, room edits and stats. Unknown code changes still lock the checkbox.
 
+**Richter always saved** now sends lethal Richter damage through Shaft's orb death sequence, which creates the rescue actors and signals Richter's AI. The earlier patch only made Richter sit down. Both stock and Epic Richter AI pass instruction checks, but dialogue and Inverted Castle access still require a fresh-boot gameplay test, so the shipped ASS release keeps this WIP hack off. An earlier sitting-only patch remains recognized; remove it, rebuild and reopen the BIN, then add it again to install the fix. Incomplete or unknown code stays locked.
+
 **Heart Regeneration** in ASS 2.0.07 restores `floor(total CON / 20) + 1` hearts every 60 gameplay frames, including equipment bonuses and capped at maximum hearts: CON 0–19 gives 1, 20–39 gives 2, and 40–59 gives 3. Earlier fixed-gain versions remain recognized. Leaving the checkbox checked preserves the loaded version; removing and re-adding installs the CON version. Each version guards its own code and allows only its reviewed tuning values to change. Existing HUD pause and regeneration-disable behavior is retained. Gameplay still needs emulator verification.
 
 **Dark Metamorphosis stat buff** has editable ATK, DEF, INT, STR, CON and LCK bonuses. Its controls are disabled while the hack is unchecked. Existing images keep their original code until edited; configuring STR/CON/LCK installs a guarded helper that applies these bonuses before attack and defense calculations. Removing the hack also removes that helper. Other Dark Metamorphosis hacks remain independent.
@@ -40,7 +42,7 @@ Hacks with a dependency move together: **Quick Items** and **Healing items use H
 | Dark Metamorphosis stat buff / SpeedUp | unused `DebugCaptureVideo` body + hooks | no bonus / normal speed | adds it |
 | Sky Walker | Leap Stone check and dive-kick input | single double jump, Down+Cross dive kick | adds it (relic text unchanged) |
 | Damage Number Colors | DRA hook and caves in blank icon space, `F_GAME` palettes, two hooks and a colour table in every stage (ported from Reawakened) | vanilla damage numbers | adds it |
-| Richter always saved (WIP) | one jump in BO6 | defeating Richter needs the Holy Glasses route again | adds it. Work in progress: it does not work yet, so ASS 2.0 ships with it off and the card is marked WIP |
+| Richter always saved (WIP) | Richter lethal-damage route and orb death check in BO6 | defeating Richter needs the Holy Glasses route again | adds the rescue trigger fix; fresh-boot dialogue and Inverted Castle verification are pending, so ASS 2.0 ships with it off |
 | Instant Food | Meal Ticket and food entities in `WEAPON0/1`, DRA food roll | food is thrown and caught as in vanilla | adds it (also checks Quick Items, whose food routines it calls) |
 | Eat Food on Pickup | DRA pickup and `AddToInventory` hooks | picked-up food goes to the inventory | adds it (also checks Quick Items) |
 | Hint items have no attack | category check in the attack calculation | Hint items (category 2) get weapon attack again | not available (vanilla category 2 is Heaven Sword, Shakram, Runesword) |

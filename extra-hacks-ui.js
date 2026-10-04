@@ -115,6 +115,14 @@
       vanillaRequires: feature.vanillaRequires || [],
       entities: (feature.entities || []).map(prepareEntity),
       edits: (feature.edits || []).map(edit => prepareEdit(feature, edit)),
+      onVersions: (feature.onVersions || []).map(version => {
+        if (version.length !== feature.edits.length) throw new Error(`Extra Hacks catalog: incomplete version in ${feature.id}.`);
+        return version.map((bytes, i) => {
+          const parsed = hexBytes(bytes);
+          if (!parsed || parsed.length !== feature.edits[i].on.length / 2) throw new Error(`Extra Hacks catalog: invalid version in ${feature.id}.`);
+          return parsed;
+        });
+      }),
       // vanillaEdits: a hack that needs different bytes on vanilla (the relic swap uses other pedestals).
       vanillaEdits: feature.vanillaEdits ? feature.vanillaEdits.map(edit => prepareEdit(feature, edit)) : null
     }));
@@ -186,6 +194,14 @@
   }
 
   function featureState(feature, files, profile) {
+    // Recognize complete earlier versions.
+    for (const [version, forms] of (feature.onVersions || []).entries()) {
+      if (editsFor(feature, profile) !== feature.edits) continue;
+      if (forms.every((form, i) => {
+        const edit = feature.edits[i], bytes = files.get(edit.file);
+        return bytes && edit.offset + form.length <= bytes.length && matches(bytes.subarray(edit.offset, edit.offset + form.length), form);
+      })) return {state: "on", version: version + 1};
+    }
     let on = 0, off = 0;
     const optional = [];
     for (const edit of editsFor(feature, profile)) {

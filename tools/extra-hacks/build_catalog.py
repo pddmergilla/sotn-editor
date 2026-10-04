@@ -83,7 +83,6 @@ def convert(spec):
         # ASS 2.0 holds either the plain form or, where another hack changes this one's bytes, the combined form.
         # A work-in-progress hack ("wip") may be left off in ASS 2.0.
         allowed = (on, with_on, of) if spec.get('wip') or e.get('optional') else (on, with_on)
-        assert a[off:off + len(on)] in allowed, f"{spec['id']}: on bytes do not match ASS 2.0 at {f} {off:#x}"
         rec = {'file': f, 'offset': off, 'off': of.hex().upper(), 'on': on.hex().upper()}
         if e.get('optional'):
             rec['optional'] = True
@@ -115,6 +114,11 @@ def convert(spec):
                 tun.append([lo - off, hi - lo])
         if tun:
             rec['tunable'] = tun
+        mask = bytearray(len(on))
+        for start, length in tun:
+            mask[start:start + length] = bytes([1]) * length
+        actual = a[off:off + len(on)]
+        assert len(actual) == len(on) and (actual in allowed or any(candidate is not None and all(x == y or mask[n] for n, (x, y) in enumerate(zip(actual, candidate))) for candidate in allowed)), f"{spec['id']}: on bytes do not match ASS 2.0 at {f} {off:#x}"
         alts = list(e.get('onAlt', [])) + OVERRIDES.get(spec['id'], {}).get('onAlt', {}).get(f'{f}:{off:#x}', [])
         for alt in alts:
             data = alt['bytes'] if isinstance(alt, dict) else alt
@@ -252,6 +256,11 @@ def main():
         feat['vanilla'] = True if vanilla.get('supported') else (vanilla.get('reason') or 'Available only on Alternate Scarlet Symphony images.')
         if s.get('context'):
             feat['context'] = [[c['file'], h(c['offset']), int(c['length']), crc(masked(read(c['file'], 'a'), h(c['offset']), int(c['length'])))] for c in s['context']]
+        if s.get('onVersions'):
+            for version in s['onVersions']:
+                assert len(version) == len(edits), (s['id'], 'incomplete version')
+                assert all(len(bytes.fromhex(form)) == len(bytes.fromhex(edit['on'])) for form, edit in zip(version, edits)), (s['id'], 'invalid version')
+            feat['onVersions'] = [[form.upper() for form in version] for version in s['onVersions']]
         feat['edits'] = edits
         if OVERRIDES.get(s['id'], {}).get('useEntities'):
             feat['entities'] = convert_entities(s)

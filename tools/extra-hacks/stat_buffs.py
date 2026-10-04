@@ -13,10 +13,14 @@ def words(*items):
 def jump(addr, link=False):
     return ((3 if link else 2) << 26) | ((addr >> 2) & 0x3ffffff)
 
-def guarded(offset, data, **extra):
+def guarded(offset, data, check_tunables=(), **extra):
     old = read('DRA.BIN', 'v')[offset:offset + len(data)]
+    mask = bytearray(len(data))
+    for start, length in [*check_tunables, *extra.get('tunable', [])]:
+        mask[start:start + length] = bytes([1]) * length
     for kind in ('o', 'a'):
-        assert read('DRA.BIN', kind)[offset:offset + len(data)] == old, (kind, hex(offset))
+        actual = read('DRA.BIN', kind)[offset:offset + len(data)]
+        assert len(actual) == len(data) and (actual == old or all(a == b or mask[n] for n, (a, b) in enumerate(zip(actual, data)))), (kind, hex(offset))
     return dict(file='DRA.BIN', offset=hex(offset), off=old.hex(), on=data.hex(), **extra)
 
 def stone_edits():
@@ -47,7 +51,8 @@ def dark_extension():
                  i(9, 10, 10, 0), i(9, 11, 11, 0), i(43, 9, 10, at), i(43, 9, 11, at + 16)]
     code += [i(35, 29, 31, 16), i(9, 29, 29, 24), 0x03e00008, 0]
     assert len(code) * 4 == 124
-    edits = [guarded(0x42e98, words(*code), optional=True),
+    tuning = [(offset - 0x42e98, 2) for value in values for offset in value['offsets']]
+    edits = [guarded(0x42e98, words(*code), check_tunables=tuning, optional=True),
              guarded(0x553ac, words(jump(BASE + 0x42e98, True)), optional=True)]
     for edit in edits:
         edit['onAlt'] = [dict(bytes=edit['off'], tunable=[])]

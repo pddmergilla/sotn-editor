@@ -224,7 +224,7 @@
  },
  "richter-save": {
   "label": "Richter always saved",
-  "subtitle": "WIP: not working yet",
-  "summary": "Work in progress: this doesn't work yet, so it is off in ASS 2.0 and planned for a later release. When it's finished, defeating Richter will always take the 'Richter saved' route (the Shaft's-orb cutscene that opens the Inverted Castle) instead of his normal defeat."
+  "subtitle": "Fix ready: gameplay test pending",
+  "summary": "Defeating Richter also defeats Shaft's orb and starts its rescue sequence. The missing cutscene trigger has been added; dialogue and Inverted Castle access still need a fresh-boot gameplay test, so ASS 2.0 keeps this WIP hack off. To upgrade the earlier sitting-only patch, remove it, rebuild and reopen the BIN, then add it again."
  }
 }
