@@ -2,7 +2,7 @@
   "use strict";
   const C=window.SotnPlayCore,S=window.SotnPlayStore,Card=window.SotnPlayCard,$=id=>document.getElementById(id);
   const token=location.hash.slice(1),origin=location.origin,urls=[];
-  let build=null,bios=null,audio=null,running=false,starting=false,releaseLock=null,saveTimer=null,saving=null,identity=null,stateBusy=false,cardBytes=null;
+  let build=null,bios=null,audio=null,running=false,starting=false,releaseLock=null,saveTimer=null,saving=null,identity=null,stateBusy=false,cardBytes=null,importedCard=null,cardBusy=false,cardDownloadURL=null;
   const status=text=>$("status").textContent=text;
   const objectURL=blob=>{const url=URL.createObjectURL(blob);urls.push(url);return url;};
   let keyboardTouched=false;
@@ -62,7 +62,7 @@
   function flushCard(){
     if(saving)return saving;
     const manager=window.EJS_emulator?.gameManager;
-    if(!running||!manager)return Promise.resolve();
+    if(!running||!manager||cardBusy)return Promise.resolve();
     saving=(async()=>{
       await Card.save(manager,S,C);
       $("saveStatus").textContent=`Memory card synced at ${new Date().toLocaleTimeString()}.`;
@@ -70,14 +70,53 @@
     return saving;
   }
   async function stateAction(action){
-    if(!running||stateBusy)return;
+    if(!running||stateBusy||cardBusy)return;
     stateBusy=true;
     $("stop").disabled=true;
+    $("downloadCard").disabled=true;
     const controls=$("stateControls").querySelectorAll("button,input");
     for(const control of controls)control.disabled=true;
     try{await action();}catch(error){$("stateStatus").textContent=error.message||String(error);}
-    finally{stateBusy=false;for(const control of controls)control.disabled=false;$("importState").value="";$("stop").disabled=!running;}
+    finally{stateBusy=false;for(const control of controls)control.disabled=false;$("importState").value="";$("stop").disabled=!running;$("downloadCard").disabled=!running;}
   }
+  $("importCard").onchange=async()=>{
+    if(running||starting||cardBusy)return;
+    const file=$("importCard").files[0];if(!file)return;
+    cardBusy=true;$("start").disabled=true;$("importCard").disabled=true;
+    try{
+      const bytes=await Card.importFile(file);
+      importedCard=bytes;
+      $("cardName").textContent=`${file.name} ready; it will replace the browser card for this game.`;
+      $("cardStatus").textContent="Memory card file ready; start the game and select your save.";
+    }catch(error){$("cardStatus").textContent=error.message;}
+    finally{cardBusy=false;$("start").disabled=!build;$("importCard").disabled=false;$("importCard").value="";}
+  };
+  async function downloadCard(stop){
+    if(!running||cardBusy||stateBusy)return;
+    cardBusy=true;$("stop").disabled=true;$("downloadCard").disabled=true;
+    const manager=window.EJS_emulator.gameManager;
+    setFastForward(false);clearInterval(saveTimer);manager.toggleMainLoop(0);
+    try{
+      if(saving)await saving.catch(()=>{});
+      const bytes=Card.capture(manager),url=URL.createObjectURL(new Blob([bytes])),a=$("cardDownload");
+      if(cardDownloadURL)URL.revokeObjectURL(cardDownloadURL);
+      cardDownloadURL=url;
+      a.href=url;a.download=`sotn-memory-card-${new Date().toISOString().replace(/[:.]/g,"-")}.srm`;a.hidden=false;a.click();
+      let warning="";
+      try{await Card.persist(manager,bytes,S,C);}
+      catch(error){warning=" Browser storage failed: "+error.message+". Keep the downloaded file and load it next time.";}
+      $("cardStatus").textContent="Memory card download started; keep the .srm file on your drive. If it did not download, use Download memory card again."+warning;
+      if(stop){
+        running=false;$("game").hidden=true;$("stateControls").hidden=true;$("playControls").hidden=true;
+        status("Memory card saved to a download; close this tab and load that file before your next game."+warning);
+      }
+    }catch(error){$("cardStatus").textContent="Could not download the memory card; keep this tab open and try again: "+error.message;}
+    finally{
+      cardBusy=false;$("stop").disabled=!running;$("downloadCard").disabled=!running;
+      if(running){manager.toggleMainLoop(1);saveTimer=setInterval(()=>flushCard().catch(error=>$("saveStatus").textContent="Memory card sync failed; download the card: "+error.message),5000);}
+    }
+  }
+  $("downloadCard").onclick=()=>downloadCard(false);
   async function savedState(){
     const value=await S.get(`state:${identity}`);
     if(!(value instanceof Blob))throw new Error("No saved state for this build; select Save state first.");
@@ -149,12 +188,13 @@
     catch(error){status("Could not remove stored copy: "+error.message);}
   };
   $("start").onclick=async()=>{
-    if(!build||starting||running)return;
+    if(!build||starting||running||cardBusy)return;
     starting=true;$("start").disabled=true;
+    $("importCard").disabled=true;
     let loaderAdded=false;
     try{
       await acquireLock();
-      cardBytes=await Card.read(S,C);
+      cardBytes=importedCard||await Card.read(S,C);
       for(const el of $("setup").querySelectorAll("input,button"))el.disabled=true;
       status("Identifying this build so its savestates stay separate…");
       const parts=[C.VERSION,await C.fingerprint(build.blob),build.sectorSize,build.dataOffset];
@@ -186,6 +226,7 @@
         catch(error){starting=false;status("Could not restore the memory card; close this tab and try again: "+error.message);return;}
         $("saveStatus").textContent=cardBytes?"Saved memory card loaded; select your save in the game.":"Memory card ready; save in a save room to keep progress.";
         running=true;starting=false;$("stop").hidden=false;$("setup").hidden=true;$("stateControls").hidden=false;
+        $("downloadCard").disabled=false;
         updateKeyboard();setFastForward(false);$("playControls").hidden=false;
         status("Game running — controller and keyboard ready.");
         saveTimer=setInterval(()=>flushCard().catch(error=>$("saveStatus").textContent="Memory card sync failed; export a backup: "+error.message),5000);
@@ -199,29 +240,13 @@
       setTimeout(()=>{if(!running)status("Still loading? Check the emulator message below; if it failed, close this tab and test again with a PS1 BIOS.");},90000);
     }catch(error){
       status(error.message);
-      if(!loaderAdded){releaseLock?.();releaseLock=null;starting=false;for(const el of $("setup").querySelectorAll("input,button"))el.disabled=false;}
+      if(!loaderAdded){releaseLock?.();releaseLock=null;starting=false;$("importCard").disabled=false;for(const el of $("setup").querySelectorAll("input,button"))el.disabled=false;}
     }
   };
-  $("stop").onclick=async()=>{
-    $("stop").disabled=true;
-    try{
-      setFastForward(false);
-      clearInterval(saveTimer);
-      window.EJS_emulator.gameManager.toggleMainLoop(0);
-      if(saving)await saving;
-      await flushCard();running=false;
-      $("game").hidden=true;
-      $("stateControls").hidden=true;$("playControls").hidden=true;
-      status("Memory card saved; close this tab, then return to the editor for your next test.");
-    }catch(error){
-      window.EJS_emulator.gameManager.toggleMainLoop(1);
-      saveTimer=setInterval(()=>flushCard().catch(()=>{}),5000);
-      status("Could not sync the memory card; try again or export it from the emulator: "+error.message);$("stop").disabled=false;
-    }
-  };
+  $("stop").onclick=()=>downloadCard(true);
   window.addEventListener("beforeunload",event=>{if(running){event.preventDefault();event.returnValue="";}});
   document.addEventListener("visibilitychange",()=>{if(document.hidden){setFastForward(false);flushCard().catch(error=>$("saveStatus").textContent="Memory card sync failed: "+error.message);}});
-  window.addEventListener("pagehide",()=>{clearInterval(saveTimer);urls.forEach(url=>URL.revokeObjectURL(url));releaseLock?.();});
+  window.addEventListener("pagehide",()=>{clearInterval(saveTimer);urls.forEach(url=>URL.revokeObjectURL(url));if(cardDownloadURL)URL.revokeObjectURL(cardDownloadURL);releaseLock?.();});
   (async()=>{
     try{
       const savedKeyboard=await S.get("keyboardPreset");

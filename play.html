@@ -34,12 +34,22 @@
         <button id="forgetBuild" type="button">Forget stored test copy</button>
       </div>
     </section>
+    <section id="cardControls" aria-label="Memory card">
+      <div class="options">
+        <label>Load memory card from file <input id="importCard" type="file" accept=".srm,.mcr,.sav,.bin"></label>
+        <span id="cardName">Optional: choose your downloaded card before starting the game.</span>
+      </div>
+      <button id="downloadCard" type="button" disabled>Save &amp; download memory card</button>
+      <a id="cardDownload" hidden>Download memory card again</a>
+      <p id="cardStatus" role="status"></p>
+      <p>Save in a save room first, then download the card to keep your progress on your drive.</p>
+    </section>
     <div id="playControls" class="actions" hidden>
       <button id="fastForward" type="button" aria-pressed="false" aria-keyshortcuts="&#96;">⏩ Fast forward: off</button>
       <span>Press the backtick key (&#96;) to toggle 3× speed.</span>
     </div>
     <div id="game" aria-label="PlayStation emulator"></div>
-    <button id="stop" type="button" hidden>Save memory card &amp; stop</button>
+    <button id="stop" type="button" hidden>Save &amp; download memory card and stop</button>
     <div id="stateControls" class="actions" hidden>
       <button id="saveState" type="button">Save state</button>
       <button id="loadState" type="button">Load state</button>
@@ -52,10 +62,10 @@
       <summary>Controls and saves</summary>
       <p>Connect your controller and press a button to activate it, then click the game; use the emulator’s Controls menu to remap it.</p>
       <p>Choose either keyboard layout above, before starting or while playing; your choice is remembered in this browser.</p>
-      <p>Save at an in-game save room for a memory-card save, shared across test builds; use Save memory card &amp; stop before closing this tab.</p>
+      <p>Save at an in-game save room, then use Save &amp; download memory card, or the save-and-stop button before closing this tab.</p>
       <p>Save state / Load state keeps a snapshot for this exact build and BIOS; Export state / Import state transfers a checked .sotnstate backup.</p>
       <p>Imported states must match the build and BIOS they came from; after changing game data, start fresh and load your memory card.</p>
-      <p>Saves stay in this browser on this site; clearing site data or private browsing can erase them, so use the emulator’s Export Save File / Import Save File menu for backups.</p>
+      <p>Next time, choose Load memory card from file before Start game, then select your save in the game; the card also works with edited test builds.</p>
     </details>
     <p class="muted">Emulator files load from the EmulatorJS CDN; your disc and BIOS stay local. Internet access is required. Close this tab to release game memory.</p>
     <footer><a href="https://github.com/EmulatorJS/EmulatorJS/tree/v4.2.3" target="_blank" rel="noopener">EmulatorJS 4.2.3 source &amp; license</a> · <a href="https://github.com/EmulatorJS/pcsx_rearmed" target="_blank" rel="noopener">PCSX-ReARMed source</a></footer>

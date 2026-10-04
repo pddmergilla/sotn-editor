@@ -4,14 +4,14 @@ const vm=require("node:vm");
 const C=require("../play-core.js");
 const Card=require("../play-card.js");
 function page({locked=false,storageFails=false,preset=null,records=new Map()}={}){
-  const elements=new Map(),handlers={},scripts=[],timers=[];
+  const elements=new Map(),handlers={},scripts=[],timers=[],downloads=[],blobs=new Map();
   if(preset)records.set("keyboardPreset",preset);
   const get=id=>{
-    if(!elements.has(id))elements.set(id,{textContent:"",hidden:false,disabled:false,checked:false,files:[],querySelectorAll:()=>[],setAttribute(name,value){this[name]=value;}});
+    if(!elements.has(id))elements.set(id,{textContent:"",hidden:false,disabled:false,checked:false,files:[],click(){downloads.push({name:this.download,blob:blobs.get(this.href)});},querySelectorAll:()=>[],setAttribute(name,value){this[name]=value;}});
     return elements.get(id);
   };
   const opener={postMessage(){}},window={opener,addEventListener:(name,fn)=>handlers[name]=fn};
-  const document={getElementById:get,createElement:()=>({}),head:{appendChild:script=>scripts.push(script)},addEventListener:(name,fn)=>handlers[name]=fn};
+  const document={getElementById:get,createElement:()=>({click(){downloads.push({name:this.download,blob:blobs.get(this.href)});}}),head:{appendChild:script=>scripts.push(script)},addEventListener:(name,fn)=>handlers[name]=fn};
   let released=false,syncFailure=false,flushes=0;
   window.SotnPlayCore=C;window.SotnPlayCard=Card;
   window.SotnPlayStore={get:async key=>records.get(key),put:async(key,value)=>{if(storageFails)throw Error("Quota exceeded");records.set(key,value);},delete:async key=>records.delete(key)};
@@ -22,12 +22,12 @@ function page({locked=false,storageFails=false,preset=null,records=new Map()}={}
     getSaveFilePath:()=>cardPath,writeFile(path,bytes){assert.equal(path,cardPath);cardFile=bytes.slice();},loadSaveFiles(){card=cardFile;},
     FS:{syncfs:(_,cb)=>cb(syncFailure?Error("Disk full"):null)}};
   vm.runInNewContext(fs.readFileSync(require.resolve("../play.js"),"utf8"),{
-    window,document,location:{hash:"#test-token",origin:"http://localhost"},Blob,URL,Uint8Array,TextDecoder,Date,console,
+    window,document,location:{hash:"#test-token",origin:"http://localhost"},Blob,URL:{createObjectURL(blob){const url=URL.createObjectURL(blob);blobs.set(url,blob);return url;},revokeObjectURL:URL.revokeObjectURL},Uint8Array,TextDecoder,Date,console,
     navigator:{locks:{request:async(_,options,callback)=>{await callback(locked?null:{});released=true;}},storage:{persist:async()=>true}},
     setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},setTimeout(){}
   });
   const deliver=(overrides={})=>handlers.message({origin:"http://localhost",source:opener,data:{type:"sotn-play-build",token:"test-token",blob:new Blob([new Uint8Array(2352)]),sectorSize:2352,dataOffset:24,name:"sample.bin"},...overrides});
-  return {get,window,document,deliver,scripts,records,handlers,manager,timers,speeds,emulator:{gameManager:manager,isFastForward:true,changeSettingOption(name,value){if(name==="fastForward")this.isFastForward=value==="enabled";speeds.push([name,value]);}},setSyncFailure:value=>syncFailure=value,flushes:()=>flushes,released:()=>released,loadedState:()=>loadedState,card:()=>card,setCard:bytes=>card=bytes,setCardPath:path=>cardPath=path};
+  return {get,window,document,deliver,scripts,records,handlers,manager,timers,speeds,downloads,emulator:{gameManager:manager,isFastForward:true,changeSettingOption(name,value){if(name==="fastForward")this.isFastForward=value==="enabled";speeds.push([name,value]);}},setSyncFailure:value=>syncFailure=value,flushes:()=>flushes,released:()=>released,loadedState:()=>loadedState,card:()=>card,setCard:bytes=>card=bytes,setCardPath:path=>cardPath=path};
 }
 (async()=>{
   const p=page();
@@ -72,11 +72,13 @@ function page({locked=false,storageFails=false,preset=null,records=new Map()}={}
   await p.get("importState").onchange();assert.match(p.get("stateStatus").textContent,/damaged/);
   p.get("importState").files=[new Blob([JSON.stringify(header)+"\n",state])];
   await p.get("importState").onchange();assert.deepEqual(p.loadedState(),new Uint8Array([8,9,10]));
-  p.get("fastForward").onclick();p.setSyncFailure(true);await p.get("stop").onclick();
+  p.get("fastForward").onclick();p.setSyncFailure(true);await p.get("downloadCard").onclick();
   assert.equal(p.window.EJS_emulator.isFastForward,false);
-  assert.match(p.get("status").textContent,/Could not sync/);assert.equal(p.get("stop").disabled,false);
+  assert.match(p.get("cardStatus").textContent,/download started.*storage failed.*Disk full/);assert.equal(p.get("stop").disabled,false);
+  assert.deepEqual(new Uint8Array(await p.downloads[0].blob.arrayBuffer()),p.card());
   p.setSyncFailure(false);await p.get("stop").onclick();
   assert.match(p.get("status").textContent,/Memory card saved/);assert.equal(p.get("game").hidden,true);assert(p.flushes()>=2);
+  assert.equal(p.downloads.length,2);assert.match(p.downloads[1].name,/^sotn-memory-card-.*\.srm$/);
   assert.equal(p.get("playControls").hidden,true);
   p.handlers.keydown(key());assert.equal(p.window.EJS_emulator.isFastForward,false);
   p.handlers.pagehide();await new Promise(resolve=>setImmediate(resolve));assert(p.released());
@@ -106,9 +108,27 @@ function page({locked=false,storageFails=false,preset=null,records=new Map()}={}
   const full=page({storageFails:true});full.deliver();full.get("keepBuild").checked=true;await full.get("start").onclick();
   assert.equal(full.scripts.length,1);assert.match(full.get("saveStatus").textContent,/could not be stored/);
   full.window.EJS_emulator=full.emulator;full.window.EJS_onGameStart();await full.get("stop").onclick();
-  assert.match(full.get("status").textContent,/Quota exceeded/);assert.equal(full.get("stop").disabled,false);
-  assert.notEqual(full.get("game").hidden,true);assert.equal(full.records.get("memoryCard"),undefined);
+  assert.match(full.get("status").textContent,/download.*Quota exceeded/);assert.equal(full.get("stop").disabled,true);
+  assert.equal(full.get("game").hidden,true);assert.equal(full.records.get("memoryCard"),undefined);
+  assert.equal(full.downloads.length,1);assert.deepEqual(new Uint8Array(await full.downloads[0].blob.arrayBuffer()),full.card());
   full.handlers.pagehide();
+  const portable=new Uint8Array(131072);portable.set([77,67]);portable[8192]=42;
+  const exporting=page();exporting.deliver();await exporting.get("start").onclick();
+  exporting.window.EJS_emulator=exporting.emulator;exporting.window.EJS_onGameStart();exporting.setCard(portable);
+  await exporting.get("downloadCard").onclick();assert.equal(exporting.get("stop").disabled,false);
+  assert.equal(exporting.get("cardDownload").hidden,false);
+  const importing=page({storageFails:true,records:damagedRecords});importing.deliver();
+  importing.get("importCard").files=[exporting.downloads[0].blob];await importing.get("importCard").onchange();
+  importing.get("importCard").files=[new Blob(["not a card"])];await importing.get("importCard").onchange();
+  assert.match(importing.get("cardStatus").textContent,/raw PS1/);
+  await importing.get("start").onclick();assert.equal(importing.scripts.length,1);
+  importing.window.EJS_emulator=importing.emulator;importing.window.EJS_onGameStart();assert.deepEqual(importing.card(),portable);
+  assert.equal(importing.get("importCard").disabled,true);await importing.get("stop").onclick();
+  assert.deepEqual(new Uint8Array(await importing.downloads[0].blob.arrayBuffer()),portable);importing.handlers.pagehide();
+  const empty=page();empty.deliver();await empty.get("start").onclick();
+  empty.window.EJS_emulator=empty.emulator;empty.window.EJS_onGameStart();empty.setCard(null);
+  await empty.get("stop").onclick();assert.equal(empty.downloads.length,0);assert.equal(empty.get("stop").disabled,false);
+  assert.match(empty.get("cardStatus").textContent,/Could not download/);assert.notEqual(empty.get("game").hidden,true);empty.handlers.pagehide();
   const keyboard=page({preset:"wasd"});
   await new Promise(resolve=>setImmediate(resolve));
   assert.equal(keyboard.get("keyboardPreset").value,"wasd");assert.match(keyboard.get("keyboardHelp").textContent,/Space Select/);
