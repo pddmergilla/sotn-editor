@@ -1084,7 +1084,7 @@
     for(const file of files.values())changes.push(...await C.changedSectors(state.disc,file.record,file.before,file.after));
     changes.sort((a,b)=>a.start-b.start);
     if(!changes.length&&!allowUnchanged)throw new Error("There are no byte changes to export.");
-    return changes;
+    return window.SotnTitleCredits.add(state.disc,changes);
   }
   async function saveBlob(blob,name) {
     if(window.showSaveFilePicker) {

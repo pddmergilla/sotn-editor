@@ -45,6 +45,16 @@ function collector() {
   for (const [off, data] of recs) expected.set(data, off);
   assert.ok(out.bytes().equals(expected));
   assert.equal(crc, A.hex(A.crc32(expected)));
+  const patched = A.patchedFile(blob, ppf);
+  for (const [start, end] of [[4, 9], [(8 << 20) - 1, (8 << 20) + 1], [size - 2, size]]) {
+    assert.deepEqual(Buffer.from(await patched.slice(start, end).arrayBuffer()), expected.subarray(start, end));
+  }
+  const extra = [{start: (8 << 20) - 1, modified: Uint8Array.from([3, 4, 5])}], credited = collector();
+  const brandedCrc = await A.build(blob, ppf, credited, {changes: extra});
+  const brandedExpected = Buffer.from(expected); brandedExpected.set(extra[0].modified, extra[0].start);
+  assert.equal(brandedCrc.releaseCrc, crc, "release check precedes the credit");
+  assert.equal(brandedCrc.crc, A.hex(A.crc32(brandedExpected)));
+  assert.ok(credited.bytes().equals(brandedExpected), "credit survives a stream boundary");
   assert.equal((await A.inspect(new Blob([expected]), ppf, {size})).status, "patched");
   const other = Buffer.from(base); other[6] = 0xEE;
   assert.equal((await A.inspect(new Blob([other]), ppf, {size})).status, "other");
