@@ -15,6 +15,7 @@ node tests/room-gfx.test.js
 node tests/stats-core.test.js
 node tests/prize-drops.test.js
 node tests/stats-bin.test.js
+node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
 node tests/extra-hacks-ui.test.js
@@ -33,6 +34,12 @@ node tests/play-card.test.js
 `copy-tile.test.js` checks rectangle capture on release, reverse drags, selection cancellation, zoom, foreground and background chunks, empty tiles, edge clipping, overlapping stamps, preview bounds, grouped undo, single-tile reset, and clearing chunks when a room uses different tile definitions. Browser-verified locally on 2026-10-04 with the current ASS BIN: a 4 × 4 rectangle copies on release, its artwork appears in the cursor preview, clicking and dragging paint the chunk, and one Undo restores the clean map after either action.
 
 `spell-mp.test.js` checks exported spell-cost bytes and runs the recognized CastSpell instructions on vanilla and the current modded BIN: Soul Steal at 1 MP accepts 29 current MP and spends 1, with max MP still 29. It also checks insufficient MP, zero cost, and increased costs. This does not verify combo input or emulator loading; boot the edited BIN afresh and load a memory-card save rather than an old savestate.
+
+`enemy-elements.test.js` checks Medusa's body and sword elements independently on vanilla and the current ASS BIN. It reproduces the ASS sword's hardcoded Curse despite the body's Hit element, executes the actual sword instructions with branch/load delays after removing/restoring Curse, checks both slash variants and inactive hitboxes, rejects unknown or changed code, and verifies BIN/PPF exports, reopen, sector checksums, and unchanged source hashes. Set `SOTN_VANILLA_BIN` and `SOTN_ASS_BIN` to choose images; missing images skip.
+
+Verified locally on 2026-10-05: the browser shows Sword slash as Cut + Curse and Dashing sword slash as Cut + Fire; clearing Curse changes only Sword slash, Undo restores it, and PPF export reports one changed sector. The in-app browser did not expose a completed download event, so disk download remains unverified. Emulator combat still needs a fresh boot and a memory-card save; an old savestate keeps its existing enemy elements.
+
+The current reference images also reproduce three existing failures with the pre-change stats model: `stats-bin.test.js` cannot locate the prologue bonus-item fields, `stat-buffs.test.js` fails current-image Extra Hacks recognition, and `title-credits.test.js` finds that the shipped ASS release differs from the current main BIN. These failures are separate from Medusa's element checks.
 
 `ass2.test.js` checks the PPF parser and windowed builder on a synthetic image, that the shipped PPF matches the release data, and, when the images are present, that vanilla builds to the exact ASS 2.0 BIN.
 

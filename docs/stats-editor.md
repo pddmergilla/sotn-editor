@@ -20,13 +20,15 @@ The **Stats Editor** tab reads the loaded BIN's own values, so an already modded
 | Richter attacks and skills | Whip, Slide, Slide kick, High-jump attack, Blade Dash, Hydro Storm: damage, hit cooldown, element | `BIN/RIC.BIN` `subweapons_def` |
 | Richter subweapons and crashes | heart cost, damage, how many can be out at once, hit cooldown, element, crash heart cost, crash damage rows, Agunea follow-up cost | `subweapons_def`, `RicEntitySubwpnAgunea` |
 | Familiars | name, base damage and element of each attack | menu strings, `g_SpellDefs` rows 7 and 15-27 |
-| Enemies | name, HP, LVL, EXP, DEF, contact damage and element, weaknesses/resistances, both drops and drop rates, each attack's damage and element | `g_EnemyDefs` |
+| Enemies | name, HP, LVL, EXP, DEF, contact damage and element, weaknesses/resistances, both drops and drop rates, each attack's damage and element | `g_EnemyDefs`; recognized ASS Medusa sword elements in `BOSS/RBO3/RBO3.BIN` |
 | Hand items | name, icon, icon palette, description, ATK, DEF, MP cost (shown as heart cost when the cost has bit `0x8000`, the Healing items use Hearts flag), critical rate, how many can be out at once (thrown weapons, bombs and food), stun frames, element, hit cooldown and whether hits steal souls (weapons and their specials), special effect; for weapons a moveset: basic attack, category, the ↓↘→ and ←→ specials with their damage, MP cost and element | `g_EquipDefs` rows 0-168, specials in rows 169-216 |
 | Head gear, armor, cloaks, accessories | name, icon, icon palette, description, ATK, DEF, STR, CON, INT, LCK, weak/resist/immune/absorb, special effect | `g_AccessoryDefs` |
 | Special effects | which item grants each coded effect | `CheckEquipmentItemCount` calls in DRA and every stage/boss overlay |
 | Sunstone and Moonstone | separate STR, CON, INT and LCK bonuses per stone (0–99), on their accessory cards and under Special effects | guarded day/night hooks and a bonus table in unused sound-bank padding |
 
 Click an item's icon to pick from all 320 item icons in the BIN.
+
+**Medusa's body contact and sword slashes are separate hits.** In the recognized ASS sword code, **Sword slash** reads Cut + Curse and **Dashing sword slash** reads Cut + Fire, even when her body-contact element is Hit. Remove Curse from **Sword slash** to stop that slash from cursing; changing the body-contact element does not change her sword. Both slashes share damage row #367 but have independent elements. Vanilla uses the sword's ordinary table element. Unknown sword code locks its element rather than exporting an ineffective edit.
 
 **Stats up by day** (Sunstone, 6:00–18:00) and **Stats up by night** (Moonstone, 18:00–6:00) each expose four independent bonuses. Two equipped stones grant twice their configured bonuses. The effect can still be assigned to another accessory. Values initially read +5 per stat; exported images reopen with their edited values. Equipment bonuses still follow the game's existing cap and CON/INT scaling.
 

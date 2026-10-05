@@ -312,7 +312,46 @@
           hp: intField(ctx, "DRA", o + 0x04, 2, true, "HP")});
       }
     }
+    parseMedusaElements(ctx, list);
     return list;
+  }
+
+  const MEDUSA_SWORD = [
+    0x9488002C, 0x34090005, 0x15090007, 0x340A0000,
+    0x90880086, 0, 0x11000005, 0, 0x080681F8, 0x340A0000,
+    0x34080002, 0xA608003C, 0xA60A0042, 0x84820056,
+    0x3C018018, 0x080648D6, 0
+  ];
+  function parseMedusaElements(ctx, enemies) {
+    const {m} = ctx, file = "BOSS/RBO3", b = m.files[file]?.bytes;
+    const medusa = enemies.find(e => e.index === 366);
+    const sword = medusa?.attacks.find(a => a.index === 367);
+    if (!b || !sword) return;
+    medusa.contactNote = "Body contact is separate from sword slashes; edit their elements below.";
+    sword.label = "Sword slash";
+    const hook = 0x12350, start = 0x207B0;
+    if (u32(b, hook) === 0x84820056 && u32(b, hook + 4) === 0x3C018018) return;
+    const known = b.length >= start + MEDUSA_SWORD.length * 4 &&
+      u16(b, 0x488) === 366 && u16(b, 0x494) === 367 &&
+      u32(b, hook) === 0x080681EC && u32(b, hook + 4) === 0 &&
+      MEDUSA_SWORD.every((w, i) => i === 3 || i === 9 ?
+        (u32(b, start + i * 4) >>> 16) === (w >>> 16) : u32(b, start + i * 4) === w);
+    if (!known) {
+      m.field(sword.element).readOnly = "Medusa's sword code is not recognized.";
+      medusa.contactNote += " Her sword element is locked because its code is not recognized.";
+      return;
+    }
+    const mask = new Uint8Array(MEDUSA_SWORD.length * 4).fill(255);
+    for (const i of [3, 9]) mask.fill(0, i * 4, i * 4 + 2);
+    const guards = [{off: 0x480, expect: b.slice(0x480, 0x498)},
+      {off: hook, expect: b.slice(hook, hook + 8)},
+      {off: start, expect: b.slice(start, start + mask.length), mask}];
+    const element = (at, label) => m.add({id: `medusa:${at.toString(16)}`, kind: "imm", file, off: at,
+      label, ui: "elements", original: u16(b, at), min: 0, max: 65535,
+      expect: b.slice(at, at + 4), guards, hint: "Overrides the sword's table element during this slash."});
+    sword.element = element(start + 12, "Sword slash element");
+    medusa.attacks.splice(medusa.attacks.indexOf(sword) + 1, 0,
+      {...sword, label: "Dashing sword slash", element: element(start + 36, "Dashing sword slash element")});
   }
 
   // Every g_EquipDefs row, including rows 169-216 that hold weapon specials,
@@ -972,9 +1011,12 @@
       return b;
     };
     const check = (f, b) => {
-      if (!f.expect) return;
-      for (let i = 0; i < f.expect.length; i++) if (b[f.off + i] !== f.expect[i]) {
-        throw new Error(`${f.label} (${f.file} ${hex(f.off)}) was changed by another patch; stats were not written.`);
+      for (const guard of [{off: f.off, expect: f.expect}, ...(f.guards || [])]) {
+        if (!guard.expect) continue;
+        for (let i = 0; i < guard.expect.length; i++) if (
+          (b[guard.off + i] & (guard.mask?.[i] ?? 255)) !== (guard.expect[i] & (guard.mask?.[i] ?? 255))) {
+          throw new Error(`${f.label} (${f.file} ${hex(guard.off)}) was changed by another patch; stats were not written.`);
+        }
       }
     };
     for (const check of model.checks || []) {

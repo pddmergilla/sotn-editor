@@ -477,6 +477,7 @@
         control(e.name, {big: true}), `#${e.index}${e.label && e.label !== textOf(e.name) ? ` · ${e.label}` : ""}`,
         grid(sf("HP", e.hp), sf("LVL", e.level), sf("EXP", e.exp), sf("DEF", e.defense),
           sf("Contact damage", e.attack), sf("Element", e.element, {wide: true})),
+        e.contactNote ? el("p", {class: "statHint", text: e.contactNote}) : null,
         el("details", {class: "sfMore"}, el("summary", {text: "Weaknesses and resistances"}),
           grid(sf("Weak to", e.weak, {wide: true}), sf("Resists", e.resist, {wide: true}), sf("Immune to", e.immune, {wide: true}), sf("Absorbs", e.absorb, {wide: true}))),
         el("div", {class: "sfDrops"}, el("h4", {text: "Drops"}),
