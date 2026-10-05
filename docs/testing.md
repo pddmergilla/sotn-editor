@@ -18,6 +18,7 @@ node tests/stats-bin.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
+node tests/edit-session.test.js
 node tests/extra-hacks-ui.test.js
 node tests/richter-save.test.js
 node tests/stat-buffs.test.js
@@ -30,6 +31,10 @@ node tests/play-card.test.js
 ```
 
 `file-picker.test.js` checks native and fallback file selection, cancel/retry, downloads, and source-file protection. Manually verify Open SOTN BIN, Build BIN and Export PPF3 in Firefox.
+
+`edit-session.test.js` checks saving from memory after source-file access fails, preservation of changes that cannot currently build, all edit types, reloading onto a fresh compatible BIN, merging, conflict and damaged-file rejection without partial application, grouped Undo, hack bonuses and dependencies, and repeat saves after restoration. Image checks use `SOTN_BIN`, `SOTN_VANILLA_BIN`, and `SOTN_ASS_OLD_BIN` when available. Browser acceptance: save edits, reopen a BIN, load the saved JSON, review each edited tab, Undo, load again, and build; also save after a file-read failure without refreshing the page.
+
+Verified locally on 2026-10-06: saved/restored stats and maps produce identical changed sectors on vanilla US, the current ASS BIN, and ASS 1.3.1, without changing any input image. Hack selection round trips pass on vanilla and ASS 1.3.1; bonus and dependency checks also pass with controlled fixtures. The current ASS BIN's Extra Hacks rejection (unexpected `BOSS/RBO3/RBO3.BIN` size) also occurs with the unchanged editor and remains a separate issue. In the browser harness, STR 50 → 51 survives a simulated source-read failure: Save current edits captures the JSON, reopening the BIN resets STR to 50, loading the saved file restores 51, Undo restores 50, and reloading/building succeeds with one changed sector. The toolbar fits without overlap at 1280 pixels, and the editor fills the remaining height. Native save dialogs and completed browser downloads to disk remain manual checks. `tests/edit-session-harness.html` provides standard file selection, captured save output, and a lost-access simulation for that check.
 
 `copy-tile.test.js` checks rectangle capture on release, reverse drags, selection cancellation, zoom, foreground and background chunks, empty tiles, edge clipping, overlapping stamps, preview bounds, grouped undo, single-tile reset, and clearing chunks when a room uses different tile definitions. Browser-verified locally on 2026-10-04 with the current ASS BIN: a 4 × 4 rectangle copies on release, its artwork appears in the cursor preview, clicking and dragging paint the chunk, and one Undo restores the clean map after either action.
 

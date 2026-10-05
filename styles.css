@@ -1,14 +1,14 @@
 * { box-sizing: border-box; }
 :root { color-scheme: dark; font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; }
-body { margin:0; background:#10141a; color:#e9edf4; height:100vh; overflow:hidden; }
+body { margin:0; background:#10141a; color:#e9edf4; height:100vh; overflow:hidden; display:flex; flex-direction:column; }
 header {
-  min-height:66px; padding:10px 16px; display:flex; align-items:center; justify-content:space-between;
+  min-height:66px; padding:10px 16px; display:flex; flex:none; flex-wrap:wrap; align-items:center; justify-content:space-between;
   background:#171c24; border-bottom:1px solid #313948; gap:16px;
 }
 h1 { margin:0; font-size:22px; white-space:nowrap; }
 h1 span { font-size:11px; padding:3px 7px; border:1px solid #647186; border-radius:10px; vertical-align:middle; }
 header p { margin:4px 0 0; color:#95a1b2; font-size:12px; }
-.toolbar { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+.toolbar { display:flex; flex:1 1 650px; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
 .donateButton { display:inline-flex; align-items:center; gap:5px; padding:7px 11px; border:1px solid #c2456a; border-radius:6px;
   background:linear-gradient(180deg,#d9507a,#9c2a4d); color:#fff4f7; font-size:13px; font-weight:600; text-decoration:none; white-space:nowrap; }
 .donateButton:hover { background:linear-gradient(180deg,#e5628a,#ad3157); border-color:#e5628a; }
@@ -20,7 +20,7 @@ button { cursor:pointer; }
 button:hover { background:#2b3543; }
 button:disabled { opacity:.42; cursor:not-allowed; }
 .iconButton { width:36px; min-width:36px; font-size:20px; line-height:1; }
-main { height:calc(100vh - 66px); min-height:0; display:grid; grid-template-columns:230px minmax(0,1fr) 310px; }
+main { flex:1; min-height:0; display:grid; grid-template-columns:230px minmax(0,1fr) 310px; }
 aside { background:#171c24; overflow:auto; padding:12px; }
 .left { border-right:1px solid #313948; }
 .right { border-left:1px solid #313948; }
@@ -77,6 +77,7 @@ code { color:#d2deef; }
 @media(max-width:900px) {
   body { overflow:auto; height:auto; }
   header { align-items:flex-start; flex-direction:column; }
+  .toolbar { flex:none; width:100%; justify-content:flex-start; }
   main { height:auto; min-height:calc(100vh - 110px); grid-template-columns:minmax(160px,30%) 1fr; }
   .right { grid-column:1 / -1; border-left:0; border-top:1px solid #313948; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
   .center { min-height:65vh; }
@@ -93,14 +94,14 @@ code { color:#d2deef; }
 }
 
 /* v6.0: editor tabs */
-.brand { display:flex; align-items:center; gap:18px; min-width:0; }
+.brand { display:flex; flex-shrink:0; flex-wrap:wrap; align-items:center; gap:18px; min-width:0; max-width:100%; }
 .brandTitle { display:flex; flex-direction:column; align-items:flex-start; gap:2px; }
 .brandTitle h1 { line-height:24px; }
 .repoLink { display:inline-flex; align-items:center; gap:5px; padding:1px 7px; border:1px solid #3d4859; border-radius:999px;
   color:#aeb9c8; background:#1d232d; font-size:11px; line-height:12px; text-decoration:none; }
 .repoLink:hover { color:#e9edf4; border-color:#647186; background:#262e3a; }
 .repoLink:focus-visible { outline:2px solid #6da9ff; outline-offset:2px; }
-.tabs { display:flex; gap:2px; padding:3px; background:#10141a; border:1px solid #313948; border-radius:8px; }
+.tabs { display:flex; flex-wrap:wrap; gap:2px; padding:3px; background:#10141a; border:1px solid #313948; border-radius:8px; max-width:100%; }
 .tab { border:0; background:transparent; color:#afbac9; padding:6px 12px; border-radius:6px; white-space:nowrap; }
 .tab:hover { background:#222a35; }
 .tab.active { background:#31547f; color:#fff; }
@@ -108,7 +109,7 @@ code { color:#d2deef; }
 body.statsTab .legacy { display:none; }
 
 /* v6.0: Stats Editor */
-.statsView { height:calc(100vh - 66px); min-height:0; background:#0b0f14; }
+.statsView { flex:1; min-height:0; background:#0b0f14; }
 .statsEmptyState { max-width:640px; margin:60px auto; padding:0 16px; color:#95a1b2; line-height:1.6; }
 .statsEmptyState h2 { font-size:18px; letter-spacing:0; text-transform:none; color:#e9edf4; }
 .statsLayout { height:100%; display:grid; grid-template-columns:220px minmax(0,1fr); }

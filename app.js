@@ -18,7 +18,7 @@
     zoom:1, mode:"tiles", copyTileActive:false, copyCollisionActive:false, selectedEntity:null, draggingEntity:false,
     painting:false, paintStroke:null, entityDrag:null, pan:null, dirty:false, tileCanvasCache:new Map(), undoStack:[],
     tileBrush:null, copySelection:null, brushHover:null,
-    tab:"map", statsModel:null
+    tab:"map", statsModel:null, editRevision:0
   };
 
   const $ = id => document.getElementById(id);
@@ -33,6 +33,7 @@
     return !!stage?.originalRoomGfxIds?.some((value,index)=>stage.rooms[index]?.entityGfxId!==value);
   }
   function updateSaveState() {
+    state.editRevision++;
     if(state.discStage)state.discStage.entitiesDirty=state.entitiesDirty;
     const mapDirty = state.entitiesDirty || [...state.tilemaps.values()].some(e => e.dirty) || [...state.tiledefs.values()].some(td=>td.dirty) ||
       [...state.discStages.values()].some(s=>s.entitiesDirty||roomGraphicsDirty(s)||!!window.SotnStage.prizeDropsDirty?.(s)||[...s.maps.values()].some(m=>m.dirty)||[...s.tiledefs.values()].some(td=>td.dirty));
@@ -41,6 +42,8 @@
     $("buildBin").disabled = !hasChanges || !state.disc;
     $("testGame").disabled = !state.disc;
     $("exportPpf").disabled = !hasChanges || !state.disc;
+    $("saveEdits").disabled = !state.disc;
+    $("loadEdits").disabled = !state.disc;
     $("saveAll").disabled = !mapDirty || !!state.discStage;
   }
   function markDirty(kind) {
@@ -254,7 +257,7 @@
 
   async function openDisc() {
     try {
-      if(state.dirty&&!confirm("Open another BIN and discard current unsaved edits?"))return;
+      if(state.dirty&&!confirm("Open another BIN and discard current edits? Use Save current edits first to keep them."))return;
       const {handle,file}=await chooseFile();
       setStatus("Reading disc filesystem...");
       const disc=await C.DiscImage.open(file);
@@ -1188,6 +1191,56 @@
       a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
     }
   }
+  async function saveCurrentEdits() {
+    try {
+      if (!state.disc) throw new Error("Load a SOTN BIN first.");
+      finishPainting(); finishEntityDrag(); updateSaveState();
+      const revision = state.editRevision;
+      const saved = await window.SotnEditSession.capture({name:state.discName, stages:state.discStages,
+        stats:state.statsModel, hacks:window.SotnExtraHacksUI, area:state.discStage?.code});
+      if (revision !== state.editRevision) throw new Error("Your edits changed while saving. Use Save current edits again.");
+      const stem = state.discName.replace(/\.[^.]+$/, "");
+      await saveBlob(new Blob([JSON.stringify(saved)], {type:"application/json"}), `${stem}.sotn-edits.json`);
+      setStatus("Current edits saved. Open a compatible BIN, then use Load saved edits to restore them.");
+    } catch (error) {
+      if (error.name !== "AbortError") { setStatus(error.message); alert(error.message); }
+    }
+  }
+  async function loadSavedEdits() {
+    try {
+      if (!state.disc) throw new Error("Load a SOTN BIN first.");
+      const {file} = await chooseFile();
+      if (file.size > 32 * 1024 * 1024) throw new Error("This edit file is too large. Choose a .sotn-edits.json file.");
+      const saved = window.SotnEditSession.parse(await file.text()), disc = state.disc;
+      finishPainting(); finishEntityDrag(); updateSaveState();
+      const revision = state.editRevision;
+      setStatus("Checking saved edits against the loaded BIN...");
+      const stages = new Map(state.discStages);
+      for (const entry of saved.stages) if (!stages.has(entry.code)) {
+        const area = state.areaCatalog.find(area => area.code === entry.code);
+        if (!area) throw new Error(`Saved area ${entry.code} is not in this BIN.`);
+        const stage = window.SotnStage.parseOverlay(await disc.readFile(area.overlay));
+        stage.code = entry.code; stage.record = area.overlay; stage.entitiesDirty = false; initPrizeDrops(stage);
+        stages.set(entry.code, stage);
+      }
+      const plan = await window.SotnEditSession.prepare(saved, {stats:state.statsModel, stages, hacks:window.SotnExtraHacksUI});
+      if (disc !== state.disc || revision !== state.editRevision) throw new Error("The BIN or current edits changed. Load the saved edits again.");
+      const restore = plan.apply();
+      for (const code of plan.touched) state.discStages.set(code, stages.get(code));
+      state.entityLayouts = state.discStage?.entityLayouts || state.entityLayouts;
+      state.entitiesDirty = state.discStage?.entitiesDirty || false;
+      pushUndo("loaded saved edits", () => {
+        restore(); state.entityLayouts = state.discStage?.entityLayouts || state.entityLayouts;
+        state.entitiesDirty = state.discStage?.entitiesDirty || false;
+      });
+      state.selectedEntity = null; state.tileCanvasCache.clear();
+      refreshEntityFields(); refreshRoomInfo(); redraw(); redrawPalette();
+      window.SotnEditorView?.refreshAll(); window.SotnExtraHacksUI?.refresh(); updateSaveState();
+      setStatus("Saved edits loaded. Review them, keep editing, or build when ready. Undo restores your previous edits.");
+    } catch (error) {
+      if (error.name !== "AbortError") { setStatus(`Saved edits were not loaded: ${error.message}`); alert(error.message); }
+    }
+  }
   async function exportResult(kind) {
     try {
       setStatus("Checking edited overlays and disc sectors...");
@@ -1196,7 +1249,11 @@
       const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v7.0"):C.modifiedBlob(state.disc.file,changes);
       await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`);
       setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} saved (${changes.length} changed sectors).`);
-    } catch(e){if(e.name!=="AbortError"){console.error(e);if(e.extraHackConflict)window.SotnExtraHacksUI?.setConflict(e.message);setStatus(e.message||String(e));alert(e.message||e);}}
+    } catch(e){if(e.name!=="AbortError"){
+      console.error(e);if(e.extraHackConflict)window.SotnExtraHacksUI?.setConflict(e.message);
+      const message = `${e.message||String(e)} Your edits are still in this tab. Use Save current edits to keep them before reopening the BIN or refreshing.`;
+      setStatus(message);alert(message);
+    }}
   }
 
   if(typeof showDirectoryPicker !== "function") {
@@ -1204,6 +1261,7 @@
     $("openFolder").title="Asset folders require Chrome or Edge; Open SOTN BIN works here.";
   }
   $("openFolder").onclick=openAreaFolder;$("openDisc").onclick=openDisc;$("openStageGfx").onclick=openStageGraphics;$("saveAll").onclick=saveAll;
+  $("saveEdits").onclick=saveCurrentEdits;$("loadEdits").onclick=loadSavedEdits;
   $("undoEdit").onclick=undoEdit;
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape"&&(state.copyTileActive||state.copyCollisionActive)){setCopyTile(false);setCopyCollision(false);return;}

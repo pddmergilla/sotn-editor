@@ -36,7 +36,12 @@ Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at th
 1. Open the [hosted editor](https://pddmergilla.github.io/sotn-editor/) in desktop Chrome, Edge or Firefox.
 2. Select **Open SOTN BIN** and choose your disc image: a 2352-byte sector BIN or a 2048-byte sector ISO.
 3. Make your changes in any tab.
-4. Select **Build BIN** to save a new image, or **Export PPF3** to save a patch with only your changes.
+4. Select **Save current edits** to keep a small `.sotn-edits.json` file without building a BIN. Open a compatible BIN later, then select **Load saved edits** to restore your work and continue editing.
+5. Select **Build BIN** to save a new image, or **Export PPF3** to save a patch with only your changes.
+
+Saved edit files include applied map, collision, entity, room graphics, held-item, stat, shop, and Extra Hacks changes across all edited areas. Saving uses the data already in memory, so it still works if the browser loses access to the source BIN or a build check fails. Save before reopening the BIN or refreshing the page; this is a manual save, and fields with an **Apply Changes** button must be applied first. Saving keeps the current edits and Undo history.
+
+Loading merges saved edits with compatible current edits, rejects conflicting values before applying anything, and can be undone in one step. Stats and shop fields must have matching layouts and values; edited castle areas must match their original area data, and Extra Hacks must use the same supported game family and catalog definitions. The file can be used with a newly selected copy or a BIN changed elsewhere, but conflicts require the compatible source BIN. Review the restored changes before building; an edit file preserves work and does not bypass build validation.
 
 Select **▶ Test in browser** to run a patched copy without overwriting the source. This also works before making any edits. The separate play tab supports controllers, downloadable memory cards, and savestates. Select your own PS1 BIOS for reliable saves; without one, the game may freeze at File Select or save rooms. Save in a save room, then use **Save & download memory card**; next time, choose **Load memory card from file** before starting. See [browser testing](docs/browser-testing.md).
 
@@ -67,6 +72,7 @@ The editor is plain HTML, CSS and JavaScript with no build step. Browser testing
 | Path | Contents |
 |---|---|
 | `index.html`, `app.js`, `styles.css` | Page layout, tabs, disc loading and export |
+| `edit-session.js` | Portable saved edits, compatibility checks and restoration |
 | `play*.js`, `play.html`, `play.css` | Patched-copy handoff, browser emulator, and saved test copies |
 | `sotn-core.js`, `disc-stage.js` | ISO9660 reading, stage overlays, EDC/ECC, PPF3 output |
 | `entity-*.js` | Entity catalog, templates and editing model |

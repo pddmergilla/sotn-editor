@@ -640,12 +640,66 @@
     return [...byFile.values()];
   }
 
+  function sessionShape(feature) {
+    return crc32(new TextEncoder().encode(JSON.stringify(feature)));
+  }
+  function captureSession() {
+    const out = [];
+    for (const [id, on] of selected) {
+      const entry = avail.get(id), values = tuning.get(id) || {};
+      if (on === entry?.source && !Object.keys(values).length) continue;
+      const baseline = entry.info.state === "on" ? entry.info.values : entry.feature.defaults;
+      out.push({id, from:entry.source, to:on, profile:analysis.profile, shape:sessionShape(entry.feature),
+        values:Object.entries(values).map(([key, to]) => ({key, from:baseline[key], to}))});
+    }
+    return out;
+  }
+  function prepareSession(saved) {
+    if (!Array.isArray(saved)) throw new Error("Saved Extra Hacks are damaged.");
+    if (!saved.length) return () => () => {};
+    if (saved.length && phase !== "ready") throw new Error("Wait for Extra Hacks to finish checking a supported BIN, then load the saved edits again.");
+    const next = new Map(selected), bonuses = new Map([...tuning].map(([key, value]) => [key, {...value}]));
+    const seen = new Set();
+    for (const edit of saved) {
+      const entry = avail.get(edit?.id);
+      if (!entry?.canToggle || seen.has(edit.id) || edit.profile !== analysis.profile || edit.shape !== sessionShape(entry.feature) ||
+        typeof edit.from !== "boolean" || typeof edit.to !== "boolean" || !Array.isArray(edit.values)) throw new Error(`Saved Extra Hack ${edit?.id || "entry"} is unavailable or incompatible.`);
+      seen.add(edit.id);
+      if (next.get(edit.id) !== edit.from && next.get(edit.id) !== edit.to) throw new Error(`${entry.feature.label} conflicts with the current selection.`);
+      next.set(edit.id, edit.to);
+      const baseline = entry.info.state === "on" ? entry.info.values : entry.feature.defaults;
+      const values = {...bonuses.get(edit.id)}, keys = new Set();
+      for (const value of edit.values) {
+        const def = entry.feature.values?.find(def => def.key === value?.key && def.editable);
+        if (!def || keys.has(value.key) || !Number.isInteger(value.from) || !Number.isInteger(value.to) || value.to < def.min || value.to > def.max) throw new Error(`${entry.feature.label} has an invalid saved bonus.`);
+        keys.add(value.key);
+        const current = values[value.key] ?? baseline[value.key];
+        if (current !== value.from && current !== value.to) throw new Error(`${entry.feature.label} bonus conflicts with this BIN or its current edits.`);
+        values[value.key] = value.to;
+      }
+      bonuses.set(edit.id, values);
+    }
+    for (const feature of catalog?.features || []) if (next.get(feature.id)) {
+      if (requiresFor(feature, analysis?.profile).some(id => !next.get(id))) throw new Error(`${feature.label} is missing a required hack in these saved edits.`);
+    }
+    const previous = selected, previousTuning = tuning;
+    return () => {
+      const restore = () => { selected = previous; tuning = previousTuning; noteText = ""; notifySelection(); };
+      selected = next; tuning = bonuses; noteText = "";
+      try { notifySelection(); }
+      catch (error) { try { restore(); } catch {} throw error; }
+      return restore;
+    };
+  }
+
   const api = {
     init(options = {}) { hooks = options; render(); },
     setDisc,
     hasChanges,
     refresh: render,
     pendingEdits,
+    captureSession,
+    prepareSession,
     applyEdits,
     setConflict(message) { noteText = message || ""; renderStatus(); },
     get catalog() { return catalog; },
