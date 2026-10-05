@@ -335,10 +335,15 @@
       u16(b, 0x488) === 366 && u16(b, 0x494) === 367 &&
       u32(b, hook) === 0x080681EC && u32(b, hook + 4) === 0 &&
       MEDUSA_SWORD.every((w, i) => i === 3 || i === 9 ?
-        (u32(b, start + i * 4) >>> 16) === (w >>> 16) : u32(b, start + i * 4) === w);
+        (u32(b, start + i * 4) >>> 16) === (w >>> 16) :
+        i === 12 ? [0, w].includes(u32(b, start + i * 4)) : u32(b, start + i * 4) === w);
     if (!known) {
       m.field(sword.element).readOnly = "Medusa's sword code is not recognized.";
       medusa.contactNote += " Her sword element is locked because its code is not recognized.";
+      return;
+    }
+    if (u32(b, start + 48) === 0) {
+      medusa.contactNote = "Body contact is separate from sword slashes. Both sword slashes use Sword slash below.";
       return;
     }
     const mask = new Uint8Array(MEDUSA_SWORD.length * 4).fill(255);
