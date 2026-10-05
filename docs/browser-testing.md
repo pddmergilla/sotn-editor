@@ -6,7 +6,7 @@ If you opened `index.html` directly, Test shows a message explaining how to star
 
 In the play tab:
 
-1. Optionally select your own 512 KB PS1 BIOS, such as `scph5501.bin`; it is remembered in this browser. No BIOS is supplied, and booting without one is not guaranteed.
+1. Select your own 512 KB PS1 BIOS, such as `scph5501.bin`, for reliable memory-card access; it is remembered in this browser. Without one, the core uses a built-in BIOS fallback which can boot the title screen but freeze at File Select or save rooms. The player shows a warning while no BIOS is selected. No BIOS is supplied. See the [core's BIOS guidance](https://docs.libretro.com/library/pcsx_rearmed/#bios).
 2. Optionally supply the original US Track 2 BIN, including its two-second audio pregap. This is the same two-file layout as the editor's ASS 2.0 CUE export; other multi-track layouts need an external emulator. Track 1 alone omits the separate CD audio track.
 3. Optionally select **Keep this test copy for page reloads**. This stores the patched image and optional audio track locally and needs several hundred MB of free browser storage. On reload, select **Load last test copy**. Failed storage does not prevent testing in the current tab.
 4. To continue from a downloaded save, select **Load memory card from file** and choose your `.srm` file before starting. This card takes priority over browser storage, including a damaged stored card; it can also be used with an edited build.

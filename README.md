@@ -38,7 +38,7 @@ Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at th
 3. Make your changes in any tab.
 4. Select **Build BIN** to save a new image, or **Export PPF3** to save a patch with only your changes.
 
-Select **▶ Test in browser** to run a patched copy without overwriting the source. This also works before making any edits. The separate play tab supports controllers, downloadable memory cards, and savestates. Save in a save room, then use **Save & download memory card**; next time, choose **Load memory card from file** before starting. See [browser testing](docs/browser-testing.md).
+Select **▶ Test in browser** to run a patched copy without overwriting the source. This also works before making any edits. The separate play tab supports controllers, downloadable memory cards, and savestates. Select your own PS1 BIOS for reliable saves; without one, the game may freeze at File Select or save rooms. Save in a save room, then use **Save & download memory card**; next time, choose **Load memory card from file** before starting. See [browser testing](docs/browser-testing.md).
 
 ### Run it locally
 

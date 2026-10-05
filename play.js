@@ -159,11 +159,11 @@
   $("bios").onchange=async()=>{
     const file=$("bios").files[0];if(!file)return;
     if(file.size!==524288){status("Choose a 512 KB PS1 BIOS file, such as scph5501.bin.");$("bios").value="";return;}
-    bios=file;$("biosName").textContent=file.name;
+    bios=file;$("biosName").textContent=file.name;$("biosWarning").hidden=true;
     try{await S.put("bios",file);}catch(error){status("BIOS works for this session, but could not be remembered: "+error.message);}
   };
   $("forgetBios").onclick=async()=>{
-    try{await S.delete("bios");bios=null;$("bios").value="";$("biosName").textContent="No BIOS selected; compatibility without one is not guaranteed.";}
+    try{await S.delete("bios");bios=null;$("bios").value="";$("biosName").textContent="No BIOS selected; choose a 512 KB PS1 BIOS such as scph5501.bin.";$("biosWarning").hidden=false;}
     catch(error){status("Could not forget BIOS: "+error.message);}
   };
   $("audio").onchange=()=>{
@@ -251,7 +251,7 @@
     try{
       const savedKeyboard=await S.get("keyboardPreset");
       if(!keyboardTouched&&C.keyboards[savedKeyboard]){$("keyboardPreset").value=savedKeyboard;updateKeyboard();}
-      bios=await S.get("bios");if(bios)$("biosName").textContent=bios.name||"Saved PS1 BIOS";
+      bios=await S.get("bios");if(bios){$("biosName").textContent=bios.name||"Saved PS1 BIOS";$("biosWarning").hidden=true;}
       $("resume").hidden=!(await S.get("lastBuild"));
     }catch(error){$("saveStatus").textContent="Browser storage is unavailable; saves may not persist: "+error.message;}
     if(window.opener&&token)window.opener.postMessage({type:"sotn-play-ready",token},origin);

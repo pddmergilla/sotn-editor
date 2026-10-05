@@ -60,6 +60,8 @@ The explicit memory-card copy and restore added on 2026-10-03 passed the automat
 
 Verified locally on 2026-10-04 with the real EmulatorJS core: the unchanged ASS BIN boots, a distinct raw card file imports through the file chooser, and a fresh core passes the byte-for-byte card restore check. Both download controls expose a dated `.srm` link. The in-app browser's download event timed out for automatic downloads and the explicit link, so completed downloads to disk and an actual save-room save recovered from a downloaded card remain manual Chrome/Edge checks.
 
+Investigated locally on 2026-10-05 with the supplied 128 KB external `.srm`: its directory checksums and four SotN save headers pass inspection, the player imports it, and the real core boots without a BIOS. A held controller input reaches File Select, where card reading stalls. The player now warns about memory-card compatibility without a real BIOS, following the [core's BIOS guidance](https://docs.libretro.com/library/pcsx_rearmed/#bios). No BIOS was available for comparison, so loading those saves with a BIOS and actual save-room recovery remain unverified. The warning is guidance, not a core crash fix.
+
 `extra-hacks-ui.test.js` runs its unit checks always. With the reference images present it also checks:
 
 - detection on vanilla, ASS 2.0 and ASS 1.3.1;

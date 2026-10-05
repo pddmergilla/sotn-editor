@@ -20,8 +20,8 @@
     <section id="setup" aria-label="Game setup">
       <p>Your edits are already applied to this copy; your original disc stays unchanged.</p>
       <div class="options">
-        <label>PS1 BIOS (optional)<input id="bios" type="file" accept=".bin"></label>
-        <span id="biosName">No BIOS selected; compatibility without one is not guaranteed.</span>
+        <label>PS1 BIOS (recommended for saves)<input id="bios" type="file" accept=".bin"></label>
+        <span id="biosName">No BIOS selected; choose a 512 KB PS1 BIOS such as scph5501.bin.</span>
         <button id="forgetBios" type="button">Forget BIOS</button>
         <label>Original US Track 2 (optional)<input id="audio" type="file" accept=".bin"></label>
         <span>For the standard two-file US rip, including its 2-second audio pregap.</span>
@@ -34,6 +34,7 @@
         <button id="forgetBuild" type="button">Forget stored test copy</button>
       </div>
     </section>
+    <p id="biosWarning" role="status">Without a real PS1 BIOS, File Select and save rooms may freeze even when a memory card imports successfully; select your BIOS before Start game.</p>
     <section id="cardControls" aria-label="Memory card">
       <div class="options">
         <label>Load memory card from file <input id="importCard" type="file" accept=".srm,.mcr,.sav,.bin"></label>
