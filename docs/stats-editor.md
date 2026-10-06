@@ -48,6 +48,8 @@ The Hunter Sword boomerang patch uses its own private special row (169), so its 
 
 The Stone Sword Medusa special patch keeps the sword's ordinary slash and artwork. Grounded ↓↘→ + attack casts the actual Medusa Shield spell through overlay 27, without needing a shield or Shield Rod. It shares row 211 with Medusa Shield (initially 170 damage and 70 MP on the inspected ASS image). The special card shows that shared shield; edits affect both, or **Make a private copy** separates Stone Sword's values. Installed combo rows remain available in the special picker. Fresh-boot gameplay remains unverified.
 
+The Terminus Est Crissaegrim special patch keeps its ordinary slash and artwork. **←→ + attack** uses Crissaegrim's actual slash burst, with its own row 186 (initially 199 damage and 15 MP on the inspected ASS image). Edit **Special damage**, **Special MP cost**, **Special element** and **Special hit cooldown** on Terminus Est's card, or the full row under **Weapon specials**; these values do not change the normal sword or Crissaegrim. The patch preserves the game's existing ←→ behavior, including no extra MP check. Fresh-boot gameplay remains unverified.
+
 ## How values are found and written
 
 - Tables are located through DRA's `g_api` pointer header (enemies, equipment, accessories, relics) and the `config_us.h` table order (subweapons, menu strings, spells). Richter's table is `RIC.BIN` offset `0x18688`.

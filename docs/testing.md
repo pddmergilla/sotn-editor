@@ -17,6 +17,7 @@ node tests/prize-drops.test.js
 node tests/stats-bin.test.js
 node tests/hunter-sword.test.js
 node tests/stone-sword.test.js
+node tests/terminus-est.test.js
 node tests/alucard-soul-steal.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
@@ -104,5 +105,9 @@ Verified in the local browser on 2026-10-05: the current ASS BIN recognizes the 
 `stat-buffs.test.js` checks independent Sunstone/Moonstone bonuses, zero/one/two-stone stacking, configured Dark Metamorphosis export/reopen and removal, unknown/partial helper rejection, unchanged source bytes, and Extra Hacks recognition on vanilla, ASS 1.3.1 and ASS 2.0. It executes the emitted helpers with PlayStation branch/load delays to check expiry, repeated refreshes, STR before attack and CON before defense, zero attacks and the ATK cap. Original stat recalculation and attack/defense calls are simulated; emulator gameplay remains a manual check. `tests/stat-buffs-harness.html` opens the full editor with an ordinary file picker for browser automation.
 
 `hunter-sword.test.js` checks the guarded Hunter Sword boomerang patch on the current ASS image and vanilla US image when present. It simulates both hands, combo and MP gating, grounded/crouched throws, return flight, independent special-row stats, PPF replay, source preservation, and rejection of changed weapon code. Emulator gameplay remains a manual check.
+
+`terminus-est.test.js` checks Terminus Est's ←→ selection, unchanged native MP behavior, chain limits, both hands and facing directions, normal slash parity, Crissaegrim attack-frame parity, allocation failure, palette loading, sword artwork, private row 186, stat export/reopen, guarded PPF replay and source preservation. `node tools/weapons/build-terminus-est-patch.js <output-directory>` prepares a guarded forward/reversal pair and report; `--apply` requires explicit approval and the recorded full-image hash. After application, the test can reconstruct the source in memory using the matching report in Downloads, or `SOTN_TERMINUS_REPORT`. Fresh-boot combat, gear changes and room transitions remain manual checks.
+
+Browser-verified locally on 2026-10-06 after approved application: Terminus Est's ←→ picker selects its own row 186, with 199 special damage, 15 MP, Cut and 14-frame hit cooldown. Raising special damage to 201 leaves the normal ATK at 199; Undo restores the special to 199. The existing prologue-bonus warning remains present and is separate from these fields. Byte checks, both-hand instruction checks, private stat exports, all 24 changed-sector checksums and exact reversal pass; emulator gameplay remains unverified.
 
 Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.
