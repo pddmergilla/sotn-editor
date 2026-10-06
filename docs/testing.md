@@ -17,6 +17,7 @@ node tests/prize-drops.test.js
 node tests/stats-bin.test.js
 node tests/hunter-sword.test.js
 node tests/stone-sword.test.js
+node tests/alucard-soul-steal.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
@@ -41,6 +42,8 @@ Verified locally on 2026-10-06: saved/restored stats and maps produce identical 
 `copy-tile.test.js` checks rectangle capture on release, reverse drags, selection cancellation, zoom, foreground and background chunks, empty tiles, edge clipping, overlapping stamps, preview bounds, grouped undo, single-tile reset, and clearing chunks when a room uses different tile definitions. Browser-verified locally on 2026-10-04 with the current ASS BIN: a 4 × 4 rectangle copies on release, its artwork appears in the cursor preview, clicking and dragging paint the chunk, and one Undo restores the clean map after either action.
 
 `spell-mp.test.js` checks exported spell-cost bytes and runs the recognized CastSpell instructions on vanilla and the current modded BIN: Soul Steal at 1 MP accepts 29 current MP and spends 1, with max MP still 29. It also checks insufficient MP, zero cost, and increased costs. This does not verify combo input or emulator loading; boot the edited BIN afresh and load a memory-card save rather than an old savestate.
+
+`alucard-soul-steal.test.js` executes the actual back-forward input and native Soul Steal MP checks for both hands and facing directions, standing/walking, insufficient MP, wrong weapons/buttons, expired commands, existing spell input, edited costs and register preservation; animation and learning services are simulated. `node tools/weapons/build-alucard-soul-steal-patch.js <output-directory>` prepares guarded forward/reversal PPFs, verifies all four hash round trips, sector checksums, export/reopen and unchanged unrelated sectors, and leaves the original BIN untouched. `--apply` requires explicit approval for that prepared pair and rejects a changed source hash. The added command uses the shared Soul Steal spell settings; normal slash and the existing QCF special stay unchanged. Fresh-boot gameplay, healing, animation and gear/room transitions remain manual checks.
 
 `stone-sword.test.js` uses the exact current ASS image to check Stone Sword's grounded QCF selection, MP and active-spell limits, both hands and facing directions, preserved slash properties, relocated animations and artwork, palette loading, the unchanged Medusa spell and beam-damage routines, shared row 211, private copies, export/reopen, occupied-code rejection and unchanged source hashes. `node tools/weapons/build-stone-sword-patch.js <output-directory>` prepares guarded forward/reversal PPFs and full-hash verification without writing a BIN; `--apply` requires explicit user approval and the exact recorded source hash. Fresh-boot gameplay, spell presentation and gear/room transitions remain manual checks.
 
