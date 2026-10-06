@@ -508,10 +508,12 @@
     const equipRows = () => model.sections.equipRows || [];
     const isWeapon = it => it.index > 0 && it.index < M.HAND_ITEMS && WEAPON_CATEGORIES.has(val(it.category)) && val(it.weaponId) !== 0xFF;
     const rowName = i => textOf(equipRows()[i]?.name, `Item ${i}`).trim();
-    // Names the other weapons that use a row, so the current weapon reads as "this weapon".
+    const specialUsers = index => [...new Set([...M.rowUsers(model, index),
+      ...(M.comboSpells(model).find(s => s.index === index)?.casters || [])])].filter(i => i < M.HAND_ITEMS);
+    // Include shields sharing this spell.
     function specialLabel(index, self) {
       if (!index) return "None";
-      const users = M.rowUsers(model, index).filter(i => i < M.HAND_ITEMS);
+      const users = specialUsers(index);
       const others = users.filter(i => i !== self).map(rowName);
       const what = others.length ? `${others.join(", ")} special${users.includes(self) ? " (shared)" : ""}` :
         users.includes(self) ? "this weapon's own special" : `spare row (overlay ${val(equipRows()[index].weaponId)})`;
@@ -552,7 +554,7 @@
       if (!index) return box;
       const r = equipRows()[index];
       if (!r) return box;
-      const others = M.rowUsers(model, index).filter(i => i !== it.index && i < M.HAND_ITEMS).map(rowName);
+      const others = specialUsers(index).filter(i => i !== it.index).map(rowName);
       box.append(grid(sf("Special damage", r.attack), sf("Special MP cost", r.mp), sf("Special element", r.element, {wide: true}), sf("Special hit cooldown", r.invFrames), soulField(r.hitEffect)));
       if (others.length) box.append(el("p", {class: "statHint", text: `Shared with ${others.join(", ")}: editing these numbers changes theirs too.`}));
       if (val(r.weaponId) !== val(it.weaponId)) {

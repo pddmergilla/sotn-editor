@@ -16,6 +16,7 @@ node tests/stats-core.test.js
 node tests/prize-drops.test.js
 node tests/stats-bin.test.js
 node tests/hunter-sword.test.js
+node tests/stone-sword.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
@@ -40,6 +41,10 @@ Verified locally on 2026-10-06: saved/restored stats and maps produce identical 
 `copy-tile.test.js` checks rectangle capture on release, reverse drags, selection cancellation, zoom, foreground and background chunks, empty tiles, edge clipping, overlapping stamps, preview bounds, grouped undo, single-tile reset, and clearing chunks when a room uses different tile definitions. Browser-verified locally on 2026-10-04 with the current ASS BIN: a 4 × 4 rectangle copies on release, its artwork appears in the cursor preview, clicking and dragging paint the chunk, and one Undo restores the clean map after either action.
 
 `spell-mp.test.js` checks exported spell-cost bytes and runs the recognized CastSpell instructions on vanilla and the current modded BIN: Soul Steal at 1 MP accepts 29 current MP and spends 1, with max MP still 29. It also checks insufficient MP, zero cost, and increased costs. This does not verify combo input or emulator loading; boot the edited BIN afresh and load a memory-card save rather than an old savestate.
+
+`stone-sword.test.js` uses the exact current ASS image to check Stone Sword's grounded QCF selection, MP and active-spell limits, both hands and facing directions, preserved slash properties, relocated animations and artwork, palette loading, the unchanged Medusa spell and beam-damage routines, shared row 211, private copies, export/reopen, occupied-code rejection and unchanged source hashes. `node tools/weapons/build-stone-sword-patch.js <output-directory>` prepares guarded forward/reversal PPFs and full-hash verification without writing a BIN; `--apply` requires explicit user approval and the exact recorded source hash. Fresh-boot gameplay, spell presentation and gear/room transitions remain manual checks.
+
+Browser-verified locally on 2026-10-06 with the prepared DRA preview: Stone Sword selects row 211 and shows the Medusa Shield sharing warning; raising its special MP cost from 70 to 71 updates the shared spell, while a private copy into row 186 can change cost without changing Medusa Shield's row 211. The preview uses extracted DRA data and does not write the source BIN.
 
 `enemy-elements.test.js` checks Medusa's body and sword elements independently on vanilla and the current ASS BIN. It reproduces the ASS sword's hardcoded Curse despite the body's Hit element, executes the actual sword instructions with branch/load delays after removing/restoring Curse, checks both slash variants and inactive hitboxes, rejects unknown or changed code, and verifies BIN/PPF exports, reopen, sector checksums, and unchanged source hashes. Set `SOTN_VANILLA_BIN` and `SOTN_ASS_BIN` to choose images; missing images skip.
 

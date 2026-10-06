@@ -46,6 +46,8 @@ The **Medusa Table Elements** PPF disables only the forced sword-element write, 
 
 The Hunter Sword boomerang patch uses its own private special row (169), so its ↓↘→ + attack damage, MP cost, element, hit cooldown and other effect values can be edited without changing Shotel's row (176). Hunter Sword keeps its ordinary slash and uses the sword overlay for the throw.
 
+The Stone Sword Medusa special patch keeps the sword's ordinary slash and artwork. Grounded ↓↘→ + attack casts the actual Medusa Shield spell through overlay 27, without needing a shield or Shield Rod. It shares row 211 with Medusa Shield (initially 170 damage and 70 MP on the inspected ASS image). The special card shows that shared shield; edits affect both, or **Make a private copy** separates Stone Sword's values. Installed combo rows remain available in the special picker. Fresh-boot gameplay remains unverified.
+
 ## How values are found and written
 
 - Tables are located through DRA's `g_api` pointer header (enemies, equipment, accessories, relics) and the `config_us.h` table order (subweapons, menu strings, spells). Richter's table is `RIC.BIN` offset `0x18688`.

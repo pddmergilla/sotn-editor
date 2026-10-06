@@ -910,10 +910,10 @@
     return (m.sections.equipRows || []).filter(r => r.index !== index &&
       (m.get(r.specialMove) === index || m.get(r.unk17) === index)).map(r => r.index);
   }
-  // Rows usable as a special: past the hand items, not Axe Armor, and not a
-  // two-weapon combo target (menu.c scans rows 0xAA-0xD8 for comboSub bits).
+  // Keep installed combo specials selectable.
   function specialRows(m) {
-    return (m.sections.equipRows || []).filter(r => r.index >= HAND_ITEMS && r.index !== AXE_ARMOR_ROW && m.get(r.comboSub) === 0);
+    return (m.sections.equipRows || []).filter(r => r.index >= HAND_ITEMS && r.index !== AXE_ARMOR_ROW &&
+      (m.get(r.comboSub) === 0 || rowUsers(m, r.index).length));
   }
   function freeSpecialRows(m) {
     return specialRows(m).filter(r => !rowUsers(m, r.index).length && m.get(r.comboMain) === 0);
