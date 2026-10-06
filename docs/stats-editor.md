@@ -44,6 +44,8 @@ The **Medusa Table Elements** PPF disables only the forced sword-element write, 
 - **Copy another weapon's whole moveset** sets the basic attack and both specials to that weapon's, sharing its special rows.
 - A special runs code from the overlay of the weapon you are holding, not from its own row. Pick a special made for a different overlay and the card warns you; match the basic attack to that special's weapon (for example Short sword with Rapier's basic attack and special) or it may look wrong or crash.
 
+The Hunter Sword boomerang patch uses its own private special row (169), so its ↓↘→ + attack damage, MP cost, element, hit cooldown and other effect values can be edited without changing Shotel's row (176). Hunter Sword keeps its ordinary slash and uses the sword overlay for the throw.
+
 ## How values are found and written
 
 - Tables are located through DRA's `g_api` pointer header (enemies, equipment, accessories, relics) and the `config_us.h` table order (subweapons, menu strings, spells). Richter's table is `RIC.BIN` offset `0x18688`.

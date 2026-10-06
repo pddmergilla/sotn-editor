@@ -15,6 +15,7 @@ node tests/room-gfx.test.js
 node tests/stats-core.test.js
 node tests/prize-drops.test.js
 node tests/stats-bin.test.js
+node tests/hunter-sword.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
@@ -93,5 +94,7 @@ Verified in the local browser on 2026-10-05: the current ASS BIN recognizes the 
 `node tools/extra-hacks/build-richter-save-patch.js <output-directory>` builds a separate exact-image forward/reversal PPF pair and a verification report, without writing a BIN. It checks hashes, both patch directions and embedded undo, guarded rejection, checksums, and unrelated hack states. Rebuild if the source BIN changes before application; applying to the original requires explicit approval.
 
 `stat-buffs.test.js` checks independent Sunstone/Moonstone bonuses, zero/one/two-stone stacking, configured Dark Metamorphosis export/reopen and removal, unknown/partial helper rejection, unchanged source bytes, and Extra Hacks recognition on vanilla, ASS 1.3.1 and ASS 2.0. It executes the emitted helpers with PlayStation branch/load delays to check expiry, repeated refreshes, STR before attack and CON before defense, zero attacks and the ATK cap. Original stat recalculation and attack/defense calls are simulated; emulator gameplay remains a manual check. `tests/stat-buffs-harness.html` opens the full editor with an ordinary file picker for browser automation.
+
+`hunter-sword.test.js` checks the guarded Hunter Sword boomerang patch on the current ASS image and vanilla US image when present. It simulates both hands, combo and MP gating, grounded/crouched throws, return flight, independent special-row stats, PPF replay, source preservation, and rejection of changed weapon code. Emulator gameplay remains a manual check.
 
 Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.

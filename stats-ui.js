@@ -560,7 +560,10 @@
         box.append(el("p", {class: "statWarn", text: `Row ${index} was made for weapon overlay ${val(r.weaponId)}, but this weapon loads overlay ${val(it.weaponId)}. ` +
           `The special runs this weapon's overlay code, so it may look wrong or crash.${match ? ` Set the basic attack to ${rowName(match.index)} to match.` : ""}`}));
       }
-      if (!others.length) return box; // already this weapon's own row
+      if (!others.length) {
+        box.append(el("p", {class: "statHint", text: "Private special: these numbers only affect this weapon."}));
+        return box;
+      }
       const free = M.freeSpecialRows(model).filter(f => f.index !== index);
       const copy = el("button", {type: "button", class: "smallButton", disabled: !free.length,
         title: free.length ? `Spare rows: ${free.map(f => f.index).join(", ")}` : "No spare special rows are left.",
