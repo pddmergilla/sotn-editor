@@ -277,6 +277,15 @@
     if(symbol==="E_SUBWPN_CONTAINER")return {kind:"subweapon",index:params,symbol};
     return null;
   }
+  function prizeTableLength(stage, highestSlot) {
+    if(String(stage.code).toUpperCase()!=="RNO4")return highestSlot+1;
+    const end=stage.prizeTableOffset+64;
+    const next=[16,32,48,64,80,96,112,0];
+    if(stage.prizeTableOffset!==0x1620||end+16>stage.bytes.length||
+      next.some((value,i)=>u16(stage.bytes,end+i*2)!==value))
+      throw new Error("Reverse Caverns prize table boundary is not recognized.");
+    return 32;
+  }
   // subweapon_params[] of EntitySubWeaponContainer: nine s32 subweapon ITEMDROP IDs (14-22).
   function findSubweaponTable(b) {
     const want=[...Array(9).keys()].map(i=>i+14).join(",");
@@ -593,6 +602,16 @@
 
   function buildOverlay(stage, dirtyEntities=false) {
     validateRoomGraphics(stage);
+    if(dirtyEntities&&String(stage.code).toUpperCase()==="RNO4") {
+      const cat=global.SotnEntityCatalog||(typeof require==="function"?require("./entity-catalog.js"):null);
+      for(const [i,bank] of stage.entityLayouts.entities.entries())for(const entity of bank) {
+        const rule=dropRule(stage.code,cat.typeFor(stage.code,entity.id).symbol,entity.params,stage);
+        if(rule?.kind!=="slot"||rule.slot<32)continue;
+        const unchanged=stage.originalEntities[i]?.some(original=>
+          ENTITY_FIELDS.every(field=>entity[field]===original[field]));
+        if(!unchanged)throw new Error("Choose a Reverse Caverns prize slot from 0 to 31.");
+      }
+    }
     const out=stage.bytes.slice();
     for(let i=0;i<stage.rooms.length;i++) {
       if(stage.rooms[i].entityGfxId!==stage.originalRoomGfxIds[i]) {
@@ -664,7 +683,7 @@
     return out;
   }
 
-  const api={parseOverlay,buildOverlay,entityRepackCapacity,roomGraphicsDirty,prizeDropsDirty,findPrizeTable,dropRule,findSubweaponTable,findContainerDrops,initContainerDrops};
+  const api={parseOverlay,buildOverlay,entityRepackCapacity,roomGraphicsDirty,prizeDropsDirty,findPrizeTable,dropRule,prizeTableLength,findSubweaponTable,findContainerDrops,initContainerDrops};
   global.SotnStage=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })(typeof window!=="undefined"?window:globalThis);

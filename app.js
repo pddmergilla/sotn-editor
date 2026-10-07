@@ -875,7 +875,7 @@
     if(!(stage.prizeTableOffset>=0))return;
     let max=-1;
     for(const bank of stage.originalEntities||[])for(const e of bank){const rule=dropRule(stage.code,e,stage);if(rule?.kind==="slot")max=Math.max(max,rule.slot);}
-    const length=max+1,off=stage.prizeTableOffset;
+    const length=window.SotnStage.prizeTableLength(stage,max),off=stage.prizeTableOffset;
     if(length<1||off+length*2>stage.bytes.length)return;
     const original=new Uint16Array(length);
     for(let i=0;i<length;i++)original[i]=stage.bytes[off+i*2]|stage.bytes[off+i*2+1]<<8;
@@ -1131,6 +1131,9 @@
     const table=state.discStage?.prizeDrops,held=$("entityHeldItem");
     let prize=null;
     const rule=dropRule(activeEntityAreaCode(),next);
+    if(String(activeEntityAreaCode()).toUpperCase()==="RNO4"&&rule?.kind==="slot"&&rule.slot>=32) {
+      setStatus("Choose a Reverse Caverns prize slot from 0 to 31.");return;
+    }
     if(table&&!held.disabled&&!$("heldItemWrap").classList.contains("hidden")&&rule?.kind==="slot"&&rule.slot<table.values.length) {
       const value=Number(held.value);
       if(Number.isInteger(value)&&value>=0&&value<=0xFFFF&&value!==table.values[rule.slot])prize={slot:rule.slot,before:table.values[rule.slot],value};

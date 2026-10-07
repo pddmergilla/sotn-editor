@@ -33,6 +33,9 @@ function machine(code, hooks = new Map()) {
         if (f === 0) set(rd, r[rt] << shift);
         else if (f === 2) set(rd, r[rt] >>> shift);
         else if (f === 3) set(rd, r[rt] >> shift);
+        else if (f === 4) set(rd, r[rt] << (r[rs] & 31));
+        else if (f === 6) set(rd, r[rt] >>> (r[rs] & 31));
+        else if (f === 7) set(rd, r[rt] >> (r[rs] & 31));
         else if (f === 0x21) set(rd, r[rs] + r[rt]);
         else if (f === 0x23) set(rd, r[rs] - r[rt]);
         else if (f === 0x24) set(rd, r[rs] & r[rt]);
