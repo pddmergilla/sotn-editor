@@ -278,13 +278,18 @@
     return null;
   }
   function prizeTableLength(stage, highestSlot) {
-    if(String(stage.code).toUpperCase()!=="RNO4")return highestSlot+1;
-    const end=stage.prizeTableOffset+64;
-    const next=[16,32,48,64,80,96,112,0];
-    if(stage.prizeTableOffset!==0x1620||end+16>stage.bytes.length||
+    const bounds={
+      RNO4:[0x1620,32,[16,32,48,64,80,96,112,0]],
+      RNO2:[0xD40,12,[32768,65535,0,0,61440,65535,57344,65535]],
+      RLIB:[0xBC8,18,[259,515,771,1027,1283,1539,1795,0]],
+      BO3:[0x108C,38,[0,0,0,0,1,0,1,0]]
+    }[String(stage.code).toUpperCase()];
+    if(!bounds)return highestSlot+1;
+    const [offset,length,next]=bounds,end=offset+length*2;
+    if(stage.prizeTableOffset!==offset||end+16>stage.bytes.length||
       next.some((value,i)=>u16(stage.bytes,end+i*2)!==value))
-      throw new Error("Reverse Caverns prize table boundary is not recognized.");
-    return 32;
+      throw new Error(`${stage.code} prize table boundary is not recognized.`);
+    return length;
   }
   // subweapon_params[] of EntitySubWeaponContainer: nine s32 subweapon ITEMDROP IDs (14-22).
   function findSubweaponTable(b) {
@@ -602,14 +607,15 @@
 
   function buildOverlay(stage, dirtyEntities=false) {
     validateRoomGraphics(stage);
-    if(dirtyEntities&&String(stage.code).toUpperCase()==="RNO4") {
+    if(dirtyEntities&&["RNO4","RNO2","RLIB","BO3"].includes(String(stage.code).toUpperCase())) {
+      const limit=prizeTableLength(stage,0);
       const cat=global.SotnEntityCatalog||(typeof require==="function"?require("./entity-catalog.js"):null);
       for(const [i,bank] of stage.entityLayouts.entities.entries())for(const entity of bank) {
         const rule=dropRule(stage.code,cat.typeFor(stage.code,entity.id).symbol,entity.params,stage);
-        if(rule?.kind!=="slot"||rule.slot<32)continue;
+        if(!["slot","fixed"].includes(rule?.kind)||rule.slot<limit)continue;
         const unchanged=stage.originalEntities[i]?.some(original=>
           ENTITY_FIELDS.every(field=>entity[field]===original[field]));
-        if(!unchanged)throw new Error("Choose a Reverse Caverns prize slot from 0 to 31.");
+        if(!unchanged)throw new Error(`Choose a prize slot from 0 to ${limit-1}.`);
       }
     }
     const out=stage.bytes.slice();

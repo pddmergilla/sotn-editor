@@ -20,6 +20,8 @@ Entity coordinates are local to the room. Drag a marker or edit its local X/Y to
 
 Reverse Caverns urns and jugs use **Holds item** and a prize slot, rather than a direct item ID. Its recognized table has slots 0–31; larger values are outside the table. Give each Heart/Life Max-Up tank a different slot, because sharing a slot also shares its collected flag. Changing the held item alone does not clear an existing save's collected flag. [Repair and verification details](reverse-caverns-drops.md).
 
+Death Wing's Lair urns/jugs, Forbidden Library urns/busts and Scylla's urns also use prize slots. Their recognized tables have 12, 18 and 38 entries respectively; unsafe slot edits are rejected. Forbidden Library jugs always use slot 3. [Full pot audit and repair](all-pot-drops.md).
+
 **Copy Tile** lets you drag a rectangle of tiles and copies it when you release the left mouse button. The starting tile chooses the visible foreground or background layer, and the entire rectangle comes from that layer, including empty tiles. A click still copies one tile. The button turns off after copying and switches the paint layer to match.
 
 The copied chunk appears as a preview under the mouse, with its top-left tile at the cursor. Click or drag to paint it repeatedly. At the map edges, only tiles inside the layer are painted. Choose a palette tile, enter a Tile ID, or change the paint layer to return to a single tile. Copied chunks can be used in other rooms with the same tile definitions; changing to incompatible tile definitions clears the chunk.

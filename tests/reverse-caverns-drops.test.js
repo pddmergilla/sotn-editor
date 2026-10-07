@@ -28,8 +28,26 @@ const sha = b => crypto.createHash('sha256').update(b).digest('hex');
     const beforeHash = sha(fs.readFileSync(path));
     const disc = await C.DiscImage.open(await fs.openAsBlob(path));
     const record = await disc.findPath(['ST','RNO4','RNO4.BIN']);
-    const stage = S.parseOverlay(await disc.readFile(record)); stage.code='RNO4';
+    let stage = S.parseOverlay(await disc.readFile(record)); stage.code='RNO4';
     initTable(stage);
+    if(label==='modded') {
+      const first=targets[0],room=stage.rooms[first.room];
+      const pot=stage.banks.get(stage.xPtrs[room.entityLayoutId]).originalEntries.find(e=>e.id===1&&e.x===first.x&&e.y===first.y);
+      if(pot.params===(0x7000|first.slot)) {
+        const original=Buffer.from(stage.bytes);
+        for(const t of targets) {
+          assert.equal(stage.prizeDrops.values[t.slot],t.item);
+          original.writeUInt16LE(t.slot===22?195:164,stage.prizeTableOffset+t.slot*2);
+          const layout=stage.rooms[t.room].entityLayoutId;
+          for(const ptr of new Set([stage.xPtrs[layout],stage.yPtrs[layout]])) {
+            const bank=stage.banks.get(ptr),index=bank.originalEntries.findIndex(e=>e.id===1&&e.x===t.x&&e.y===t.y);
+            assert.equal(bank.originalEntries[index].params,0x7000|t.slot);
+            original.writeUInt16LE(t.from,bank.start+index*10+8);
+          }
+        }
+        stage=S.parseOverlay(Uint8Array.from(original));stage.code='RNO4';initTable(stage);
+      }
+    }
     assert.equal(stage.prizeDrops.values.length,32,'Invalid pots cannot extend the table into other data.');
     const damaged = {...stage,bytes:stage.bytes.slice()};damaged.bytes[0x1660]^=1;
     assert.throws(()=>initTable(damaged),/boundary/);

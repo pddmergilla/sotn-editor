@@ -1131,8 +1131,8 @@
     const table=state.discStage?.prizeDrops,held=$("entityHeldItem");
     let prize=null;
     const rule=dropRule(activeEntityAreaCode(),next);
-    if(String(activeEntityAreaCode()).toUpperCase()==="RNO4"&&rule?.kind==="slot"&&rule.slot>=32) {
-      setStatus("Choose a Reverse Caverns prize slot from 0 to 31.");return;
+    if(table&&["slot","fixed"].includes(rule?.kind)&&rule.slot>=table.values.length) {
+      setStatus(`Choose a prize slot from 0 to ${table.values.length-1}.`);return;
     }
     if(table&&!held.disabled&&!$("heldItemWrap").classList.contains("hidden")&&rule?.kind==="slot"&&rule.slot<table.values.length) {
       const value=Number(held.value);

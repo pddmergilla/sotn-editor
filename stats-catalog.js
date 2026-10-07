@@ -225,7 +225,8 @@
   const BREAKABLE_RULES = {
     DAI: {7: "slot", 8: "slot"}, RDAI: {7: "slot", 8: "slot"}, NO2: {7: "slot", 8: "slot"}, RNO1: {7: "slot", 8: "slot"},
     NO1: {7: "slot", 8: 3}, TOP: {7: "slot", 8: "slot", 9: "slot"}, RTOP: {7: "slot", 8: "slot", 9: "slot"},
-    LIB: {7: "slot", 8: 3, 9: "slot"}, CAT: {7: "slot", 8: 3, 9: "slot"}, RCAT: {7: "slot", 8: 3, 9: "slot"},
+    LIB: {7: "slot", 8: 3, 9: "slot"}, RLIB: {7: "slot", 8: 3, 9: "slot"}, CAT: {7: "slot", 8: 3, 9: "slot"}, RCAT: {7: "slot", 8: 3, 9: "slot"},
+    RNO2: {7: "slot", 8: "slot"}, BO3: {7: "slot", 8: 0x29},
     NZ1: {7: 0x28, 8: 0x29}, RNZ1: {7: 0, 8: 0}, NO4: {7: "slot", 8: 0x29}, RNO4: {7: "slot", 8: "slot"}, ARE: {7: 0x28, 8: 0x29}, RARE: {7: 0x28, 8: 0x29}
   };
   const BREAKABLE_LOOKS = {7: "Urn", 8: "Jug", 9: "Bust"};
