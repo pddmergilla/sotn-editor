@@ -269,7 +269,13 @@
       window.SotnAss2UI?.setDisc(disc,{name:file.name,handle});
       state.areaCatalog=catalog.sort((a,b)=>AREA_NAMES[a.code].localeCompare(AREA_NAMES[b.code]));
       const select=$("areaSelect");select.replaceChildren();
-      for(const [label,areas] of [["Normal Castle",state.areaCatalog.filter(a=>!a.code.startsWith("R"))],["Reverse Castle",state.areaCatalog.filter(a=>a.code.startsWith("R"))]]) {
+      for(const [label,areas] of [
+        ["Normal Castle",state.areaCatalog.filter(a=>a.directory!=="BOSS"&&!a.code.startsWith("R"))],
+        ["Normal Castle Boss Rooms",state.areaCatalog.filter(a=>a.directory==="BOSS"&&!a.code.startsWith("R"))],
+        ["Reverse Castle",state.areaCatalog.filter(a=>a.directory!=="BOSS"&&a.code.startsWith("R"))],
+        ["Reverse Castle Boss Rooms",state.areaCatalog.filter(a=>a.directory==="BOSS"&&a.code.startsWith("R"))]
+      ]) {
+        if(!areas.length)continue;
         const group=document.createElement("optgroup");group.label=label;
         for(const area of areas) {
           const option=document.createElement("option");option.value=area.code;
@@ -322,9 +328,10 @@
   async function loadStageFromDisc(announce=true) {
     if(!state.disc||!state.root)return;
     const stage=inferStageCode();
-    setStatus(`Extracting ST/${stage}/F_*.BIN from ${state.discName}...`);
+    const directory=/^(?:R?BO\d|MAR)$/.test(stage)?"BOSS":"ST";
+    setStatus(`Extracting ${directory}/${stage}/F_*.BIN from ${state.discName}...`);
     const got=await state.disc.findStageGraphics(stage);
-    setStageGraphics(got.bytes,`${state.discName} → ST/${stage}/${C.normalizeIsoName(got.record.name)}`);
+    setStageGraphics(got.bytes,`${state.discName} → ${directory}/${stage}/${C.normalizeIsoName(got.record.name)}`);
     if(announce)setStatus(`Loaded ${got.bytes.length.toLocaleString()} bytes of stage graphics from your disc.`);
   }
 
@@ -334,6 +341,10 @@
     NO0:"Marble Gallery",NO1:"Outer Wall",NO2:"Olrox's Quarters",NO3:"Castle Entrance",
     NO4:"Underground Caverns",NP3:"Castle Entrance",NZ0:"Alchemy Laboratory",NZ1:"Clock Tower",
     ST0:"Prologue",TOP:"Castle Keep",WRP:"Warp Rooms",
+    BO0:"Olrox",BO1:"Granfaloon",BO2:"Minotaur and Werewolf",BO3:"Scylla",
+    BO4:"Doppelganger 10",BO5:"Hippogryph",BO6:"Richter",BO7:"Cerberus",MAR:"Maria Meeting",
+    RBO0:"Trevor, Grant and Sypha",RBO1:"Beelzebub",RBO2:"Death",RBO3:"Medusa",
+    RBO4:"Creature",RBO5:"Doppelganger 40",RBO6:"Shaft and Dracula",RBO7:"Akmodan II",RBO8:"Galamoth",
     RARE:"Reverse Colosseum",RCAT:"Floating Catacombs",RCEN:"Reverse Castle Center",
     RCHI:"Cave",RDAI:"Anti-Chapel",RLIB:"Forbidden Library",
     RNO0:"Black Marble Gallery",RNO1:"Reverse Outer Wall",RNO2:"Death Wing's Lair",
@@ -362,7 +373,7 @@
       state.tilemaps.clear();state.tiledefs.clear();
       $("areaName").textContent=`${AREA_NAMES[code]||code} (${code})`;
       const gfx=await state.disc.readFile(area.gfx);
-      setStageGraphics(gfx,`${state.discName} / ST/${code}/F_${code}.BIN`);
+      setStageGraphics(gfx,`${state.discName} / ${area.directory||"ST"}/${code}/F_${code}.BIN`);
       renderRoomList();
       state.room=null;state.roomIndex=-1;
       if(state.rooms.length)await selectRoom(0);

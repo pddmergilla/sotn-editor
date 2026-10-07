@@ -7,6 +7,7 @@ Run each file with Node.js 22 or later from the repository root:
 ```text
 node tests/core.test.js
 node tests/disc-stage.test.js
+node tests/boss-rooms.test.js
 node tests/copy-tile.test.js
 node tests/entity-editor.test.js
 node tests/entity-templates.test.js
@@ -36,6 +37,10 @@ node tests/play.test.js
 node tests/play-page.test.js
 node tests/play-card.test.js
 ```
+
+`boss-rooms.test.js` checks all 18 separate boss overlays on vanilla US and the current modded BIN when available (`SOTN_VANILLA_BIN` and `SOTN_BIN`). It verifies discovery under `BOSS`, graphics and tile rendering, tile/collision edits confined to the selected overlay, saved-edit restoration and Undo, PPF replay, repaired sector checksums, and unchanged source hashes. `core.test.js` also checks normal and boss directory discovery on synthetic ISO and raw BIN images, including an image without a boss directory.
+
+Browser-verified locally on 2026-10-07: Normal and Reverse Castle boss-room groups appear by encounter name; Richter and Medusa load their separate artwork and rooms. A Richter tile edit survives switching to Castle Keep and back, Undo clears it, and a Medusa collision edit can be applied and undone. Source BINs remain unchanged; fresh-boot gameplay for exported boss-room edits remains a manual check.
 
 `file-picker.test.js` checks native and fallback file selection, cancel/retry, downloads, source-file protection for non-BIN exports, and BIN replacement wiring. `safe-save.test.js` checks backup-before-write ordering, verification before deletion, every-byte checks across read windows, stale source references, repeat builds, existing backups, new and empty destinations, failed reads/writes/closes, damaged output, backup cleanup failure, filename guards, and both builders. `tests/safe-save-harness.html` uses real browser-storage file handles with small synthetic files to check the save dialog, source replacement, failed verification and cancellation without opening user images. Manually verify native folder selection and full-size working-copy replacement in Chrome/Edge, and Open SOTN BIN, Build BIN and Export PPF3 downloads in Firefox.
 

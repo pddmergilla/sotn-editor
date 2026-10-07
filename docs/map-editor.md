@@ -2,7 +2,9 @@
 
 [← Back to the README](../README.md)
 
-Select **Open SOTN BIN**, choose a 2048-byte sector ISO or 2352-byte sector BIN, then choose a castle area and room. The editor reads the selected stage overlay and graphics directly from `ST/<AREA>/` in the image. No decomp asset folder or separate `F_<AREA>.BIN` is needed. An already modded BIN can be the input; the PPF will contain only differences made in this editor relative to that BIN.
+Select **Open SOTN BIN**, choose a 2048-byte sector ISO or 2352-byte sector BIN, then choose a castle area and room. The editor reads the selected stage overlay and graphics directly from `ST/<AREA>/` or `BOSS/<AREA>/` in the image. No decomp asset folder or separate `F_<AREA>.BIN` is needed. An already modded BIN can be the input; the PPF will contain only differences made in this editor relative to that BIN.
+
+**Normal Castle Boss Rooms** and **Reverse Castle Boss Rooms** list the separate boss overlays by encounter name, including Richter, Scylla, Medusa, Galamoth, and the Maria meeting. Edit their tiles and collision just like other rooms. Boss maps are separate from the surrounding castle area's maps: change both when you want the same scenery before and after a fight. Bosses in ordinary area overlays remain in those areas. Scripted scenery changes and boss behavior still need in-game testing.
 
 Paint foreground or background tile IDs with the real stage art. Entities mode lists the current room's placements by area header name, highlights a selected marker, and edits its type and room-local X/Y. Named types come from the matching `EntityID` enum in [Xeeynamo/sotn-decomp](https://github.com/Xeeynamo/sotn-decomp).
 

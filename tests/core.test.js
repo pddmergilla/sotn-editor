@@ -60,6 +60,24 @@ function dirRecord(name, extent, size, isDir=false) {
   assert.equal(changed.length,1);
   assert.equal(changed[0].modified[1],42);
 
+  const boss=dirRecord("BOSS",25,SECTOR,true);
+  boss.copy(iso,20*SECTOR+dot.length+dotdot.length+st.length);
+  const bo6=dirRecord("BO6",26,SECTOR,true), rbo3=dirRecord("RBO3",29,SECTOR,true);
+  Buffer.concat([dirRecord(0,25,SECTOR,true),dirRecord(1,20,SECTOR,true),bo6,rbo3]).copy(iso,25*SECTOR);
+  for(const [code,dirLba,gfxLba,overlayLba] of [["BO6",26,27,28],["RBO3",29,30,31]]) {
+    Buffer.concat([dirRecord(0,dirLba,SECTOR,true),dirRecord(1,25,SECTOR,true),
+      dirRecord(`F_${code}.BIN;1`,gfxLba,4),dirRecord(`${code}.BIN;1`,overlayLba,4)]).copy(iso,dirLba*SECTOR);
+    Buffer.from([9,8,7,6]).copy(iso,gfxLba*SECTOR);
+    Buffer.from([4,3,2,1]).copy(iso,overlayLba*SECTOR);
+  }
+  const bossDisc=await C.DiscImage.open(new Blob([iso]));
+  const bossStages=await bossDisc.listStages();
+  assert.deepEqual(bossStages.map(s=>[s.code,s.directory]),[["NO3","ST"],["BO6","BOSS"],["RBO3","BOSS"]]);
+  for(const code of ["BO6","RBO3"]) {
+    assert.deepEqual(Array.from((await bossDisc.findStageGraphics(code)).bytes),[9,8,7,6]);
+    assert.deepEqual(Array.from(await bossDisc.readFile(bossStages.find(s=>s.code===code).overlay)),[4,3,2,1]);
+  }
+
   const raw=Buffer.alloc(2352*40);
   for(let i=0;i<40;i++){
     const base=i*2352;raw[base+15]=2;

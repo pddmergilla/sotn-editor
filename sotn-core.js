@@ -206,8 +206,8 @@
       return this.readUserData(record.extent,record.size);
     }
 
-    async findStageGraphics(stageCode) {
-      const dir = await this.findPath(["ST",stageCode]);
+    async findStageGraphics(stageCode, directory = /^(?:R?BO\d|MAR)$/.test(stageCode) ? "BOSS" : "ST") {
+      const dir = await this.findPath([directory,stageCode]);
       const entries = await this.readDirectory(dir);
       const exact = `F_${stageCode}.BIN`;
       let rec = entries.find(e => !e.isDirectory && normalizeIsoName(e.name) === exact);
@@ -216,20 +216,24 @@
           normalizeIsoName(e.name).startsWith("F_") &&
           normalizeIsoName(e.name).endsWith(".BIN"));
       }
-      if (!rec) throw new Error(`No F_*.BIN stage graphics found in ST/${stageCode}.`);
+      if (!rec) throw new Error(`No F_*.BIN stage graphics found in ${directory}/${stageCode}.`);
       return {record:rec, bytes:await this.readFile(rec)};
     }
 
     async listStages() {
-      const st = await this.findPath(["ST"]);
-      const dirs = await this.readDirectory(st);
       const found = [];
-      for (const dir of dirs.filter(e => e.isDirectory)) {
-        const code = normalizeIsoName(dir.name);
-        const files = await this.readDirectory(dir);
-        const overlay = files.find(e => !e.isDirectory && normalizeIsoName(e.name) === `${code}.BIN`);
-        const gfx = files.find(e => !e.isDirectory && normalizeIsoName(e.name) === `F_${code}.BIN`);
-        if (overlay && gfx) found.push({code,overlay,gfx});
+      const rootEntries = await this.readDirectory(this.root);
+      for (const directory of ["ST", "BOSS"]) {
+        const parent = rootEntries.find(e => e.isDirectory && normalizeIsoName(e.name) === directory);
+        if (!parent) continue;
+        const dirs = await this.readDirectory(parent);
+        for (const dir of dirs.filter(e => e.isDirectory)) {
+          const code = normalizeIsoName(dir.name);
+          const files = await this.readDirectory(dir);
+          const overlay = files.find(e => !e.isDirectory && normalizeIsoName(e.name) === `${code}.BIN`);
+          const gfx = files.find(e => !e.isDirectory && normalizeIsoName(e.name) === `F_${code}.BIN`);
+          if (overlay && gfx) found.push({code,directory,overlay,gfx});
+        }
       }
       return found;
     }
