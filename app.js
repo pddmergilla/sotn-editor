@@ -852,10 +852,17 @@
   // How an entity's Params picks what it gives. Persistent drops, and urns,
   // jugs and busts in some stages, use a PrizeDrops slot; other breakables
   // (candles, lamps, braziers) hold an ITEMDROP ID in Params & 0xFFF; a
-  // subweapon container picks one of nine subweapons.
-  function dropRule(code,e){
+  // subweapon container picks one of nine subweapons. Globe tables, relic
+  // containers and blue flame tables (NZ0/RNZ0) use a prize slot directly or
+  // through a lookup table, and NZ0's relic container can hold a relic.
+  function dropRule(code,e,stage=state.discStage){
     if(!e||e.x===-2||e.x===-1)return null;
-    return window.SotnStage.dropRule?.(code,EC.typeFor(code,e.id).symbol,e.params)??null;
+    return window.SotnStage.dropRule?.(code,EC.typeFor(code,e.id).symbol,e.params,stage)??null;
+  }
+  const containerName=symbol=>({E_GLOBE_TABLE:"globe table",E_RELIC_CONTAINER:"relic container",E_BLUE_FLAME_TABLE:"blue flame table"})[symbol];
+  // Placements whose Params reach the same lookup entry or prize slot.
+  function lookupUsers(code,rule){
+    return (state.discStage?.entityLayouts?.entities||[]).flat().filter(e=>{const r=dropRule(code,e);return r?.lookup&&r.lookup.offset===rule.lookup.offset&&r.lookup.index===rule.lookup.index;});
   }
   const lookName=look=>window.SotnStatsCatalog?.BREAKABLE_LOOKS?.[look]?.toLowerCase()||"breakable";
   // PrizeDrops[] length is taken from the room layouts: the highest slot any
@@ -863,9 +870,11 @@
   function initPrizeDrops(stage){
     stage.prizeDrops=null;
     stage.subweaponTable=window.SotnStage.findSubweaponTable?.(stage.bytes)??null;
+    const ids=Object.fromEntries((EC.areaTypes(stage.code)||[]).map(t=>[t.symbol,t.id]));
+    window.SotnStage.initContainerDrops?.(stage,ids);
     if(!(stage.prizeTableOffset>=0))return;
     let max=-1;
-    for(const bank of stage.originalEntities||[])for(const e of bank){const rule=dropRule(stage.code,e);if(rule?.kind==="slot")max=Math.max(max,rule.slot);}
+    for(const bank of stage.originalEntities||[])for(const e of bank){const rule=dropRule(stage.code,e,stage);if(rule?.kind==="slot")max=Math.max(max,rule.slot);}
     const length=max+1,off=stage.prizeTableOffset;
     if(length<1||off+length*2>stage.bytes.length)return;
     const original=new Uint16Array(length);
@@ -899,6 +908,10 @@
     if(rule?.kind==="slot"||rule?.kind==="fixed")return table&&rule.slot<table.values.length?dropName(table.values[rule.slot]):null;
     if(rule?.kind==="direct")return dropName(rule.value);
     if(rule?.kind==="subweapon")return withoutId(subweaponChoices()[rule.index]?.label||"")||null;
+    if(rule?.kind==="relic"){
+      const relic=relicList().find(r=>r.value===(rule.relic&0x7FFF));
+      return relic?withoutId(relic.label):null;
+    }
     if(symbol==="E_RELIC_ORB"){
       const relic=relicList().find(r=>r.value===(entity.params&0x7FFF));
       return relic?withoutId(relic.label):null;
@@ -943,19 +956,30 @@
     fillSelect(select,dropGroups(),table.values[slot]);
     const users=(stage.entityLayouts?.entities||[]).flat().filter(e=>{const r=dropRule(code,e);return r?.kind==="slot"&&r.slot===slot;}).length;
     hint.textContent=(rule.symbol==="E_BREAKABLE"?`This ${lookName(rule.look)} spawns a pickup from prize table slot ${slot} (Params & 0x1FF). `:"")+
+      (rule.lookup?`This ${containerName(rule.symbol)} spawns a pickup from prize table slot ${slot}, read from entry ${rule.lookup.index} (its Params) of ${code}'s lookup table at 0x${rule.lookup.offset.toString(16).toUpperCase()}. `:
+        containerName(rule.symbol)?`This ${containerName(rule.symbol)} spawns a pickup from prize table slot ${slot} (its Params). `:"")+
       `Prize table slot ${slot} of ${table.values.length}. `+(users>1?
       `${users} placements in this stage use this slot (often one pickup in two room layouts). They hold the same item, and collecting one removes the others.`:
       "Breakable walls and scripted objects can also spawn a slot. Press Apply Changes to save.");
   }
   function refreshRelicChoice(symbol){
-    const wrap=$("relicChoiceWrap"),select=$("entityRelic");
-    wrap.classList.toggle("hidden",symbol!=="E_RELIC_ORB");
+    const wrap=$("relicChoiceWrap"),select=$("entityRelic"),code=activeEntityAreaCode(),rule=dropRule(code,formEntity());
+    wrap.classList.toggle("hidden",symbol!=="E_RELIC_ORB"&&rule?.kind!=="relic");
+    if(rule?.kind==="relic"){
+      const users=lookupUsers(code,rule).length,from=state.discStage.containerDrops.rules[rule.symbol].relicFrom;
+      fillSelect(select,[{group:"Relics",items:relicList()}],rule.relic&0x7FFF);
+      $("relicHint").textContent=`This relic container breaks into a Relic Orb because its Params is ${from} or more. The relic is entry ${rule.lookup.index} of ${code}'s lookup table at 0x${rule.lookup.offset.toString(16).toUpperCase()}`+
+        (users>1?`, which ${users} placements in this stage share (often one container in two room layouts).`:".")+
+        " Place each relic once: an orb for a relic you already own disappears. Press Apply Changes to save.";
+      return;
+    }
     if(symbol!=="E_RELIC_ORB")return;
     const params=Number($("entityParams").value)||0;
     fillSelect(select,[{group:"Relics",items:relicList()}],params&0x7FFF);
     $("relicHint").textContent="Place each relic once: an orb for a relic you already own disappears, and a relic no orb holds cannot be obtained.";
   }
   $("entityRelic").onchange=()=>{
+    if(dropRule(activeEntityAreaCode(),formEntity())?.kind==="relic")return;
     const params=Number($("entityParams").value)||0;
     $("entityParams").value=(params&0x8000)|Number($("entityRelic").value);
     refreshParamChoices();
@@ -1111,16 +1135,25 @@
       const value=Number(held.value);
       if(Number.isInteger(value)&&value>=0&&value<=0xFFFF&&value!==table.values[rule.slot])prize={slot:rule.slot,before:table.values[rule.slot],value};
     }
+    let relic=null;
+    const lookup=rule?.kind==="relic"&&state.discStage?.containerDrops?.tables.get(rule.lookup.offset);
+    if(lookup&&!$("relicChoiceWrap").classList.contains("hidden")) {
+      const value=(lookup.values[rule.lookup.index]&0x8000)|Number($("entityRelic").value);
+      if(Number.isInteger(value)&&value>=0&&value<=0xFFFF&&value!==lookup.values[rule.lookup.index])relic={table:lookup,index:rule.lookup.index,before:lookup.values[rule.lookup.index],value};
+    }
     const same=Object.keys(next).every(key=>String(entity[key])===String(next[key]));
-    if(same&&!prize)return;
+    if(same&&!prize&&!relic)return;
     if(!same)Object.assign(entity,next);
     if(prize)table.values[prize.slot]=prize.value;
-    pushUndo(prize&&same?"held item":"entity properties",()=>{
+    if(relic)relic.table.values[relic.index]=relic.value;
+    pushUndo(same?(relic?"held relic":"held item"):"entity properties",()=>{
       if(!same){Object.assign(entity,before);restoreEntityEditState(previous);}
       if(prize)table.values[prize.slot]=prize.before;
+      if(relic)relic.table.values[relic.index]=relic.before;
     });
     markDirty(same?"prizes":"entities");refreshEntityFields();refreshRoomInfo();redraw();
     if(prize)setStatus(`Slot ${prize.slot} now holds ${dropName(prize.value)}.`);
+    else if(relic)setStatus(`The relic container now holds ${withoutId(relicList().find(r=>r.value===(relic.value&0x7FFF))?.label||String(relic.value))}.`);
   };
   $("duplicateEntity").onclick=()=>{
     const e=state.selectedEntity,b=currentEntityBank();if(!e||!b||!canAddEntity())return;

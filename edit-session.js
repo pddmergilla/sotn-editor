@@ -26,8 +26,10 @@
   function stageDirty(stage) {
     return stage.entitiesDirty || stage.rooms.some((room, i) => room.entityGfxId !== stage.originalRoomGfxIds[i]) ||
       [...stage.maps.values()].some(map => map.dirty) || [...stage.tiledefs.values()].some(td => td.dirty) ||
-      stage.prizeDrops?.values.some((value, i) => value !== stage.prizeDrops.original[i]) || stage.templateSourceRooms?.size;
+      stage.prizeDrops?.values.some((value, i) => value !== stage.prizeDrops.original[i]) || stage.templateSourceRooms?.size ||
+      containerTables(stage).some(table => table.values.some((value, i) => value !== table.original[i]));
   }
+  const containerTables = stage => [...(stage.containerDrops?.tables?.values() || [])];
   async function capture({name, stages, stats, hacks, area}) {
     const savedStages = [];
     for (const stage of stages.values()) {
@@ -50,6 +52,8 @@
       savedStages.push({code:stage.code, hash:await stageHash(stage), maps, collisions, entities,
         graphics:differences(stage.rooms.map(room => room.entityGfxId), stage.originalRoomGfxIds),
         prizes:stage.prizeDrops ? differences(stage.prizeDrops.values, stage.prizeDrops.original) : [],
+        containers:containerTables(stage).map(table => ({offset:table.offset, length:table.values.length, edits:differences(table.values, table.original)}))
+          .filter(table => table.edits.length),
         templates:Array.from(stage.templateSourceRooms || [])});
     }
     return {format:FORMAT, version:VERSION, sourceName:name, savedAt:new Date().toISOString(), area,
@@ -118,6 +122,15 @@
       if (actions.length > start) actions.push(() => gfx.forEach((id, i) => { stage.rooms[i].entityGfxId = id; }));
       if (!Array.isArray(savedStage.prizes) || savedStage.prizes.length && !stage.prizeDrops) fail(`${stage.code} has no matching prize table.`);
       editsPlan(savedStage.prizes, stage.prizeDrops?.values || [], 65535, `${stage.code} prizes`, actions);
+      // Files saved before container tables were editable have no list.
+      const containers = savedStage.containers ?? [];
+      if (!Array.isArray(containers)) fail(`${stage.code} container tables are damaged.`);
+      unique(containers, "offset", `${stage.code} container tables`);
+      for (const item of containers) {
+        const table = stage.containerDrops?.tables?.get(item.offset);
+        if (!table || table.values.length !== item.length) fail(`${stage.code} has no matching container table.`);
+        editsPlan(item.edits, table.values, 65535, `${stage.code} container table`, actions);
+      }
       if (!Array.isArray(savedStage.entities)) fail(`${stage.code} entities are damaged.`);
       unique(savedStage.entities, "index", `${stage.code} entities`);
       for (const edit of savedStage.entities) {
@@ -148,6 +161,7 @@
           maps:[...stage.maps.values()].map(map => [map, map.values.slice(), map.dirty]),
           collisions:[...stage.tiledefs.values()].map(td => [td, td.collisions.slice(), td.dirty]),
           graphics:stage.rooms.map(room => room.entityGfxId), prizes:stage.prizeDrops?.values.slice(),
+          containers:containerTables(stage).map(table => [table, table.values.slice()]),
           templates:stage.templateSourceRooms ? new Map(stage.templateSourceRooms) : undefined};
       });
       let restoreHacks;
@@ -161,6 +175,7 @@
           for (const [td, values, dirty] of item.collisions) { td.collisions.set(values); td.dirty = dirty; }
           item.graphics.forEach((id, i) => { stage.rooms[i].entityGfxId = id; });
           if (item.prizes) stage.prizeDrops.values.set(item.prizes);
+          for (const [table, values] of item.containers) table.values.set(values);
           stage.templateSourceRooms = item.templates;
         }
       };

@@ -15,6 +15,7 @@ node tests/entity-repack.test.js
 node tests/room-gfx.test.js
 node tests/stats-core.test.js
 node tests/prize-drops.test.js
+node tests/container-drops.test.js
 node tests/stats-bin.test.js
 node tests/hunter-sword.test.js
 node tests/stone-sword.test.js
@@ -130,4 +131,4 @@ Browser-verified locally on 2026-10-07 with an extracted prepared DRA preview: H
 
 `node tools/weapons/build-kidlat-thunder-patch.js <output-directory>` prepares the guarded forward/reversal pair and report without writing the original BIN or creating a backup. `--apply` requires explicit approval of that pair, rejects changed source/patch hashes, writes only its verified sectors, then verifies the live hash, checksums and exact reversal. After application, the test reconstructs its source in memory using the matching Downloads report or `SOTN_KIDLAT_THUNDER_REPORT`; `SOTN_ASS_BIN` selects the input image. Test repeated special slashes, both hands, normal attacks and the original Thunderbrand special from a fresh boot and memory-card save.
 
-Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.
+Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. `container-drops.test.js` checks Globe Table, Relic Container and Blue Flame Table detection on synthetic code and on NZ0/RNZ0 in both images, and also checks lookup-table edits, saved edits, Undo and the source-byte guard. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.

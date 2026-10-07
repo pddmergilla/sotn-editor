@@ -42,6 +42,88 @@
     return hits.length === 1 ? hits[0] : -1;
   }
 
+  // Prize containers (src/st/nz0/e_nz0_room2.c, e_blue_flame_table.c and the
+  // rnz0 copies) spawn their pickup with child->params set either to
+  // self->params (RNZ0) or to a u16 lookup table entry indexed by self->params
+  // (NZ0). NZ0's Relic Container spawns a Relic Orb instead when
+  // params >= N (sltiu rX,rX,N). ids maps area enum symbols to entity IDs; the
+  // update table is the pointer run whose functions all match these patterns.
+  const CONTAINER_SYMBOLS = ["E_GLOBE_TABLE", "E_RELIC_CONTAINER", "E_BLUE_FLAME_TABLE"];
+  function containerPattern(b, start, end, ids) {
+    const found = [];
+    let relicFrom = null, spawnsDrop = false, spawnsOrb = false;
+    const at = o => o >= start && o + 4 <= end ? u32(b, o) : 0;
+    for (let o = start; o + 4 <= end; o += 4) {
+      const w = at(o);
+      // ori a0,zero,<entity ID> before CreateEntityFromEntity
+      if (w >>> 16 === 0x3404) {
+        if ((w & 0xFFFF) === ids.E_PERSISTENT_ITEM_DROP) spawnsDrop = true;
+        if ((w & 0xFFFF) === ids.E_RELIC_ORB) spawnsOrb = true;
+      }
+      // lhu rX,0x30(self): self->params
+      if ((w >>> 26) !== 37 || (w & 0xFFFF) !== 0x30) continue;
+      const reg = w >>> 16 & 31, self = w >>> 21 & 31;
+      // Skip the load delay slot, which may hold an unrelated instruction.
+      let k = o + 4;
+      if (at(k) === 0 || (at(k) >>> 16 & 31) !== reg && (at(k) >>> 26) !== 0) k += 4;
+      const next = at(k);
+      if ((next >>> 26) === 11 && (next >>> 21 & 31) === reg && (next >>> 16 & 31) === reg) relicFrom = next & 0xFFFF;
+      // sh value,0xEC(self): (self + 1)->params, within a few instructions
+      const storesChild = (from, value) => {
+        for (let j = from; j < from + 16; j += 4) {
+          const s = at(j);
+          if ((s >>> 26) === 41 && (s >>> 16 & 31) === value && (s >>> 21 & 31) === self && (s & 0xFFFF) === 0xEC) return true;
+          if ((s >>> 26) === 15 || (s >>> 26) === 9 && (s >>> 16 & 31) === value) return false;
+        }
+        return false;
+      };
+      if (storesChild(k, reg)) { found.push({kind: "direct"}); continue; }
+      // sll r,r,1; lui at,%hi; addu at,at,r; lhu rB,%lo(at)
+      if (next !== (reg << 16 | reg << 11 | 1 << 6)) continue;
+      const lui = at(k + 4), add = at(k + 8), lhu = at(k + 12);
+      if ((lui >>> 26) !== 15) continue;
+      const base = lui >>> 16 & 31;
+      if (add !== (base << 21 | reg << 16 | base << 11 | 0x21) && add !== (reg << 21 | base << 16 | base << 11 | 0x21)) continue;
+      if ((lhu >>> 26) !== 37 || (lhu >>> 21 & 31) !== base) continue;
+      const addr = (((lui & 0xFFFF) << 16) + ((lhu << 16) >> 16)) >>> 0;
+      if (isPtr(b, addr, 2) && storesChild(k + 16, lhu >>> 16 & 31)) found.push({kind: "lookup", offset: addr - BASE});
+    }
+    if (found.length !== 1 || !spawnsDrop) return null;
+    const rule = {...found[0]};
+    if (spawnsOrb) {
+      if (rule.kind !== "lookup" || relicFrom === null) return null;
+      rule.relicFrom = relicFrom;
+    }
+    return rule;
+  }
+  function findContainerDrops(b, ids) {
+    const want = CONTAINER_SYMBOLS.filter(s => Number.isInteger(ids?.[s]) && ids[s] > 0);
+    if (!b || !want.length || !Number.isInteger(ids.E_PERSISTENT_ITEM_DROP)) return null;
+    const count = Math.max(...want.map(s => ids[s]));
+    const isCode = a => a >= BASE && a - BASE < b.length && !(a & 3);
+    const results = [];
+    for (let t = 0; t + count * 4 <= b.length; t += 4) {
+      let ok = true;
+      for (let i = 0; i < count && ok; i++) ok = isCode(u32(b, t + i * 4));
+      if (!ok) continue;
+      // Function ends: the next start among the whole pointer run.
+      let run = count;
+      while (t + run * 4 + 4 <= b.length && isCode(u32(b, t + run * 4))) run++;
+      const starts = [...new Set(Array.from({length: run}, (_, i) => u32(b, t + i * 4) - BASE))].sort((x, y) => x - y);
+      const rules = {};
+      for (const symbol of want) {
+        const start = u32(b, t + (ids[symbol] - 1) * 4) - BASE;
+        const end = Math.min(starts.find(s => s > start) ?? b.length, start + 0x800, b.length);
+        const rule = containerPattern(b, start, end, ids);
+        if (!rule) { ok = false; break; }
+        rules[symbol] = rule;
+      }
+      if (ok) results.push(rules);
+    }
+    if (!results.length || results.some(r => JSON.stringify(r) !== JSON.stringify(results[0]))) return null;
+    return results[0];
+  }
+
   function makeParsedStage(properties, rooms, roomHeaderOffset, roomTerminatorOffset) {
     const stage = {...properties, rooms, roomHeaderOffset, roomTerminatorOffset, prizeTableOffset: findPrizeTable(properties.bytes)};
     Object.defineProperty(stage, "originalRoomGfxIds", {
@@ -172,8 +254,19 @@
 
   // How an entity's params pick what it gives (see src/st/e_breakable*.h and
   // ReplaceBreakableWithItemDrop). symbol is the entity's area enum name.
-  function dropRule(code,symbol,params) {
+  // stage (optional) supplies prize container rules from initContainerDrops.
+  function dropRule(code,symbol,params,stage) {
     if(symbol==="E_PERSISTENT_ITEM_DROP")return params<256?{kind:"slot",slot:params,symbol}:null;
+    const container=stage?.containerDrops?.rules?.[symbol];
+    if(container) {
+      if(params>=256)return null;
+      if(container.kind==="direct")return {kind:"slot",slot:params,symbol};
+      const table=stage.containerDrops.tables.get(container.offset);
+      if(!table||params>=table.values.length)return null;
+      const lookup={offset:container.offset,index:params};
+      if(container.relicFrom!==undefined&&params>=container.relicFrom)return {kind:"relic",relic:table.values[params],lookup,symbol};
+      return {kind:"slot",slot:table.values[params],lookup,symbol};
+    }
     if(symbol==="E_BREAKABLE") {
       const cat=global.SotnStatsCatalog||(typeof require==="function"?require("./stats-catalog.js"):null);
       const look=params>>12,rule=cat?.BREAKABLE_RULES?.[String(code).toUpperCase()]?.[look];
@@ -194,9 +287,32 @@
     }
     return null;
   }
+  // Reads the containers' lookup tables. A table's length is the highest
+  // index any original placement uses; later entries may be other data.
+  function initContainerDrops(stage, ids) {
+    stage.containerDrops = null;
+    const rules = findContainerDrops(stage.bytes, ids);
+    if (!rules) return null;
+    const symbols = new Map(Object.entries(ids || {}).map(([symbol, id]) => [id, symbol]));
+    const lengths = new Map();
+    for (const bank of stage.originalEntities || []) for (const e of bank) {
+      const rule = rules[symbols.get(e.id)];
+      if (rule?.kind === "lookup" && e.x !== -1 && e.x !== -2 && e.params < 256)
+        lengths.set(rule.offset, Math.max(lengths.get(rule.offset) || 0, e.params + 1));
+    }
+    const tables = new Map();
+    for (const [off, length] of lengths) {
+      if (off + length * 2 > stage.bytes.length) continue;
+      const original = Uint16Array.from({length}, (_, i) => u16(stage.bytes, off + i * 2));
+      tables.set(off, {offset: off, original, values: original.slice()});
+    }
+    stage.containerDrops = {rules, tables};
+    return stage.containerDrops;
+  }
   function prizeDropsDirty(stage) {
     const p = stage?.prizeDrops;
-    return !!p && p.values.some((v, i) => v !== p.original[i]);
+    return !!p && p.values.some((v, i) => v !== p.original[i]) ||
+      [...(stage?.containerDrops?.tables?.values() || [])].some(t => t.values.some((v, i) => v !== t.original[i]));
   }
 
   function roomGraphicsDirty(stage) {
@@ -495,6 +611,11 @@
       if(at<0||at+2>out.length||u16(stage.bytes,at)!==prizes.original[i])throw new Error("The stage prize table does not match the source.");
       put16(out,at,prizes.values[i]);
     }
+    for(const table of stage.containerDrops?.tables?.values()||[]) for(let i=0;i<table.values.length;i++) if(table.values[i]!==table.original[i]) {
+      const at=table.offset+i*2;
+      if(at<0||at+2>out.length||u16(stage.bytes,at)!==table.original[i])throw new Error("The stage container table does not match the source.");
+      put16(out,at,table.values[i]);
+    }
     if(dirtyEntities) {
       const groups=layoutGroups(stage);
       if(!groups)throw new Error("Entity layout pairs are incomplete.");
@@ -543,7 +664,7 @@
     return out;
   }
 
-  const api={parseOverlay,buildOverlay,entityRepackCapacity,roomGraphicsDirty,prizeDropsDirty,findPrizeTable,dropRule,findSubweaponTable};
+  const api={parseOverlay,buildOverlay,entityRepackCapacity,roomGraphicsDirty,prizeDropsDirty,findPrizeTable,dropRule,findSubweaponTable,findContainerDrops,initContainerDrops};
   global.SotnStage=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })(typeof window!=="undefined"?window:globalThis);
