@@ -19,6 +19,7 @@ node tests/hunter-sword.test.js
 node tests/stone-sword.test.js
 node tests/terminus-est.test.js
 node tests/elemental-weapons.test.js
+node tests/kidlat-thunder.test.js
 node tests/alucard-soul-steal.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
@@ -119,5 +120,9 @@ Browser-verified locally on 2026-10-06 after approved application: Terminus Est'
 `node tools/weapons/build-elemental-weapons-patch.js <output-directory>` prepares guarded forward/reversal PPFs and verifies both directions and both undo paths, the full hashes, changed-sector checksums, unchanged unrelated sectors and editor recognition. `--apply` requires explicit approval for that pair and rejects a changed source hash. It creates no backup BIN. Fresh-boot testing with a memory-card save must cover normal attacks and instant elemental slashes in both hands/directions, private stat changes, original brand charges, Marsil, repeat attacks, menus and gear/room transitions.
 
 Browser-verified locally on 2026-10-07 with an extracted prepared DRA preview: Heatgar, Sparkblade and Coldsteel select private rows 217, 200 and 201 and show their initial independent damage/MP values. Heatgar damage 158 → 160, Sparkblade cost 5 → 7 and Coldsteel damage 999 → 900 can each be edited and reverted; Thunderbrand still shows 255 damage / 5 MP. The preview does not write the original BIN; full export/reopen and saved-edit checks run separately in Node.
+
+`kidlat-thunder.test.js` checks Kidlat's thunder-sound addition on the current renamed image: the exact `SFX_THUNDER_B` sound used by Thunderbrand, both hands and all attack stances/directions, one call at slash start across repeat frames, preserved swish, slash effects and entity properties, no charge, unchanged normal attacks and original Thunderbrand, preserved registers for all byte-sized row IDs, guarded code rejection, unchanged DRA/name/stats, full BIN/PPF round trips and repaired sectors. Sound services are simulated; hearing the result remains a fresh-boot manual check.
+
+`node tools/weapons/build-kidlat-thunder-patch.js <output-directory>` prepares the guarded forward/reversal pair and report without writing the original BIN or creating a backup. `--apply` requires explicit approval of that pair, rejects changed source/patch hashes, writes only its verified sectors, then verifies the live hash, checksums and exact reversal. After application, the test reconstructs its source in memory using the matching Downloads report or `SOTN_KIDLAT_THUNDER_REPORT`; `SOTN_ASS_BIN` selects the input image. Test repeated special slashes, both hands, normal attacks and the original Thunderbrand special from a fresh boot and memory-card save.
 
 Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.

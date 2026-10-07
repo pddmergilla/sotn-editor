@@ -54,6 +54,8 @@ The elemental sword patch gives Heatgar Firebrand's basic attack, Sparkblade Thu
 
 Each elemental special has independent stats on its weapon card and under **Weapon specials**: Heatgar row 217 starts at 158 damage / 3 MP, Sparkblade row 200 at 255 / 5, and Coldsteel row 201 at 999 / 15, copied from this image's donors. Damage, MP, element, hit cooldown and other row properties can be edited independently. Native ←→ MP behavior is preserved: sufficient MP pays the configured cost, while low MP does not refuse the attack. Fresh-boot gameplay remains unverified.
 
+Kidlat (renamed Sparkblade) has a separate thunder-sound follow-up patch. Thunderbrand's thunder sound comes from the charging effect that Kidlat skips; the follow-up plays that same sound once as private row 200's slash starts, in either hand. It preserves the swish, lightning slash effects, instant animation and all loaded names and stats. The editor controls stay the same; sound playback still needs fresh-boot verification.
+
 Only two ordinary spare rows remained in this image. Heatgar's row 217 therefore lives in verified sound-bank padding at DRA `0x15100`; twelve guarded helpers redirect only its runtime reads. The editor recognizes the complete installed helper set before exposing that row, and exported edits guard it against changed helpers. Accessories and existing rows retain their locations. Changing a weapon to an unrelated special row does not install an instant slash for that row.
 
 ## How values are found and written
