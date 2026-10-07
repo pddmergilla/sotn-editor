@@ -11,7 +11,7 @@ The **Stats Editor** tab reads the loaded BIN's own values, so an already modded
 | Healing | HP healed by Potion, High Potion and Elixir (X-Potion in ASS; 0 = all HP), Soul Steal orbs and Dark Metamorphosis blood drops | DRA item-use entity (or the ASS potion helper), `EntitySoulStealOrb` / blood droplets in every stage overlay |
 | Alucard starting gear | the seven equipment slots (two hands, head, armor, cloak, two accessories) | `InitStatsAndGear` |
 | Prologue bonus items | the item given when Maria rescued Richter, when he ran out of hearts, when he kept more than 40 hearts, and for the AXEARMOR name after a clear; any hand or body item | `AddToInventory` calls in `InitStatsAndGear` |
-| Weapon specials | every row past the hand items (weapon specials, two-weapon combos, spare rows): damage, MP cost, element, soul steal, stun, critical rate, hit type, invincibility frames, chain limit, lock, raw attack bytes; with the weapons that use each row | `g_EquipDefs` rows 169-216 |
+| Weapon specials | every row past the hand items (weapon specials, two-weapon combos, spare rows): damage, MP cost, element, soul steal, stun, critical rate, hit type, invincibility frames, chain limit, lock, raw attack bytes; with the weapons that use each row | `g_EquipDefs` rows 169-216; guarded external row 217 when installed |
 | Transformations | Mist MP drain without Power of Mist | `HandleTransformationMP` |
 | Luck mode | HP, Max HP, MP, Max MP, hearts, max hearts, STR, CON, INT, LCK, accessory 2 | same function, `X-X!V''Q` branch |
 | Spells | MP cost, damage, element | `g_SpellDefs` |
@@ -21,7 +21,7 @@ The **Stats Editor** tab reads the loaded BIN's own values, so an already modded
 | Richter subweapons and crashes | heart cost, damage, how many can be out at once, hit cooldown, element, crash heart cost, crash damage rows, Agunea follow-up cost | `subweapons_def`, `RicEntitySubwpnAgunea` |
 | Familiars | name, base damage and element of each attack | menu strings, `g_SpellDefs` rows 7 and 15-27 |
 | Enemies | name, HP, LVL, EXP, DEF, contact damage and element, weaknesses/resistances, both drops and drop rates, each attack's damage and element | `g_EnemyDefs`; recognized ASS Medusa sword elements in `BOSS/RBO3/RBO3.BIN` |
-| Hand items | name, icon, icon palette, description, ATK, DEF, MP cost (shown as heart cost when the cost has bit `0x8000`, the Healing items use Hearts flag), critical rate, how many can be out at once (thrown weapons, bombs and food), stun frames, element, hit cooldown and whether hits steal souls (weapons and their specials), special effect; for weapons a moveset: basic attack, category, the ↓↘→ and ←→ specials with their damage, MP cost and element | `g_EquipDefs` rows 0-168, specials in rows 169-216 |
+| Hand items | name, icon, icon palette, description, ATK, DEF, MP cost (shown as heart cost when the cost has bit `0x8000`, the Healing items use Hearts flag), critical rate, how many can be out at once (thrown weapons, bombs and food), stun frames, element, hit cooldown and whether hits steal souls (weapons and their specials), special effect; for weapons a moveset: basic attack, category, the ↓↘→ and ←→ specials with their damage, MP cost and element | `g_EquipDefs` rows 0-168, specials in rows 169-216 and recognized external rows |
 | Head gear, armor, cloaks, accessories | name, icon, icon palette, description, ATK, DEF, STR, CON, INT, LCK, weak/resist/immune/absorb, special effect | `g_AccessoryDefs` |
 | Special effects | which item grants each coded effect | `CheckEquipmentItemCount` calls in DRA and every stage/boss overlay |
 | Sunstone and Moonstone | separate STR, CON, INT and LCK bonuses per stone (0–99), on their accessory cards and under Special effects | guarded day/night hooks and a bonus table in unused sound-bank padding |
@@ -50,6 +50,12 @@ The Stone Sword Medusa special patch keeps the sword's ordinary slash and artwor
 
 The Terminus Est Crissaegrim special patch keeps its ordinary slash and artwork. **←→ + attack** uses Crissaegrim's actual slash burst, with its own row 186 (initially 199 damage and 15 MP on the inspected ASS image). Edit **Special damage**, **Special MP cost**, **Special element** and **Special hit cooldown** on Terminus Est's card, or the full row under **Weapon specials**; these values do not change the normal sword or Crissaegrim. The patch preserves the game's existing ←→ behavior, including no extra MP check. Fresh-boot gameplay remains unverified.
 
+The elemental sword patch gives Heatgar Firebrand's basic attack, Sparkblade Thunderbrand's, and Coldsteel Icebrand's. **←→ + attack** uses Marsil's ordinary fire slash for Heatgar, Thunderbrand's lightning special slash for Sparkblade, and Icebrand's ice special slash for Coldsteel. The lightning and ice attacks skip their charging pose and effects. Normal stats, names and icons remain the weapons' own; the original brand specials and Marsil retain their behavior.
+
+Each elemental special has independent stats on its weapon card and under **Weapon specials**: Heatgar row 217 starts at 158 damage / 3 MP, Sparkblade row 200 at 255 / 5, and Coldsteel row 201 at 999 / 15, copied from this image's donors. Damage, MP, element, hit cooldown and other row properties can be edited independently. Native ←→ MP behavior is preserved: sufficient MP pays the configured cost, while low MP does not refuse the attack. Fresh-boot gameplay remains unverified.
+
+Only two ordinary spare rows remained in this image. Heatgar's row 217 therefore lives in verified sound-bank padding at DRA `0x15100`; twelve guarded helpers redirect only its runtime reads. The editor recognizes the complete installed helper set before exposing that row, and exported edits guard it against changed helpers. Accessories and existing rows retain their locations. Changing a weapon to an unrelated special row does not install an instant slash for that row.
+
 ## How values are found and written
 
 - Tables are located through DRA's `g_api` pointer header (enemies, equipment, accessories, relics) and the `config_us.h` table order (subweapons, menu strings, spells). Richter's table is `RIC.BIN` offset `0x18688`.
@@ -67,5 +73,5 @@ The Terminus Est Crissaegrim special patch keeps its ordinary slash and artwork.
 ## Limits
 
 - Built for the US PS1 layout. Tables or code that do not match are shown as not found rather than guessed.
-- Strings cannot grow past their original space, and no new special effects or item slots can be added. New weapon specials are limited to the spare rows, and a prize table cannot grow past the slots its stage's rooms already use.
+- Strings cannot grow past their original space, and no new special effects or item slots can be added. New weapon specials use spare rows or a supported, already installed external row; the editor does not create new external rows. A prize table cannot grow past the slots its stage's rooms already use.
 - Byte-level round trips and PPF3 reproduction were verified against a vanilla US image and the Alternate Scarlet Symphony 2.0 image; the edits were not playtested in an emulator. Test gameplay changes before distributing a BIN or PPF.

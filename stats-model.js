@@ -141,6 +141,8 @@
     t.menu = t.acc + ACC_STRIDE * BODY_ITEMS;
     t.spell = t.relic - SPELLS * SPELL_STRIDE;
     m.tables = t;
+    const extended = global.SotnWeaponSpecialRows || (typeof require === "function" ? require("./weapon-special-rows.js") : null);
+    m.extendedSpecialRows = extended ? extended.detect(dra, t.equip) : [];
     m.icons = {gfx: ICON_GFX, pal: ICON_PAL, count: ICON_COUNT};
 
     const known = collectStringStarts(dra, t);
@@ -201,7 +203,7 @@
       (size === 1 ? [0, 255] : size === 2 ? [0, 65535] : [0, 0xFFFFFFFF]);
     return ctx.m.add({id: `${file}:${off.toString(16)}:${size}`, kind: "int", file, off, size, signed, label,
       original: v, min: extra.min ?? min, max: extra.max ?? max, ui: extra.ui || "number", bonus8: !!extra.bonus8,
-      expect: b.slice(off, off + size), hint: extra.hint});
+      expect: b.slice(off, off + size), hint: extra.hint, ...(extra.guards ? {guards: extra.guards} : {})});
   }
   function maskField(ctx, file, off, label) { return intField(ctx, file, off, 2, false, label, {ui: "elements"}); }
   function textField(ctx, ptrValue, encoding, label, owner) {
@@ -376,13 +378,16 @@
   const EQUIP_ROWS = 217;
   function parseHandItems(ctx) {
     const {dra, t, m} = ctx, rows = [];
-    for (let i = 0; i < EQUIP_ROWS; i++) {
-      const o = t.equip + i * EQUIP_STRIDE, row = {index: i, effects: []};
+    const locations = Array.from({length: EQUIP_ROWS}, (_, index) => ({index, off: t.equip + index * EQUIP_STRIDE}));
+    locations.push(...m.extendedSpecialRows);
+    for (const {index: i, off: o, guards} of locations) {
+      const row = {index: i, effects: []};
       if (i < HAND_ITEMS) {
         row.name = textField(ctx, u32(dra, o), "font", "Name", `Hand item #${i}`);
         row.desc = textField(ctx, u32(dra, o + 4), "sjis", "Description", `Hand item #${i}`);
       }
-      for (const [key, off, size, signed, label, extra] of ROW_LAYOUT) row[key] = intField(ctx, "DRA", o + off, size, signed, label, extra);
+      for (const [key, off, size, signed, label, extra] of ROW_LAYOUT)
+        row[key] = intField(ctx, "DRA", o + off, size, signed, label, {...extra, ...(guards ? {guards} : {})});
       rows.push(row);
     }
     m.sections.equipRows = rows;

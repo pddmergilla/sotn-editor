@@ -18,6 +18,7 @@ node tests/stats-bin.test.js
 node tests/hunter-sword.test.js
 node tests/stone-sword.test.js
 node tests/terminus-est.test.js
+node tests/elemental-weapons.test.js
 node tests/alucard-soul-steal.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
@@ -112,5 +113,11 @@ Verified in the local browser on 2026-10-05: the current ASS BIN recognizes the 
 `terminus-est.test.js` checks Terminus Est's ←→ selection, unchanged native MP behavior, chain limits, both hands and facing directions, normal slash parity, Crissaegrim attack-frame parity, allocation failure, palette loading, sword artwork, private row 186, stat export/reopen, guarded PPF replay and source preservation. `node tools/weapons/build-terminus-est-patch.js <output-directory>` prepares a guarded forward/reversal pair and report; `--apply` requires explicit approval and the recorded full-image hash. After application, the test can reconstruct the source in memory using the matching report in Downloads, or `SOTN_TERMINUS_REPORT`. Fresh-boot combat, gear changes and room transitions remain manual checks.
 
 Browser-verified locally on 2026-10-06 after approved application: Terminus Est's ←→ picker selects its own row 186, with 199 special damage, 15 MP, Cut and 14-frame hit cooldown. Raising special damage to 201 leaves the normal ATK at 199; Undo restores the special to 199. The existing prologue-bonus warning remains present and is separate from these fields. Byte checks, both-hand instruction checks, private stat exports, all 24 changed-sector checksums and exact reversal pass; emulator gameplay remains unverified.
+
+`elemental-weapons.test.js` checks the exact current ASS image: both hands, normal attack parity, command selection, standing/crouching/airborne attack poses and facing directions, lightning/ice slash effects without initial charge, unchanged original donors, private stats, native MP spending, all 218 rows through each external-row helper, register preservation, saved-edit restoration, full BIN/PPF export/reopen, sector checksums and source preservation. Game services are simulated; these checks do not prove gameplay. `SOTN_ASS_BIN` selects another supported image; after application the test reconstructs the source in memory using the matching report in Downloads or `SOTN_ELEMENTAL_REPORT`. Extracted fixtures may be supplied through `SOTN_ELEMENTAL_FIXTURES_DIR`; those skip full-image checks.
+
+`node tools/weapons/build-elemental-weapons-patch.js <output-directory>` prepares guarded forward/reversal PPFs and verifies both directions and both undo paths, the full hashes, changed-sector checksums, unchanged unrelated sectors and editor recognition. `--apply` requires explicit approval for that pair and rejects a changed source hash. It creates no backup BIN. Fresh-boot testing with a memory-card save must cover normal attacks and instant elemental slashes in both hands/directions, private stat changes, original brand charges, Marsil, repeat attacks, menus and gear/room transitions.
+
+Browser-verified locally on 2026-10-07 with an extracted prepared DRA preview: Heatgar, Sparkblade and Coldsteel select private rows 217, 200 and 201 and show their initial independent damage/MP values. Heatgar damage 158 → 160, Sparkblade cost 5 → 7 and Coldsteel damage 999 → 900 can each be edited and reverted; Thunderbrand still shows 255 damage / 5 MP. The preview does not write the original BIN; full export/reopen and saved-edit checks run separately in Node.
 
 Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.
