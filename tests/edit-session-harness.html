@@ -9,17 +9,13 @@
       window.showOpenFilePicker = undefined;
       window.alert = message => { document.getElementById('checkNotice').textContent = message; };
       window.confirm = () => true;
-      window.showSaveFilePicker = async ({suggestedName}) => ({
-        isSameEntry: async () => false,
-        createWritable: async () => ({
-          write: async blob => {
+      document.addEventListener('DOMContentLoaded', () => {
+        window.SotnSafeSave.save = async (blob, suggestedName) => {
             const output = document.getElementById('savedOutput');
             output.value = blob.type === 'application/json' ? await blob.text() : 'BIN export: ' + blob.size + ' bytes';
             document.getElementById('savedName').textContent = suggestedName;
-          }, close: async () => {}
-        })
-      });
-      document.addEventListener('DOMContentLoaded', () => {
+            return {name:suggestedName};
+        };
         const panel = document.createElement('section');
         panel.innerHTML = '<h2>Saved edits browser check</h2><label><input id="lostAccess" type="checkbox"> Simulate lost BIN access</label><p id="checkNotice"></p><p id="savedName"></p><label>Captured output <textarea id="savedOutput" rows="3" style="width:100%"></textarea></label>';
         document.body.appendChild(panel);

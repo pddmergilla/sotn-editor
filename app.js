@@ -1180,16 +1180,10 @@
     if(!changes.length&&!allowUnchanged)throw new Error("There are no byte changes to export.");
     return window.SotnTitleCredits.add(state.disc,changes);
   }
-  async function saveBlob(blob,name) {
-    if(window.showSaveFilePicker) {
-      const handle=await showSaveFilePicker({suggestedName:name});
-      if(state.discHandle&&await handle.isSameEntry(state.discHandle))throw new Error("Choose a different file name so the source BIN stays intact.");
-      const stream=await handle.createWritable();
-      await stream.write(blob);await stream.close();
-    } else {
-      const url=URL.createObjectURL(blob),a=document.createElement("a");
-      a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
-    }
+  async function saveBlob(blob,name,allowSourceOverwrite=false) {
+    const disc=state.disc;
+    return window.SotnSafeSave.save(blob,name,{sourceHandle:state.discHandle,sourceFile:disc?.file,
+      allowSourceOverwrite,onSourceSnapshot:file=>{disc.file=file;}});
   }
   async function saveCurrentEdits() {
     try {
@@ -1247,8 +1241,8 @@
       const changes=await collectChanges();
       const stem=state.discName.replace(/\.[^.]+$/,"");
       const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v7.0"):C.modifiedBlob(state.disc.file,changes);
-      await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`);
-      setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} saved (${changes.length} changed sectors).`);
+      const saved=await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`,kind==="bin");
+      setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} ${saved.downloaded?"download started":"saved and verified"} (${changes.length} changed sectors). ${saved.warning||""}`);
     } catch(e){if(e.name!=="AbortError"){
       console.error(e);if(e.extraHackConflict)window.SotnExtraHacksUI?.setConflict(e.message);
       const message = `${e.message||String(e)} Your edits are still in this tab. Use Save current edits to keep them before reopening the BIN or refreshing.`;

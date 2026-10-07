@@ -24,7 +24,7 @@ Use the up/down buttons beside zoom to move through tall rooms. Ctrl+C arms Copy
 
 Use the toolbar Undo button or Ctrl+Z to reverse edits. A tile brush stroke is one undo step. Undo history is cleared when opening another BIN or saving asset-folder edits.
 
-**Build BIN** writes a new image with the edits. **Export PPF3** writes a PPF 3.0 patch against the loaded image. The source file is never overwritten. For raw 2352-byte sectors, changed sectors receive updated Mode 1 or Mode 2 Form 1 EDC/ECC before either output is made.
+**Build BIN** writes an image with the edits. In Chrome and Edge, enter a name and choose a folder; you can replace the loaded BIN using its existing name and folder. Any existing destination is copied to a unique `.sotn-backup` file and checked byte for byte before replacement. That backup is deleted only after the output is checked byte for byte; failures retain it and report its name. Open edits and Undo remain usable for repeat builds. Download-only browsers save a separate download without disk verification or automatic backup management. **Export PPF3** writes a PPF 3.0 patch against the original loaded image and protects the loaded BIN. For raw 2352-byte sectors, changed sectors receive updated Mode 1 or Mode 2 Form 1 EDC/ECC before either output is made.
 
 The **Asset folder tools** menu keeps the older decomp asset-folder workflow available separately.
 

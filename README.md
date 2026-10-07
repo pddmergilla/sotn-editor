@@ -4,7 +4,7 @@ Build your own *Castlevania: Symphony of the Night* ROM hack in the browser. Edi
 
 **[Open SOTN Editor](https://pddmergilla.github.io/sotn-editor/)**
 
-Everything runs locally. You open your own US PlayStation disc image, and the editor reads it in the browser. Nothing is uploaded, no game assets are included, and your original file is never overwritten.
+Everything runs locally. You open your own US PlayStation disc image, and the editor reads it in the browser. Nothing is uploaded and no game assets are included. You can save a new BIN or replace an existing BIN with a verified backup protecting it.
 
 ## Play Alternate Scarlet Symphony 2.0
 
@@ -37,7 +37,9 @@ Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at th
 2. Select **Open SOTN BIN** and choose your disc image: a 2352-byte sector BIN or a 2048-byte sector ISO.
 3. Make your changes in any tab.
 4. Select **Save current edits** to keep a small `.sotn-edits.json` file without building a BIN. Open a compatible BIN later, then select **Load saved edits** to restore your work and continue editing.
-5. Select **Build BIN** to save a new image, or **Export PPF3** to save a patch with only your changes.
+5. Select **Build BIN** to save an image, or **Export PPF3** to save a patch with only your changes.
+
+In Chrome and Edge, enter the output file name, then choose its folder. To replace your working BIN, use its current name and folder. The editor copies any existing destination to a unique `.sotn-backup` file in that folder and verifies every byte before writing the destination. It verifies every saved byte before deleting that backup. A failed write or verification retains the backup and reports its name; if necessary, restore that file yourself. Existing backups are never replaced. Your open edits and Undo history stay available after replacing the loaded BIN, so you can keep editing or build again. BIN builders allow this replacement; patch and saved-edit exports protect the loaded BIN.
 
 Saved edit files include applied map, collision, entity, room graphics, held-item, stat, shop, and Extra Hacks changes across all edited areas. Saving uses the data already in memory, so it still works if the browser loses access to the source BIN or a build check fails. Save before reopening the BIN or refreshing the page; this is a manual save, and fields with an **Apply Changes** button must be applied first. Saving keeps the current edits and Undo history.
 
@@ -63,7 +65,7 @@ Then open `http://127.0.0.1:8765` in desktop Chrome, Edge or Firefox. Browser te
 - An already modded BIN can be the input. Exports then contain only the changes made in the editor.
 - Data the editor doesn't recognize is rejected rather than guessed. For example, Extra Hacks locks itself on images from other mods.
 - Raw 2352-byte sectors get recalculated EDC/ECC, so the output stays a valid disc image.
-- Chrome and Edge use native open/save dialogs; Firefox opens files with a standard file picker and saves BINs and patches as downloads. The legacy Asset folder tools require Chrome or Edge.
+- Chrome and Edge use native open and destination-folder dialogs; Firefox opens files with a standard file picker and saves BINs and patches as downloads. Download-only browsers cannot verify files on disk or manage replacement backups. The legacy Asset folder tools require Chrome or Edge.
 
 ## For developers
 

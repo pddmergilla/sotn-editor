@@ -70,33 +70,22 @@
   }
 
   // ---- building
-  async function saveTarget(name) {
-    if (window.showSaveFilePicker) {
-      const handle = await showSaveFilePicker({suggestedName: name, types: [{description: "PlayStation BIN image", accept: {"application/octet-stream": [".bin"]}}]});
-      if (state.handle && await handle.isSameEntry(state.handle)) throw new Error("Choose a different file name so your vanilla BIN stays intact.");
-      const stream = await handle.createWritable();
-      return {name: handle.name, write: chunk => stream.write(chunk), done: () => stream.close(), abort: () => stream.abort()};
-    }
-    const parts = [];
-    return {name, write: chunk => { parts.push(chunk); },
-      done: () => { const url = URL.createObjectURL(new Blob(parts, {type: "application/octet-stream"})); download(url, name); setTimeout(() => URL.revokeObjectURL(url), 60000); },
-      abort: () => { parts.length = 0; }};
-  }
   function download(url, name) { const a = el("a", {href: url, download: name}); document.body.append(a); a.click(); a.remove(); }
 
   async function buildBin() {
     if (state.busy || !state.ppf || state.check?.status !== "vanilla") return;
-    let target = null;
     try {
-      target = await saveTarget(R.result.name);
       state.busy = true; state.built = null; updateBuild();
-      const {crc} = await Core.buildWithCredits(state.disc.file, state.ppf, target,
+      const disc = state.disc;
+      const parts = [];
+      const {crc} = await Core.buildWithCredits(disc.file, state.ppf, {write: chunk => { parts.push(chunk); }},
         {expectedCrc: R.result.crc32, onProgress: p => setBuildStatus("busy", `Building Alternate Scarlet Symphony 2.0… ${Math.round(p * 100)}%`)});
-      await target.done();
-      state.built = {name: target.name, crc};
+      const saved = await window.SotnSafeSave.save(new Blob(parts, {type: "application/octet-stream"}), R.result.name,
+        {sourceHandle: state.handle, sourceFile: disc.file, allowSourceOverwrite: true,
+          onSourceSnapshot: file => { disc.file = file; }});
+      state.built = {...saved, crc};
     } catch (e) {
       if (e.name === "AbortError") { state.busy = false; updateBuild(); return; }
-      try { await target?.abort(); } catch {}
       state.built = {error: e.message || String(e)};
     }
     state.busy = false; updateBuild();
@@ -126,7 +115,7 @@
     button.disabled = !ready;
     if (state.busy) return;
     if (state.built?.error) return setBuildStatus("bad", state.built.error);
-    if (state.built) return setBuildStatus("ok", `Saved ${state.built.name}: verified ${VERSION} with the editor link on its title screen. Output CRC32 ${state.built.crc}.`,
+    if (state.built) return setBuildStatus("ok", `${state.built.downloaded ? "Download started for" : "Saved and verified"} ${state.built.name}: ${VERSION} with the editor link on its title screen. Output CRC32 ${state.built.crc}. ${state.built.warning || ""}`,
       el("button", {type: "button", class: "ass2Link", onclick: () => downloadCue(state.built.name), text: "Download a .cue for it"}));
     if (state.ppfError) return setBuildStatus("bad", state.ppfError);
     if (!state.disc) return setBuildStatus("idle", "Open your vanilla US BIN (Track 1) with Open SOTN BIN at the top, then build here.");

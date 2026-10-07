@@ -22,6 +22,7 @@ node tests/alucard-soul-steal.test.js
 node tests/enemy-elements.test.js
 node tests/spell-mp.test.js
 node tests/file-picker.test.js
+node tests/safe-save.test.js
 node tests/edit-session.test.js
 node tests/extra-hacks-ui.test.js
 node tests/richter-save.test.js
@@ -34,7 +35,9 @@ node tests/play-page.test.js
 node tests/play-card.test.js
 ```
 
-`file-picker.test.js` checks native and fallback file selection, cancel/retry, downloads, and source-file protection. Manually verify Open SOTN BIN, Build BIN and Export PPF3 in Firefox.
+`file-picker.test.js` checks native and fallback file selection, cancel/retry, downloads, source-file protection for non-BIN exports, and BIN replacement wiring. `safe-save.test.js` checks backup-before-write ordering, verification before deletion, every-byte checks across read windows, stale source references, repeat builds, existing backups, new and empty destinations, failed reads/writes/closes, damaged output, backup cleanup failure, filename guards, and both builders. `tests/safe-save-harness.html` uses real browser-storage file handles with small synthetic files to check the save dialog, source replacement, failed verification and cancellation without opening user images. Manually verify native folder selection and full-size working-copy replacement in Chrome/Edge, and Open SOTN BIN, Build BIN and Export PPF3 downloads in Firefox.
+
+Browser-verified locally on 2026-10-07: the new dialog replaces a synthetic working BIN through real browser-storage file handles, removes the backup after a byte-for-byte output check, keeps the open source readable, and rejects deliberately damaged output while retaining the verified original backup. The destination-folder picker is simulated in this harness; native Windows folder permissions and full-size browser saves still need manual acceptance.
 
 `edit-session.test.js` checks saving from memory after source-file access fails, preservation of changes that cannot currently build, all edit types, reloading onto a fresh compatible BIN, merging, conflict and damaged-file rejection without partial application, grouped Undo, hack bonuses and dependencies, and repeat saves after restoration. Image checks use `SOTN_BIN`, `SOTN_VANILLA_BIN`, and `SOTN_ASS_OLD_BIN` when available. Browser acceptance: save edits, reopen a BIN, load the saved JSON, review each edited tab, Undo, load again, and build; also save after a file-read failure without refreshing the page.
 

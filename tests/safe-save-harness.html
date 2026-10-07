@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Safe BIN saving browser check</title>
+<style>body{font:16px system-ui;padding:24px;background:#20232b;color:#fff}button{padding:8px;margin:4px}pre{white-space:pre-wrap}</style>
+<h1>Safe BIN saving browser check</h1>
+<p>Uses small test files in browser storage; your disc images are never opened.</p>
+<button id="save" disabled>Save over working test BIN</button>
+<button id="failure" disabled>Test failed verification</button>
+<button id="cancel" disabled>Test folder cancellation</button>
+<pre id="result">Preparing test files…</pre>
+<script src="../safe-save.js"></script>
+<script>
+  const result = document.getElementById('result');
+  let directory, source, handle;
+  async function contents(name) {return (await (await directory.getFileHandle(name)).getFile()).text();}
+  async function reset() {
+    handle = await directory.getFileHandle('working.bin', {create:true});
+    const stream = await handle.createWritable();await stream.write('original test BIN');await stream.close();
+    source = await handle.getFile();
+  }
+  async function checkBackupGone() {
+    try {await directory.getFileHandle('working.bin.sotn-backup');throw new Error('Backup still present');}
+    catch(error) {if(error.name !== 'NotFoundError') throw error;}
+  }
+  navigator.storage.getDirectory().then(async root => {
+    directory = await root.getDirectoryHandle('safe-save-check-' + crypto.randomUUID(), {create:true});
+    await reset();
+    window.showSaveFilePicker = () => {throw new Error('Unsafe save dialog used');};
+    window.showDirectoryPicker = async () => directory;
+    for (const id of ['save','failure','cancel']) document.getElementById(id).disabled=false;
+    result.textContent = 'Ready. Choose a test above.';
+  }).catch(error => {result.textContent = error.message;});
+  document.getElementById('save').onclick = async () => {
+    try {
+      const saved = await SotnSafeSave.save(new Blob(['updated test BIN']), 'working.bin', {
+        sourceHandle:handle,sourceFile:source,allowSourceOverwrite:true,onSourceSnapshot:copy=>{source=copy;}
+      });
+      if(await contents('working.bin') !== 'updated test BIN') throw new Error('Output mismatch');
+      if(await source.text() !== 'original test BIN') throw new Error('Open edits lost their source');
+      await checkBackupGone();
+      result.textContent = 'PASS: saved output matches every byte, backup removed after verification, open source remains readable. Saved ' + saved.name;
+    } catch(error) {result.textContent = error.name === 'AbortError' ? 'Cancelled safely; no file was changed.' : error.message;}
+  };
+  document.getElementById('failure').onclick = async () => {
+    try {
+      await reset();
+      const corrupt = {getFileHandle:async (...args) => {
+        const target = await directory.getFileHandle(...args);
+        if(args[0] !== 'working.bin') return target;
+        return {isSameEntry:other=>target.isSameEntry(other),getFile:()=>target.getFile(),createWritable:async()=>{
+          const stream = await target.createWritable();
+          return {write:bytes=>stream.write(bytes),abort:()=>stream.abort(),close:async()=>{
+            await stream.close();const bad=await target.createWritable();await bad.write('damaged');await bad.close();
+          }};
+        }};
+      },removeEntry:name=>directory.removeEntry(name)};
+      try {
+        await SotnSafeSave.saveToDirectory(new Blob(['updated test BIN']),corrupt,'working.bin',{
+          sourceHandle:handle,sourceFile:source,allowSourceOverwrite:true,onSourceSnapshot:copy=>{source=copy;}
+        });
+        throw new Error('Damaged output was accepted');
+      } catch(error) {if(!error.message.includes('Verified backup retained')) throw error;}
+      if(await contents('working.bin.sotn-backup') !== 'original test BIN') throw new Error('Recovery backup mismatch');
+      if(await source.text() !== 'original test BIN') throw new Error('Open source lost');
+      result.textContent = 'PASS: damaged output rejected; verified original backup retained; open edits remain readable.';
+    } catch(error) {result.textContent = error.message;}
+  };
+  document.getElementById('cancel').onclick = async () => {
+    try {
+      await reset();window.showDirectoryPicker=async()=>{throw new DOMException('Cancelled','AbortError');};
+      try {await SotnSafeSave.save(new Blob(['updated']), 'working.bin');throw new Error('Cancellation ignored');}
+      catch(error) {if(error.name !== 'AbortError') throw error;}
+      if(await contents('working.bin') !== 'original test BIN') throw new Error('Cancellation changed the original');
+      result.textContent = 'PASS: folder cancellation leaves the original unchanged.';
+    } catch(error) {result.textContent=error.message;}
+    finally {window.showDirectoryPicker=async()=>directory;}
+  };
+</script>
+</html>
