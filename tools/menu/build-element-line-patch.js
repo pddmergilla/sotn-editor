@@ -12,7 +12,7 @@ const decomp = process.env.SOTN_DECOMP || 'D:/AAA/GitHub/sotn-decomp';
 const directory = process.argv[2];
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
 const revision = cwd => child.execFileSync('git', ['rev-parse', 'HEAD'], {cwd, encoding: 'utf8'}).trim();
-const names = ['Menu-RES-WEAK-Elements-ASS-2.0.ppf', 'Reverse-Menu-RES-WEAK-Elements-ASS-2.0.ppf'];
+const names = ['Menu-RES-WEAK-Elements-v2-ASS-2.0.ppf', 'Reverse-Menu-RES-WEAK-Elements-v2-ASS-2.0.ppf'];
 
 async function inspect(image) {
   const disc = await C.DiscImage.open(new Blob([image]));
@@ -61,16 +61,20 @@ async function main() {
     apply(live, reverse); assert.equal(sha(live), report.source.sha256);
     report.application = {applied: true, liveSha256: report.result.sha256, reversalVerified: true};
     await fs.writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
+    const readmePath = path.resolve(directory, 'README.md');
+    const readme = await fs.readFile(readmePath, 'utf8');
+    await fs.writeFile(readmePath, readme.replace('Prepared for the exact current image; the original BIN is unchanged.', 'Applied to the approved exact image; the live BIN hash, written bytes, sector checksums and reversal are verified.'));
     console.log(JSON.stringify(report.application)); return;
   }
   const original = await fs.readFile(source), initial = sha(original);
   const {disc, record, dra} = await inspect(original), after = await verify(dra);
   const changes = await C.changedSectors(disc, record, dra, after), sectors = changes.map(change => change.start / 2352).sort((a, b) => a - b);
+  assert.ok(changes.length, 'This menu line version is already installed.');
   const image = Buffer.from(original); changes.forEach(change => image.set(change.modified, change.start));
   sectorsValid(image, sectors);
   const final = sha(image), block = original.subarray(0x9320, 0x9720);
-  const forward = ppf(changes, block, 'Main menu current RES and WEAK elements');
-  const reverse = ppf(changes.map(change => ({...change, original: change.modified, modified: change.original})), block, 'Reverse main menu RES and WEAK elements');
+  const forward = ppf(changes, block, 'Main menu abbreviated RES WEAK, lower line');
+  const reverse = ppf(changes.map(change => ({...change, original: change.modified, modified: change.original})), block, 'Restore previous main menu element line');
   apply(image, reverse); assert.equal(sha(image), initial);
   apply(image, forward); assert.equal(sha(image), final);
   apply(image, forward, true); assert.equal(sha(image), initial);
@@ -89,22 +93,25 @@ async function main() {
     edits: {file: 'DRA.BIN', extent: record.extent, size: record.size,
       hook: '0x57B38-0x57B3F (MenuDrawStats return path)', helper: `0x${H.CAVE.toString(16).toUpperCase()}-0x${end.toString(16).toUpperCase()}`,
       coordinates: {x: H.X, y: H.Y, glyph: '8x8', maximumCharacters: 44},
+      goldLine: {x: 16, y: 208, glyphHeight: 8, newLineStartsBelowGold: true},
       readOnlyTotals: '0x80097C28 (weak), 0x80097C2A (resist), 0x80097C2C (immune), 0x80097C2E (absorb)',
-      behavior: 'Main menu only, after the existing equipment and active-buff recalculation; full element names, then 3-letter or 2-letter names when needed; - for an empty list.',
+      behavior: 'Main menu only, after the existing equipment and active-buff recalculation; three-letter abbreviations only (FLA ICE LIT HOL DAR WTR PSN CUR STN HIT CUT), at y=216 below GOLD at y=208. Spaces between element codes are removed only if the list would exceed 44 characters; - for an empty list.',
       effectiveResistance: '(resist & ~weak) | immune | absorb', effectiveWeakness: 'weak & ~(resist | immune | absorb)',
-      elements: H.ELEMENTS.map(([mask, short, compact, name]) => ({mask: `0x${mask.toString(16).toUpperCase()}`, name, short, compact})),
-      safeSpace: `Zeroed unused equipment icons ${icon(H.CAVE)}-${icon(end)}; all current equipment uses icons 0-273. No existing direct jumps, calls or aligned pointers target the reserved range. The patch uses 606 bytes and reserves icons 289-301. Do not assign those icons to equipment.`,
+      elements: H.ELEMENTS.map(([mask, abbreviation, name]) => ({mask: `0x${mask.toString(16).toUpperCase()}`, name, abbreviation})),
+      safeSpace: `Reviewed menu helper in unused equipment icons ${icon(H.CAVE)}-${icon(end)}; all current equipment uses icons 0-273. The old helper is accepted only when every byte matches its reviewed v1 version and the remaining reservation is zero. No other existing direct jumps, calls or aligned pointers target the reserved range. The new helper uses ${H.helper().length} bytes and reserves icons 289-301. Do not assign those icons to equipment.`,
       native: H.NATIVE.map(([start, finish, hash]) => ({start: `0x${start.toString(16).toUpperCase()}`, endExclusive: `0x${finish.toString(16).toUpperCase()}`, sha256: hash}))},
     decomp: {remote: 'https://github.com/Xeeynamo/sotn-decomp.git', revision: revision(decomp),
       files: ['src/dra/menu.c', 'src/dra/5D5BC.c', 'include/game.h', 'config/splat.us.dra.yaml'],
       existingLocalChanges: 'The source menu.c already excludes Potion/High Potion consumable counts; it was not changed for this patch. Live modded bytes were authoritative.'},
-    editor: {revision: revision(path.join(__dirname, '../..')), files: ['tools/menu/element-line.js', 'tools/menu/build-element-line-patch.js', 'tests/menu-element-line.test.js', 'docs/menu-element-line.md']},
+    editor: {revision: revision(path.join(__dirname, '../..')), files: ['tools/menu/element-line.js', 'tools/menu/element-line-v1.json', 'tools/menu/build-element-line-patch.js', 'tests/menu-element-line.test.js', 'docs/menu-element-line.md']},
     verified: ['native menu return, text drawing and font termination', 'all 2048 element subsets on each side and all complementary subsets',
       '500 mixed weak/resist/immune/absorb cases', 'all 11 elements', 'resist/weak cancellation and immunity/absorption priority',
-      '44-character width and 212-220 vertical bounds', 'native CalcDefense with all seven Resist buffs individually and together',
+      'three-letter abbreviations in every list, including all 11 elements', '44-character width and 216-224 vertical bounds',
+      'actual GOLD text at y=208 is traced and the new line begins below its 8-pixel glyphs',
+      'reviewed v1 upgrade and repeat preparation of current bytes', 'native CalcDefense with all seven Resist buffs individually and together',
       'buff expiry', 'five body slots and hardcoded Medusa/Fire Shield immunity', 'Heart of Vlad immunity',
       'native full menu preserves all existing drawing calls and adds one line after recalculation', 'equipment overview is unchanged',
-      'stack and saved registers restored', 'only helper and hook bytes change within DRA', 'occupied space and altered native code rejected',
+      'stack and saved registers restored', 'only reserved helper and hook bytes change within DRA', 'occupied space, unknown helper versions and altered native code rejected',
       'forward, reversal and both undo full-image hashes', 'guarded altered-byte rejection', 'export/reopen', 'sector checksums',
       'unrelated sectors unchanged', 'source BIN unchanged'],
     gameplay: 'Fresh-boot emulator presentation and gameplay remain unverified; use a memory-card save.', application: {applied: false}
@@ -112,7 +119,7 @@ async function main() {
   await fs.mkdir(directory, {recursive: true});
   await fs.writeFile(report.forward.path, forward); await fs.writeFile(report.reversal.path, reverse);
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
-  await fs.writeFile(path.resolve(directory, 'README.md'), `# Main menu RES / WEAK line\n\nPrepared for the exact current image; the original BIN is unchanged.\n\nExample: RES:Fire Thunder Poison WEAK:Ice\n\nFull element names appear when they fit. Longer lists use the abbreviations in verification.json, keeping all elements on one line. RES includes resistance, immunity and absorption; equal weakness and resistance cancel. No gear or buff values are changed. Empty lists show -. Only the main menu background receives this line, at x=8/y=212.\n\nSource: ${source}\nSize: ${original.length}\nBefore SHA-256: ${initial}\nExpected after SHA-256: ${final}\nForward: ${report.forward.path}\nForward SHA-256: ${report.forward.sha256}\nReversal: ${report.reversal.path}\nReversal SHA-256: ${report.reversal.sha256}\n\nDecomp: ${report.decomp.remote} at ${report.decomp.revision}\nEditor at preparation: ${report.editor.revision}\n\nDRA.BIN: extent ${record.extent}, size ${record.size}; hook ${report.edits.hook}; helper ${report.edits.helper}. Repaired sectors: ${sectors.join(', ')}. The detailed verification report records all inspected sources, native code hashes and checks.\n\nBoth patches contain undo bytes and block checks. The application tool checks the complete image hash and every changed byte; mismatches are rejected. No backup BIN is created or deleted. Applying the reversal removes only this menu addition.\n\nAfter explicit approval, apply with:\nnode tools/menu/build-element-line-patch.js "${path.resolve(directory)}" --apply\n\nFresh-boot with a memory-card save and check the menu, different equipment combinations, active/expired Resist buffs, weakness cancellation, immunity and absorption, crowded lists, menus opening/closing and equipment submenus. Emulator presentation and gameplay remain unverified.\n`);
+  await fs.writeFile(path.resolve(directory, 'README.md'), `# Main menu RES / WEAK line\n\nPrepared for the exact current image; the original BIN is unchanged.\n\nExample: RES:FLA LIT PSN WEAK:ICE\n\nAll elements use three-letter abbreviations. Crowded lists remove spaces between element codes, keeping every three-letter code visible on one line. RES includes resistance, immunity and absorption; equal weakness and resistance cancel. No gear or buff values are changed. Empty lists show -. Only the main menu background receives this line, at x=8/y=216, four pixels lower than v1 and below GOLD at y=208.\n\nSource: ${source}\nSize: ${original.length}\nBefore SHA-256: ${initial}\nExpected after SHA-256: ${final}\nForward: ${report.forward.path}\nForward SHA-256: ${report.forward.sha256}\nReversal: ${report.reversal.path}\nReversal SHA-256: ${report.reversal.sha256}\n\nDecomp: ${report.decomp.remote} at ${report.decomp.revision}\nEditor at preparation: ${report.editor.revision}\n\nDRA.BIN: extent ${record.extent}, size ${record.size}; hook ${report.edits.hook}; helper ${report.edits.helper}. Repaired sectors: ${sectors.join(', ')}. The detailed verification report records all inspected sources, native code hashes and checks.\n\nBoth patches contain undo bytes and block checks. The application tool checks the complete image hash and every changed byte; mismatches are rejected. No backup BIN is created or deleted. Applying the reversal restores the prior menu bytes while preserving unrelated changes.\n\nAfter explicit approval, apply with:\nnode tools/menu/build-element-line-patch.js "${path.resolve(directory)}" --apply\n\nFresh-boot with a memory-card save and check the menu, different equipment combinations, active/expired Resist buffs, weakness cancellation, immunity and absorption, crowded lists, menus opening/closing and equipment submenus. Emulator presentation and gameplay remain unverified.\n`);
   console.log(JSON.stringify({sourceSha256: initial, expectedSha256: final, forward: report.forward, reversal: report.reversal, sectors, reportPath}, null, 2));
 }
 

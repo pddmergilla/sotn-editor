@@ -5,14 +5,14 @@ const M = require('../../stats-model.js');
 
 const BASE = M.DRA_BASE, CAVE = 0x2E3A4, LIMIT = 0x2EA24;
 const HOOK = 0x57B38, CONTINUE = 0x57B40, DRAW_STATS = 0x574B4;
-const DRAW_TEXT = 0x800F67EC, BG = 0x8013763A, X = 8, Y = 212;
+const DRAW_TEXT = 0x800F67EC, BG = 0x8013763A, X = 8, Y = 216;
 const ELEMENTS = [
-  [0x8000, 'FIR', 'FI', 'Fire'], [0x2000, 'ICE', 'IC', 'Ice'],
-  [0x4000, 'THN', 'TH', 'Thunder'], [0x1000, 'HOL', 'HO', 'Holy'],
-  [0x0800, 'DRK', 'DK', 'Dark'], [0x0400, 'WTR', 'WA', 'Water'],
-  [0x0080, 'PSN', 'PS', 'Poison'], [0x0100, 'CUR', 'CU', 'Curse'],
-  [0x0200, 'STN', 'ST', 'Stone'], [0x0020, 'HIT', 'HI', 'Hit'],
-  [0x0040, 'CUT', 'CT', 'Cut']
+  [0x8000, 'FLA', 'Fire'], [0x2000, 'ICE', 'Ice'],
+  [0x4000, 'LIT', 'Thunder'], [0x1000, 'HOL', 'Holy'],
+  [0x0800, 'DAR', 'Dark'], [0x0400, 'WTR', 'Water'],
+  [0x0080, 'PSN', 'Poison'], [0x0100, 'CUR', 'Curse'],
+  [0x0200, 'STN', 'Stone'], [0x0020, 'HIT', 'Hit'],
+  [0x0040, 'CUT', 'Cut']
 ];
 const NATIVE = [
   [0x574B4, 0x57B60, 'e4cfa389283d692767436e5c109fe6d90cfa1c281c71e7308ee8033843e79279'],
@@ -21,6 +21,9 @@ const NATIVE = [
   [0x567EC, 0x568F4, '679ad0d58d12d1637c2398a5f1cd489f97709fc2f65d9d47e9fa6860f2b33279']
 ];
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+const legacy = require('./element-line-v1.json');
+const LEGACY = Buffer.from(legacy.base64, 'base64');
+assert.equal(sha(LEGACY), legacy.sha256);
 const i = (op, rs, rt, imm) => ((op << 26) | (rs << 21) | (rt << 16) | (imm & 65535)) >>> 0;
 const r = (fn, rs, rt, rd) => ((rs << 21) | (rt << 16) | (rd << 11) | fn) >>> 0;
 const jump = (addr, call = false) => ((call ? 0x0C000000 : 0x08000000) | (addr >>> 2 & 0x3FFFFFF)) >>> 0;
@@ -41,7 +44,7 @@ function helper() {
     r(0x24, 10, 13, 19), r(0x25, 11, 12, 11), r(0x25, 19, 11, 19),
     r(0x25, 10, 11, 10), i(14, 10, 10, 65535), r(0x24, 9, 10, 20),
     i(12, 19, 19, 0xFFE0), i(12, 20, 20, 0xFFE0),
-    i(13, 0, 17, 0), i(13, 0, 21, 8));
+    i(13, 0, 17, 3), i(13, 0, 21, 2));
   label('build');
   emit(i(9, 29, 16, 16), r(0x21, 19, 0, 4));
   pointer(5, 'res'); emit(i(13, 0, 6, 4)); call('group');
@@ -51,7 +54,7 @@ function helper() {
   branch(5, 17, 0, 'compact');
   emit(i(13, 0, 17, 3)); branch(4, 0, 0, 'build', i(13, 0, 21, 2));
   label('compact');
-  emit(i(13, 0, 17, 2)); branch(4, 0, 0, 'build', i(13, 0, 21, 5));
+  emit(i(13, 0, 17, 3)); branch(4, 0, 0, 'build', i(13, 0, 21, 5));
   label('draw');
   emit(i(13, 0, 8, 255), i(40, 16, 8, 0), i(40, 16, 0, 1),
     i(9, 29, 4, 16), i(13, 0, 5, X), i(13, 0, 6, Y), jump(DRAW_TEXT, true), r(0x21, 18, 0, 7));
@@ -69,6 +72,7 @@ function helper() {
   emit(i(37, 9, 8, 0), 0, r(0x24, 8, 4, 8));
   branch(4, 8, 0, 'next');
   branch(4, 14, 0, 'copy');
+  emit(i(13, 0, 8, 5)); branch(4, 21, 8, 'copy');
   emit(i(40, 16, 0, 0), i(9, 16, 16, 1));
   label('copy');
   emit(r(0x21, 9, 21, 11), i(36, 9, 12, 7));
@@ -82,9 +86,9 @@ function helper() {
   branch(5, 10, 0, 'element'); emit(0x03E00008, 0);
   label('elements');
   const table = Buffer.alloc(ELEMENTS.length * 16);
-  ELEMENTS.forEach(([mask, long, short, name], n) => {
-    table.writeUInt16LE(mask, n * 16); table.set(font(long), n * 16 + 2);
-    table.set(font(short), n * 16 + 5); table[n * 16 + 7] = name.length; table.set(font(name), n * 16 + 8);
+  ELEMENTS.forEach(([mask, abbreviation], n) => {
+    table.writeUInt16LE(mask, n * 16); table.set(font(abbreviation), n * 16 + 2);
+    table.set(font(abbreviation), n * 16 + 5);
   });
   const tail = Buffer.concat([table, font('RES:'), font(' WEAK:')]);
   labels.set('res', words.length * 4 + table.length);
@@ -100,22 +104,33 @@ function helper() {
   return bytes;
 }
 
+function withoutLine(dra) {
+  const original = dra.slice();
+  if (K.u32(dra, HOOK) === jump(BASE + CAVE) && K.u32(dra, HOOK + 4) === 0) {
+    const known = [LEGACY, helper()].find(bytes => Buffer.from(dra.subarray(CAVE, CAVE + bytes.length)).equals(bytes) && dra.subarray(CAVE + bytes.length, LIMIT).every(v => v === 0));
+    assert.ok(known, 'Unrecognized installed menu line.');
+    original.fill(0, CAVE, LIMIT); K.put32(original, HOOK, 0x8FBF0030); K.put32(original, HOOK + 4, 0x8FB5002C);
+  }
+  assert.equal(K.u32(original, HOOK), 0x8FBF0030); assert.equal(K.u32(original, HOOK + 4), 0x8FB5002C);
+  assert.ok(original.subarray(CAVE, LIMIT).every(v => v === 0), 'Reserved menu space is occupied.');
+  for (const [start, end, hash] of NATIVE) assert.equal(sha(original.subarray(start, end)), hash, `Unrecognized menu code at ${start.toString(16)}.`);
+  return original;
+}
+
 function prepare(dra) {
-  for (const [start, end, hash] of NATIVE) if (hash) assert.equal(sha(dra.subarray(start, end)), hash, `Unrecognized menu code at ${start.toString(16)}.`);
-  assert.equal(K.u32(dra, HOOK), 0x8FBF0030); assert.equal(K.u32(dra, HOOK + 4), 0x8FB5002C);
-  const bytes = helper(); assert.ok(dra.subarray(CAVE, LIMIT).every(v => v === 0), 'Reserved menu space is occupied.');
-  const m = M.parse({DRA: {bytes: dra, base: BASE}}), firstIcon = (CAVE - 0x25324) / 128;
+  const original = withoutLine(dra), bytes = helper();
+  const m = M.parse({DRA: {bytes: original, base: BASE}}), firstIcon = (CAVE - 0x25324) / 128;
   assert.ok([...m.sections.equipRows, ...Object.values(m.sections.body).flat()].every(row => m.get(row.icon) < firstIcon), 'Equipment uses reserved menu icons.');
   for (let at = 0; at < 0x962A8; at += 4) {
-    const w = K.u32(dra, at), op = w >>> 26;
+    const w = K.u32(original, at), op = w >>> 26;
     if (op === 2 || op === 3) {
       const target = K.branchTarget(w, BASE + at) - BASE;
       assert.ok(target < CAVE || target >= LIMIT, `Existing code calls reserved space at ${at.toString(16)}.`);
     }
     assert.ok(w < BASE + CAVE || w >= BASE + LIMIT, `Existing pointer uses reserved space at ${at.toString(16)}.`);
   }
-  const after = dra.slice(); after.set(bytes, CAVE); K.put32(after, HOOK, jump(BASE + CAVE)); K.put32(after, HOOK + 4, 0);
+  const after = original; after.set(bytes, CAVE); K.put32(after, HOOK, jump(BASE + CAVE)); K.put32(after, HOOK + 4, 0);
   return after;
 }
 
-module.exports = {prepare, helper, BASE, CAVE, LIMIT, HOOK, CONTINUE, DRAW_STATS, DRAW_TEXT, BG, X, Y, ELEMENTS, NATIVE, jump, sha};
+module.exports = {prepare, helper, withoutLine, LEGACY, BASE, CAVE, LIMIT, HOOK, CONTINUE, DRAW_STATS, DRAW_TEXT, BG, X, Y, ELEMENTS, NATIVE, jump, sha};
