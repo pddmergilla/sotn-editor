@@ -938,8 +938,22 @@
     const code=activeEntityAreaCode(),rule=dropRule(code,formEntity());
     const show=rule?.kind==="slot"||rule?.kind==="fixed";
     wrap.classList.toggle("hidden",!show);
+    const slotWrap=$("heldSlotWrap"),slotSelect=$("entityPrizeSlot");
+    slotWrap.classList.toggle("hidden",!show||rule.kind!=="slot"||!!rule.lookup);
     if(!show)return;
     const stage=state.discStage,table=stage?.prizeDrops,slot=rule.slot;
+    slotSelect.replaceChildren();slotSelect.disabled=!table;
+    if(table&&rule.kind==="slot"&&!rule.lookup){
+      if(!Number.isInteger(slot)||slot<0||slot>=table.values.length){
+        const option=document.createElement("option");option.value="";
+        option.textContent="Choose a valid item slot";slotSelect.appendChild(option);
+      }
+      for(let i=0;i<table.values.length;i++){
+        const option=document.createElement("option");option.value=String(i);
+        option.textContent=`${i} — ${dropName(table.values[i])}`;slotSelect.appendChild(option);
+      }
+      slotSelect.value=slot>=0&&slot<table.values.length?String(slot):"";
+    }
     select.disabled=true;
     if(rule.kind==="fixed"){
       if(table&&slot<table.values.length)fillSelect(select,dropGroups(),table.values[slot]);else select.replaceChildren();
@@ -949,7 +963,8 @@
     if(!table){select.replaceChildren();hint.textContent=stage?"This stage's prize table was not found, so the held item cannot be changed here.":"Open a BIN to choose what this pickup holds.";return;}
     if(!Number.isInteger(slot)||slot<0||slot>=table.values.length){
       select.replaceChildren();
-      hint.textContent=`Slot ${slot} is outside this stage's prize table (slots 0-${table.values.length-1}). Set Params to one of those slots.`;
+      hint.textContent=`Slot ${slot} is outside this stage's prize table (slots 0-${table.values.length-1}). `+
+        (rule.lookup?"Set Params to a valid lookup entry.":"Choose a valid Item slot above, then choose Holds item and press Apply Changes.");
       return;
     }
     select.disabled=false;
@@ -962,6 +977,14 @@
       `${users} placements in this stage use this slot (often one pickup in two room layouts). They hold the same item, and collecting one removes the others.`:
       "Breakable walls and scripted objects can also spawn a slot. Press Apply Changes to save.");
   }
+  $("entityPrizeSlot").onchange=()=>{
+    const rule=dropRule(activeEntityAreaCode(),formEntity()),table=state.discStage?.prizeDrops;
+    const chosen=$("entityPrizeSlot").value,slot=Number(chosen);
+    if(chosen===""||rule?.kind!=="slot"||rule.lookup||!table||!Number.isInteger(slot)||slot<0||slot>=table.values.length)return;
+    const params=Number($("entityParams").value)||0;
+    $("entityParams").value=rule.symbol==="E_BREAKABLE"?(params&0xFE00)|slot:slot;
+    refreshParamChoices();
+  };
   function refreshRelicChoice(symbol){
     const wrap=$("relicChoiceWrap"),select=$("entityRelic"),code=activeEntityAreaCode(),rule=dropRule(code,formEntity());
     wrap.classList.toggle("hidden",symbol!=="E_RELIC_ORB"&&rule?.kind!=="relic");

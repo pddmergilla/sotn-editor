@@ -22,6 +22,8 @@ Reverse Caverns urns and jugs use **Holds item** and a prize slot, rather than a
 
 Death Wing's Lair urns/jugs, Forbidden Library urns/busts and Scylla's urns also use prize slots. Their recognized tables have 12, 18 and 38 entries respectively; unsafe slot edits are rejected. Forbidden Library jugs always use slot 3. [Full pot audit and repair](all-pot-drops.md).
 
+If a pot has an invalid slot from older edits, choose a valid **Item slot**, then choose **Holds item** and press **Apply Changes**. The slot list shows each slot's current reward; sharing a slot also shares its reward and collected flag. Choosing a slot preserves the pot's appearance, and Undo restores both the original slot and any reward change.
+
 **Copy Tile** lets you drag a rectangle of tiles and copies it when you release the left mouse button. The starting tile chooses the visible foreground or background layer, and the entire rectangle comes from that layer, including empty tiles. A click still copies one tile. The button turns off after copying and switches the paint layer to match.
 
 The copied chunk appears as a preview under the mouse, with its top-left tile at the cursor. Click or drag to paint it repeatedly. At the map edges, only tiles inside the layer are painted. Choose a palette tile, enter a Tile ID, or change the paint layer to return to a single tile. Copied chunks can be used in other rooms with the same tile definitions; changing to incompatible tile definitions clears the chunk.
