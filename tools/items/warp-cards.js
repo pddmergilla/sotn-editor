@@ -66,7 +66,7 @@ function prepare(dra) {
       assert.ok(!(target >= BASE + CAVE && target < BASE + END), 'Existing code uses card helper space.');
     }
   }
-  const after = dra.slice();
+  const after = new Uint8Array(dra);
   for (const {start, bytes} of helpers()) after.set(bytes, start);
   assert.ok(helpers()[0].bytes.length <= TRANSITION - ACTIVATE);
   assert.ok(helpers()[1].bytes.length <= SELECT - TRANSITION);
@@ -85,7 +85,7 @@ function prepare(dra) {
   }
   text(m.sections.hand[166].name, 'Scorpion Card'); text(m.sections.hand[166].desc, 'Warp to Outer Wall - reusable');
   text(m.sections.hand[27].name, 'noiL Card'); text(m.sections.hand[27].desc, 'Reverse Keep warp; reusable');
-  return after;
+  return require('./warp-card-graphics.js').install(after);
 }
 module.exports = {prepare, helpers, BASE, CAVE, END, TABLE, PENDING, ACTIVATE, TRANSITION, SELECT,
   SCORPION_RECORD, NOIL_RECORD, SCORPION_INDEX, NOIL_INDEX, HOOK, TRANSITION_HOOK, SELECT_HOOK, jump};

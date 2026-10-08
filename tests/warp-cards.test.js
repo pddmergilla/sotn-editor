@@ -2,9 +2,11 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs'), crypto = require('node:crypto');
 const C = require('../sotn-core.js'), D = require('../disc-stage.js'), M = require('../stats-model.js');
 const H = require('../tools/items/warp-cards.js'), {machine} = require('./helpers/mips.js');
+const G = require('../tools/items/warp-card-graphics.js');
 const source = process.env.SOTN_ASS_BIN || 'C:/Users/omergilla/Downloads/Castlevania - Alternate Scarlet Symphony 2.0.bin';
 async function verify(dra, warps) {
   const after = H.prepare(dra), model = M.parse({DRA: {bytes: after, base: H.BASE}});
+  require('./warp-card-graphics.test.js').verifyLoading(dra, after, warps);
   const destinations = [[166, H.SCORPION_INDEX, 11, 2, 192, warps.WRP], [27, H.NOIL_INDEX, 43, 0, 64, warps.RWRP]];
   let scenarios = 0;
   for (const [id, name] of [[166, 'Scorpion Card'], [27, 'noiL Card']]) {
@@ -79,7 +81,7 @@ async function verify(dra, warps) {
   const rooms = [D.parseOverlay(warps.WRP).rooms[2], D.parseOverlay(warps.RWRP).rooms[0]];
   assert.deepEqual(rooms.map(room => [room.left, room.top]), [[59, 17], [23, 51]]);
   const allowed = [[H.CAVE, H.END], [H.HOOK, H.HOOK + 4], [H.TRANSITION_HOOK, H.TRANSITION_HOOK + 4],
-    [H.SELECT_HOOK, H.SELECT_HOOK + 4], [0x5088, 0x50B4]];
+    [H.SELECT_HOOK, H.SELECT_HOOK + 4], [G.CAVE, G.CAVE + G.helper().length], [G.HOOK, G.HOOK + 4], [0x5088, 0x50B4]];
   const originalModel = M.parse({DRA: {bytes: dra, base: H.BASE}});
   for (const id of [27, 166]) for (const key of ['name', 'desc']) {
     const field = originalModel.field(originalModel.sections.hand[id][key]); allowed.push([field.off, field.off + field.capacity]);
