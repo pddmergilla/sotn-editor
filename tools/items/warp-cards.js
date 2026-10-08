@@ -5,6 +5,7 @@ const ACTIVATE = CAVE, TRANSITION = CAVE + 0x50, SELECT = CAVE + 0xA0;
 const TABLE = 0x245C, SCORPION_RECORD = 0x2EFF2, NOIL_RECORD = SCORPION_RECORD + 10, PENDING = 0x2F010;
 const SCORPION_INDEX = (SCORPION_RECORD - TABLE) / 10, NOIL_INDEX = SCORPION_INDEX + 1;
 const HOOK = 0x6F26C, TRANSITION_HOOK = 0x532B8, SELECT_HOOK = 0x51720;
+const WRP_STAGE = 14, RWRP_STAGE = 46;
 const i = (op, rs, rt, imm) => ((op << 26) | (rs << 21) | (rt << 16) | (imm & 65535)) >>> 0;
 const r = (rs, rt, rd, fn, shift = 0) => ((rs << 21) | (rt << 16) | (rd << 11) | (shift << 6) | fn) >>> 0;
 const jump = (addr, call = false) => ((call ? 0x0C000000 : 0x08000000) | (addr >>> 2 & 0x3FFFFFF)) >>> 0;
@@ -71,7 +72,7 @@ function prepare(dra) {
   assert.ok(helpers()[0].bytes.length <= TRANSITION - ACTIVATE);
   assert.ok(helpers()[1].bytes.length <= SELECT - TRANSITION);
   assert.ok(SELECT + helpers()[2].bytes.length <= SCORPION_RECORD);
-  for (const [off, values] of [[SCORPION_RECORD, [192, 132, 16, 0, 11]], [NOIL_RECORD, [192, 132, 0, 0, 43]]])
+  for (const [off, values] of [[SCORPION_RECORD, [192, 132, 16, 0, WRP_STAGE]], [NOIL_RECORD, [192, 132, 0, 0, RWRP_STAGE]]])
     values.forEach((v, n) => K.put16(after, off + n * 2, v));
   K.put32(after, HOOK, jump(BASE + ACTIVATE, true));
   K.put32(after, TRANSITION_HOOK, jump(BASE + TRANSITION));
@@ -88,4 +89,4 @@ function prepare(dra) {
   return require('./warp-card-graphics.js').install(after);
 }
 module.exports = {prepare, helpers, BASE, CAVE, END, TABLE, PENDING, ACTIVATE, TRANSITION, SELECT,
-  SCORPION_RECORD, NOIL_RECORD, SCORPION_INDEX, NOIL_INDEX, HOOK, TRANSITION_HOOK, SELECT_HOOK, jump};
+  SCORPION_RECORD, NOIL_RECORD, SCORPION_INDEX, NOIL_INDEX, HOOK, TRANSITION_HOOK, SELECT_HOOK, WRP_STAGE, RWRP_STAGE, jump};

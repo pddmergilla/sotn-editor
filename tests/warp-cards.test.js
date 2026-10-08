@@ -4,10 +4,11 @@ const C = require('../sotn-core.js'), D = require('../disc-stage.js'), M = requi
 const H = require('../tools/items/warp-cards.js'), {machine} = require('./helpers/mips.js');
 const G = require('../tools/items/warp-card-graphics.js');
 const source = process.env.SOTN_ASS_BIN || 'C:/Users/omergilla/Downloads/Castlevania - Alternate Scarlet Symphony 2.0.bin';
-async function verify(dra, warps) {
+async function verify(dra, warps, files) {
   const after = H.prepare(dra), model = M.parse({DRA: {bytes: after, base: H.BASE}});
   require('./warp-card-graphics.test.js').verifyLoading(dra, after, warps);
-  const destinations = [[166, H.SCORPION_INDEX, 11, 2, 192, warps.WRP], [27, H.NOIL_INDEX, 43, 0, 64, warps.RWRP]];
+  require('./warp-card-location.test.js').verifyDestinations(after, files);
+  const destinations = [[166, H.SCORPION_INDEX, H.WRP_STAGE, 2, 192, warps.WRP], [27, H.NOIL_INDEX, H.RWRP_STAGE, 0, 64, warps.RWRP]];
   let scenarios = 0;
   for (const [id, name] of [[166, 'Scorpion Card'], [27, 'noiL Card']]) {
     const row = model.sections.hand[id]; assert.equal(model.get(row.name), name);
@@ -100,6 +101,6 @@ if (require.main === module) (async () => {
   const before = hash(), disc = await C.DiscImage.open(await fs.openAsBlob(source));
   const dra = await disc.readFile(await disc.findPath(['DRA.BIN'])), warps = {};
   for (const name of ['WRP', 'RWRP']) warps[name] = await disc.readFile(await disc.findPath(['ST', name, `${name}.BIN`]));
-  await verify(dra, warps); assert.equal(hash(), before);
+  await verify(dra, warps, await require('./warp-card-location.test.js').loadFiles(disc)); assert.equal(hash(), before);
 })().catch(error => {console.error(error); process.exitCode = 1;});
 module.exports = {verify};

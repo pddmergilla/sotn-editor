@@ -1,12 +1,12 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises'), path = require('node:path'), crypto = require('node:crypto');
 const C = require('../../sotn-core.js'), A = require('../../ass2-core.js'), M = require('../../stats-model.js');
-const H = require('./warp-cards.js'), G = require('./warp-card-graphics.js'), {verify} = require('../../tests/warp-cards.test.js');
+const H = require('./warp-cards.js'), G = require('./warp-card-graphics.js'), {verify, loadFiles, verifyDestinations, arrival} = require('../../tests/warp-card-location.test.js');
 const {ppf, apply} = require('../weapons/build-stone-sword-patch.js');
 const source = process.env.SOTN_ASS_BIN || 'C:/Users/omergilla/Downloads/Castlevania - Alternate Scarlet Symphony 2.0.bin';
 const directory = process.argv[2];
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
-const names = ['Scorpion-and-noiL-Cards-ASS-2.0.ppf', 'Reverse-Scorpion-and-noiL-Cards-ASS-2.0.ppf'];
+const names = ['Scorpion-and-noiL-Cards-Location-Fix-ASS-2.0.ppf', 'Reverse-Scorpion-and-noiL-Cards-Location-Fix-ASS-2.0.ppf'];
 async function reopen(image) {
   const disc = await C.DiscImage.open(new Blob([image])), record = await disc.findPath(['DRA.BIN']);
   const bytes = await disc.readFile(record), m = M.parse({DRA: {bytes, base: H.BASE}});
@@ -20,7 +20,7 @@ async function reopen(image) {
   assert.equal(require('../../stats-core.js').u32(bytes, G.HOOK), H.jump(G.BASE + G.CAVE, true));
   assert.equal(require('../../stats-core.js').u16(bytes, H.SCORPION_RECORD + 8), H.WRP_STAGE);
   assert.equal(require('../../stats-core.js').u16(bytes, H.NOIL_RECORD + 8), H.RWRP_STAGE);
-  require('../../tests/warp-card-location.test.js').verifyDestinations(bytes, await require('../../tests/warp-card-location.test.js').loadFiles(disc));
+  verifyDestinations(bytes, await loadFiles(disc));
   return bytes;
 }
 async function main() {
@@ -69,17 +69,18 @@ async function main() {
   }
   const original = await fs.readFile(source), initial = sha(original);
   const disc = await C.DiscImage.open(new Blob([original])); assert.equal(disc.sectorSize, 2352);
-  const record = await disc.findPath(['DRA.BIN']), dra = await disc.readFile(record), warps = {};
-  for (const name of ['WRP', 'RWRP']) warps[name] = await disc.readFile(await disc.findPath(['ST', name, `${name}.BIN`]));
-  const after = await verify(dra, warps, await require('../../tests/warp-card-location.test.js').loadFiles(disc)), changes = await C.changedSectors(disc, record, dra, after);
+  const record = await disc.findPath(['DRA.BIN']), dra = await disc.readFile(record);
+  const files = await loadFiles(disc);
+  const previousDestinations = {Scorpion: arrival(dra, files, 166, 0, 2), noiL: arrival(dra, files, 27, 0, 34)};
+  const after = await verify(dra, files), changes = await C.changedSectors(disc, record, dra, after);
   const image = Buffer.from(original);
   for (const change of changes) {
     assert.deepEqual(C.repairSector(change.modified.slice(), 24), change.modified); image.set(change.modified, change.start);
   }
   const final = sha(image); assert.deepEqual(await reopen(image), after);
   const block = original.subarray(0x9320, 0x9720);
-  const forward = ppf(changes, block, 'Scorpion Card + noiL Card warp rooms - ASS 2.0');
-  const reverse = ppf(changes.map(c => ({...c, original: c.modified, modified: c.original})), block, 'Reverse Scorpion Card + noiL Card - ASS 2.0');
+  const forward = ppf(changes, block, 'Scorpion + noiL Card correct warp area IDs');
+  const reverse = ppf(changes.map(c => ({...c, original: c.modified, modified: c.original})), block, 'Reverse Scorpion + noiL Card location fix');
   apply(image, reverse); assert.equal(sha(image), initial);
   apply(image, forward); assert.equal(sha(image), final);
   apply(image, forward, true); assert.equal(sha(image), initial);
@@ -104,23 +105,47 @@ async function main() {
       reusable: true, mp: 0, icon: 'existing Library Card', originCastleIndependent: true,
       arrival: 'Inside the statue room, away from the center platform; existing card effect and fade.',
       existingRoomReturnCardPreserved: true},
-    inspected: ['DRA.BIN equipment rows 27/166, names/descriptions, card dispatch, native inventory reduction, stage transition, stage selection, position conversion, existing room-return helpers, unused icon space',
-      'ST/WRP/WRP.BIN room 2', 'ST/RWRP/RWRP.BIN room 0'],
+    cause: 'Destination records used TOP (11) and RTOP (43), not WRP (14) and RWRP (46); earlier tests supplied warp overlays without following the disc loader.',
+    previousDestinations,
+    inspected: ['DRA.BIN private destination records, native area and graphics disc selection, room layer loading and final map coordinates',
+      'ST/TOP/TOP.BIN room 2', 'ST/RTOP/RTOP.BIN room 0', 'ST/WRP/WRP.BIN room 2', 'ST/RWRP/RWRP.BIN room 0', 'matching graphics disc records'],
     reserved: {dra: ['0x2EF00-0x2F01F', '0x2F0B0-0x2F0E3'], icons: '311-313 and 315', pendingDestination: '0x2F010',
       destinationIndices: [H.SCORPION_INDEX, H.NOIL_INDEX], note: 'Do not assign equipment icons 311-313 or 315, or overwrite these helpers.'},
     edits,
     decomp: {remote: 'https://github.com/Xeeynamo/sotn-decomp.git', revision: '0f45b7e61907d8dd5ebc32517bfca9d5954bb3e5',
-      files: ['src/dra/6E42C.c', 'src/dra/5087C.c', 'src/dra/7E4BC.c', 'src/dra/71830.c', 'src/dra/4AEA4.c', 'src/st/wrp/warp.c', 'src/st/rwrp/warp.c', 'include/game.h']},
-    verified: ['144 card-use cases', '36 native disc-selection to final-map arrivals', 'actual stage transition/selection/position instructions', 'both missed graphics loads reproduced', 'correct native stage graphics requests', '70 existing graphics routes', 'both hands and both origin castles',
-      'grounded use and airborne rejection', 'zero MP and reusable inventory', 'existing teleport and room-return routes',
-      'occupied-space and changed-hook rejection', 'forward/reversal and both embedded undo hash round trips', 'damaged-byte rejection',
+      files: ['src/dra/cd.c', 'src/dra/lba_stage.c', 'src/dra/4CE2C.c', 'src/dra/game_handlers.c', 'src/dra/5087C.c', 'include/game.h']},
+    verified: ['TOP and RTOP disc requests reproduced on current bytes', '36 arrivals across both hands and nine origins',
+      'native program and artwork disc requests matched ISO records', 'actual loaded room layers and entity layouts', 'final map coordinates and room bounds',
+      'only two DRA bytes change; all helpers and unrelated routes preserved', 'changed-byte and hook rejection', 'forward/reversal and both embedded undo hash round trips', 'damaged-byte rejection',
       'sector checksums', 'editor names/categories on export/reopen', 'unrelated bytes/sectors unchanged', 'source unchanged'],
     gameplay: 'Fresh-boot emulator gameplay remains unverified.', application: {applied: false}
   };
   await fs.mkdir(directory, {recursive: true});
   await fs.writeFile(report.forward.path, forward); await fs.writeFile(report.reversal.path, reverse);
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
-  await fs.writeFile(path.join(directory, 'README.md'), `# Scorpion Card and noiL Card\n\nLibrary Card becomes Scorpion Card and returns to the normal Outer Wall scorpion warp room. Takemitsu becomes noiL Card and returns to the inverted Castle Keep reverse lion warp room. Both are reusable, cost zero MP, use the existing Library Card icon/effect, and work from either castle. They have no attack/defense bonus. Existing Takemitsu pickups and ownership become noiL Card; Library Card purchases and pickups become Scorpion Card. No new shop entries or pickups are added.\n\nUse an equipped card while standing, walking or crouching. Arrival is inside the statue room, away from the center platform. Scorpion lands at (192,132) in WRP room 2; noiL at (64,132) in RWRP room 0. The latter uses the game's normal coordinate mirroring. The separate existing room-return card stays intact. No castle-unlock restriction is added, so owning noiL Card permits reverse-castle travel.\n\nSource: ${source}\nSize: ${original.length}\nBefore SHA-256: ${initial}\nExpected after SHA-256: ${final}\nForward: ${names[0]}\nForward SHA-256: ${report.forward.sha256}\nReversal: ${names[1]}\nReversal SHA-256: ${report.reversal.sha256}\nDecomp revision: ${report.decomp.revision}\n\nSee verification.json for the exact edited bytes, sectors and checks. The source BIN is unchanged and no backup BIN was created. Both PPFs have block checks and undo bytes; this builder additionally checks the full image hash and every changed byte.\n\nDo not assign equipment icons 311-313 or 315: verified unused space holds the card helpers, destination records and stage graphics helper. Other installed helpers, original destination records, both warp overlays, shops and pickup placements are preserved.\n\nApply only after explicit approval: node tools/items/build-warp-cards-patch.js "${directory}" --apply\n\nFresh-boot the patched BIN and load a memory-card save. Test both cards in both hands from each castle; confirm exact names/icons, statue rooms, landing/control, repeated use, unchanged inventory/MP, airborne rejection, ordinary exits/warp cycling and the existing room-return card. Gameplay and animation remain unverified; old savestates keep earlier code.\n`);
+  await fs.writeFile(path.join(directory, 'README.md'), `# Warp-card location correction
+
+The previous records used Castle Keep area IDs 11 and 43. This pair changes only two DRA bytes: Scorpion Card's stage becomes 14 (WRP), and noiL Card's stage becomes 46 (RWRP). Room offsets remain 16 (Room 2) and 0 (Room 0). All existing helpers, artwork loading, names, item properties and later BIN edits are preserved.
+
+Scorpion Card: WRP Room 2, map (59,17), local (192,132), layer 2, entity layout 3.
+noiL Card: RWRP Room 0, map (23,51), local (64,132), layer 0, entity layout 1.
+
+Source: ${source}
+Size: ${original.length}
+Before SHA-256: ${initial}
+Expected after SHA-256: ${final}
+Forward: ${names[0]}
+Forward SHA-256: ${report.forward.sha256}
+Reversal: ${names[1]}
+Reversal SHA-256: ${report.reversal.sha256}
+Decomp revision: ${report.decomp.revision}
+
+See verification.json for exact edited bytes and full evidence. Tests reproduce TOP/RTOP requests using actual loading instructions, then check both hands from nine origins through program/artwork disc requests, the loaded room layers, entity layouts and final map coordinates. Both guarded PPFs and embedded undo data pass full-image round trips and repaired-sector checks. The original BIN is unchanged; no backup BIN is created.
+
+Apply only after explicit approval: node tools/items/build-warp-card-location-fix.js "${directory}" --apply
+
+Fresh-boot emulator acceptance remains unverified. Load a memory-card save; test both cards from each castle, repeated use, normal exits and warp cycling. Existing savestates retain earlier code.
+`);
   console.log(JSON.stringify({source: report.source, result: report.result, forward: report.forward, reversal: report.reversal,
     sectors: report.sectors, records: report.records, application: report.application}, null, 2));
 }

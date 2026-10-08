@@ -36,7 +36,7 @@ function install(dra) {
 function prepareInstalled(dra) {
   const H = require('./warp-cards.js'), expected = Buffer.alloc(H.END - H.CAVE);
   for (const {start, bytes} of H.helpers()) expected.set(bytes, start - H.CAVE);
-  for (const [off, values] of [[H.SCORPION_RECORD, [192, 132, 16, 0, 11]], [H.NOIL_RECORD, [192, 132, 0, 0, 43]]])
+  for (const [off, values] of [[H.SCORPION_RECORD, [192, 132, 16, 0, H.WRP_STAGE]], [H.NOIL_RECORD, [192, 132, 0, 0, H.RWRP_STAGE]]])
     values.forEach((v, n) => K.put16(expected, off - H.CAVE + n * 2, v));
   assert.deepEqual(Buffer.from(dra.subarray(H.CAVE, H.END)), expected, 'Unknown installed warp-card code.');
   for (const [off, target, call] of [[H.HOOK, H.ACTIVATE, true], [H.TRANSITION_HOOK, H.TRANSITION, false], [H.SELECT_HOOK, H.SELECT, false]])

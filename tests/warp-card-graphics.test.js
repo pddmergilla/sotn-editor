@@ -12,7 +12,7 @@ function loading(bytes, index, stage, busy = 0, previous = 999) {
 }
 function verifyLoading(before, after, warps) {
   assert.equal(K.u32(after, G.HOOK), H.jump(G.BASE + G.CAVE, true));
-  for (const [id, index, stage, room, name] of [[166, H.SCORPION_INDEX, 11, 2, 'WRP'], [27, H.NOIL_INDEX, 43, 0, 'RWRP']]) {
+  for (const [id, index, stage, room, name] of [[166, H.SCORPION_INDEX, H.WRP_STAGE, 2, 'WRP'], [27, H.NOIL_INDEX, H.RWRP_STAGE, 0, 'RWRP']]) {
     assert.deepEqual(loading(before, index, stage), [999, 0, 0], 'Reproduce the skipped graphics request.');
     for (const origin of [0, 2, 11, 32, 34, 43]) {
       assert.deepEqual(loading(after, index, stage, 0, origin), [stage, 1, 3]);
