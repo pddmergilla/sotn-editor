@@ -5,7 +5,7 @@ const M = require('../../stats-model.js');
 
 const BASE = M.DRA_BASE, CAVE = 0x2E3A4, LIMIT = 0x2EA24;
 const HOOK = 0x57B38, CONTINUE = 0x57B40, DRAW_STATS = 0x574B4;
-const DRAW_TEXT = 0x800F67EC, BG = 0x8013763A, X = 8, Y = 216;
+const DRAW_TEXT = 0x800F67EC, BG = 0x8013763A, X = 16, Y = 216, MAX_CHARS = 43;
 const ELEMENTS = [
   [0x8000, 'FLA', 'Fire'], [0x2000, 'ICE', 'Ice'],
   [0x4000, 'LIT', 'Thunder'], [0x1000, 'HOL', 'Holy'],
@@ -24,6 +24,9 @@ const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const legacy = require('./element-line-v1.json');
 const LEGACY = Buffer.from(legacy.base64, 'base64');
 assert.equal(sha(LEGACY), legacy.sha256);
+const previous = require('./element-line-v2.json');
+const V2 = Buffer.from(previous.base64, 'base64');
+assert.equal(sha(V2), previous.sha256);
 const i = (op, rs, rt, imm) => ((op << 26) | (rs << 21) | (rt << 16) | (imm & 65535)) >>> 0;
 const r = (fn, rs, rt, rd) => ((rs << 21) | (rt << 16) | (rd << 11) | fn) >>> 0;
 const jump = (addr, call = false) => ((call ? 0x0C000000 : 0x08000000) | (addr >>> 2 & 0x3FFFFFF)) >>> 0;
@@ -48,8 +51,11 @@ function helper() {
   label('build');
   emit(i(9, 29, 16, 16), r(0x21, 19, 0, 4));
   pointer(5, 'res'); emit(i(13, 0, 6, 4)); call('group');
-  emit(r(0x21, 20, 0, 4)); pointer(5, 'weak'); emit(i(13, 0, 6, 6)); call('group');
-  emit(i(9, 29, 8, 16), r(0x23, 16, 8, 8), i(11, 8, 8, 45));
+  emit(r(0x21, 20, 0, 4)); pointer(5, 'weak'); emit(i(13, 0, 6, 6), i(13, 0, 8, 5));
+  branch(5, 21, 8, 'weakPrefix');
+  emit(i(9, 5, 5, 1), i(9, 6, 6, -1));
+  label('weakPrefix'); call('group');
+  emit(i(9, 29, 8, 16), r(0x23, 16, 8, 8), i(11, 8, 8, MAX_CHARS + 1));
   branch(5, 8, 0, 'draw');
   branch(5, 17, 0, 'compact');
   emit(i(13, 0, 17, 3)); branch(4, 0, 0, 'build', i(13, 0, 21, 2));
@@ -107,13 +113,23 @@ function helper() {
 function withoutLine(dra) {
   const original = dra.slice();
   if (K.u32(dra, HOOK) === jump(BASE + CAVE) && K.u32(dra, HOOK + 4) === 0) {
-    const known = [LEGACY, helper()].find(bytes => Buffer.from(dra.subarray(CAVE, CAVE + bytes.length)).equals(bytes) && dra.subarray(CAVE + bytes.length, LIMIT).every(v => v === 0));
+    const known = [LEGACY, V2, helper()].find(bytes => Buffer.from(dra.subarray(CAVE, CAVE + bytes.length)).equals(bytes) && dra.subarray(CAVE + bytes.length, LIMIT).every(v => v === 0));
     assert.ok(known, 'Unrecognized installed menu line.');
     original.fill(0, CAVE, LIMIT); K.put32(original, HOOK, 0x8FBF0030); K.put32(original, HOOK + 4, 0x8FB5002C);
   }
   assert.equal(K.u32(original, HOOK), 0x8FBF0030); assert.equal(K.u32(original, HOOK + 4), 0x8FB5002C);
   assert.ok(original.subarray(CAVE, LIMIT).every(v => v === 0), 'Reserved menu space is occupied.');
-  for (const [start, end, hash] of NATIVE) assert.equal(sha(original.subarray(start, end)), hash, `Unrecognized menu code at ${start.toString(16)}.`);
+  for (const [start, end, hash] of NATIVE) {
+    const code = original.subarray(start, end);
+    if (start === DRAW_STATS && sha(code) === '735b77f9b38d05ccb15a92d1190df396597462e2ea90530abf22242c8106e579') {
+      const reviewed = Buffer.from(code);
+      for (const offset of [0x57AEC, 0x57B10]) {
+        assert.equal(K.u32(original, offset), 0x2665004C);
+        K.put32(reviewed, offset - start, 0x26650044);
+      }
+      assert.equal(sha(reviewed), hash);
+    } else assert.equal(sha(code), hash, `Unrecognized menu code at ${start.toString(16)}.`);
+  }
   return original;
 }
 
@@ -133,4 +149,4 @@ function prepare(dra) {
   return after;
 }
 
-module.exports = {prepare, helper, withoutLine, LEGACY, BASE, CAVE, LIMIT, HOOK, CONTINUE, DRAW_STATS, DRAW_TEXT, BG, X, Y, ELEMENTS, NATIVE, jump, sha};
+module.exports = {prepare, helper, withoutLine, LEGACY, V2, BASE, CAVE, LIMIT, HOOK, CONTINUE, DRAW_STATS, DRAW_TEXT, BG, X, Y, MAX_CHARS, ELEMENTS, NATIVE, jump, sha};

@@ -11,8 +11,8 @@ function expected(weak, resist, immune, absorb) {
   const w = weak & ~(resist | strong);
   for (const separator of [' ', '']) {
     const list = mask => H.ELEMENTS.filter(e => e[0] & mask).map(e => e[1]).join(separator) || '-';
-    const text = `RES:${list(r)} WEAK:${list(w)}`;
-    if (text.length <= 44) return text;
+    const text = `RES:${list(r)}${separator ? ' ' : ''}WEAK:${list(w)}`;
+    if (text.length <= H.MAX_CHARS) return text;
   }
   throw Error('The element line is too wide.');
 }
@@ -37,7 +37,7 @@ function verifyInstructions(after) {
     [weak, resist, immune, absorb].forEach((mask, n) => assert.equal(m.get(0x80097C28 + n * 2, 2), mask));
     if (ctx !== H.BG) { assert.equal(chars.length, 0); return ''; }
     const text = chars.map(c => c.ch).join(''); assert.equal(text, expected(weak, resist, immune, absorb));
-    assert.ok(chars.length <= 44);
+    assert.ok(chars.length <= H.MAX_CHARS);
     chars.forEach((c, n) => assert.deepEqual(c, {ch: text[n], x: H.X + n * 8, y: H.Y, ctx: H.BG}));
     assert.ok(H.X + chars.length * 8 <= 360 - 0);
     assert.equal(H.Y, 216); assert.ok(H.Y + 8 <= 224);
@@ -50,7 +50,7 @@ function verifyInstructions(after) {
   assert.equal(run(0x8000, 0, 0, 0x8000), 'RES:FLA WEAK:-');
   assert.equal(run(0, 0xA000, 0x0300, 0), 'RES:FLA ICE CUR STN WEAK:-');
   assert.equal(run(0, 0x5800, 0, 0), 'RES:LIT HOL DAR WEAK:-');
-  assert.equal(run(0, 0xFFE0, 0, 0), 'RES:FLAICELITHOLDARWTRPSNCURSTNHITCUT WEAK:-');
+  assert.equal(run(0, 0xFFE0, 0, 0), 'RES:FLAICELITHOLDARWTRPSNCURSTNHITCUTWEAK:-');
   for (const [mask] of H.ELEMENTS) for (const field of [0, 1, 2, 3]) {
     const masks = [0, 0, 0, 0]; masks[field] = mask; run(...masks);
   }
@@ -144,6 +144,7 @@ function verifyMenuRefresh(dra, after) {
       assert.deepEqual(patched.slice(0, -1), original);
       const gold = original.find(call => call[0] === H.DRAW_TEXT && call[1] === '272f2c24');
       assert.ok(gold, 'GOLD label must be present.');
+      assert.equal(H.X, gold[2], 'Element line must align with GOLD.');
       assert.ok(H.Y >= gold[3] + 8, 'Element line must be below GOLD.');
       assert.deepEqual(patched.at(-1), [H.DRAW_TEXT, Buffer.from([...expected(...values)].map(c => c.charCodeAt(0) - 32)).toString('hex'), H.X, H.Y, H.BG | 0]);
     }
@@ -158,6 +159,9 @@ async function verify(dra) {
   const legacy = original.slice(); legacy.set(H.LEGACY, H.CAVE);
   require('../stats-core.js').put32(legacy, H.HOOK, H.jump(H.BASE + H.CAVE)); require('../stats-core.js').put32(legacy, H.HOOK + 4, 0);
   assert.deepEqual(H.prepare(legacy), after);
+  const v2 = original.slice(); v2.set(H.V2, H.CAVE);
+  require('../stats-core.js').put32(v2, H.HOOK, H.jump(H.BASE + H.CAVE)); require('../stats-core.js').put32(v2, H.HOOK + 4, 0);
+  assert.deepEqual(H.prepare(v2), after);
   const edits = new Set([...Array(H.LIMIT - H.CAVE)].map((_, n) => H.CAVE + n).concat([...Array(8)].map((_, n) => H.HOOK + n)));
   for (let at = 0; at < dra.length; at++) if (!edits.has(at)) assert.equal(after[at], dra[at]);
   const occupied = dra.slice(); occupied[H.CAVE] = 1; assert.throws(() => H.prepare(occupied));
