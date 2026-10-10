@@ -50,6 +50,7 @@ function run(bytes, start, memory, initial = {}, stops = [], calls = new Map()) 
       else if (fn === 0x27) r[rd] = ~(r[rs] | r[rt]);
       else if (fn === 0x2A) r[rd] = Number(r[rs] < r[rt]);
       else if (fn === 8) next = r[rs] >>> 0;
+      else if (fn === 9) { next = r[rs] >>> 0; r[rd] = pc + 8; }
       else throw Error(`Unsupported instruction at ${pc.toString(16)}: ${w.toString(16)}`);
     } else if (op === 15) r[rt] = (w & 65535) << 16;
     else if (op === 9) r[rt] = r[rs] + imm;
@@ -152,3 +153,112 @@ function toggle(bytes, profile, selected) {
   }
   assert(count > 0, 'Supply a reference image for the game-code checks');
 })().catch(error => { console.error(error); process.exitCode = 1; });
+
+// Check the clock finisher.
+(async () => {
+ const source=sources[1];if(!fs.existsSync(source))return;
+ const disc=await C.DiscImage.open(new Blob([await fs.promises.readFile(source)]));
+ const spec=JSON.parse(await fs.promises.readFile(require.resolve('../tools/extra-hacks/specs/richter-ai.json'),'utf8'));
+ const before=Buffer.from(await disc.readFile(await disc.findPath(['BOSS','BO6','BO6.BIN']))),after=Buffer.from(before);
+ const ai=catalog.features.find(f=>f.id==='richter-ai');
+ assert.equal(H.featureState(ai,new Map([[name,before]]),'ass').state,'on');
+ for(const edit of ai.edits)after.set(edit.on,edit.offset);
+ assert.equal(H.featureState(ai,new Map([[name,after]]),'ass').state,'on');
+ const incomplete=Buffer.from(after);incomplete.fill(0,0x4e800,0x4e810);
+ assert.notEqual(H.featureState(ai,new Map([[name,incomplete]]),'ass').state,'on');
+ const tuned=Buffer.from(before);tuned[0x268f2]=7;
+ assert.equal(H.featureState(ai,new Map([[name,tuned]]),'ass').state,'on');
+
+ const focused={...catalog,features:[ai]};
+ function inspect(bytes){return {profile:'ass',features:[{id:ai.id,...H.featureState(ai,new Map([[name,bytes]]),'ass'),context:true}]};}
+ assert.equal(H.plan(focused,inspect(tuned),new Map([[ai.id,true]])).length,0);
+ const removed=Buffer.from(before);
+ H.applyEdits({before,after:removed},H.plan(focused,inspect(before),new Map([[ai.id,false]])),name);
+ assert.equal(H.featureState(ai,new Map([[name,removed]]),'ass').state,'off');
+ const upgraded=Buffer.from(removed);
+ H.applyEdits({before:removed,after:upgraded},H.plan(focused,inspect(removed),new Map([[ai.id,true]])),name);
+ assert.deepEqual(upgraded,after);
+ const restored=Buffer.from(upgraded);
+ H.applyEdits({before:upgraded,after:restored},H.plan(focused,inspect(upgraded),new Map([[ai.id,false]])),name);
+ assert.deepEqual(restored,removed);
+ const owned=new Set();for(const e of ai.edits)for(let i=0;i<e.on.length;i++)owned.add(e.offset+i);
+ for(let i=0;i<before.length;i++)if(!owned.has(i))assert.equal(upgraded[i],before[i]);
+
+ const symbols=Object.fromEntries(Object.entries(spec.finisher.entryPoints).map(([k,v])=>[k,Number(v)]));
+
+const vm=require('node:vm'),fss=require('node:fs'),path=require('node:path');
+const helperPath=path.join(__dirname,'helpers/mips.js'),ctx={module:{exports:{}},require:require('node:module').createRequire(helperPath)};
+const helper=fss.readFileSync(helperPath,'utf8').replace("f === 0x18) { const v = BigInt(r[rs]) * BigInt(r[rt]);", "f === 0x18 || f === 0x19) { const v = BigInt(f === 0x19 ? r[rs] >>> 0 : r[rs]) * BigInt(f === 0x19 ? r[rt] >>> 0 : r[rt]);");
+vm.runInNewContext(helper,ctx);const {machine}=ctx.module.exports;
+const dra=Buffer.from(await disc.readFile(await disc.findPath(['DRA.BIN'])));
+const P=0x800733d8,R=P+64*188,F=0x801cf3a0,AI=0x801b6980,G=0x80072f80,HP=0x80097ba0,M=0x52494346;
+let nativeCalls=0,kills=0,crashes=[],numbers=[],sounds=[],failFactory=false;
+const hooks=new Map([
+ [0x801ce7c8,(r,m)=>{nativeCalls++;if(!m.get(AI+0x13,1)){m.put(AI+0x13,1,1);m.put(AI+0x15,1,1);m.put(AI+0x16,1,1);}}],
+ [0x801bbdc0,(r,m)=>{if(failFactory){r[2]=0;return;}const i=Array.from({length:12},(_,i)=>68+i).find(i=>!m.get(P+i*188+0x26,2));assert(i!==undefined);const e=P+i*188;m.put(e+0x26,2,1);m.put(e+0x30,2,r[5]&0xfff);m.put(e+0xa0,2,(r[5]&0xff0000)>>8);m.put(e+0x8c,4,r[4]);r[2]=e;crashes.push(r[5]>>>0);}],
+ [0x801acf6c,(r,m)=>{const e=r[4]>>>0;for(let i=0;i<188;i++)m.put(e+i,1,0);}],
+ [0x801cb664,(r,m)=>{m.put(r[4]+0x2c,2,3);m.put(0x800973fc,4,1);}],
+ [0x801c5dc4,(r,m)=>{if(!m.get(r[4]+0x2c,2))m.put(r[4]+0x2c,2,1);}],
+ [0x800fe8f0,()=>{}],
+ [0x80118c84,r=>numbers.push(r[4])],
+ [0x80115394,(r,m)=>{assert.equal(m.get(0x8006c3b8,4)>>>0,P);assert.equal(m.get(r[4]+4,4),2);kills++;m.put(0x80072f2c,4,0x40000);}],
+ [0x8000abcd,r=>sounds.push(r[4])],
+ [0x801b9c14,()=>{}]
+]);
+const m=machine([{base:0x80180000,bytes:after},{base:0x800a0000,bytes:dra}],hooks);
+function reset(){
+ for(let i=0;i<256*188;i++)m.put(P+i,1,0);
+ for(const [a,n] of [[F,16],[AI,24],[0x80072ef4,0x92],[0x801d15e8,0xc0]])for(let i=0;i<n;i++)m.put(a+i,1,0);
+ m.put(0x8006c3b8,4,R);m.put(R+0x26,2,0x40);m.put(R+0x2c,2,1);m.put(P+0x2c,2,0);m.put(P+0x54,2,2);
+ m.put(0x801d1618,4,1);m.put(0x80072f20,4,1);m.put(HP,4,100);m.put(0x8003c7dc,4,0x8000abcd);m.put(0x8003c7b8,4,0x8000abcd);
+ m.put(R,4,160<<16);m.put(P,4,80<<16);m.put(R+4,4,179<<16);m.put(P+4,4,179<<16);
+ m.put(P+0x46,1,8);m.put(P+0x47,1,16);
+ nativeCalls=kills=0;crashes=[];numbers=[];sounds=[];failFactory=false;
+}
+function tick(){m.put(0x8006c3b8,4,R);m.run(0x801b5a2c);}
+function grabbed(){
+ m.put(0x8006c3b8,4,P);hooks.set(0x8010b360,()=> 'stop');
+ m.run(0x8010ada4,{3:0x80070000});assert.equal(m.get(P+0x2c,2),12);
+ m.run(0x80116208);m.put(0x8006c3b8,4,R);
+}
+reset();tick();assert.equal(m.get(G,2),1);assert.equal(m.get(F,4),1);assert.equal(m.get(R+0x2c,2),0x1c);assert(crashes.includes(63));assert.equal(m.get(0x801814f3,1),0x41);
+grabbed();assert.equal(m.get(G,2),2);assert.equal(m.get(P+0x2e,2),1);
+tick();assert.equal(m.get(P+0x2e,2),2);assert.equal(m.get(R+0x2c,2),0x1c);
+m.run(0x801b9d2c,{4:0});tick();assert.equal(m.get(F+8,4),2);tick();assert.equal(m.get(0x801d15ec,4),0x8000);
+m.run(0x801b9aa4,{4:0x14000});assert.equal(m.get(R+8,4),-0xe000);
+m.put(R,4,110<<16);tick();assert.equal(m.get(F+8,4),3);assert.equal(m.get(R+0x2c,2),0x16);
+const knife=P+100*188; m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0x100);m.put(knife,4,80<<16);m.put(knife+4,4,179<<16);m.put(knife+0x46,1,4);m.put(knife+0x47,1,2);
+m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),90);assert.equal(numbers.at(-1),10);assert.equal(m.get(G,2),2);m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),90);
+m.put(F+4,4,300);tick();assert.equal(m.get(G,2),0);assert.equal(m.get(P+0x2c,2),0);assert.equal(m.get(0x80072efc,2),0);assert.equal(m.get(0x800973fc,4),0);assert.equal(m.get(F,4),0);for(let i=68;i<80;i++)assert.notEqual(m.get(P+i*188+0xb4,4)>>>0,M);
+reset();tick();grabbed();m.put(0x80072f20,4,0);m.put(P+0xc,4,0);tick();assert.equal(m.get(P+0xc,4),0x2c00);m.put(P+0xc,4,0x70000);tick();assert.equal(m.get(P+0xc,4),0x70000);m.put(F+4,4,300);tick();assert.equal(m.get(P+0x2c,2),3);assert.equal(m.get(P+0xac,1),28);
+reset();failFactory=true;tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F+8,4),0);failFactory=false;tick();assert.equal(m.get(G,2),1);
+reset();m.put(G,2,2);tick();assert.equal(m.get(F,4),0);assert.equal(m.get(G,2),2);assert.equal(m.get(AI+0x13,1),0);
+reset();tick();grabbed();m.put(R+0x34,4,0x100);tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F,4),0);
+reset();tick();grabbed();m.put(F+8,4,3);m.put(HP,4,10);m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0x100);m.put(knife,4,80<<16);m.put(knife+4,4,179<<16);m.put(knife+0x46,1,4);m.put(knife+0x47,1,2);m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),0);assert.equal(kills,1);assert.equal(m.get(G,2),0);assert.equal(m.get(F,4),0);
+
+reset();m.put(AI+0x13,1,1);m.run(0x801b9aa4,{4:0x14000});assert.equal(m.get(R+8,4),0x14000);
+m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0);m.put(knife+0x3c,2,3);m.put(knife,4,80<<16);m.put(knife+4,4,179<<16);m.put(knife+0x46,1,4);m.put(knife+0x47,1,2);
+m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),100);assert.equal(m.get(knife+0x3c,2),3);
+const clock=P+101*188;reset();tick();grabbed();m.put(clock+0x26,2,0x37);m.put(clock+0x2c,2,0);m.put(0x80097400,4,99);m.run(symbols.Clock,{4:clock});assert.equal(m.get(clock+0xa4,4)>>>0,M);assert.equal(m.get(clock+0x7c,2),5);assert.equal(m.get(0x80097400,4),99);
+for(let i=1;i<300;i++){tick();if(m.get(F+8,4)===2){m.put(R,4,110<<16);m.put(R+0x2c,2,1);}m.run(symbols.Clock,{4:clock});assert(m.get(G,2)>0);}
+tick();assert.equal(m.get(G,2),0);assert.equal(m.get(clock+0x26,2),0);assert.equal(m.get(0x80072efc,2),0);
+for(const form of [5,7,14,24,25,34]){
+ reset();m.put(P+0x2c,2,form);m.put(P+0x54,2,13);m.put(P+0x18,1,0x70);m.put(0x80072f1a,2,100);m.put(0x80072f1c,2,100);tick();grabbed();assert.equal(m.get(P+0x54,2),1);assert.equal(m.get(P+0x18,1),0);assert.equal(m.get(G,2),2);tick();assert.equal(m.get(P+0x2e,2),2);assert.equal(m.get(P+0xac,1),0x37);
+}
+
+hooks.set(0x80016c9c,r=>{r[2]=Math.round(Math.sin((r[4]&4095)*Math.PI/2048)*4096);});
+hooks.set(0x80016d68,r=>{r[2]=Math.round(Math.cos((r[4]&4095)*Math.PI/2048)*4096);});
+hooks.set(0x800160e4,r=>{r[2]=Math.floor(Math.sqrt(r[4]>>>0));});
+hooks.delete(0x801c5dc4);hooks.delete(0x801cb664);
+hooks.set(0x8000abce,(r,q)=>{r[2]=0;const p=0x80086fec;for(let i=0;i<3;i++)q.put(p+i*52,4,i<2?p+(i+1)*52:0);});
+hooks.set(0x8000abcf,(r,q)=>{for(let i=0;i<16;i++)q.put(r[6]+i,1,0);});
+reset();tick();grabbed();m.put(F+8,4,3);m.put(R+0x14,2,0);m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0x100);m.put(knife,4,60<<16);m.put(knife+4,4,179<<16);m.put(0x8003c7b8,4,0x8000abce);m.put(0x8003c7bc,4,0x8000abcf);m.put(0x8006c3b8,4,knife);
+m.run(symbols.Knife,{4:knife});assert.equal(m.get(knife+8,4),0x80000);assert.equal(m.get(HP,4),100);m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),90);assert.equal(m.get(knife+0x3c,2),0);
+reset();tick();grabbed();m.put(clock+0x26,2,0x37);m.put(clock,4,160<<16);m.put(clock+4,4,179<<16);m.put(0x8003c7b8,4,0x8000abce);
+for(let i=0;i<299;i++){m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});tick();assert(m.get(G,2)>0);}
+tick();assert.equal(m.get(G,2),0);assert.equal(m.get(clock+0x26,2),0);assert.equal(m.get(F,4),0);
+
+reset();tick();grabbed();m.put(clock+0x26,2,0x37);m.put(0x8003c7b8,4,0x8000abce);hooks.set(0x8000abce,r=>{r[2]=-1;});m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});assert.equal(m.get(G,2),0);assert.equal(m.get(F,4),0);
+console.log('Finisher instructions: grab, gravity, slow walk, exact damage, immediate release, queued-shot cleanup, allocation failure and death checks passed.');
+
+})().catch(error => {console.error(error);process.exitCode=1;});

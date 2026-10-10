@@ -32,7 +32,8 @@
  },
  "richter-ai": {
   "label": "Epic Richter AI",
-  "vanillaNote": "On vanilla, the AI's knife, vibhuti and rebound-stone hits use Richter's Cross damage instead of the ASS-scaled 250–350."
+  "vanillaNote": "On vanilla, the AI's knife, vibhuti and rebound-stone hits use Richter's Cross damage instead of the ASS-scaled 250–350.",
+  "summary": "Replaces boss Richter's decision code with distance-based combos and subweapon crashes. Below 15% HP, his one-time Clock Crash interrupts Alucard's transformations and holds him with gravity while Richter walks close and fires daggers for exactly 10 HP per hit. The clock and grab end together after five seconds, restoring movement immediately."
  },
  "quick-items": {
   "label": "Quick Items",

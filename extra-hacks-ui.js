@@ -199,7 +199,7 @@
       if (editsFor(feature, profile) !== feature.edits) continue;
       if (forms.every((form, i) => {
         const edit = feature.edits[i], bytes = files.get(edit.file);
-        return bytes && edit.offset + form.length <= bytes.length && matches(bytes.subarray(edit.offset, edit.offset + form.length), form);
+        return bytes && edit.offset + form.length <= bytes.length && matches(bytes.subarray(edit.offset, edit.offset + form.length), form, edit.tunable);
       })) return {state: "on", version: version + 1};
     }
     let on = 0, off = 0;
