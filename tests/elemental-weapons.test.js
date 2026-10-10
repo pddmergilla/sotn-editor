@@ -18,6 +18,7 @@ function select(dra, c, hand, combo, step = 0, active = 0) {
     [0x8011AAFC, r => {chosen = {row: r[6], factory: r[5] >>> 0}; return 'stop';}]
   ]));
   cpu.put(0x80072EEC, 4, hand ? 0x20 : 0x80); cpu.put(0x80097C00 + hand * 4, 4, c.item);
+  cpu.put(0x80097BB0, 4, c.mpEnough ? 99 : 0);
   cpu.put(0x80072F20, 4, step < 3 ? 1 : 0); cpu.put(0x80073404, 2, step); cpu.put(0x80072F66, 2, active);
   cpu.put(0x80138FC8, 2, combo === 'bf' ? 255 : 0); cpu.put(0x80138FC4, 2, combo === 'qcf' ? 255 : 0);
   cpu.run(0x8010EDB8); return chosen;
@@ -25,7 +26,7 @@ function select(dra, c, hand, combo, step = 0, active = 0) {
 function attack(bytes, hand, dra, row, variant, facing, anim, pose) {
   const base = hand ? 0x8017D000 : 0x8017A000, self = 0x80075000, player = 0x800733D8;
   const events = [], model = cachedModel(dra), equip = model.sections.equipRows[row];
-  const rowAt = row === 217 ? X.DATA : model.tables.equip + row * 52;
+  const rowAt = model.extendedSpecialRows.find(r => r.index === row)?.off ?? model.tables.equip + row * 52;
   const cpu = machine([{base, bytes}], new Map([
     [0x80010000, (r, {put}) => {
       assert.equal(r[4], hand); assert.equal(r[6], row);
@@ -59,6 +60,7 @@ function properties(dra, row, hand, strength = 20, mp = 99) {
   return {cpu, out};
 }
 async function main() {
+  if (process.argv.includes('--ice-private')) return icePrivate();
   const synthetic = new Uint8Array(0x70000);
   assert.deepEqual(X.detect(synthetic, X.TABLE), []);
   for (const edit of X.edits()) synthetic.set(edit.expect, edit.off);
@@ -196,5 +198,96 @@ async function main() {
   }
   if (initial) assert.equal(hash(fs.readFileSync(source)), initial);
   console.log('Elemental weapons: both hands, poses, normal parity, instant slash effects, original donors, all-row register preservation, private stats, saved edits, BIN/PPF exports and guards passed.');
+}
+async function icePrivate() {
+  const original = fs.readFileSync(source), initial = hash(original);
+  const disc = await C.DiscImage.open(new Blob([original])), model = await M.loadFromDisc(disc, C.normalizeIsoName);
+  const before = model.files.DRA.bytes, prepared = H.prepareIce(model), opened = parse(prepared);
+  assert.equal(opened.sections.equipRows.length, 219);
+  assert.deepEqual(M.rowUsers(opened, 181), [113]);
+  assert.deepEqual(M.rowUsers(opened, 218), [93]);
+  assert.deepEqual(M.rowUsers(opened, 217), [88]);
+  assert.deepEqual(prepared.subarray(X.ICE_DATA, X.ICE_DATA + 52), before.subarray(X.TABLE + 181 * 52, X.TABLE + 182 * 52));
+  for (const edit of X.edits(2)) {
+    const bad = prepared.slice(); bad[edit.off] ^= 1;
+    assert.throws(() => parse(bad), /incomplete/);
+  }
+  const occupied = before.slice(); occupied[X.ICE_DATA] = 1;
+  assert.throws(() => H.prepareIce(parse(occupied)), /occupied/);
+  for (const [off, reg, pointer, words, secondAfter] of X.sites) for (let row = 0; row <= 218; row++) {
+    const old = Uint8Array.from(words.flatMap(w => [w & 255, w >>> 8 & 255, w >>> 16 & 255, w >>> 24]));
+    const registers = Object.fromEntries(Array.from({length: 32}, (_, n) => [n, 0x11110000 + n]));
+    registers[2] = row * 52; registers[3] = registers[4] = registers[6] = X.BASE + X.TABLE;
+    if (off === 0x54D64) registers[4] = row * 52;
+    registers[29] = 0x801FF000;
+    const stop = new Map([[X.BASE + off + 8, () => 'stop']]);
+    const expected = machine([{base: X.BASE + off, bytes: old}], stop).run(X.BASE + off, registers);
+    if (row >= 217) {
+      expected[reg] = (X.BASE + (row === 217 ? X.DATA : X.ICE_DATA) - (pointer ? 0 : X.TABLE)) | 0;
+      if (secondAfter) expected[8] = expected[reg] + 0x30;
+    }
+    const actual = machine([{base: X.BASE, bytes: prepared}], stop).run(X.BASE + off, registers);
+    assert.deepEqual(actual, expected, `Helper ${off.toString(16)}, row ${row}`);
+  }
+  for (const [row, values] of [[181, [321, 7, 0x2040, 9]], [218, [654, 23, 0x8000, 17]], [217, [159, 4, 0x8040, 11]]]) {
+    ['attack', 'mp', 'element', 'invFrames'].forEach((key, n) => opened.set(opened.sections.equipRows[row][key], values[n]));
+  }
+  const tuned = prepared.slice(); M.apply(opened, {DRA: tuned});
+  const reopened = parse(tuned);
+  const saved = S.parse(JSON.stringify(await S.capture({stats: opened, stages: new Map()})));
+  const restored = parse(prepared);
+  const restoration = await S.prepare(saved, {stats: restored, stages: new Map()}), undo = restoration.apply();
+  const restoredBytes = prepared.slice(); M.apply(restored, {DRA: restoredBytes});
+  assert.deepEqual(restoredBytes, tuned); undo();
+  const undoneBytes = prepared.slice(); M.apply(restored, {DRA: undoneBytes}); assert.deepEqual(undoneBytes, prepared);
+  const weapons = await Promise.all([0, 1].map(async hand => disc.readFile(await disc.findPath(['BIN', `WEAPON${hand}.BIN`]))));
+  for (const hand of [0, 1]) {
+    for (const [row, damage, element, mp, cooldown] of [[181, 331, 0x2040, 7, 9], [218, 664, 0x8000, 23, 17], [217, 169, 0x8040, 4, 11]]) {
+      const p = properties(tuned, row, hand);
+      assert.equal(p.cpu.get(p.out + 8, 2), damage);
+      assert.equal(p.cpu.get(p.out + 12, 2), element);
+      assert.equal(p.cpu.get(p.out + 0x1A, 1), cooldown);
+      for (const available of [0, mp - 1, mp, 99]) {
+        const spend = machine([{base: X.BASE, bytes: tuned}], new Map([[0x8010F3E0, () => 'stop']]));
+        spend.put(0x80097BB0, 4, available); spend.run(0x8010F3B4, {19: row, 20: hand});
+        assert.equal(spend.get(0x80097BB0, 4), available >= mp ? available - mp : available);
+      }
+    }
+    for (const [item, special] of [[93, 218], [113, 181]]) {
+      const selected = select(tuned, {item, mpEnough: true}, hand, 'qcf'); assert.equal(selected.row, special);
+      assert.equal(select(tuned, {item}, hand, 'qcf').row, item);
+      assert.equal(select(tuned, {item}, hand, 'none').row, item);
+      const w = weapons[hand].subarray(50 * H.SLOT + H.CODE, 50 * H.SLOT + H.CODE + H.LENGTH);
+      for (const facing of [0, 1]) for (const anim of [65, 66, 67, 68, 69, 70, 71]) for (const pose of [0, 1, 2]) {
+        const result = attack(w, hand, tuned, special, reopened.get(reopened.sections.equipRows[special].unk14), facing, anim, pose);
+        const donor = attack(w, hand, tuned, 181, reopened.get(reopened.sections.equipRows[181].unk14), facing, anim, pose);
+        assert.deepEqual(result.events, donor.events);
+      }
+    }
+  }
+  const allowed = new Set([X.TABLE + 93 * 52 + 0x18]);
+  for (let at = X.ICE_DATA; at < X.ICE_START + X.sites.length * X.ICE_SLOT; at++) allowed.add(at);
+  for (const edit of X.edits(2).filter(e => e.original)) for (let n = 0; n < edit.expect.length; n++) allowed.add(edit.off + n);
+  for (let at = 0; at < before.length; at++) if (!allowed.has(at)) assert.equal(prepared[at], before[at]);
+  const changes = await C.changedSectors(disc, model.files.DRA.record, before, prepared);
+  const patched = Buffer.from(original);
+  for (const change of changes) {
+    assert.deepEqual(C.repairSector(change.modified.slice(), 24), change.modified); patched.set(change.modified, change.start);
+  }
+  const forward = ppf(changes, original.subarray(0x9320, 0x9720), 'Icebrand and Zero Celsius private specials');
+  const reverse = ppf(changes.map(c => ({...c, original: c.modified, modified: c.original})), original.subarray(0x9320, 0x9720), 'Reverse private ice specials');
+  const resultHash = hash(patched);
+  apply(patched, reverse); assert.equal(hash(patched), initial);
+  apply(patched, forward); assert.equal(hash(patched), resultHash);
+  apply(patched, forward, true); assert.equal(hash(patched), initial);
+  apply(patched, reverse, true); assert.equal(hash(patched), resultHash);
+  const full = await M.loadFromDisc(await C.DiscImage.open(new Blob([patched])), C.normalizeIsoName);
+  assert.deepEqual(M.rowUsers(full, 218), [93]); assert.deepEqual(M.rowUsers(full, 181), [113]);
+  full.set(full.sections.equipRows[218].mp, 27);
+  const exported = full.files.DRA.bytes.slice(); M.apply(full, {DRA: exported});
+  assert.equal(parse(exported).get(parse(exported).sections.equipRows[218].mp), 27);
+  assert.equal(parse(exported).get(parse(exported).sections.equipRows[181].mp), 15);
+  assert.equal(hash(fs.readFileSync(source)), initial);
+  console.log('Private ice specials passed: both hands, original ice effects, all helpers and rows, separate damage/MP/elements/cooldowns, export/reopen, occupied-space guards, PPF round trips and unchanged source.');
 }
 main().catch(error => {console.error(error); process.exitCode = 1;});

@@ -73,4 +73,27 @@ function prepare(model, weapons) {
   for (const edit of X.edits()) dra.set(edit.expect, edit.off);
   return {dra, weapons: changedWeapons};
 }
-module.exports = {prepare, weapon, CONFIG, hooks, signatures, SLOT, CODE, LENGTH};
+function prepareIce(model) {
+  const original = model.files.DRA.bytes, rows = model.sections.equipRows;
+  assert.equal(model.tables.equip, X.TABLE);
+  assert.deepEqual(X.detect(original, X.TABLE).map(r => r.index), [217], 'Unknown extended special layout.');
+  assert.equal(model.get(rows[93].name).trim(), 'Zero Celcius');
+  assert.equal(model.get(rows[113].name).trim(), 'Icebrand');
+  for (const item of [93, 113]) {
+    assert.equal(model.get(rows[item].weaponId), 50);
+    assert.equal(model.get(rows[item].specialMove), 181);
+  }
+  assert.deepEqual(M.rowUsers(model, 181), [93, 113]);
+  assert.equal(K.u32(original, 0x1807C), 0x56414270);
+  const programs = K.u16(original, 0x1807C + 18);
+  const end = X.ICE_START + X.sites.length * X.ICE_SLOT;
+  assert.ok(programs <= 128 && 0x1807C + 32 + 128 * 16 + programs * 512 + 512 <= X.ICE_DATA,
+    'Sound data occupies the private row.');
+  assert.ok(end <= 0x1A07C && original.subarray(X.ICE_DATA, end).every(v => v === 0), 'Private-row padding is occupied.');
+  const dra = original.slice();
+  dra.set(original.subarray(X.TABLE + 181 * 52, X.TABLE + 182 * 52), X.ICE_DATA);
+  dra[X.TABLE + 93 * 52 + 0x18] = X.ICE_ROW;
+  for (const edit of X.edits(2)) dra.set(edit.expect, edit.off);
+  return dra;
+}
+module.exports = {prepare, prepareIce, weapon, CONFIG, hooks, signatures, SLOT, CODE, LENGTH};

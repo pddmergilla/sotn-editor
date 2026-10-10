@@ -2,6 +2,8 @@
 
 [← Back to the README](../README.md)
 
+`elemental-weapons.test.js --ice-private` checks the current ASS image's Icebrand/Zero Celsius split: independent damage, MP, elements and hit cooldowns; both hands and directions; original charge and ice-effect calls; all twelve helpers across rows 0–218; existing private rows; saved edits and Undo; BIN export/reopen; guarded forward/reversal PPF round trips; sector checksums and unchanged source bytes. Browser-verified on 2026-10-11 with an in-memory DRA preview: Zero Celsius uses row 218, Icebrand uses row 181, and changing Zero Celsius's special MP from 15 to 16 leaves Icebrand at 15. Fresh-boot gameplay remains a manual check.
+
 Run each file with Node.js 22 or later from the repository root:
 
 ```text
@@ -21,6 +23,7 @@ node tests/hunter-sword.test.js
 node tests/stone-sword.test.js
 node tests/terminus-est.test.js
 node tests/elemental-weapons.test.js
+node tests/elemental-weapons.test.js --ice-private
 node tests/kidlat-thunder.test.js
 node tests/alucard-soul-steal.test.js
 node tests/enemy-elements.test.js
