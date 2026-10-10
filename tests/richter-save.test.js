@@ -166,6 +166,9 @@ function toggle(bytes, profile, selected) {
  assert.equal(H.featureState(ai,new Map([[name,after]]),'ass').state,'on');
  const incomplete=Buffer.from(after);incomplete.fill(0,0x4e800,0x4e810);
  assert.notEqual(H.featureState(ai,new Map([[name,incomplete]]),'ass').state,'on');
+ const withoutImmunity=Buffer.from(after);withoutImmunity.set(Buffer.from('0780013c0c6323ac','hex'),0x34bf0);
+ assert.notEqual(H.featureState(ai,new Map([[name,withoutImmunity]]),'ass').state,'on');
+ for(const forms of ai.onVersions){const older=Buffer.from(after);forms.forEach((form,i)=>older.set(form,ai.edits[i].offset));older[0x268f2]=7;assert.equal(H.featureState(ai,new Map([[name,older]]),'ass').state,'on');}
  const tuned=Buffer.from(before);tuned[0x268f2]=7;
  assert.equal(H.featureState(ai,new Map([[name,tuned]]),'ass').state,'on');
 
@@ -213,6 +216,7 @@ function reset(){
  m.put(0x801d1618,4,1);m.put(0x80072f20,4,1);m.put(HP,4,100);m.put(0x8003c7dc,4,0x8000abcd);m.put(0x8003c7b8,4,0x8000abcd);
  m.put(R,4,160<<16);m.put(P,4,80<<16);m.put(R+4,4,179<<16);m.put(P+4,4,179<<16);
  m.put(P+0x46,1,8);m.put(P+0x47,1,16);
+ m.put(R+0x46,1,8);m.put(R+0x47,1,16);
  nativeCalls=kills=0;crashes=[];numbers=[];sounds=[];failFactory=false;
 }
 function tick(){m.put(0x8006c3b8,4,R);m.run(0x801b5a2c);}
@@ -226,11 +230,26 @@ grabbed();assert.equal(m.get(G,2),2);assert.equal(m.get(P+0x2e,2),1);
 tick();assert.equal(m.get(P+0x2e,2),2);assert.equal(m.get(R+0x2c,2),0x1c);
 m.run(0x801b9d2c,{4:0});tick();assert.equal(m.get(F+8,4),2);tick();assert.equal(m.get(0x801d15ec,4),0x8000);
 m.run(0x801b9aa4,{4:0x14000});assert.equal(m.get(R+8,4),-0xe000);
-m.put(R,4,110<<16);tick();assert.equal(m.get(F+8,4),3);assert.equal(m.get(R+0x2c,2),0x16);
+m.put(R,4,112<<16);tick();assert.equal(m.get(F+8,4),3);assert.equal(m.get(R+0x2c,2),0x16);assert.equal(m.get(R,4),112<<16);assert.equal(m.get(R+0x14,2),1);
 const knife=P+100*188; m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0x100);m.put(knife,4,80<<16);m.put(knife+4,4,179<<16);m.put(knife+0x46,1,4);m.put(knife+0x47,1,2);
 m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),90);assert.equal(numbers.at(-1),10);assert.equal(m.get(G,2),2);m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),90);
 m.put(F+4,4,300);tick();assert.equal(m.get(G,2),0);assert.equal(m.get(P+0x2c,2),0);assert.equal(m.get(0x80072efc,2),0);assert.equal(m.get(0x800973fc,4),0);assert.equal(m.get(F,4),0);for(let i=68;i<80;i++)assert.notEqual(m.get(P+i*188+0xb4,4)>>>0,M);
-reset();tick();grabbed();m.put(0x80072f20,4,0);m.put(P+0xc,4,0);tick();assert.equal(m.get(P+0xc,4),0x2c00);m.put(P+0xc,4,0x70000);tick();assert.equal(m.get(P+0xc,4),0x70000);m.put(F+4,4,300);tick();assert.equal(m.get(P+0x2c,2),3);assert.equal(m.get(P+0xac,1),28);
+// Wait for landing before the clock starts.
+for(const vy of [-0x30000,0x30000]) {
+ reset();m.put(0x80072f20,4,0);m.put(P+0x2c,2,3);m.put(P+0xc,4,vy);m.put(P+8,4,0x10000);
+ for(let i=0;i<420;i++){tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F+4,4),0);assert.equal(m.get(F+8,4),0);assert.equal(m.get(0x80072efc,2),0);assert.equal(m.get(P+0xc,4),vy);assert.equal(m.get(P+8,4),0x10000);}
+ assert.equal(crashes.length,0);assert.equal(nativeCalls,1);assert.equal(m.get(AI+0x13,1),1);
+ m.put(0x80072f20,4,1);tick();assert.equal(m.get(G,2),0);
+ m.put(P+0xc,4,0);tick();assert.equal(m.get(G,2),1);assert.equal(m.get(F+4,4),1);assert.equal(crashes.filter(p=>(p&0xfff)===63).length,1);
+ grabbed();tick();assert.equal(m.get(P+0xc,4),0);m.put(F+4,4,300);tick();assert.equal(m.get(P+0x2c,2),0);assert.equal(m.get(0x80072efc,2),0);
+}
+reset();m.put(0x801d1618,4,0);for(let i=0;i<90;i++)tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F+4,4),0);m.put(0x801d1618,4,1);tick();assert.equal(m.get(G,2),1);
+// Stop on Alucard's facing side with a gap.
+for(const face of [0,1]){
+ reset();tick();grabbed();m.put(F+8,4,2);m.put(P+0x14,2,face);m.put(R,4,(face?112:48)<<16);m.put(R+0x2c,2,2);tick();assert.equal(m.get(F+8,4),2);assert.equal(m.get(R+8,4),face?-0xe000:0xe000);
+ const target=(face?48:112)<<16;m.put(R,4,target+(face?0x8000:-0x8000));tick();assert.equal(m.get(F+8,4),3);assert.equal(m.get(R,4),target);assert.equal(m.get(R+8,4),0);assert.equal(m.get(R+0x14,2),face?0:1);
+ assert.equal(Math.abs((m.get(R,4)-m.get(P,4))>>16)-m.get(R+0x46,1)-m.get(P+0x46,1),16);
+}
 reset();failFactory=true;tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F+8,4),0);failFactory=false;tick();assert.equal(m.get(G,2),1);
 reset();m.put(G,2,2);tick();assert.equal(m.get(F,4),0);assert.equal(m.get(G,2),2);assert.equal(m.get(AI+0x13,1),0);
 reset();tick();grabbed();m.put(R+0x34,4,0x100);tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F,4),0);
@@ -240,7 +259,7 @@ reset();m.put(AI+0x13,1,1);m.run(0x801b9aa4,{4:0x14000});assert.equal(m.get(R+8,
 m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0);m.put(knife+0x3c,2,3);m.put(knife,4,80<<16);m.put(knife+4,4,179<<16);m.put(knife+0x46,1,4);m.put(knife+0x47,1,2);
 m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),100);assert.equal(m.get(knife+0x3c,2),3);
 const clock=P+101*188;reset();tick();grabbed();m.put(clock+0x26,2,0x37);m.put(clock+0x2c,2,0);m.put(0x80097400,4,99);m.run(symbols.Clock,{4:clock});assert.equal(m.get(clock+0xa4,4)>>>0,M);assert.equal(m.get(clock+0x7c,2),5);assert.equal(m.get(0x80097400,4),99);
-for(let i=1;i<300;i++){tick();if(m.get(F+8,4)===2){m.put(R,4,110<<16);m.put(R+0x2c,2,1);}m.run(symbols.Clock,{4:clock});assert(m.get(G,2)>0);}
+for(let i=1;i<300;i++){tick();if(m.get(F+8,4)===2){m.put(R,4,112<<16);m.put(R+0x2c,2,1);}m.run(symbols.Clock,{4:clock});assert(m.get(G,2)>0);}
 tick();assert.equal(m.get(G,2),0);assert.equal(m.get(clock+0x26,2),0);assert.equal(m.get(0x80072efc,2),0);
 for(const form of [5,7,14,24,25,34]){
  reset();m.put(P+0x2c,2,form);m.put(P+0x54,2,13);m.put(P+0x18,1,0x70);m.put(0x80072f1a,2,100);m.put(0x80072f1c,2,100);tick();grabbed();assert.equal(m.get(P+0x54,2),1);assert.equal(m.get(P+0x18,1),0);assert.equal(m.get(G,2),2);tick();assert.equal(m.get(P+0x2e,2),2);assert.equal(m.get(P+0xac,1),0x37);
@@ -259,6 +278,17 @@ for(let i=0;i<299;i++){m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});
 tick();assert.equal(m.get(G,2),0);assert.equal(m.get(clock+0x26,2),0);assert.equal(m.get(F,4),0);
 
 reset();tick();grabbed();m.put(clock+0x26,2,0x37);m.put(0x8003c7b8,4,0x8000abce);hooks.set(0x8000abce,r=>{r[2]=-1;});m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});assert.equal(m.get(G,2),0);assert.equal(m.get(F,4),0);
-console.log('Finisher instructions: grab, gravity, slow walk, exact damage, immediate release, queued-shot cleanup, allocation failure and death checks passed.');
+// Stopwatch never slows Richter's updates.
+reset();hooks.set(0x801b4bf8,()=> 'stop');m.run(0x801b4bd0);hooks.delete(0x801b4bf8);
+const immuneFlags=m.get(R+0x34,4)>>>0;assert.equal(immuneFlags,0x18402200);
+let richterUpdates=0,otherUpdates=0;hooks.set(0x8000abdd,()=>{richterUpdates++;});hooks.set(0x8000abde,()=>{otherUpdates++;});
+m.put(R+0x28,4,0x8000abdd);const other=P+180*188;m.put(other+0x28,4,0x8000abde);m.put(other+0x2c,2,1);m.put(other+0x34,4,0x200);
+for(const stopped of [0,1]){
+ richterUpdates=otherUpdates=0;m.put(0x800973fc,4,stopped);
+ for(let frame=0;frame<8;frame++){m.put(0x8003c8c4,4,frame);m.run(0x801a9b84);assert.equal(m.get(0x800973fc,4),stopped);}
+ assert.equal(richterUpdates,8);assert.equal(otherUpdates,stopped?2:8);
+}
+m.put(R+0x34,4,immuneFlags&~0x2000);richterUpdates=0;for(let frame=0;frame<8;frame++){m.put(0x8003c8c4,4,frame);m.run(0x801a9b84);}assert.equal(richterUpdates,2);
+console.log('Finisher instructions: grounded wait, Stopwatch immunity, front spacing, grab, slow walk, exact damage, immediate release, queued-shot cleanup, allocation failure and death checks passed.');
 
 })().catch(error => {console.error(error);process.exitCode=1;});
