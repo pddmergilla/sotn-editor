@@ -626,11 +626,12 @@
    "sectors": 4,
    "records": 348,
    "sourceUnchanged": true,
-   "applied": false,
+   "applied": true,
    "paths": [
     "outputs/richter-clock-grounded-2026-10-11/Richter-Grounded-Clock-Finisher-ASS-2.0.ppf",
     "outputs/richter-clock-grounded-2026-10-11/Reverse-Richter-Grounded-Clock-Finisher-ASS-2.0.ppf"
-   ]
+   ],
+   "appliedImageSha256": "55137321975a56d41156f335029ec4b34c5b681a94cdb609f69449883213adc9"
   }
  },
  "onVersions": [
