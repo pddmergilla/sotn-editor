@@ -166,6 +166,7 @@ function toggle(bytes, profile, selected) {
  assert.equal(H.featureState(ai,new Map([[name,after]]),'ass').state,'on');
  const incomplete=Buffer.from(after);incomplete.fill(0,0x4e800,0x4e810);
  assert.notEqual(H.featureState(ai,new Map([[name,incomplete]]),'ass').state,'on');
+ const brokenVisual=Buffer.from(after);brokenVisual[0x4f0a0]^=1;assert.notEqual(H.featureState(ai,new Map([[name,brokenVisual]]),'ass').state,'on');
  const withoutImmunity=Buffer.from(after);withoutImmunity.set(Buffer.from('0780013c0c6323ac','hex'),0x34bf0);
  assert.notEqual(H.featureState(ai,new Map([[name,withoutImmunity]]),'ass').state,'on');
  for(const forms of ai.onVersions){const older=Buffer.from(after);forms.forEach((form,i)=>older.set(form,ai.edits[i].offset));older[0x268f2]=7;assert.equal(H.featureState(ai,new Map([[name,older]]),'ass').state,'on');}
@@ -189,6 +190,7 @@ function toggle(bytes, profile, selected) {
  for(let i=0;i<before.length;i++)if(!owned.has(i))assert.equal(upgraded[i],before[i]);
 
  const symbols=Object.fromEntries(Object.entries(spec.finisher.entryPoints).map(([k,v])=>[k,Number(v)]));
+ symbols.Clock=Number(spec.finisher.fourClockVisual.entry);
 
 const vm=require('node:vm'),fss=require('node:fs'),path=require('node:path');
 const helperPath=path.join(__dirname,'helpers/mips.js'),ctx={module:{exports:{}},require:require('node:module').createRequire(helperPath)};
@@ -277,31 +279,57 @@ hooks.set(0x80016c9c,r=>{r[2]=Math.round(Math.sin((r[4]&4095)*Math.PI/2048)*4096
 hooks.set(0x80016d68,r=>{r[2]=Math.round(Math.cos((r[4]&4095)*Math.PI/2048)*4096);});
 hooks.set(0x800160e4,r=>{r[2]=Math.floor(Math.sqrt(r[4]>>>0));});
 hooks.delete(0x801c5dc4);hooks.delete(0x801cb664);
-hooks.set(0x8000abce,(r,q)=>{r[2]=0;const p=0x80086fec;for(let i=0;i<3;i++)q.put(p+i*52,4,i<2?p+(i+1)*52:0);});
+hooks.set(0x8000abce,(r,q)=>{const start=r[5]===9?3:0,count=r[5];r[2]=start;for(let i=start;i<start+count;i++){q.put(0x80086fec+i*52,4,i<start+count-1?0x80086fec+(i+1)*52:0);q.put(0x80086fec+i*52+7,1,4);}});
 hooks.set(0x8000abcf,(r,q)=>{for(let i=0;i<16;i++)q.put(r[6]+i,1,0);});
 reset();tick();grabbed();m.put(F+8,4,3);m.put(R+0x14,2,0);m.put(knife+0x26,2,0x26);m.put(knife+0x30,2,0x100);m.put(knife,4,60<<16);m.put(knife+4,4,179<<16);m.put(0x8003c7b8,4,0x8000abce);m.put(0x8003c7bc,4,0x8000abcf);m.put(0x8006c3b8,4,knife);
 m.run(symbols.Knife,{4:knife});assert.equal(m.get(knife+8,4),0x80000);assert.equal(m.get(HP,4),100);m.run(symbols.Knife,{4:knife});assert.equal(m.get(HP,4),90);assert.equal(m.get(knife+0x3c,2),0);
+// Check all four clocks and native cleanup.
+hooks.delete(0x801acf6c);m.put(0x8003c7b4,4,0x800ede78);
+function quartet(){
+ let p=0x80086fec,seen=[];
+ while(p){assert(!seen.includes(p));seen.push(p);assert(seen.length<=12);p=m.get(p,4)>>>0;}
+ assert.equal(seen.length,12);
+ const dx=m.get(clock+0x14,2)?16:-16;
+ for(let g=1;g<=3;g++)for(let j=0;j<3;j++){
+  const a=seen[j],b=seen[g*3+j];
+  for(const k of [7,12,13,14,24,25,26,36,37,38,48,49,50])assert.equal(m.get(b+k,k===14||k===26||k===38||k===50?2:1),m.get(a+k,k===14||k===26||k===38||k===50?2:1));
+  for(let k=8;k<=44;k+=12){assert.equal(m.get(b+k,2),(m.get(a+k,2)+g*dx)&65535);assert.equal(m.get(b+k+2,2),(m.get(a+k+2,2)-g*16)&65535);}
+ }
+}
 reset();tick();grabbed();m.put(clock+0x30,2,0x100);m.put(clock+0x26,2,0x37);m.put(clock,4,160<<16);m.put(clock+4,4,179<<16);m.put(0x8003c7b8,4,0x8000abce);
 // Release follows the watch's own ending.
 let opening=0;
 while(m.get(clock+0x2c,2)!==3 && opening++<100){m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});tick();assert(m.get(G,2)>0);}
-assert.equal(m.get(clock+0x7c,2),5);assert(opening<100);
+assert.equal(m.get(clock+0x7c,2),5);assert.equal(opening,30);quartet();
 m.run(0x801b9d2c,{4:0});
 const beforeRain=crashes.length;
 for(let i=1;i<=300;i++){
  m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});tick();assert(m.get(G,2)>0);
  assert.equal(m.get(clock+0x2c,2),i===300?4:3);
- if(i<300)assert.equal(m.get(clock+0x7c,2),5-Math.floor(i/60));
+ if(i<300)assert.equal(m.get(clock+0x7c,2),5-Math.floor(i/60));quartet();
  assert.equal(crashes.slice(beforeRain).filter(p=>(p&0xfff)===12).length,0);
 }
 let ending=0;
 while(m.get(clock+0x26,2) && ending++<40){m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});if(m.get(clock+0x26,2)){tick();assert(m.get(G,2)>0);}}
-assert(ending>0&&ending<40);assert.equal(m.get(G,2),0);assert.equal(m.get(0x800973fc,4),0);assert.equal(m.get(F+8,4),5);
+assert.equal(ending,17);for(let i=0;i<12;i++)assert.equal(m.get(0x80086fec+i*52+7,1),0);assert.equal(m.get(G,2),0);assert.equal(m.get(0x800973fc,4),0);assert.equal(m.get(F+8,4),5);
 const rainStart=crashes.length;failFactory=true;tick();assert.equal(m.get(G,2),0);assert.equal(m.get(F+8,4),5);failFactory=false;tick();assert.equal(m.get(F,4),0);assert.equal(m.get(R+0x2c,2),0x15);assert.equal(crashes.slice(rainStart).filter(p=>(p&0xfff)===12).length,1);
 const rainCalls=crashes.length;tick();assert.equal(crashes.length,rainCalls);assert.equal(m.get(G,2),0);
 console.log('Clock opening/countdown/ending frames',opening,300,ending,'Hydrostorm factories',crashes.slice(rainStart));
 assert(crashes.includes(66));
 
+// Four clocks mirror with Richter.
+for(const face of [0,1]){
+ reset();tick();grabbed();m.put(R+0x14,2,face);m.put(clock+0x14,2,face);m.put(clock+0x30,2,0x100);m.put(clock+0x26,2,0x37);m.put(clock,4,160<<16);m.put(clock+4,4,179<<16);m.put(0x8003c7b8,4,0x8000abce);
+ for(let i=0;i<40;i++){m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});quartet();}
+ assert.equal(m.get(0x80086fec+50,2)&8,0);
+ m.put(R+0x34,4,0x100);tick();assert.equal(m.get(G,2),0);
+ for(let i=0;i<12;i++)assert.equal(m.get(0x80086fec+i*52+7,1),0);
+}
+// An ordinary watch keeps three pieces.
+reset();m.put(clock+0x26,2,0x37);m.put(0x8003c7b8,4,0x8000abce);m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});assert.equal(m.get(clock+0xa8,4),0);assert.equal(m.get(0x80086fec+2*52,4),0);assert(crashes.includes(64));
+// Missing drawing space keeps the working timer.
+reset();tick();grabbed();m.put(clock+0x26,2,0x37);m.put(clock+0x30,2,0x100);m.put(0x8003c7b8,4,0x8000abce);
+const allocate=hooks.get(0x8000abce);hooks.set(0x8000abce,(r,q)=>{if(r[5]===9)r[2]=-1;else allocate(r,q);});m.put(0x8006c3b8,4,clock);m.run(symbols.Clock,{4:clock});assert.equal(m.get(clock+0xa8,4),0);assert(m.get(G,2)>0);assert.equal(m.get(F,4),1);assert.equal(m.get(0x80086fec+2*52,4),0);hooks.set(0x8000abce,allocate);m.put(R+0x34,4,0x100);tick();assert.equal(m.get(G,2),0);
 // Use the native crash effect.
 reset();tick();grabbed();const control=P+103*188;m.put(control+0x26,2,0x39);m.run(symbols.CrashClock,{4:control});assert(crashes.includes(0x1003f));assert.equal(m.get(control+0x26,2),0);
 assert(Array.from({length:12},(_,i)=>P+(68+i)*188).some(e=>m.get(e+0x30,2)===63&&m.get(e+0xb4,4)>>>0===M));
