@@ -33,7 +33,7 @@
  "richter-ai": {
   "label": "Epic Richter AI",
   "vanillaNote": "On vanilla, the AI's knife, vibhuti and rebound-stone hits use Richter's Cross damage instead of the ASS-scaled 250–350.",
-  "summary": "Below 15% HP, Richter waits for Alucard to land, grabs him with the native Stopwatch crash effect, walks to his facing side with a 64-pixel gap, then holds his Up stance and laughs for half a second before firing daggers for 10 HP per hit. Movement returns when the five-second clock ends. Richter is immune to Stopwatch slowdown."
+  "summary": "Below 15% HP, Richter waits for Alucard to land and grabs him with Stopwatch crash. He keeps his current side, stops four tiles away or at the room edge, then holds his Up stance and laughs for half a second before firing 10 HP daggers. The watch completes its five-second countdown and ending effect before releasing Alucard and starting Hydrostorm. Richter is immune to Stopwatch slowdown."
  },
  "quick-items": {
   "label": "Quick Items",
