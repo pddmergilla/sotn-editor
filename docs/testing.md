@@ -30,6 +30,7 @@ node tests/safe-save.test.js
 node tests/edit-session.test.js
 node tests/extra-hacks-ui.test.js
 node tests/richter-save.test.js
+node tests/richter-crash-recovery.test.js
 node tests/stat-buffs.test.js
 node tests/ass2.test.js
 node tests/title-credits.test.js
@@ -112,6 +113,8 @@ Investigated locally on 2026-10-05 with the supplied 128 KB external `.srm`: its
 Verified in the local browser on 2026-10-05: the current ASS BIN recognizes the rescue hack as off, checking it shows **Build: adds it**, and the revised card explains the pending gameplay test. Boot a new test copy from a memory-card save before Richter, defeat him without Holy Glasses, confirm the full dialogue and Inverted Castle access, and repeat the normal Holy Glasses orb route with stock and Epic Richter AI. An old savestate cannot verify changed game code.
 
 `node tools/extra-hacks/build-richter-save-patch.js <output-directory>` builds a separate exact-image forward/reversal PPF pair and a verification report, without writing a BIN. It checks hashes, both patch directions and embedded undo, guarded rejection, checksums, and unrelated hack states. Rebuild if the source BIN changes before application; applying to the original requires explicit approval.
+
+`richter-crash-recovery.test.js` runs the Epic Richter AI crash recovery wrapper with PlayStation branch/load delays: Cross, Bible and Agunea crashes in the aggressive phase below 25% HP each cause one 0x83A grunt and exactly 60 frames of Down with the AI held in think step 0. Axe, Rebound Stone, dagger, Hydrostorm and Stopwatch crashes, the normal phase and higher HP do not. Hits, death, cutscenes, scripted think steps and the finisher cancel it. It also checks preserved registers, guards, unrelated bytes and the PPF pair. Game services are simulated; this does not prove emulator gameplay. `node tools/bosses/build-richter-crash-recovery-patch.js <output-directory>` builds the exact-image PPF pair; `--apply` writes it only after approval.
 
 `stat-buffs.test.js` checks independent Sunstone/Moonstone bonuses, zero/one/two-stone stacking, configured Dark Metamorphosis export/reopen and removal, unknown/partial helper rejection, unchanged source bytes, and Extra Hacks recognition on vanilla, ASS 1.3.1 and ASS 2.0. It executes the emitted helpers with PlayStation branch/load delays to check expiry, repeated refreshes, STR before attack and CON before defense, zero attacks and the ATK cap. Original stat recalculation and attack/defense calls are simulated; emulator gameplay remains a manual check. `tests/stat-buffs-harness.html` opens the full editor with an ordinary file picker for browser automation.
 
