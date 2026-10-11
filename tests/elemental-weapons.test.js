@@ -232,9 +232,16 @@ function iceProperties(dra, equipment, hand, row = 181) {
 }
 async function mainIce() {
   if (!fs.existsSync(source)) {console.log('Private ice image checks skipped: BIN missing.'); return;}
-  const image = fs.readFileSync(source), initial = hash(image);
-  const disc = await C.DiscImage.open(new Blob([image]));
-  const model = await M.loadFromDisc(disc, C.normalizeIsoName), before = model.files.DRA.bytes;
+  let image = fs.readFileSync(source);
+  const initial = hash(image);
+  let disc = await C.DiscImage.open(new Blob([image])), model = await M.loadFromDisc(disc, C.normalizeIsoName);
+  if (model.sections.icePrivate) {
+    image = Buffer.from(image);
+    apply(image, fs.readFileSync(process.env.SOTN_ICE_REVERSAL || path.join(process.env.USERPROFILE,
+      'Downloads/Reverse-Icebrand-Zero-Celcius-Separate-Stats-V2-ASS-2.0.ppf')));
+    disc = await C.DiscImage.open(new Blob([image])); model = await M.loadFromDisc(disc, C.normalizeIsoName);
+  }
+  const baseline = hash(image), before = model.files.DRA.bytes;
   const prepared = H.prepareIce(model), opened = parse(prepared), privateRow = opened.sections.icePrivate;
   assert.equal(opened.sections.equipRows.length, model.sections.equipRows.length);
   assert.deepEqual(X.detect(prepared, X.TABLE), X.detect(before, X.TABLE));
@@ -300,7 +307,7 @@ async function mainIce() {
   assert.equal(reopened.get(reopened.sections.equipRows[181].attack), model.get(model.sections.equipRows[181].attack));
   const patch = ppf(changes, image.subarray(0x9320, 0x9720), 'Independent ice specials test'), replay = Buffer.from(image);
   apply(replay, patch); assert.equal(hash(replay), hash(new Uint8Array(await built.arrayBuffer())));
-  apply(replay, patch, true); assert.equal(hash(replay), initial);
+  apply(replay, patch, true); assert.equal(hash(replay), baseline);
   for (const c of changes) assert.deepEqual(C.repairSector(c.modified.slice(), 24), c.modified);
   for (let n = 0; n < before.length; n++) if (before[n] !== prepared[n]) assert.ok(
     n >= X.ICE_DATA && n < X.ICE_END || [0x6EDB8, 0x5E728].some(off => n >= off && n < off + 8));
