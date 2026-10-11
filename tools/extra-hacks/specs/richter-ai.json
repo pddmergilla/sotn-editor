@@ -641,11 +641,12 @@
    "sectors": 5,
    "records": 744,
    "sourceUnchanged": true,
-   "applied": false,
+   "applied": true,
    "paths": [
     "outputs/richter-clock-ending-hydrostorm-2026-10-11/Richter-Clock-Ending-Hydrostorm-ASS-2.0.ppf",
     "outputs/richter-clock-ending-hydrostorm-2026-10-11/Reverse-Richter-Clock-Ending-Hydrostorm-ASS-2.0.ppf"
-   ]
+   ],
+   "appliedImageSha256": "e19b850982471e8e6b2caa7164710859cc8359edc75f4e8f476124af6ff74e9b"
   }
  },
  "onVersions": [
