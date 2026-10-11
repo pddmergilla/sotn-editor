@@ -654,11 +654,12 @@
    "sectors": 2,
    "records": 106,
    "sourceUnchanged": true,
-   "applied": false,
+   "applied": true,
    "paths": [
     "outputs/richter-four-clock-crash-2026-10-12/Richter-Four-Clock-Crash-ASS-2.0.ppf",
     "outputs/richter-four-clock-crash-2026-10-12/Reverse-Richter-Four-Clock-Crash-ASS-2.0.ppf"
-   ]
+   ],
+   "appliedImageSha256": "871669c758402f8947ae0033ebb5b1ad12d7064f17ca16171656b3aaf6ca199a"
   }
  },
  "onVersions": [
