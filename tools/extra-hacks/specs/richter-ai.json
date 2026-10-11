@@ -629,11 +629,12 @@
    "sectors": 5,
    "records": 560,
    "sourceUnchanged": true,
-   "applied": false,
+   "applied": true,
    "paths": [
     "outputs/richter-clock-crash-laugh-2026-10-11/Richter-Clock-Crash-Up-Laugh-ASS-2.0.ppf",
     "outputs/richter-clock-crash-laugh-2026-10-11/Reverse-Richter-Clock-Crash-Up-Laugh-ASS-2.0.ppf"
-   ]
+   ],
+   "appliedImageSha256": "de5840ee15eba7b82364eb40c43c0159f6efcb63ea3a0c437b4e1d6732af653a"
   }
  },
  "onVersions": [
