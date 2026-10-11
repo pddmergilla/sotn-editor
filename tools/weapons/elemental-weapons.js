@@ -73,4 +73,28 @@ function prepare(model, weapons) {
   for (const edit of X.edits()) dra.set(edit.expect, edit.off);
   return {dra, weapons: changedWeapons};
 }
-module.exports = {prepare, weapon, CONFIG, hooks, signatures, SLOT, CODE, LENGTH};
+function prepareIce(model) {
+  const original = model.files.DRA.bytes, rows = model.sections.equipRows;
+  assert.equal(model.tables.equip, X.TABLE);
+  assert.equal(X.detectPrivate(original, X.TABLE), null, 'The private ice special is already installed.');
+  for (const [item, name] of [[93, 'Zero Celcius'], [113, 'Icebrand']]) {
+    assert.equal(model.get(rows[item].name).trim(), name);
+    assert.equal(model.get(rows[item].weaponId), 50);
+    assert.equal(model.get(rows[item].specialMove), 181);
+  }
+  assert.deepEqual(M.rowUsers(model, 181), [93, 113]);
+  assert.equal(K.u32(original, 0x1107C), 0x56414270);
+  const programs = K.u16(original, 0x1107C + 18);
+  assert.ok(programs <= 128 && 0x1107C + 32 + 128 * 16 + programs * 512 + 512 <= X.ICE_DATA,
+    'Sound data occupies the private special.');
+  assert.ok(original.subarray(X.ICE_DATA, X.ICE_END).every(v => v === 0), 'Private special padding is occupied.');
+  assert.equal(K.u32(original, 0x6EDB8), 0x3C038007, 'Unknown attack entry.');
+  assert.equal(K.u32(original, 0x6EDBC), 0x8C632EEC);
+  assert.equal(K.u32(original, 0x5E728), 0x27BDFFD8);
+  assert.equal(K.u32(original, 0x5E72C), 0xAFB40020);
+  const dra = original.slice();
+  dra.set(original.subarray(X.TABLE + 181 * 52, X.TABLE + 182 * 52), X.ICE_DATA);
+  for (const edit of X.privateEdits()) dra.set(edit.expect, edit.off);
+  return dra;
+}
+module.exports = {prepare, prepareIce, weapon, CONFIG, hooks, signatures, SLOT, CODE, LENGTH};

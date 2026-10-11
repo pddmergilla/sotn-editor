@@ -45,6 +45,10 @@ function machine(code, hooks = new Map()) {
         else if (f === 0x2B) set(rd, Number((r[rs] >>> 0) < (r[rt] >>> 0)));
         else if (f === 8 || f === 9) { next = r[rs] >>> 0; if (f === 9) set(rd, pc + 8); }
         else if (f === 0x18) { const v = BigInt(r[rs]) * BigInt(r[rt]); lo = Number(BigInt.asIntN(32, v)); hi = Number(BigInt.asIntN(32, v >> 32n)); }
+        else if (f === 0x1A || f === 0x1B) {
+          const a = f === 0x1B ? r[rs] >>> 0 : r[rs], b = f === 0x1B ? r[rt] >>> 0 : r[rt];
+          assert.notEqual(b, 0, 'Division by zero.'); lo = Math.trunc(a / b) | 0; hi = (a % b) | 0;
+        }
         else if (f === 0x12) set(rd, lo);
         else if (f === 0x10) set(rd, hi);
         else throw Error(`Unsupported attack instruction ${w.toString(16)}`);

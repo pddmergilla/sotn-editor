@@ -22,10 +22,10 @@ function select(dra, c, hand, combo, step = 0, active = 0) {
   cpu.put(0x80138FC8, 2, combo === 'bf' ? 255 : 0); cpu.put(0x80138FC4, 2, combo === 'qcf' ? 255 : 0);
   cpu.run(0x8010EDB8); return chosen;
 }
-function attack(bytes, hand, dra, row, variant, facing, anim, pose) {
+function attack(bytes, hand, dra, row, variant, facing, anim, pose, privateIce = false) {
   const base = hand ? 0x8017D000 : 0x8017A000, self = 0x80075000, player = 0x800733D8;
-  const events = [], model = cachedModel(dra), equip = model.sections.equipRows[row];
-  const rowAt = row === 217 ? X.DATA : model.tables.equip + row * 52;
+  const events = [], model = cachedModel(dra), equip = privateIce ? model.sections.icePrivate : model.sections.equipRows[row];
+  const rowAt = privateIce ? X.ICE_DATA : row === 217 ? X.DATA : model.tables.equip + row * 52;
   const cpu = machine([{base, bytes}], new Map([
     [0x80010000, (r, {put}) => {
       assert.equal(r[4], hand); assert.equal(r[6], row);
@@ -197,4 +197,114 @@ async function main() {
   if (initial) assert.equal(hash(fs.readFileSync(source)), initial);
   console.log('Elemental weapons: both hands, poses, normal parity, instant slash effects, original donors, all-row register preservation, private stats, saved edits, BIN/PPF exports and guards passed.');
 }
-main().catch(error => {console.error(error); process.exitCode = 1;});
+function iceSelection(dra, equipment, hand, combo, mp, {pressed = 0, busy = 0, fail = false, nested = null} = {}) {
+  const events = [], cpu = machine([{base: X.BASE, bytes: dra}], new Map([
+    [0x800160E4, r => {r[2] = 0;}],
+    [0x80016EEC, r => {r[2] = 5;}], [0x800F4994, () => {}],
+    [0x8010EB5C, r => {r[2] = -1;}], [0x800FD688, r => {r[2] = 1;}], [0x800E2BA0, () => {}],
+    [0x8011AAFC, (r, api) => {
+      events.push({row: r[6], factory: r[5] >>> 0, damage: api.get(X.BASE + X.TABLE + r[6] * 52 + 8, 2)});
+      if (nested) nested(cpu, r);
+      r[2] = fail ? 0 : 0x80076000;
+    }]
+  ]));
+  cpu.put(0x80072EEC, 4, hand === 'both' ? 0xA0 : hand ? 0x20 : 0x80);
+  cpu.put(0x80072EE8, 4, pressed); cpu.put(0x80072F68, 2, busy);
+  equipment.forEach((item, n) => cpu.put(0x80097C00 + n * 4, 4, item));
+  cpu.put(0x80072F20, 4, 1); cpu.put(0x80073404, 2, 0);
+  cpu.put(0x80138FC4, 2, combo === 'qcf' ? 255 : 0); cpu.put(0x80097BB0, 4, mp);
+  const registers = cpu.run(0x8010EDB8);
+  for (let n = 0; n < 52; n++) assert.equal(cpu.get(X.BASE + X.TABLE + 181 * 52 + n, 1), dra[X.TABLE + 181 * 52 + n], 'Shared stats restored.');
+  assert.equal(registers[29] >>> 0, 0x801FF000);
+  return {events, mp: cpu.get(0x80097BB0, 4), result: registers[2]};
+}
+function iceProperties(dra, equipment, hand, row = 181) {
+  const cpu = machine([{base: X.BASE, bytes: dra}], new Map([
+    [0x800160E4, r => {r[2] = 0;}], [0x80016EEC, r => {r[2] = 5;}],
+    [0x800F4994, (r, api) => {for (let n = 0; n < 16; n++) api.put((r[29] >>> 0) + n, 1, 0xCC);}]
+  ]));
+  cpu.put(0x80097BD8, 4, 20); cpu.put(0x80097BB0, 4, 99);
+  equipment.forEach((item, n) => cpu.put(0x80097C00 + n * 4, 4, item));
+  const out = 0x80076000, r = cpu.run(0x800FE728, {4: hand, 5: out, 6: row});
+  for (let n = 0; n < 52; n++) assert.equal(cpu.get(X.BASE + X.TABLE + 181 * 52 + n, 1), dra[X.TABLE + 181 * 52 + n]);
+  assert.equal(r[29] >>> 0, 0x801FF000);
+  return {attack: cpu.get(out + 8, 2), element: cpu.get(out + 12, 2), cooldown: cpu.get(out + 26, 1)};
+}
+async function mainIce() {
+  if (!fs.existsSync(source)) {console.log('Private ice image checks skipped: BIN missing.'); return;}
+  const image = fs.readFileSync(source), initial = hash(image);
+  const disc = await C.DiscImage.open(new Blob([image]));
+  const model = await M.loadFromDisc(disc, C.normalizeIsoName), before = model.files.DRA.bytes;
+  const prepared = H.prepareIce(model), opened = parse(prepared), privateRow = opened.sections.icePrivate;
+  assert.equal(opened.sections.equipRows.length, model.sections.equipRows.length);
+  assert.deepEqual(X.detect(prepared, X.TABLE), X.detect(before, X.TABLE));
+  assert.equal(opened.get(opened.sections.hand[93].specialMove), 181);
+  assert.equal(opened.get(opened.sections.hand[113].specialMove), 181);
+  assert.deepEqual(M.rowUsers(opened, 181), [113]);
+  assert.equal(M.weaponSpecialRow(opened, 93, 'specialMove'), privateRow);
+  assert.equal(M.weaponSpecialRow(opened, 113, 'specialMove'), opened.sections.equipRows[181]);
+  for (const [key, value] of [['attack', 321], ['mp', 13], ['element', 0x2040], ['invFrames', 7], ['stun', 11]]) opened.set(privateRow[key], value);
+  const tuned = prepared.slice(); M.apply(opened, {DRA: tuned});
+  for (const equipment of [[93, 113], [113, 93], [93, 93], [113, 113]]) for (const hand of [0, 1]) {
+    const zero = equipment[hand] === 93, own = zero ? privateRow : opened.sections.equipRows[181];
+    const cost = opened.get(own.mp);
+    for (const mp of [0, cost - 1, cost, 99]) {
+      const selected = iceSelection(tuned, equipment, hand, 'qcf', mp);
+      assert.equal(selected.events[0].row, mp >= cost ? 181 : equipment[hand]);
+      assert.equal(selected.mp, mp >= cost ? mp - cost : mp);
+      const failed = iceSelection(tuned, equipment, hand, 'qcf', mp, {fail: true});
+      assert.equal(failed.mp, mp); assert.equal(failed.result, 0);
+    }
+    assert.deepEqual(iceProperties(tuned, equipment, hand), {
+      attack: Math.min(999, opened.get(own.attack) + 10), element: opened.get(own.element), cooldown: opened.get(own.invFrames)
+    });
+    assert.deepEqual(iceProperties(tuned, equipment, hand, equipment[hand]), iceProperties(before, equipment, hand, equipment[hand]));
+    assert.deepEqual(iceSelection(tuned, equipment, hand, 'none', 99), iceSelection(before, equipment, hand, 'none', 99));
+    const nested = iceSelection(tuned, equipment, hand, 'qcf', 99, {nested: (cpu, r) => {
+      cpu.put(0x80097BD8, 4, 20);
+      cpu.run(0x800FE728, {4: hand, 5: 0x80077000, 6: 181, 29: r[29] - 24});
+      assert.equal(cpu.get(0x80077008, 2), Math.min(999, opened.get(own.attack) + 10));
+    }});
+    assert.equal(nested.mp, 99 - cost);
+  }
+  for (const equipment of [[93, 113], [113, 93]]) {
+    assert.equal(iceSelection(tuned, equipment, 'both', 'qcf', 99).mp, 99 - (equipment[0] === 93 ? 13 : opened.get(opened.sections.equipRows[181].mp)));
+  }
+  for (const hand of [0, 1]) {
+    const equipment = hand ? [5, 93] : [93, 5];
+    const chosen = iceSelection(tuned, equipment, hand, 'qcf', 99, {pressed: hand ? 0x80 : 0x20});
+    if (!hand) {assert.equal(chosen.events[0].row, 181); assert.equal(chosen.mp, 86);}
+    const weapon = await disc.readFile(await disc.findPath(['BIN', `WEAPON${hand}.BIN`]));
+    const overlay = weapon.subarray(50 * H.SLOT + H.CODE, 51 * H.SLOT);
+    for (const facing of [0, 1]) for (const anim of [65, 66, 67, 68, 69, 70, 71]) for (const pose of [0, 1, 2]) {
+      const zero = attack(overlay, hand, tuned, 181, 1, facing, anim, pose, true);
+      const ice = attack(overlay, hand, tuned, 181, 1, facing, anim, pose);
+      assert.deepEqual(zero.events, ice.events);
+    }
+    for (let n = 0; n < 10; n++) assert.equal(iceSelection(tuned, hand ? [113, 93] : [93, 113], hand, 'qcf', 99).mp, 86);
+  }
+  for (const edit of X.privateEdits()) {
+    const damaged = prepared.slice(); damaged[edit.off] ^= 1;
+    assert.throws(() => parse(damaged), /private ice special/);
+    assert.throws(() => M.apply(opened, {DRA: damaged}), /changed by another patch/);
+  }
+  const occupied = before.slice(); occupied[X.ICE_DATA] = 1;
+  assert.throws(() => H.prepareIce(parse(occupied)), /padding/);
+  assert.throws(() => H.prepareIce(opened), /already installed/);
+  const saved = S.parse(JSON.stringify(await S.capture({stats: opened, stages: new Map()})));
+  const restored = parse(prepared); (await S.prepare(saved, {stats: restored, stages: new Map()})).apply();
+  const restoredBytes = prepared.slice(); M.apply(restored, {DRA: restoredBytes}); assert.deepEqual(restoredBytes, tuned);
+  const changes = await C.changedSectors(disc, model.files.DRA.record, before, tuned);
+  const built = C.modifiedBlob(disc.file, changes), reopened = await M.loadFromDisc(await C.DiscImage.open(built), C.normalizeIsoName);
+  assert.equal(reopened.get(reopened.sections.icePrivate.attack), 321);
+  assert.equal(reopened.get(reopened.sections.equipRows[181].attack), model.get(model.sections.equipRows[181].attack));
+  const patch = ppf(changes, image.subarray(0x9320, 0x9720), 'Independent ice specials test'), replay = Buffer.from(image);
+  apply(replay, patch); assert.equal(hash(replay), hash(new Uint8Array(await built.arrayBuffer())));
+  apply(replay, patch, true); assert.equal(hash(replay), initial);
+  for (const c of changes) assert.deepEqual(C.repairSector(c.modified.slice(), 24), c.modified);
+  for (let n = 0; n < before.length; n++) if (before[n] !== prepared[n]) assert.ok(
+    n >= X.ICE_DATA && n < X.ICE_END || [0x6EDB8, 0x5E728].some(off => n >= off && n < off + 8));
+  assert.equal(hash(fs.readFileSync(source)), initial);
+  console.log('Private ice stats: complete attack paths, MP gating and spending, failure, both hands, shields, repeated attacks, real properties, native slash effects, stats restoration, saves, exports, guards and checksums passed.');
+}
+(process.argv.includes('--ice-private') ? mainIce() : main()).catch(error => {console.error(error); process.exitCode = 1;});

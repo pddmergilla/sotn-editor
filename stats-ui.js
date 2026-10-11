@@ -513,6 +513,7 @@
     // Include shields sharing this spell.
     function specialLabel(index, self) {
       if (!index) return "None";
+      if (self === 93 && index === 181 && model.sections.icePrivate) return "Zero Celcius private special";
       const users = specialUsers(index);
       const others = users.filter(i => i !== self).map(rowName);
       const what = others.length ? `${others.join(", ")} special${users.includes(self) ? " (shared)" : ""}` :
@@ -552,9 +553,9 @@
       markChanged(picker, slot);
       const box = el("div", {class: "specialBox"}, el("label", {class: "sf wide"}, el("span", {class: "sfLabel", text: title}), picker));
       if (!index) return box;
-      const r = equipRows()[index];
+      const r = M.weaponSpecialRow(model, it.index, key);
       if (!r) return box;
-      const others = specialUsers(index).filter(i => i !== it.index).map(rowName);
+      const others = r.privateFor != null ? [] : specialUsers(index).filter(i => i !== it.index).map(rowName);
       box.append(grid(sf("Special damage", r.attack), sf("Special MP cost", r.mp), sf("Special element", r.element, {wide: true}), sf("Special hit cooldown", r.invFrames), soulField(r.hitEffect)));
       if (others.length) box.append(el("p", {class: "statHint", text: `Shared with ${others.join(", ")}: editing these numbers changes theirs too.`}));
       if (val(r.weaponId) !== val(it.weaponId)) {
@@ -623,13 +624,15 @@
     // Every row past the hand items: weapon specials, two-weapon combo rows, Axe Armor and spare rows.
     function renderSpecials() {
       const rows = equipRows().slice(M.HAND_ITEMS);
+      if (model.sections.icePrivate) rows.push(model.sections.icePrivate);
       return rows.map(r => {
-        const users = model.sections.equipRows.filter(u => u.index < M.HAND_ITEMS && (val(u.specialMove) === r.index || val(u.unk17) === r.index))
+        const users = (r.privateFor != null ? [equipRows()[r.privateFor]] : M.rowUsers(model, r.index).map(i => equipRows()[i]))
+          .filter(u => u.index < M.HAND_ITEMS)
           .map(u => `${rowName(u.index)} (${val(u.specialMove) === r.index ? "↓↘→" : "←→"})`);
         const kind = users.length ? `Special of ${users.join(", ")}` : val(r.comboSub) ? "Two-weapon combo row" :
           M.specialRows(model).some(x => x.index === r.index) ? "Spare row" : "Other row";
         return {r, kind, users};
-      }).filter(({r, kind}) => matches(kind, r.index)).map(({r, kind, users}) => card(el("strong", {text: `Row ${r.index}`}), kind,
+      }).filter(({r, kind}) => matches(kind, r.index)).map(({r, kind, users}) => card(el("strong", {text: r.privateFor != null ? "Private ice special" : `Row ${r.index}`}), kind,
         grid(sf("Damage", r.attack), sf("MP cost", r.mp), sf("Element", r.element, {wide: true}), soulField(r.hitEffect),
           sf("Stun frames", r.stun), sf("Critical rate", r.crit), sf("Hit type", r.hitType), sf("Hit cooldown", r.invFrames, {note: "frames before the same enemy can be hit again"}),
           sf("Chain limit", r.chain, {note: "128 = one at a time"}), sf("Lock duration", r.lock)),
@@ -679,12 +682,12 @@
       {id: "rsub", group: "Richter", title: "Subweapons and crashes", render: renderRichterSubweapons, fields: s => s.richterSubweapons},
       {id: "familiars", group: "Allies and enemies", title: "Familiars", render: renderFamiliars, fields: s => s.familiars},
       {id: "enemies", group: "Allies and enemies", title: "Enemies", render: renderEnemies, search: true, fields: s => s.enemies},
-      {id: "hand", group: "Equipment", title: "Hand items", render: () => renderItems("hand"), search: true, fields: s => [s.hand, (s.equipRows || []).slice(169)]},
+      {id: "hand", group: "Equipment", title: "Hand items", render: () => renderItems("hand"), search: true, fields: s => [s.hand, (s.equipRows || []).slice(169), s.icePrivate]},
       {id: "head", group: "Equipment", title: "Head gear", render: () => renderItems("head"), search: true, fields: s => s.body.head},
       {id: "armor", group: "Equipment", title: "Armor", render: () => renderItems("armor"), search: true, fields: s => s.body.armor},
       {id: "cloak", group: "Equipment", title: "Cloaks", render: () => renderItems("cloak"), search: true, fields: s => s.body.cloak},
       {id: "accessory", group: "Equipment", title: "Accessories", render: () => renderItems("accessory"), search: true, fields: s => s.body.accessory},
-      {id: "specials", group: "Equipment", title: "Weapon specials", render: renderSpecials, search: true, fields: s => (s.equipRows || []).slice(M.HAND_ITEMS)},
+      {id: "specials", group: "Equipment", title: "Weapon specials", render: renderSpecials, search: true, fields: s => [(s.equipRows || []).slice(M.HAND_ITEMS), s.icePrivate]},
       {id: "effects", group: "Equipment", title: "Special effects", render: renderEffects, search: true, fields: () => model.effects}
     ];
 

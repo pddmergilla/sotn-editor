@@ -158,6 +158,13 @@
       relics: parseRelics(ctx)
     };
     m.sections.hand = parseHandItems(ctx);
+    const ice = extended?.detectPrivate?.(dra, t.equip);
+    if (ice) {
+      const row = {...ice, effects: []};
+      for (const [key, off, size, signed, label, extra] of ROW_LAYOUT)
+        row[key] = intField(ctx, "DRA", ice.off + off, size, signed, label, {...extra, guards: ice.guards});
+      m.sections.icePrivate = row;
+    }
     parseStartingStats(ctx);
     if (files.RIC?.bytes) {
       try {
@@ -913,7 +920,13 @@
   const rowOf = (m, i) => m.sections.equipRows?.[i];
   function rowUsers(m, index) {
     return (m.sections.equipRows || []).filter(r => r.index !== index &&
-      (m.get(r.specialMove) === index || m.get(r.unk17) === index)).map(r => r.index);
+      (m.get(r.specialMove) === index || m.get(r.unk17) === index) &&
+      !(m.sections.icePrivate && r.index === 93 && index === 181)).map(r => r.index);
+  }
+  function weaponSpecialRow(m, item, key) {
+    const row = rowOf(m, item), index = row && m.get(row[key]);
+    return item === 93 && index === 181 && m.sections.icePrivate ?
+      m.sections.icePrivate : rowOf(m, index);
   }
   // Keep installed combo specials selectable.
   function specialRows(m) {
@@ -1171,7 +1184,7 @@
     return parse(files);
   }
 
-  const api = {dropChoices, relicChoices, STYLE_KEYS, rowUsers, specialRows, freeSpecialRows, styleKey, planStyleCopy, planRowCopy, HAND_ITEMS,
+  const api = {dropChoices, relicChoices, STYLE_KEYS, rowUsers, weaponSpecialRow, specialRows, freeSpecialRows, styleKey, planStyleCopy, planRowCopy, HAND_ITEMS,
     comboSpells, shieldOverlays, planAttach, planSpellEffect, SHIELD_CATEGORY,
     parse, apply, loadFromDisc, findTemplate, pattern, StatsModel, validate, STATUS, DRA_BASE, RIC_BASE, OVERLAY_BASE, SLOT_NAMES, maxChars};
   global.SotnStatsModel = api;

@@ -58,6 +58,10 @@ Kidlat (renamed Sparkblade) has a separate thunder-sound follow-up patch. Thunde
 
 Only two ordinary spare rows remained in this image. Heatgar's row 217 therefore lives in verified sound-bank padding at DRA `0x15100`; twelve guarded helpers redirect only its runtime reads. The editor recognizes the complete installed helper set before exposing that row, and exported edits guard it against changed helpers. Accessories and existing rows retain their locations. Changing a weapon to an unrelated special row does not install an instant slash for that row.
 
+The revised Icebrand / Zero Celcius split keeps the native ice special ID and the existing extended-row helpers. Zero Celcius gets a guarded private stat block; Icebrand keeps row 181. Each weapon's **Special damage**, **Special MP cost**, **Special element** and **Special hit cooldown** controls affect only that weapon. Both start with the current BIN's shared values. The private block also appears under **Weapon specials**. Use the updated local editor for these separate controls; older editors still show the shared row.
+
+The game temporarily uses the private block while selecting a Zero Celcius attack or reading its ice-special properties, then restores the shared row before returning. Normal attacks and native ice charge/slash effects retain their behavior. The guarded forward/reversal PPFs are prepared separately; fresh-boot combat in both hands remains required before calling the earlier freeze resolved.
+
 ## How values are found and written
 
 - Tables are located through DRA's `g_api` pointer header (enemies, equipment, accessories, relics) and the `config_us.h` table order (subweapons, menu strings, spells). Richter's table is `RIC.BIN` offset `0x18688`.
