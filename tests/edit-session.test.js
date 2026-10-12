@@ -7,7 +7,8 @@ const S = require("../edit-session.js");
 const copy = value => JSON.parse(JSON.stringify(value));
 function stageFixture(code = "NZ0") {
   const bytes = new Uint8Array(64);
-  return {code, bytes, rooms:[{entityGfxId:0},{entityGfxId:3}], originalRoomGfxIds:[0,3],
+  bytes[46] = 3;
+  return {code, bytes, rooms:[{entityGfxId:0,roomHeaderOffset:32},{entityGfxId:3,roomHeaderOffset:40}], originalRoomGfxIds:[0,3],
     maps:new Map([[1,{offset:0,values:new Uint16Array(4),dirty:false}]]),
     tiledefs:new Map([[2,{offsets:[8,12,16,20],collisions:new Uint8Array(4),dirty:false}]]),
     originalEntities:[[{x:-2,y:-2,id:0,flags:0,slot:0,spawnId:0,params:0},{x:4,y:5,id:1,flags:0,slot:2,spawnId:3,params:4},{x:-1,y:-1,id:0,flags:0,slot:0,spawnId:0,params:0}]],
@@ -86,6 +87,45 @@ async function unitChecks() {
   assert.throws(()=>S.parse("broken"),/valid JSON/); assert.throws(()=>S.parse('{"format":"other"}'),/format/);
   console.log("Saved edits: all edit types, merging, conflicts, damaged files, Undo and failed-build capture passed.");
 }
+async function builtEditChecks() {
+  const source = setup(), stage = source.stage;
+  stage.maps.get(1).values[2] = 42; stage.maps.get(1).dirty = true;
+  stage.tiledefs.get(2).collisions[1] = 7; stage.tiledefs.get(2).dirty = true;
+  stage.rooms[0].entityGfxId = 3; stage.prizeDrops.values[1] = 130;
+  stage.containerDrops = {tables:new Map([[28,{offset:28,original:new Uint16Array(2),values:Uint16Array.of(206,0)}]])};
+  const saved = await snapshot(source);
+  function target(count) {
+    const context = setup(), stage = context.stage;
+    stage.containerDrops = {tables:new Map([[28,{offset:28,original:new Uint16Array(2),values:new Uint16Array(2)}]])};
+    if (count > 0) { stage.bytes[4] = 42; stage.maps.get(1).values[2] = 42; }
+    if (count > 1) { stage.bytes[21] = 7; stage.tiledefs.get(2).collisions[1] = 7; }
+    if (count > 2) { stage.bytes[38] = 3; stage.rooms[0].entityGfxId = 3; stage.originalRoomGfxIds[0] = 3; }
+    if (count > 3) { stage.bytes[26] = 130; stage.prizeDrops.original[1] = stage.prizeDrops.values[1] = 130; }
+    if (count > 4) { stage.bytes[28] = 206; const table = stage.containerDrops.tables.get(28); table.original[0] = table.values[0] = 206; }
+    return context;
+  }
+  for (let count = 1; count <= 5; count++) {
+    const context = target(count), before = await snapshot(context), bytes = context.stage.bytes.slice();
+    const undo = (await S.prepare(saved,context)).apply();
+    assert.equal(context.stage.maps.get(1).values[2],42);
+    assert.equal(context.stage.tiledefs.get(2).collisions[1],7);
+    assert.equal(context.stage.rooms[0].entityGfxId,3);
+    assert.equal(context.stage.prizeDrops.values[1],130);
+    assert.equal(context.stage.containerDrops.tables.get(28).values[0],206);
+    assert.deepEqual(context.stage.bytes,bytes,"restoration never writes source bytes");
+    undo(); const after = await snapshot(context); delete before.savedAt; delete after.savedAt;
+    assert.deepEqual(after,before,"Undo restores the reopened BIN state");
+  }
+  const unrelated = target(5); unrelated.stage.bytes[60] = 1;
+  await assert.rejects(S.prepare(saved,unrelated),/changed in this BIN/);
+  const conflict = target(5); conflict.stage.bytes[4] = 99; conflict.stage.maps.get(1).values[2] = 99;
+  await assert.rejects(S.prepare(saved,conflict),/conflicts/);
+  conflict.stage.maps.get(1).values[2] = 42;
+  await assert.rejects(S.prepare(saved,conflict),/changed in this BIN/,"pending edits cannot hide incompatible source bytes");
+  const layout = copy(saved); layout.stages[0].maps[0].offset = 2;
+  await assert.rejects(S.prepare(layout,target(5)),/different map layout/);
+  console.log("Already-built saved edits: partial/full restoration, source guards, conflicts and Undo passed.");
+}
 function appHarness(context, core = C) {
   const source = fs.readFileSync(require.resolve("../app.js"),"utf8");
   const handlers = source.slice(source.indexOf("  async function saveCurrentEdits()"),source.indexOf("  async function exportResult("));
@@ -134,6 +174,19 @@ async function imageChecks() {
     const disc = await C.DiscImage.open(await fs.openAsBlob(path));
     const model = await M.loadFromDisc(disc,C.normalizeIsoName);
     const catalog = await disc.listStages(), area = catalog.find(area=>area.code==="NZ0");
+    const no0 = catalog.find(area=>area.code==="NO0"), no0Bytes = await disc.readFile(no0.overlay);
+    const no0Stage = D.parseOverlay(no0Bytes); no0Stage.code = "NO0";
+    const prizeOffset = no0Stage.prizeTableOffset, prizeLength = D.prizeTableLength(no0Stage,0);
+    const originalPrizes = Uint16Array.from({length:prizeLength},(_,i)=>no0Bytes[prizeOffset+i*2]|no0Bytes[prizeOffset+i*2+1]<<8);
+    no0Stage.prizeDrops = {offset:prizeOffset,original:originalPrizes,values:originalPrizes.slice()};
+    no0Stage.prizeDrops.values[10] = originalPrizes[10] === 206 ? 294 : 206;
+    const no0Saved = await S.capture({stages:new Map([["NO0",no0Stage]])});
+    const builtNo0 = D.parseOverlay(D.buildOverlay(no0Stage)); builtNo0.code = "NO0";
+    const builtPrizes = no0Stage.prizeDrops.values.slice();
+    builtNo0.prizeDrops = {offset:prizeOffset,original:builtPrizes,values:builtPrizes.slice()};
+    const no0Undo = (await S.prepare(no0Saved,{stages:new Map([["NO0",builtNo0]])})).apply();
+    assert.equal(builtNo0.prizeDrops.values[10],no0Stage.prizeDrops.values[10]); no0Undo();
+    assert.deepEqual(D.buildOverlay(builtNo0),builtNo0.bytes,"already-built NO0 edits add no overlay changes");
     const stage = D.parseOverlay(await disc.readFile(area.overlay)); stage.code="NZ0"; stage.record=area.overlay;
     const field = model.sections.alucard.fields.find(id=>model.field(id).key==="str"); model.set(field,model.get(field)+1);
     const map = [...stage.maps.values()][0]; map.values[0]=(map.values[0]+1)%map.values.length; map.dirty=true;
@@ -194,4 +247,4 @@ async function hackChecks() {
   assert.throws(()=>fresh.api.prepareSession(saved)(),/could not be restored/);assert.equal(fresh.api.hasChanges(),false);
   console.log("Saved Extra Hacks: dependencies, editable bonuses, corrupt values and Undo passed.");
 }
-(async()=>{await unitChecks();await appChecks();await hackChecks();await imageChecks();})().catch(error=>{console.error(error);process.exitCode=1;});
+(async()=>{await unitChecks();await builtEditChecks();await appChecks();await hackChecks();await imageChecks();})().catch(error=>{console.error(error);process.exitCode=1;});

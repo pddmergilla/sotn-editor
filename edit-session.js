@@ -5,10 +5,13 @@
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
   const fail = message => { throw new Error(`Saved edits: ${message}`); };
   const hashes = new WeakMap();
+  async function hashBytes(bytes) {
+    const digest = await global.crypto.subtle.digest("SHA-256", bytes);
+    return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
+  }
   async function stageHash(stage) {
     if (!hashes.has(stage)) {
-      const digest = await global.crypto.subtle.digest("SHA-256", stage.bytes);
-      hashes.set(stage, Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join(""));
+      hashes.set(stage, await hashBytes(stage.bytes));
     }
     return hashes.get(stage);
   }
@@ -30,6 +33,30 @@
       containerTables(stage).some(table => table.values.some((value, i) => value !== table.original[i]));
   }
   const containerTables = stage => [...(stage.containerDrops?.tables?.values() || [])];
+  async function compatibleStage(saved, stage) {
+    if (await stageHash(stage) === saved.hash) return true;
+    if (saved.entities.length) return false;
+    const original = stage.bytes.slice();
+    function restore(edits, offset, size) {
+      for (const edit of edits) {
+        const at = offset + edit.index * size;
+        if (!Number.isInteger(at) || at < 0 || at + size > original.length) return false;
+        const value = size === 2 ? u16(stage.bytes, at) : stage.bytes[at];
+        if (value !== edit.from && value !== edit.to) return false;
+        original[at] = edit.from & 255;
+        if (size === 2) original[at + 1] = edit.from >>> 8;
+      }
+      return true;
+    }
+    // Recognize edits already built into the BIN.
+    for (const item of saved.maps) if (!restore(item.edits, item.offset, 2)) return false;
+    for (const item of saved.collisions) if (!restore(item.edits, item.offset, 1)) return false;
+    for (const edit of saved.graphics)
+      if (!restore([{...edit, index:0}], stage.rooms[edit.index].roomHeaderOffset + 6, 1)) return false;
+    if (!restore(saved.prizes, stage.prizeDrops?.offset, 2)) return false;
+    for (const item of saved.containers ?? []) if (!restore(item.edits, item.offset, 2)) return false;
+    return await hashBytes(original) === saved.hash;
+  }
   async function capture({name, stages, stats, hacks, area}) {
     const savedStages = [];
     for (const stage of stages.values()) {
@@ -105,7 +132,7 @@
     }
     for (const savedStage of saved.stages) {
       const stage = stages.get(savedStage.code);
-      if (!stage || await stageHash(stage) !== savedStage.hash) fail(`${savedStage.code} was changed in this BIN; load the original compatible area.`);
+      if (!stage) fail(`${savedStage.code} is unavailable in this BIN.`);
       for (const [list, store, member, max] of [[savedStage.maps,stage.maps,"values",65535],[savedStage.collisions,stage.tiledefs,"collisions",255]]) {
         if (!Array.isArray(list)) fail(`${stage.code} has damaged map data.`);
         unique(list, "key", stage.code);
@@ -149,6 +176,7 @@
         if (current !== undefined && current !== pair[1]) fail(`${stage.code} template rooms conflict with the loaded edits.`);
         actions.push(() => { stage.templateSourceRooms ??= new Map(); stage.templateSourceRooms.set(...pair); });
       }
+      if (!await compatibleStage(savedStage, stage)) fail(`${savedStage.code} was changed in this BIN; load the original compatible area.`);
       touched.add(stage.code);
     }
     const applyHacks = hacks?.prepareSession?.(saved.hacks);
