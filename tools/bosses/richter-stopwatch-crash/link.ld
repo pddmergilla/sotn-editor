@@ -1,0 +1,1 @@
+SECTIONS { . = 0x801c7408; .text 0x801c7408 : { *(.text.Stopwatch) *(.text.CrashStopwatch) *(.text.StopwatchSparkle) *(.text*) } .rodata : { *(.rodata*) } .data : { *(.data*) *(.sdata*) } .bss : { *(.bss*) *(.sbss*) *(COMMON) } /DISCARD/ : { *(.MIPS.abiflags) *(.reginfo) *(.comment) *(.pdr) *(.gnu.attributes) } }

@@ -12,8 +12,9 @@ const RIC = 0x800733D8 + 64 * 0xBC, PLAY_SFX = 0x8003C7DC;
 const CRASHES = (1 << 4) | (1 << 5) | (1 << 9); // Cross, Bible and Agunea; not Axe (2) or Rebound Stone (7)
 const FRAMES = 60, SFX = 0x83A, DOWN = 0x4000; // one second; boss Richter's crouching hit grunt
 // Epic Richter AI regions this code relies on: RichterThinking, RicCheckSubweapon and the clock finisher.
-const REGIONS = [[0x35A2C, 0x36998], [0x3B3FC, 0x3B5BC], [0x4E7C8, 0x4F278], [0x4F340, 0x4F354]];
-const SIGNATURE = '4D2C3F89FB49360213511CF511C754FFFAFD3EA592B6A4E6516339EE470E94D2';
+// The old four-clock visual (0x4F0A0-0x4F278) is left out: the real Stopwatch crash patch clears it.
+const REGIONS = [[0x35A2C, 0x36998], [0x3B3FC, 0x3B5BC], [0x4E7C8, 0x4F0A0], [0x4F340, 0x4F354]];
+const SIGNATURE = '04A15D2CEBBECA3C172F1EEE46A0C822DC2EF180629463E2F97CF7DD628C7BAF';
 const r = {zero:0, a0:4, a1:5, a2:6, a3:7, v0:2, t0:8, t1:9, t2:10, t3:11, t4:12, t5:13, sp:29, ra:31};
 const I = (op, rs, rt, imm) => ((op << 26) | (rs << 21) | (rt << 16) | (imm & 0xFFFF)) >>> 0;
 const R = (rs, rt, rd, sa, fn) => ((rs << 21) | (rt << 16) | (rd << 11) | (sa << 6) | fn) >>> 0;
@@ -63,7 +64,9 @@ function program() {
 }
 const words = list => Buffer.from(Uint32Array.from(list).buffer);
 const sha = b => crypto.createHash('sha256').update(b).digest('hex').toUpperCase();
-const signature = file => sha(Buffer.concat(REGIONS.map(([s, e]) => file.subarray(s, e))));
+// The finisher's Up-stance length (sltiu at BO6 0x4ED58) is tunable, so its immediate is not part of the signature.
+const STANCE = 0x4ED58;
+const signature = file => { const copy = Buffer.from(file); copy.writeUInt16LE(0, STANCE); return sha(Buffer.concat(REGIONS.map(([s, e]) => copy.subarray(s, e)))); };
 function edits() {
   const {cave, tail} = program();
   assert.ok(cave.length * 4 <= CAVE_END - CAVE && TAIL + tail.length * 4 <= STATE, 'Crash recovery code does not fit.');
