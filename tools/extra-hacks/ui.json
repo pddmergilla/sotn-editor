@@ -33,7 +33,7 @@
  "richter-ai": {
   "label": "Epic Richter AI",
   "vanillaNote": "On vanilla, the AI's knife, vibhuti and rebound-stone hits use Richter's Cross damage instead of the ASS-scaled 250–350.",
-  "summary": "Below 15% HP, Richter waits for Alucard to land and grabs him with the real Stopwatch item crash: four staggered clocks with their waves, each ending in lightning. He keeps his current side, stops four tiles away or at the room edge, then holds his Up stance and laughs for half a second before firing 10 HP daggers. The last clock completes its five-second countdown before releasing Alucard and starting Hydrostorm. Richter is immune to Stopwatch slowdown. In the aggressive phase below 25% HP, he crouches for one second with his hurt grunt after each Cross, Bible or Agunea crash."
+  "summary": "Below 15% HP, Richter waits for Alucard to land and grabs him with the real Stopwatch item crash: four staggered clocks with their waves, each ending in lightning. He keeps his current side, stops four tiles away or at the room edge, then holds his Up stance and laughs for one second before firing 10 HP daggers. The last clock completes its five-second countdown before releasing Alucard and starting Hydrostorm. Richter is immune to Stopwatch slowdown. In the aggressive phase below 25% HP, he crouches for one second with his hurt grunt after each Cross, Bible or Agunea crash."
  },
  "quick-items": {
   "label": "Quick Items",

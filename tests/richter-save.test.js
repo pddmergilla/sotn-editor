@@ -226,7 +226,7 @@ function tick(){m.put(0x8006c3b8,4,R);m.run(0x801b5a2c);}
 function stance(){
  assert.equal(m.get(R+0x2c,2),1);assert.equal(m.get(R+0x2e,2),1);assert.equal(m.get(R+0x4c,4)>>>0,0x80181f1c);
  assert.equal(sounds.filter(s=>s===0x82b).length,1);const n=crashes.filter(p=>(p&0xfff)===44).length;
- for(let i=0;i<29;i++){tick();assert.equal(m.get(F+8,4),4);assert.equal(m.get(0x801d15ec,4),0x1000);assert.equal(crashes.filter(p=>(p&0xfff)===44).length,n);assert.equal(m.get(R+8,4),0);}
+ for(let i=0;i<59;i++){tick();assert.equal(m.get(F+8,4),4);assert.equal(m.get(0x801d15ec,4),0x1000);assert.equal(crashes.filter(p=>(p&0xfff)===44).length,n);assert.equal(m.get(R+8,4),0);}
  tick();assert.equal(m.get(F+8,4),3);assert.equal(crashes.filter(p=>(p&0xfff)===44).length,n+1);assert.equal(sounds.filter(s=>s===0x82b).length,1);
 }
 function grabbed(){
