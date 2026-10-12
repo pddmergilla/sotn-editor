@@ -11,8 +11,9 @@ const DESTROY = 0x801ACF6C, CLOCK = 0x801CF77C, FOUR_CLOCK = 0x801CF0A0, FOUR_CL
 const CHAIN = 0x801CF3B4, LAST = 0x801CF3C0;
 const CODE = Buffer.from(BUILD.hex, 'hex'), ENTRY = Object.fromEntries(Object.entries(BUILD.entries).map(([k, v]) => [k, Number(v)]));
 const DEAD = {0x2C: 0x801C7408, 0x2D: 0x801C7938, 0x2E: 0x801C818C, 0x2F: 0x801C7FEC};
-// Sparkle blueprint: the Vibhuti crash blueprint, with the timing of BO6 blueprint 0x48 (no 18-frame delay).
-const SPARKLE_BP = 0x36, SPARKLE_OLD = '2e01c1000012', SPARKLE_NEW = '2e0141000500';
+// Sparkle blueprint: the Vibhuti crash blueprint without its 18-frame delay, spawning into free slots 0x60-0x7F (kind 1).
+// Kinds 4 and 5 are fixed slots in BO6; kind 5 is the Shaft orb's slot.
+const SPARKLE_BP = 0x36, SPARKLE_OLD = '2e01c1000012', SPARKLE_NEW = '2e0141000100';
 // Finisher code the new clocks call into (Think, Clear, Rain, Clock, Knife, Speed).
 const REGIONS = [[0x4E7C8, 0x4F0A0], [0x4F400, 0x4FE90]];
 const SIGNATURE = 'F3B611999EBC98D5B87275B0423DC5E2116E9DA13F2029D1A6BD2D913AB26144';

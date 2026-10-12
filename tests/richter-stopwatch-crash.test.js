@@ -195,6 +195,19 @@ function finisher(bo6) {
   return last.frame;
 }
 
+// The real BO6 factory places the sparkle in a free slot and leaves Shaft's orb (entity 0x40 in fixed slot 0x70) alone.
+function orbSurvives(bo6, kind) {
+  const code = Buffer.from(bo6); code[T.BLUEPRINT(T.SPARKLE_BP) - T.BASE + 4] = kind;
+  const m = machine([{base: T.BASE, bytes: code}], new Map([[T.DESTROY, (r, q) => { for (let i = 0; i < 188; i++) q.put((r[4] >>> 0) + i, 1, 0); }]]));
+  const slot = i => P + i * 188, orb = slot(0x70), clock = slot(0x61);
+  m.put(orb + 0x26, 2, 0x40); m.put(orb + 0x2C, 2, 2); m.put(clock + 0x26, 2, 0x37); m.put(clock + 2, 2, 120); m.put(clock + 6, 2, 80);
+  const factory = m.run(0x801BBDC0, {4: clock, 5: T.SPARKLE_BP, 6: 0})[2] >>> 0;
+  assert.ok(factory >= slot(0x44) && factory < slot(0x50), 'factory slot');
+  m.put(0x8006C3B8, 4, factory); m.run(0x801BBE64, {4: factory});
+  const sparkles = Array.from({length: 0x90 - 0x44}, (_, i) => 0x44 + i).filter(i => m.get(slot(i) + 0x26, 2) === 0x2E);
+  return {orb: m.get(orb + 0x26, 2) === 0x40 && m.get(orb + 0x2C, 2) === 2, sparkles};
+}
+
 async function main() {
   const {code} = T.BUILD.hex ? {code: T.CODE} : {};
   assert.equal(hash(T.CODE), T.BUILD.sha256);
@@ -203,18 +216,23 @@ async function main() {
   if (!fs.existsSync(source)) { console.log('Richter Stopwatch crash image checks skipped; supply SOTN_ASS_BIN.'); return; }
   const image = fs.readFileSync(source), disc = await C.DiscImage.open(new Blob([image]));
   const file = Buffer.from(await disc.readFile(await disc.findPath(T.PATH))), ric = Buffer.from(await disc.readFile(await disc.findPath(['BIN', 'RIC.BIN'])));
-  let installed = false, base = file;
+  let installed = false, base = file, pending = null;
   try { T.verify(file); installed = true; base = Buffer.from(file); for (const e of T.edits(file)) base.set(e.original, e.off); } catch {}
+  // Before the sparkle slot fix is applied, test the BIN with that one byte fixed.
+  if (!installed) { try { pending = require('../tools/bosses/richter-sparkle-slot.js').overlay(file); T.verify(pending); installed = true; } catch { pending = null; } }
   if (installed) {
     const report = JSON.parse(fs.readFileSync(path.join(__dirname, '../outputs/richter-stopwatch-crash-2026-10-12/verification.json'), 'utf8'));
     for (const e of report.edits) base.set(Buffer.from(e.original, 'hex'), Number(e.fileOffset));
   }
-  const bo6 = installed ? file : T.overlay(file);
+  const bo6 = pending || (installed ? file : T.overlay(file));
   if (!installed) {
     for (let at = 0; at < bo6.length; at++) if (!T.edits(file).some(e => at >= e.off && at < e.off + e.expect.length)) assert.equal(bo6[at], file[at]);
     const busy = Buffer.from(file); busy[T.CAVE - T.BASE + 0x100] ^= 1; assert.throws(() => T.overlay(busy));
     const other = Buffer.from(file); other[0x4F500] ^= 1; assert.throws(() => T.overlay(other));
   }
+  const broken = orbSurvives(bo6, 5), fixed = orbSurvives(bo6, 1);
+  assert.equal(broken.orb, false, "kind 5 replaces the orb"); assert.deepEqual(broken.sparkles, [0x70]);
+  assert.equal(fixed.orb, true, "the orb survives the lightning"); assert.equal(fixed.sparkles.length, 1); assert.ok(fixed.sparkles[0] >= 0x60 && fixed.sparkles[0] <= 0x7F && fixed.sparkles[0] !== 0x70);
   const frames = sparkleEquivalence(bo6, ric), spawned = controller(bo6), length = clocks(bo6), release = finisher(bo6);
   const report = path.join(__dirname, '../outputs/richter-stopwatch-crash-2026-10-12/verification.json');
   if (fs.existsSync(report)) {
