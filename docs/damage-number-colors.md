@@ -1,23 +1,28 @@
 # Damage-number affinity colors
 
-The exact-image tool prepares grey resisted numbers and bright-red weakness numbers for ordinary, critical and absorbed/healing enemy hits. Neutral damage, neutral healing and GUARD retain their loaded colors. Weakness wins when resistance and weakness both apply, matching the installed affinity flag behavior. Damage and healing amounts, including the live image's 2.5x weakness calculation, stay unchanged.
+The exact-image tool restyles the installed Damage Number Colors hack. Plain damage numbers on a weakness flash the GUARD colors (silver and gold, CLUTs 0x1B0/0x1B1, alternating every frame), and resisted ones become grey (`#848484` upper, `#ADADAD` lower). Neutral damage, CRITICAL, heal/absorb and GUARD numbers keep their loaded colors, weak numbers keep the plain-number animation, and weakness still wins when both apply. Damage and healing values are unchanged.
 
 Prepare without changing the input BIN:
 
 ```text
-node tools/extra-hacks/build-damage-number-colors-patch.js outputs/damage-number-colors
+node tools/extra-hacks/build-damage-number-colors-patch.js outputs/damage-number-colors-guard-weak-2026-10-09
 ```
 
 The output contains guarded forward and reversal PPFs, full hashes, inspected areas and verification results. Applying requires explicit approval for this pair; afterwards repeat the command with `--apply`. A changed source hash is rejected. No backup BIN is created or deleted.
 
-The patch changes the existing palette picker at DRA `0x2EAC0–0x2EB0B`, initializes each hit's affinity before immunity/absorption at `0x5F204`, and adds an 80-byte helper at `0x2EB28–0x2EB77`. Reserve unused equipment icon 304; preparation checks current item usage, zeroed space, direct calls, pointers and nearby address loads in DRA and the 57 stage overlays. Existing damage arithmetic and spawn helpers remain unchanged.
+Two ranges change, both owned by the installed hack:
 
-F_GAME palette 0x18D becomes red and 0x18E becomes grey, preserving transparency and dark outlines. Healing and critical numbers now use those palettes when their own hit carries weakness or resistance. Absorption by itself keeps the existing healing color.
+- DRA `0x2EAD4`: the picker's weak case changes from `ori t0,zero,0x18D` to `addiu t0,v0,0x1B0`. Every stage calls the picker with the flash frame bit in `v0`, so the result matches the stage table's GUARD entries 6 and 7.
+- F_GAME `0x411C2–0x411DF`: CLUT 0x18E becomes grey. Number glyphs sample entries 2 (outline), 4 (upper fill) and 5 (lower fill); the other entries take the same tone, and transparency and STP bits are preserved.
+
+CLUT 0x18D stays as installed but is no longer selected. Preparation first requires every installed hack byte in DRA, F_GAME and the 57 stage overlays. It also requires each overlay's frame-bit instruction, table indexing and GUARD table entries. The flag cave's two weakness-multiplier instructions (`0x2E340`, `0x2E344`) may differ from the spec because the live image changed them.
+
+The installed picker only reads the weak/resist flag for plain numbers. CRITICAL (`0x4000`), heal/absorb (`0x8000`) and GUARD (`0xC000`) use their stage colour tables, so this change cannot reach them.
 
 ```text
 node tests/damage-number-colors.test.js
 ```
 
-The checks execute the loaded damage calculation before and after modification, comparing results for physical, elemental and mixed attacks, weakness, resistance, immunity, absorption and critical hits. They also check color selection across number types and flashing frames, entity flag transfer, all existing overlay hooks, palette channels, allowed byte ranges and occupied-space rejection. The builder verifies forward/reversal and both undo hashes, guarded rejection, reopened file equality, sector checksums, unrelated sectors and the unchanged source.
+The checks run the loaded damage calculation, flag handoff and palette picker together for physical, elemental and mixed attacks with weakness, resistance, immunity, absorption, critical hits, stale flags and both flash frames. They also execute every overlay's palette selection through the patched picker and compare it with the unpatched result, including the animation group. Further checks cover glyph palette entries, grey channels, allowed byte ranges and rejection of changed hack bytes. The builder verifies forward/reversal and both undo hashes, guarded rejection, reopened file equality, sector checksums, unrelated sectors and the unchanged source.
 
-Fresh-boot emulator presentation remains manual: load a memory-card save, enable the Spirit Orb, and check weak/resisted normal, critical and healing numbers, consecutive hits with different affinities, neutral hits and GUARD. Old savestates retain loaded code. This standalone patch does not regenerate the editor catalog or the ASS release; use the skill's BIN-updated workflow when requesting that refresh.
+Fresh-boot emulator presentation remains manual: load a memory-card save, enable the Spirit Orb, and check weak and resisted plain hits, a critical hit on a weakness, absorbed hits and GUARD. Old savestates retain loaded code and palettes. This standalone patch does not regenerate the editor catalog or the ASS release; use the skill's BIN-updated workflow when requesting that refresh.

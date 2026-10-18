@@ -1181,7 +1181,12 @@
         files[`${group}/${code}`] = {record: rec, bytes: await disc.readFile(rec), base: OVERLAY_BASE, overlay: true, label: `${group}/${code}/${code}.BIN`};
       }
     }
-    return parse(files);
+    const model = parse(files);
+    try {
+      const weapon = await disc.findPath(["BIN", "WEAPON0.BIN"]);
+      model.weaponGraphics = await disc.readFile(weapon);
+    } catch { /* Artwork is optional. */ }
+    return model;
   }
 
   const api = {dropChoices, relicChoices, STYLE_KEYS, rowUsers, weaponSpecialRow, specialRows, freeSpecialRows, styleKey, planStyleCopy, planRowCopy, HAND_ITEMS,

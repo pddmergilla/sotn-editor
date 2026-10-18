@@ -14,6 +14,7 @@ node tests/entity-templates.test.js
 node tests/entity-repack.test.js
 node tests/room-gfx.test.js
 node tests/stats-core.test.js
+node tests/weapon-sprites.test.js
 node tests/prize-drops.test.js
 node tests/container-drops.test.js
 node tests/stats-bin.test.js
@@ -33,6 +34,8 @@ node tests/richter-save.test.js
 node tests/richter-crash-recovery.test.js
 node tests/richter-stopwatch-crash.test.js
 node tests/stat-buffs.test.js
+node tests/dark-metamorphosis-scaled.test.js
+node tests/buff-potions-scaled.test.js
 node tests/ass2.test.js
 node tests/title-credits.test.js
 node tests/ass2-downloads.test.js
@@ -140,5 +143,7 @@ Browser-verified locally on 2026-10-07 with an extracted prepared DRA preview: H
 `kidlat-thunder.test.js` checks Kidlat's thunder-sound addition on the current renamed image: the exact `SFX_THUNDER_B` sound used by Thunderbrand, both hands and all attack stances/directions, one call at slash start across repeat frames, preserved swish, slash effects and entity properties, no charge, unchanged normal attacks and original Thunderbrand, preserved registers for all byte-sized row IDs, guarded code rejection, unchanged DRA/name/stats, full BIN/PPF round trips and repaired sectors. Sound services are simulated; hearing the result remains a fresh-boot manual check.
 
 `node tools/weapons/build-kidlat-thunder-patch.js <output-directory>` prepares the guarded forward/reversal pair and report without writing the original BIN or creating a backup. `--apply` requires explicit approval of that pair, rejects changed source/patch hashes, writes only its verified sectors, then verifies the live hash, checksums and exact reversal. After application, the test reconstructs its source in memory using the matching Downloads report or `SOTN_KIDLAT_THUNDER_REPORT`; `SOTN_ASS_BIN` selects the input image. Test repeated special slashes, both hands, normal attacks and the original Thunderbrand special from a fresh boot and memory-card save.
+
+`balloon-pod-homing-seeds.test.js` checks the Balloon Pod seed patch in RDAI and RNO4 on the current ASS BIN. It runs the actual seed step-2 instructions with branch/load delays: vanilla still falls and sways; patched seeds turn toward Alucard by at most 0x20 per frame (across the angle wrap and with negative angles), fly at 0.75 px/frame, count 180 homing frames and then match the vanilla fall exactly, and pop through their own death path when they hit Alucard. A simulated seed launched away from Alucard reaches him within the homing time. It also checks the stray step 0xFF redirect, that only the edit ranges change, and rejection of changed code, already-installed code and changed helpers. Game services (angle, rcos/rsin) are modelled; emulator play is unverified.
 
 Set `SOTN_VANILLA_BIN`, `SOTN_ASS_BIN`, `SOTN_ASS_OLD_BIN` and `SOTN_OTHER_PPF` to choose the files. `stats-bin.test.js` needs real disc images and skips without them; `prize-drops.test.js` runs its synthetic checks either way. `container-drops.test.js` checks Globe Table, Relic Container and Blue Flame Table detection on synthetic code and on NZ0/RNZ0 in both images, and also checks lookup-table edits, saved edits, Undo and the source-byte guard. Set `SOTN_BIN` to a US BIN and `SOTN_VANILLA_BIN` to an unmodified US Track 1 to choose which images it checks.

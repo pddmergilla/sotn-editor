@@ -582,6 +582,41 @@
       box.append(copy);
       return box;
     }
+    function weaponSpritePreview(it) {
+      const canvas = el("canvas", {width: 256, height: 128, class: "weaponSpriteSheet", "aria-label": "Weapon sprite sheet"});
+      const message = el("p", {class: "statHint"}), swatches = el("div", {class: "weaponColors"});
+      let row = 0, previous = "";
+      const redraw = () => {
+        const overlay = val(it.weaponId), palette = val(it.wpal), key = `${overlay}:${palette}:${row}`;
+        if (key === previous) return;
+        previous = key;
+        const result = window.SotnWeaponSprites?.renderSheet(model.weaponGraphics, overlay, palette, row);
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, 256, 128);
+        swatches.replaceChildren();
+        canvas.classList.toggle("hidden", !result?.ok);
+        message.classList.toggle("statWarn", !result?.ok);
+        message.textContent = result?.ok ? `Overlay ${overlay} · palette ${palette} · color row ${row}.` :
+          result?.reason || "Weapon artwork is unavailable in this image.";
+        if (!result?.ok) return;
+        ctx.putImageData(new ImageData(result.rgba, 256, 128), 0, 0);
+        result.colors.forEach((color, i) => {
+          const chip = el("span", {title: `Color ${i}${color[3] ? "" : " (transparent)"}`});
+          chip.style.backgroundColor = `rgba(${color[0]},${color[1]},${color[2]},${color[3] / 255})`;
+          swatches.append(chip);
+        });
+      };
+      const rows = plainSelect(Array.from({length: 24}, (_, value) => ({value, label: `Color row ${value}`})), row, value => {
+        row = Number(value); redraw();
+      });
+      bind(it.weaponId, canvas, redraw);
+      bind(it.wpal, canvas, redraw);
+      return el("details", {class: "sfMore weaponPreview"}, el("summary", {text: "Weapon sprite preview"}),
+        grid(sf("Weapon palette", it.wpal), el("label", {class: "sf"}, el("span", {class: "sfLabel", text: "Preview colors"}), rows)),
+        canvas, swatches, message,
+        el("p", {class: "statHint", text: "Changing Weapon palette selects this item's attack colors; other weapons keep their own selection. The color sets and artwork belong to the shared overlay."}),
+        el("p", {class: "statHint", text: "This shows the overlay's sprite sheet with one color row. Attacks can use several rows, animate colors, or draw extra effects; the row selector only changes this preview."}));
+    }
     function movesetBox(it) {
       const label = rowName(it.index), groups = styleGroups(), current = M.styleKey(model, it.index);
       const styleOptions = [...groups].map(([key, members]) => {
@@ -613,6 +648,7 @@
         copyFrom,
         specialPanel(it, "specialMove", "Special: ↓↘→ + attack"),
         specialPanel(it, "unk17", "Special: ←→ + attack"),
+        weaponSpritePreview(it),
         el("details", {class: "sfMore"}, el("summary", {text: "Raw attack bytes"}),
           grid(...M.STYLE_KEYS.map(k => sf(F(it[k]).label, it[k])), sf("Invincibility frames", it.invFrames), sf("Hit type", it.hitType), sf("Hit effect", it.hitEffect))));
     }

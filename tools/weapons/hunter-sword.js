@@ -7,6 +7,7 @@ const HUNTER = 94, SHOTEL = 28, SPECIAL = 169;
 const SLOT = 0x7000, CODE = 0x4000, LENGTH = 0x3000;
 const ENTRY = 0x1800, THROW = 0x1820, BANK = 0x1D00;
 const DONOR_START = 0xF0C, DONOR_END = 0x1388;
+const BANK1 = 0x11D8, BANK2 = 0x1200, BANK_CALL = THROW + 0x58;
 const sha = b => crypto.createHash('sha256').update(b).digest('hex');
 const signatures = [
   ['510b29a7e6e61341a639b219b0a77c827d00e8b03daf99f533317175dd83aa4a',
@@ -25,7 +26,9 @@ function weapon(file, hand) {
   assert.equal(K.u32(before, 0x10D0), hand);
   assert.ok(before.subarray(ENTRY, BANK + 0x144).every(v => v === 0));
   const after = before.slice(), body = donor.slice(DONOR_START, DONOR_END);
-  const helpers = new Map([[0xA54, 0x11D8], [0xB5C, 0x12E0], [0xBF4, 0x1378],
+  // Shotel's SetSpriteBank1 (0xA54) becomes the sword's SetSpriteBank2 (0x1200): the throw
+  // draws with ANIMSET_OVL(0x11), so its private bank must be written to sprite slot 0x11.
+  const helpers = new Map([[0xA54, BANK2], [0xB5C, 0x12E0], [0xBF4, 0x1378],
     [0xB84, 0x1308], [0x950, 0x10D4]]);
   for (let off = 0; off < body.length; off += 4) {
     const w = K.u32(body, off), op = w >>> 26;
@@ -54,6 +57,34 @@ function weapon(file, hand) {
   return output;
 }
 
+// Images patched before 2026-10-07 call SetSpriteBank1 (slot 0x10) from the throw while
+// drawing from slot 0x11, so the flying sword renders through an unset sprite bank.
+const installed = [
+  {buggy: 'd5a202c8ee5ac8a222eca45aeb4e2786d9ecc4c3053325ceed5c66d5d96867ab',
+    fixed: 'be52a8d5c53e3319779fc23bc74987a5af9d0084511c798bc128cdc4d26ae063'},
+  {buggy: '0c5e044c0bdd5cc3cc50b4908463a1c03cca33e3ab32b7fcaed2fab9126a54f7',
+    fixed: '345c0d525b7e8e351419b127a907b3df29cfd307a7114548be447165f87ba789'}
+];
+const region = (file, hand) => sha(file.subarray(CODE + ENTRY, CODE + BANK + 0x144));
+
+function installState(file, hand) {
+  const base = hand ? 0x8017D000 : 0x8017A000;
+  if (K.u32(file, CODE + 4) !== base + ENTRY) return 'absent';
+  const hash = region(file, hand);
+  if (hash === installed[hand].fixed) return 'fixed';
+  if (hash === installed[hand].buggy) return 'buggy';
+  return 'unknown';
+}
+
+function upgrade(file, hand) {
+  const base = hand ? 0x8017D000 : 0x8017A000, state = installState(file, hand);
+  assert.equal(state, 'buggy', `Hand ${hand}: expected the installed sprite-bank bug, found ${state}.`);
+  assert.equal(K.u32(file, CODE + BANK_CALL), jump(base + BANK1, true));
+  const output = file.slice(); K.put32(output, CODE + BANK_CALL, jump(base + BANK2, true));
+  assert.equal(installState(output, hand), 'fixed');
+  return output;
+}
+
 function prepare(model, weapons) {
   const rows = model.sections.equipRows, hunter = rows[HUNTER], shotel = rows[SHOTEL];
   assert.equal(model.get(hunter.weaponId), 0, 'Hunter Sword must retain its ordinary sword style.');
@@ -73,4 +104,4 @@ function prepare(model, weapons) {
   return {dra, weapons: result};
 }
 
-module.exports = {prepare, weapon, HUNTER, SHOTEL, SPECIAL, SLOT, CODE, LENGTH, ENTRY, THROW, BANK, DONOR_START, DONOR_END};
+module.exports = {prepare, weapon, upgrade, installState, BANK1, BANK2, BANK_CALL, HUNTER, SHOTEL, SPECIAL, SLOT, CODE, LENGTH, ENTRY, THROW, BANK, DONOR_START, DONOR_END};

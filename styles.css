@@ -228,6 +228,13 @@ input:disabled, select:disabled { opacity:.55; }
 .specialBox { margin-top:8px; padding:8px; background:#131922; border:1px solid #29313e; border-radius:6px; }
 .specialBox .sfGrid { margin-top:6px; }
 .smallButton { margin-top:8px; padding:5px 9px; font-size:11px; }
+.weaponPreview .sfGrid { margin:8px 0; }
+.weaponSpriteSheet { display:block; width:100%; height:auto; image-rendering:pixelated; border:1px solid #303a49; border-radius:4px;
+  background-color:#151a22; background-image:conic-gradient(#222a35 25%,transparent 0 50%,#222a35 0 75%,transparent 0); background-size:16px 16px; }
+.weaponSpriteSheet.hidden { display:none; }
+.weaponColors { display:flex; margin-top:6px; border:1px solid #303a49; }
+.weaponColors:empty { display:none; }
+.weaponColors span { flex:1; height:16px; }
 
 /* v6.0: Library Shop Editor and shield spells */
 #shopSearch { width:220px; }

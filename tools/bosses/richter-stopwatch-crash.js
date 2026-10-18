@@ -45,8 +45,59 @@ function check(file, installed = false) {
 }
 const FOUR_CLOCK_SIGNATURE = '47611C4CDA4F7CC44C8ABEB9A6EA77052F58BC5299A48EC84716E5524A9DAA40';
 function verify(file) {
+  if (K.u32(file, BIBLE_CALL - BASE) === bibleJump()) return verifyBibleFix(file);
   check(file, true);
   for (const e of edits(file)) assert.deepEqual(file.subarray(e.off, e.off + e.expect.length), e.expect, `Richter Stopwatch crash ${e.name} changed.`);
+}
+// Clear old Bibles before the finisher.
+const BIBLE_CALL = 0x801CEBE0, BIBLE_HELPER = FOUR_CLOCK;
+const bibleJump = () => (0x0C000000 | (BIBLE_HELPER >>> 2 & 0x3FFFFFF)) >>> 0;
+function bibleProgram() {
+  const out = [], labels = {}, branches = [];
+  const i = (op, s, t, n) => ((op << 26) | (s << 21) | (t << 16) | (n & 65535)) >>> 0;
+  const emit = (...ws) => out.push(...ws);
+  const branch = (op, s, t, label) => { branches.push([out.length, label]); emit(i(op, s, t, 0), 0); };
+  emit(i(9, 29, 29, -32), i(43, 29, 31, 24), i(43, 29, 16, 20), i(43, 29, 17, 16));
+  emit(i(15, 0, 16, 0x8007), i(13, 16, 16, 0x65C8));
+  const end = 0x800733D8 + 0x90 * 188;
+  emit(i(15, 0, 17, end >>> 16), i(13, 17, 17, end));
+  labels.loop = out.length;
+  emit(i(37, 16, 8, 0x26), 0, i(9, 8, 9, -0x33), i(11, 9, 9, 4));
+  branch(5, 9, 0, 'destroy');
+  emit(i(9, 0, 9, 1)); branch(5, 8, 9, 'next');
+  emit(i(37, 16, 8, 0x30), 0, i(9, 8, 8, -0x3B), i(11, 8, 8, 4));
+  branch(4, 8, 0, 'next');
+  labels.destroy = out.length;
+  emit((0x0C000000 | (DESTROY >>> 2 & 0x3FFFFFF)) >>> 0, i(9, 16, 4, 0));
+  labels.next = out.length;
+  emit(i(9, 16, 16, 188)); branch(5, 16, 17, 'loop');
+  emit(i(35, 29, 17, 16), i(35, 29, 16, 20), i(35, 29, 31, 24), i(9, 29, 29, 32));
+  emit((0x08000000 | (0x801BA598 >>> 2 & 0x3FFFFFF)) >>> 0, 0);
+  for (const [n, label] of branches) out[n] = (out[n] | ((labels[label] - n - 1) & 65535)) >>> 0;
+  assert.ok(out.length * 4 <= FOUR_CLOCK_END - FOUR_CLOCK);
+  return words(out);
+}
+function bibleEdits() {
+  const code = Buffer.alloc(FOUR_CLOCK_END - FOUR_CLOCK); bibleProgram().copy(code);
+  return [{name: 'Bible cleanup call', off: BIBLE_CALL - BASE, original: words([0x0320F809]), expect: words([bibleJump()])},
+    {name: 'Bible cleanup helper', off: BIBLE_HELPER - BASE, original: Buffer.alloc(code.length), expect: code}];
+}
+function verifyBibleFix(file) {
+  const original = Buffer.from(file);
+  for (const e of bibleEdits()) {
+    assert.deepEqual(file.subarray(e.off, e.off + e.expect.length), e.expect, `Richter ${e.name} changed.`);
+    original.set(e.original, e.off);
+  }
+  verify(original);
+}
+function overlayBibleFix(file) {
+  verify(file);
+  const out = Buffer.from(file);
+  for (const e of bibleEdits()) {
+    assert.deepEqual(file.subarray(e.off, e.off + e.original.length), e.original, `Richter ${e.name} changed.`);
+    out.set(e.expect, e.off);
+  }
+  verifyBibleFix(out); return out;
 }
 function overlay(file) {
   check(file);
@@ -59,4 +110,5 @@ function overlay(file) {
 }
 module.exports = {PATH, BASE, CAVE, CAVE_END, ENTITIES, SLOT, BLUEPRINTS, BLUEPRINT, DESTROY, CLOCK, FOUR_CLOCK, FOUR_CLOCK_END,
   CRASH_CLOCK, CHAIN, LAST, CODE, ENTRY, DEAD, SPARKLE_BP, SPARKLE_OLD, SPARKLE_NEW, REGIONS, SIGNATURE, CAVE_SIGNATURE,
-  FOUR_CLOCK_SIGNATURE, BUILD, signature, edits, check, verify, overlay};
+  FOUR_CLOCK_SIGNATURE, BUILD, signature, edits, check, verify, overlay,
+  BIBLE_CALL, BIBLE_HELPER, bibleProgram, bibleEdits, verifyBibleFix, overlayBibleFix};

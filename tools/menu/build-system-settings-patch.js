@@ -29,6 +29,7 @@ function sectorsValid(image, sectors) {
 }
 
 async function main() {
+  if(process.argv.includes('--slots')||process.argv.includes('--slot-description')||process.argv.includes('--item-slot-descriptions'))return slotMain();
   assert.ok(directory, 'Supply an output directory.');
   const reportPath = path.resolve(directory, 'verification.json');
   if (process.argv.includes('--apply')) {
@@ -113,3 +114,88 @@ async function main() {
   console.log(JSON.stringify({sourceSha256:initial,expectedSha256:final,forward:report.forward,reversal:report.reversal,sectors,reportPath},null,2));
 }
 if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1;});
+
+async function auditSlotSpace(disc) {
+  const {SLOTS:S}=H, references=[];
+  const exe=await disc.readFile(await disc.findPath(['SLUS_000.67']));
+  assert.equal(Buffer.from(exe.subarray(0,8)).toString('ascii'),'PS-X EXE');
+  const K=require('../../stats-core');
+  assert.equal(K.u32(exe,0x18),0x80010000);
+  assert.equal(K.u32(exe,0x1C),0x89000);
+  assert.ok(K.u32(exe,0x18)+K.u32(exe,0x1C)<=S.code);
+  const target=addr=>((addr>>>0)&0x1FFFFFFF)>=0x9C000&&((addr>>>0)&0x1FFFFFFF)<0x9D900;
+  let files=0;
+  async function walk(dir,prefix='') {
+    for(const rec of await disc.readDirectory(dir)) {
+      const name=C.normalizeIsoName(rec.name), full=prefix+name;
+      if(['.','..','\0','\x01'].includes(name))continue;
+      if(rec.isDirectory){await walk(rec,full+'/');continue;}
+      if(!(/\.BIN$|SLUS_000\.67$/.test(full))||/F_|ARC_F|MONSTER/.test(full))continue;
+      const bytes=await disc.readFile(rec), end=full==='DRA.BIN'?0x962A8:bytes.length;files++;
+      for(let at=0;at+4<=end;at+=4){
+        const w=K.u32(bytes,at);
+        if((w&3)===0&&(w>>>28)===8&&target(w))references.push([full,at,'pointer']);
+        if(w>>>26!==15)continue;
+        const rt=w>>>16&31, hi=(w&65535)<<16;
+        if(![0x80090000|0,0x800A0000|0,0xA0090000|0,0xA00A0000|0].includes(hi))continue;
+        for(let p=at+4;p<Math.min(at+40,end);p+=4){
+          const v=K.u32(bytes,p), op=v>>>26, rs=v>>>21&31;
+          if(rs===rt&&[9,13,32,33,35,36,37,40,41,43].includes(op)&&target((hi+(op===13?v&65535:v<<16>>16))>>>0))references.push([full,at,'address']);
+          const written=op===0?v>>>11&31:[1,2,3,4,5,6,7,40,41,43].includes(op)?-1:v>>>16&31;
+          if(written===rt)break;
+        }
+      }
+    }
+  }
+  await walk(disc.root);assert.deepEqual(references,[],'Existing code uses the slot memory reservation.');
+  return {files,loadedExecutableEnd:'0x80099000',reservation:'0x8009C000-0x8009D8FF'};
+}
+
+async function slotMain() {
+  assert.ok(directory,'Supply an output directory.');
+  const descriptionOnly=process.argv.includes('--slot-description');
+  const itemDescriptions=process.argv.includes('--item-slot-descriptions'), textOnly=descriptionOnly||itemDescriptions;
+  const arg=name=>process.argv.find(v=>v.startsWith(name+'='))?.slice(name.length+1).toUpperCase();
+  const localSource=process.env.SOTN_ASS_BIN||(require('node:fs').existsSync(source)?source:path.resolve(__dirname,'../../MainBIN/Castlevania - Alternate Scarlet Symphony 2.0.bin'));
+  const original=await fs.readFile(localSource), initial=sha(original), inspected=await inspect(original);
+  const itemResult=itemDescriptions?H.prepareSlotItemDescriptions(inspected.dra):null;
+  const audit=itemDescriptions?{scope:'Potion, High Potion, X-Potion and Meal Ticket descriptions only',edits:itemResult.edits}:descriptionOnly?{scope:'Shared empty-slot description only',text:H.SLOT_HELP}:await auditSlotSpace(inspected.disc);
+  const after=itemDescriptions?itemResult.after:descriptionOnly?H.prepareSlotDescription(inspected.dra).after:require('../../tests/system-settings.test').verifySlots(inspected.dra);
+  const changes=await C.changedSectors(inspected.disc,inspected.record,inspected.dra,after), sectors=changes.map(c=>c.start/2352).sort((a,b)=>a-b);
+  const image=Buffer.from(original);for(const c of changes)image.set(c.modified,c.start);sectorsValid(image,sectors);
+  const final=sha(image), block=original.subarray(0x9320,0x9720);
+  const forward=ppf(changes,block,itemDescriptions?'Item descriptions for selectable equipment slots':descriptionOnly?'Equipment slot use description':'Two selectable medicine and food equipment slots');
+  const reverse=ppf(changes.map(c=>({...c,original:c.modified,modified:c.original})),block,itemDescriptions?'Reverse slot item descriptions':descriptionOnly?'Reverse equipment slot use description':'Reverse two selectable item equipment slots');
+  apply(image,reverse);assert.equal(sha(image),initial);apply(image,forward);assert.equal(sha(image),final);
+  apply(image,forward,true);assert.equal(sha(image),initial);apply(image,reverse,true);assert.equal(sha(image),final);
+  assert.deepEqual((await inspect(image)).dra,after);
+  const touched=new Set(changes.map(c=>c.start));for(let at=0;at<original.length;at+=2352)if(!touched.has(at))assert.deepEqual(image.subarray(at,at+2352),original.subarray(at,at+2352));
+  const stem=itemDescriptions?'Equipment-Item-Slot-Descriptions-ASS-2.0.ppf':descriptionOnly?'Equipment-Item-Slots-Description-ASS-2.0.ppf':'Equipment-Item-Slots-ASS-2.0.ppf';
+  const forwardPath=path.resolve(directory,stem), reversePath=path.resolve(directory,'Reverse-'+stem);
+  const result={source:{path:localSource,size:original.length,sha256:initial},result:{sha256:final},
+    forward:{path:forwardPath,size:forward.length,sha256:sha(forward)},reversal:{path:reversePath,size:reverse.length,sha256:sha(reverse)},
+    sectors,audit,decomp:{remote:'https://github.com/Xeeynamo/sotn-decomp.git',revision:revision(decomp)},
+    inspected:itemDescriptions?['DRA descriptions and capacities for hand items 159, 160, 161 and 70','installed slot helper','Shift-JIS fullwidth digits','current healing values and item resource costs']:descriptionOnly?['DRA shared empty-slot description','installed slot helper and description entry points','Shift-JIS fullwidth colon, digit 2 and plus']:['DRA menu and item input','native medicine use and food helpers','save flags 0x2FC-0x2FF','sound header padding and executable memory reservation'],
+    checks:[textOnly?'Shift-JIS roundtrip and unchanged slot code':'load-delay-aware instruction tests','forward and reversal hashes','both embedded undo paths','source unchanged','unrelated bytes preserved','changed sector checksums'],
+    gameplayVerified:false,applied:false};
+  assert.equal(sha(await fs.readFile(localSource)),initial,'The source BIN changed during preparation.');
+  if(process.argv.includes('--apply')){
+    assert.equal(arg('--source-sha'),initial,'Supply the approved source hash.');assert.equal(arg('--result-sha'),final,'Supply the approved result hash.');
+    assert.deepEqual(await fs.readFile(forwardPath),forward);assert.deepEqual(await fs.readFile(reversePath),reverse);
+    assert.equal(sha(await fs.readFile(localSource)),initial,'The live source changed before writing.');
+    const handle=await fs.open(localSource,'r+');try{
+      for(const c of changes){const current=Buffer.alloc(2352);assert.equal((await handle.read(current,0,2352,c.start)).bytesRead,2352);assert.deepEqual(current,Buffer.from(c.original));}
+      for(const c of changes)assert.equal((await handle.write(c.modified,0,2352,c.start)).bytesWritten,2352);await handle.sync();
+    }finally{await handle.close();}
+    const live=await fs.readFile(localSource);assert.equal(sha(live),final);sectorsValid(live,sectors);assert.deepEqual((await inspect(live)).dra,after);
+    apply(live,reverse);assert.equal(sha(live),initial);result.applied=true;
+  }else{
+    assert.ok(require('node:fs').existsSync(directory),'Use an existing output directory.');
+    for(const [file,data,replaceArg]of [[forwardPath,forward,'--replace-forward-sha'],[reversePath,reverse,'--replace-reverse-sha']]){
+      try{const existing=await fs.readFile(file);if(!existing.equals(data))assert.equal(arg(replaceArg),sha(existing),`Existing patch differs: ${file}`);}catch(e){if(e.code!=='ENOENT')throw e;}
+    }
+    await fs.writeFile(forwardPath,forward);await fs.writeFile(reversePath,reverse);
+  }
+  console.log(JSON.stringify(result,null,2));
+}
+module.exports.auditSlotSpace=auditSlotSpace;

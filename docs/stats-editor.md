@@ -28,6 +28,10 @@ The **Stats Editor** tab reads the loaded BIN's own values, so an already modded
 
 Click an item's icon to pick from all 320 item icons in the BIN.
 
+Open **Weapon sprite preview** in a weapon's Moveset to see the loaded BIN's actual attack sprite sheet and its palette colors. **Weapon palette** selects a color set from that weapon overlay; changing its number changes only that item's selection, even when other weapons share the overlay. The artwork and underlying color sets are shared. Some choices contain identical colors or load no colors; an unsupported choice shows a warning instead of guessed artwork.
+
+**Preview colors** selects one of the 24 color rows the game loads for the hand. This control changes only the preview. A sprite sheet can contain several attacks and effects that use different rows, and weapon code can animate or override colors, so the sheet is not a full attack animation or a guarantee of every effect's in-game appearance. Item icons use a separate palette. Specials use the held weapon's loaded palette unless their code replaces it.
+
 **Medusa's body contact and sword slashes are separate hits.** In the recognized ASS sword code, **Sword slash** reads Cut + Curse and **Dashing sword slash** reads Cut + Fire, even when her body-contact element is Hit. Remove Curse from **Sword slash** to stop that slash from cursing; changing the body-contact element does not change her sword. Both slashes share damage row #367 but have independent elements. Vanilla uses the sword's ordinary table element. Unknown sword code locks its element rather than exporting an ineffective edit.
 
 The **Medusa Table Elements** PPF disables only the forced sword-element write, preserving the mod's slash activation and movement. With that patch installed, both sword slashes use **Sword slash (#367)** from the enemy table; the separate dashing-element control disappears. Body contact still uses #366. The editor recognizes this exact disabled write and allows table edits.
