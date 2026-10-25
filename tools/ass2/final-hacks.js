@@ -4,7 +4,7 @@
 //   hack     a feature or behaviour change that gets its own guarded PPF pair
 //   balance  stats, costs, DEF/HP/attack values or element tables only (no separate patch, left out of the list)
 //   content  map, room, pickup placement or text edits (no separate patch, listed separately)
-// Every boss AI is its own group; all normal-enemy AI changes share one group, as requested for the Final release.
+// All boss AI changes share one group and all normal-enemy AI changes another, as requested for the Final release.
 
 const BOSS = 'Boss AI', ENEMY = 'Enemy AI', WEAPON = 'Weapons and specials', FAMILIAR = 'Familiars',
   ITEM = 'Items, relics and shops', ALUCARD = 'Alucard abilities and spells', MECHANIC = 'Status and damage rules',
@@ -27,43 +27,13 @@ const FEATURES = [
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/,
       /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/]},
 
-  // ---- Boss AI: one patch per boss.
-  {id: 'olrox', kind: 'hack', category: BOSS, title: 'Olrox AI', match: [/^Olrox-/],
-    about: 'Olrox summons stronger monsters, his first form moves 1.5x faster with no rest, his breath is aimed at Alucard, and his second form adds the four pillars and a faster ceiling laser with quicker decisions.'},
-  {id: 'granfaloon', kind: 'hack', category: BOSS, title: 'Granfaloon (Legion) AI', match: [/^Granfaloon-/],
-    about: 'Faster lasers, a twice-as-wide orbit for every tentacle, and separate Holy and Lightning laser damage/elements.'},
-  {id: 'scylla', kind: 'hack', category: BOSS, title: 'Scylla AI', match: [/^Scylla-/],
-    about: 'Scylla no longer flinches when hit, and once per fight her killed wyrms come back when her HP first drops below half.'},
-  {id: 'hippogryph', kind: 'hack', category: BOSS, title: 'Hippogryph AI', match: [/Hippogryph/],
-    about: 'Two flight patterns with faster passes at Alucard\'s height, a guarded slow grab, a rising rush, faster eggs and long fire breath, with safe landings.'},
-  {id: 'richter-boss', kind: 'hack', category: BOSS, title: 'Epic Richter AI: clock finisher update',
-    match: [p => /^Richter-/.test(p.name) && !/Rescue/.test(p.name) && ricOnly(p)],
-    about: 'Below 15% HP Richter waits for Alucard to land and grabs him with player Richter\'s real four-clock Stopwatch crash, laughs in his Up stance, fires the dagger crash and follows with Hydrostorm. Crouch recovery after Cross/Bible/Agunea crashes, Stopwatch-Bible startup fix, Shaft\'s orb kept alive, attack retune.'},
-  {id: 'cerberus', kind: 'hack', category: BOSS, title: 'Cerberus AI', match: [/Cerberus-/],
-    about: 'Yellow/blue/red fireballs carry Lightning/Ice/Fire, a sky barrage every ninth decision, high anti-air reactions, a cornered/distance decision tree, recoil during the diagonal breath, and the vanilla room tiles back.'},
-  {id: 'fake-heroes', kind: 'hack', category: BOSS, title: 'Fake Trevor, Grant and Sypha AI', match: [/^Fake-Heroes-/],
-    about: 'The three fake heroes fight solo in turn with a spell cycle and their own elements.'},
-  {id: 'beelzebub', kind: 'hack', category: BOSS, title: 'Beelzebub AI', match: [/^Beelzebub-/],
-    about: 'An opening swarm of giant flies and a maggot rain attack.'},
-  {id: 'death', kind: 'hack', category: BOSS, title: 'Death AI', match: [/^Death-(Second-Form|Barrage|Four-Normal|Final-Form)/],
-    about: 'Opening four-slash barrage, attack/teleport cycle, a faster lunging second form, and two homing electric Death Balls plus the two large orbs in the final form.'},
-  {id: 'medusa', kind: 'hack', category: BOSS, title: 'Medusa AI', match: [/^(ASS2-)?Medusa-(?!Shield-Laser)/],
-    about: 'Range-based slash, sword dash, shield dash and stare-lightning choices with windups and pauses; she stares when Alucard is above her; a lightning special and yellow (petrifying) heads below 70% HP, heads entering from the screen edges.'},
-  {id: 'creature', kind: 'hack', category: BOSS, title: 'The Creature AI', match: [/Creature-(?!Hammer-Only)/],
-    about: 'Timed jumping rolls every second, a jump before each hammer swing and a floor-wide landing smash, at 1.5x speed with safe jumps.'},
-  {id: 'doppleganger40', kind: 'hack', category: BOSS, title: 'Doppleganger40 AI', match: [/^Doppleganger40-/],
-    about: 'A new AI with crouch pursuit and height-based choices, corner Wing Smash with a five-second cooldown, and crouching melee.'},
-  {id: 'akmodan', kind: 'hack', category: BOSS, title: 'Akmodan II AI', match: [/^Akmodan-II-(Behavior|Scheduled|Attack)/],
-    about: 'A scheduled cycle of aimed poison gas, bursts, dash grabs and a fast fireball barrage, with more aimed fireballs and a longer arm stretch.'},
-  {id: 'galamoth', kind: 'hack', category: BOSS, title: 'Galamoth AI', match: [/Galamoth-/],
-    about: 'Height- and reach-based attack choices, kept inside the walls, a native four-second lightning, a barrage that is cancelled when Alucard leaves its target, a ground mace wave with orbs and a mid-height far mace, and a damageable head.'},
-  {id: 'dracula', kind: 'hack', category: BOSS, title: 'Shaft/Dracula AI and Greater Demon final phase',
-    match: [/^Dracula-(?!Hands-DEF)/, /^Greater-Demon-Random-Angles/],
-    about: 'Random move selection with a full-screen Pentagram, a swipe/special cycle with native swipes and no repeats, faster specials, bloodsuck portal cleanup, ground hover with resting hands, a new Greater Demon final phase (mega fireballs, edge-to-edge flight) and the Richter ending reach.'},
-  {id: 'succubus', kind: 'hack', category: BOSS, title: 'Succubus AI', match: [/^Succubus-/],
-    about: 'Teleport combos and attack routing, shorter clone and decision waits, a faster grab, and a reworked wing spike (original tip hitbox, 48-frame windup, 32-frame hold, petals every 16 frames).'},
-  {id: 'darkwing-bat', kind: 'hack', category: BOSS, title: 'Darkwing Bat AI', match: [/Darkwing-Bat/],
-    about: 'Faster flight and rolls, and more rolls.'},
+  // ---- Boss AI: one patch for every boss.
+  {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',
+    match: [/^Olrox-/, /^Granfaloon-/, /^Scylla-/, /Hippogryph/, p => /^Richter-/.test(p.name) && !/Rescue/.test(p.name) && ricOnly(p),
+      /Cerberus-/, /^Fake-Heroes-/, /^Beelzebub-/, /^Death-(Second-Form|Barrage|Four-Normal|Final-Form)/, /^(ASS2-)?Medusa-(?!Shield-Laser)/,
+      /Creature-(?!Hammer-Only)/, /^Doppleganger40-/, /^Akmodan-II-(Behavior|Scheduled|Attack)/, /Galamoth-/,
+      /^Dracula-(?!Hands-DEF)/, /^Greater-Demon-Random-Angles/, /^Succubus-/, /Darkwing-Bat/],
+    about: 'Olrox, Granfaloon, Scylla, Hippogryph, Richter (Epic Richter AI clock finisher), Cerberus, the Fake Trevor/Grant/Sypha, Beelzebub, Death, Medusa, The Creature, Doppleganger40, Akmodan II, Galamoth, Shaft/Dracula with a new Greater Demon final phase, Succubus and Darkwing Bat all get new attack patterns and AI.'},
 
   // ---- Normal enemies: one patch.
   {id: 'enemy-ai', kind: 'hack', category: ENEMY, title: 'Enemy AI pack',

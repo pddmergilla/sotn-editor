@@ -2,9 +2,9 @@
 
 [← Back to the README](../README.md)
 
-The main BIN gained 73 features after ASS 2.0.10. This page lists them for the editor v8.0 / ASS -Final- release and the Extra Hacks update. Balance changes (stat, cost, DEF/HP/attack values, element tables) are left out.
+The main BIN gained 57 features after ASS 2.0.10. This page lists them for the editor v8.0 / ASS -Final- release and the Extra Hacks update. Balance changes (stat, cost, DEF/HP/attack values, element tables) are left out.
 
-`node tools/ass2/build-final-hacks.js` rebuilds 2.0.10 from vanilla and the shipped PPF, then assigns every byte that differs in the main BIN to the newest applied PPF that wrote it. It searches next to the main BIN, `outputs/`, Downloads and the Documents/Codex session outputs. The groups are defined in `tools/ass2/final-hacks.js`. Each boss has its own group, and all normal-enemy AI changes share one. A later retune of a feature's own bytes stays with that feature. When a feature replaced bytes that another wrote, it is built on top of that feature and lists it under **Requires**.
+`node tools/ass2/build-final-hacks.js` rebuilds 2.0.10 from vanilla and the shipped PPF, then assigns every byte that differs in the main BIN to the newest applied PPF that wrote it. It searches next to the main BIN, `outputs/`, Downloads and the Documents/Codex session outputs. The groups are defined in `tools/ass2/final-hacks.js`. All boss AI changes share one group, and all normal-enemy AI changes share another. A later retune of a feature's own bytes stays with that feature. When a feature replaced bytes that another wrote, it is built on top of that feature and lists it under **Requires**.
 
 For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements → with the feature) and `Reverse-ASS-Final-<feature>.ppf` (current BIN → without it), both guarded PPF3 with undo data and repaired EDC/ECC, plus `specs/<id>.json` with Extra Hacks-style edit runs. Output goes to `MainBIN/ASS-Final-Hacks/` with a README and `ASS-Final-Hacks.verification.json`. The main BIN is only read.
 
@@ -14,27 +14,12 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 
 
 
+
 ### Boss AI
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Olrox AI** | Olrox summons stronger monsters, his first form moves 1.5x faster with no rest, his breath is aimed at Alucard, and his second form adds the four pillars and a faster ceiling laser with quicker decisions. | — | 740 | `ASS-Final-Olrox-AI.ppf` |
-| **Granfaloon (Legion) AI** | Faster lasers, a twice-as-wide orbit for every tentacle, and separate Holy and Lightning laser damage/elements. | — | 888 | `ASS-Final-Granfaloon-Legion-AI.ppf` |
-| **Scylla AI** | Scylla no longer flinches when hit, and once per fight her killed wyrms come back when her HP first drops below half. | — | 178 | `ASS-Final-Scylla-AI.ppf` |
-| **Hippogryph AI** | Two flight patterns with faster passes at Alucard's height, a guarded slow grab, a rising rush, faster eggs and long fire breath, with safe landings. | — | 1,629 | `ASS-Final-Hippogryph-AI.ppf` |
-| **Epic Richter AI: clock finisher update** | Below 15% HP Richter waits for Alucard to land and grabs him with player Richter's real four-clock Stopwatch crash, laughs in his Up stance, fires the dagger crash and follows with Hydrostorm. Crouch recovery after Cross/Bible/Agunea crashes, Stopwatch-Bible startup fix, Shaft's orb kept alive, attack retune. | — | 7,433 | `ASS-Final-Epic-Richter-AI-clock-finisher-update.ppf` |
-| **Cerberus AI** | Yellow/blue/red fireballs carry Lightning/Ice/Fire, a sky barrage every ninth decision, high anti-air reactions, a cornered/distance decision tree, recoil during the diagonal breath, and the vanilla room tiles back. | — | 1,619 | `ASS-Final-Cerberus-AI.ppf` |
-| **Fake Trevor, Grant and Sypha AI** | The three fake heroes fight solo in turn with a spell cycle and their own elements. | — | 214 | `ASS-Final-Fake-Trevor-Grant-and-Sypha-AI.ppf` |
-| **Beelzebub AI** | An opening swarm of giant flies and a maggot rain attack. | — | 239 | `ASS-Final-Beelzebub-AI.ppf` |
-| **Death AI** | Opening four-slash barrage, attack/teleport cycle, a faster lunging second form, and two homing electric Death Balls plus the two large orbs in the final form. | — | 1,153 | `ASS-Final-Death-AI.ppf` |
-| **Medusa AI** | Range-based slash, sword dash, shield dash and stare-lightning choices with windups and pauses; she stares when Alucard is above her; a lightning special and yellow (petrifying) heads below 70% HP, heads entering from the screen edges. | — | 2,508 | `ASS-Final-Medusa-AI.ppf` |
-| **The Creature AI** | Timed jumping rolls every second, a jump before each hammer swing and a floor-wide landing smash, at 1.5x speed with safe jumps. | — | 839 | `ASS-Final-The-Creature-AI.ppf` |
-| **Doppleganger40 AI** | A new AI with crouch pursuit and height-based choices, corner Wing Smash with a five-second cooldown, and crouching melee. | — | 2,874 | `ASS-Final-Doppleganger40-AI.ppf` |
-| **Akmodan II AI** | A scheduled cycle of aimed poison gas, bursts, dash grabs and a fast fireball barrage, with more aimed fireballs and a longer arm stretch. | — | 811 | `ASS-Final-Akmodan-II-AI.ppf` |
-| **Galamoth AI** | Height- and reach-based attack choices, kept inside the walls, a native four-second lightning, a barrage that is cancelled when Alucard leaves its target, a ground mace wave with orbs and a mid-height far mace, and a damageable head. | — | 1,345 | `ASS-Final-Galamoth-AI.ppf` |
-| **Shaft/Dracula AI and Greater Demon final phase** | Random move selection with a full-screen Pentagram, a swipe/special cycle with native swipes and no repeats, faster specials, bloodsuck portal cleanup, ground hover with resting hands, a new Greater Demon final phase (mega fireballs, edge-to-edge flight) and the Richter ending reach. | — | 197,343 | `ASS-Final-Shaft-Dracula-AI-and-Greater-Demon-final-phase.ppf` |
-| **Succubus AI** | Teleport combos and attack routing, shorter clone and decision waits, a faster grab, and a reworked wing spike (original tip hitbox, 48-frame windup, 32-frame hold, petals every 16 frames). | — | 1,740 | `ASS-Final-Succubus-AI.ppf` |
-| **Darkwing Bat AI** | Faster flight and rolls, and more rolls. | — | 26 | `ASS-Final-Darkwing-Bat-AI.ppf` |
+| **Boss AI pack** | Olrox, Granfaloon, Scylla, Hippogryph, Richter (Epic Richter AI clock finisher), Cerberus, the Fake Trevor/Grant/Sypha, Beelzebub, Death, Medusa, The Creature, Doppleganger40, Akmodan II, Galamoth, Shaft/Dracula with a new Greater Demon final phase, Succubus and Darkwing Bat all get new attack patterns and AI. | — | 221,579 | `ASS-Final-Boss-AI-pack.ppf` |
 
 ### Enemy AI
 
@@ -96,7 +81,7 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 |---|---|---|---:|---|
 | **Death returns to the last save room** | Death returns Alucard to the last save room he visited, refilling his Life Apple charges, with a graphics fix for returns across zones. | — | 275 | `ASS-Final-Death-returns-to-the-last-save-room.ppf` |
 | **Clock Tower gear doors always open** | Both Clock Tower gear doors stay open. | — | 32 | `ASS-Final-Clock-Tower-gear-doors-always-open.ppf` |
-| **Richter rescue fix and skip** | Defeating Richter goes through Shaft's orb rescue correctly, and the rescue requirement can be skipped while keeping the cutscene voices (supersedes the WIP Richter always saved hack). | Epic Richter AI: clock finisher update | 132 | `ASS-Final-Richter-rescue-fix-and-skip.ppf` |
+| **Richter rescue fix and skip** | Defeating Richter goes through Shaft's orb rescue correctly, and the rescue requirement can be skipped while keeping the cutscene voices (supersedes the WIP Richter always saved hack). | Boss AI pack | 132 | `ASS-Final-Richter-rescue-fix-and-skip.ppf` |
 | **Prologue skip** | New Alucard games skip the intro movie, the Richter prologue and the story scroll and start with the forest run into the castle; no prologue rewards, and boss records and the clock are reset. | — | 165 | `ASS-Final-Prologue-skip.ppf` |
 
 ### Alucard abilities and spells
@@ -135,4 +120,4 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Richter Mode overhaul** | Playable Richter rebuilt: Rest levels and milestones, healing and collection growth, four-digit hearts, Heart Regen, relic abilities, Blade Dash, Roundhouse, Rising Hurricane, default run with L2 walk, new pause pages with a guide, all Alucard bosses, and many fixes. | Shaft/Dracula AI and Greater Demon final phase, Death returns to the last save room, Life Apple auto-revive, Stat-scaled buffs, Damage number colors: weak and resist, Percent DEF | 29,766 | `ASS-Final-Richter-Mode-overhaul.ppf` |
+| **Richter Mode overhaul** | Playable Richter rebuilt: Rest levels and milestones, healing and collection growth, four-digit hearts, Heart Regen, relic abilities, Blade Dash, Roundhouse, Rising Hurricane, default run with L2 walk, new pause pages with a guide, all Alucard bosses, and many fixes. | Boss AI pack, Death returns to the last save room, Life Apple auto-revive, Stat-scaled buffs, Damage number colors: weak and resist, Percent DEF | 29,766 | `ASS-Final-Richter-Mode-overhaul.ppf` |
