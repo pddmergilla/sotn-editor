@@ -33,5 +33,15 @@
  },
  "subweapon-weapon": {
   "useEntities": true
+ },
+ "mist-gas-swap": {
+  "locate": {
+   "ST/RCAT/RCAT.BIN:0x259e": {
+    "x": 32,
+    "y": 128,
+    "id": 11,
+    "slot": 16
+   }
+  }
  }
 }

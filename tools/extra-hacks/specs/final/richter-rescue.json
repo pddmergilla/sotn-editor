@@ -1,0 +1,113 @@
+{
+  "id": "richter-rescue",
+  "label": "Richter rescue fix and skip",
+  "category": "World and story",
+  "summary": "Defeating Richter goes through Shaft's orb rescue correctly, and the rescue requirement can be skipped while keeping the cutscene voices (supersedes the WIP Richter always saved hack).",
+  "edits": [
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353DC",
+      "off": "00009594",
+      "on": "10D50608"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353E4",
+      "off": "A416428C",
+      "on": "3400628E"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353EC",
+      "off": "B8C3",
+      "on": "0C63"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353F0",
+      "off": "020042341D80013CA41622AC49",
+      "on": "1D80013C251043000A01070800"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x353FE",
+      "off": "629007",
+      "on": "000004"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x35402",
+      "off": "16",
+      "on": "02"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x35404",
+      "off": "0663D696801002001880013C210822001012228C11",
+      "on": "A0C9428C01000334D2644310490005340E02070800"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x3541A",
+      "off": "0434",
+      "on": "0000"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x40420",
+      "off": "3400628E1D80013C",
+      "on": "F9D4060800000000"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x40830",
+      "off": "2120600249000534",
+      "on": "00D5060821206002"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E758",
+      "off": "000000000000000000",
+      "on": "0480023C40C8428C0E"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E762",
+      "off": "0000000000",
+      "on": "043409F840"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E768",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E76A",
+      "off": "00000000000000",
+      "on": "05340480013C01"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E772",
+      "off": "00000000000000000000000000000000000000",
+      "on": "023481BE22A082BE22A030C720AC0780013C2C"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E786",
+      "off": "00000000000000",
+      "on": "023474C322AC04"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E78E",
+      "off": "000000000000000000000000000000000000",
+      "on": "0234603022AC1D80013C9C1620AC19020708"
+    }
+  ],
+  "requires": [
+    "boss-ai"
+  ]
+}

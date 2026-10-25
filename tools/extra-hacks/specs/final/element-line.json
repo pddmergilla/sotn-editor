@@ -1,0 +1,537 @@
+{
+  "id": "element-line",
+  "label": "RES/WEAK element line",
+  "category": "Menus and presentation",
+  "summary": "The main menu shows Alucard's resistances and weaknesses below GOLD.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E3A4",
+      "off": "00000000000000000000000000",
+      "on": "90FFBD271380083C3A76083538"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E3B2",
+      "off": "0000",
+      "on": "4816"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E3B8",
+      "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "0980083C287C09952A7C0A952C7C0B952E7C0C95FFFF2D3924984D0125586C0125986B0225504B01FFFF4A3924A02A01E0FF7332E0FF943203"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E3F2",
+      "off": "000000",
+      "on": "113402"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E3F6",
+      "off": "000000",
+      "on": "153410"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E3FA",
+      "off": "000000000000000000000000000000",
+      "on": "B027212060020C80053C18E6A53404"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E40A",
+      "off": "000000000000",
+      "on": "06342A39030C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E414",
+      "off": "00000000000000000000000000",
+      "on": "212080020C80053C1CE6A53406"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E422",
+      "off": "000000",
+      "on": "063405"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E426",
+      "off": "000000",
+      "on": "083403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E42A",
+      "off": "0000",
+      "on": "A816"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E430",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E432",
+      "off": "00000000000000000000",
+      "on": "A524FFFFC6242A39030C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E440",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E442",
+      "off": "00000000000000",
+      "on": "A827234008022C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E44A",
+      "off": "000000",
+      "on": "082D09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E44F",
+      "off": "00",
+      "on": "15"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E454",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E456",
+      "off": "0000",
+      "on": "2016"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E45C",
+      "off": "00",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E45E",
+      "off": "00000000",
+      "on": "1134E5FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E463",
+      "off": "0000",
+      "on": "1002"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E466",
+      "off": "000000",
+      "on": "153403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E46A",
+      "off": "00000000",
+      "on": "1134E2FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E46F",
+      "off": "0000",
+      "on": "1005"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E472",
+      "off": "000000",
+      "on": "1534FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E476",
+      "off": "0000",
+      "on": "0834"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E47A",
+      "off": "000000",
+      "on": "08A201"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E47F",
+      "off": "0000",
+      "on": "A210"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E482",
+      "off": "000000",
+      "on": "A42710"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E486",
+      "off": "000000",
+      "on": "0534D8"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E48A",
+      "off": "0000000000000000000000",
+      "on": "0634FBD9030C2138400270"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E496",
+      "off": "000000",
+      "on": "BD2730"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E49A",
+      "off": "000000",
+      "on": "BF8F2C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E49E",
+      "off": "000000000000",
+      "on": "B58FD0DE0308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4AA",
+      "off": "000000",
+      "on": "A89001"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4AE",
+      "off": "0000",
+      "on": "A524"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4B2",
+      "off": "000000",
+      "on": "08A201"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4B6",
+      "off": "00000000000000000000",
+      "on": "1026FFFFC624FAFFC014"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4C4",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4C6",
+      "off": "0000",
+      "on": "8014"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4CC",
+      "off": "00",
+      "on": "0D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4CE",
+      "off": "0000",
+      "on": "0834"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4D2",
+      "off": "000000",
+      "on": "08A208"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4D6",
+      "off": "000000",
+      "on": "E00301"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4DA",
+      "off": "0000000000000000000000",
+      "on": "10260C80093C68E529350B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4E6",
+      "off": "0000",
+      "on": "0A34"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4EA",
+      "off": "0000",
+      "on": "0E34"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4EE",
+      "off": "0000",
+      "on": "2895"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4F4",
+      "off": "0000000000",
+      "on": "2440040115"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E4FB",
+      "off": "00",
+      "on": "11"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E500",
+      "off": "00",
+      "on": "06"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E502",
+      "off": "0000",
+      "on": "C011"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E508",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E50A",
+      "off": "000000",
+      "on": "083403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E50E",
+      "off": "0000",
+      "on": "A812"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E517",
+      "off": "0000",
+      "on": "A201"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E51A",
+      "off": "00000000000000",
+      "on": "10262158350107"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E522",
+      "off": "000000",
+      "on": "2C9102"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E526",
+      "off": "0000",
+      "on": "2012"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E52C",
+      "off": "00000000",
+      "on": "21602002"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E532",
+      "off": "000000",
+      "on": "689101"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E536",
+      "off": "0000",
+      "on": "6B25"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E53A",
+      "off": "000000",
+      "on": "08A201"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E53E",
+      "off": "00000000000000000000",
+      "on": "1026FFFF8C25FAFF8015"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E54C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E54E",
+      "off": "000000",
+      "on": "0E3410"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E552",
+      "off": "00000000000000000000",
+      "on": "2925FFFF4A25E4FF4015"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E560",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E562",
+      "off": "0000",
+      "on": "E003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E569",
+      "off": "00000000000000",
+      "on": "80262C21262C21"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E579",
+      "off": "00000000000000",
+      "on": "20292325292325"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E589",
+      "off": "00000000000000",
+      "on": "402C29342C2934"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E599",
+      "off": "00000000000000",
+      "on": "10282F2C282F2C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5A9",
+      "off": "00000000000000",
+      "on": "08242132242132"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5B9",
+      "off": "00000000000000",
+      "on": "04373432373432"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5C8",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5CA",
+      "off": "000000000000",
+      "on": "30332E30332E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5D9",
+      "off": "00000000000000",
+      "on": "01233532233532"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5E9",
+      "off": "00000000000000",
+      "on": "0233342E33342E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5F8",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E5FA",
+      "off": "000000000000",
+      "on": "282934282934"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E608",
+      "off": "00",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E60A",
+      "off": "000000000000",
+      "on": "233534233534"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E618",
+      "off": "00000000",
+      "on": "3225331A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E61D",
+      "off": "0000000000",
+      "on": "3725212B1A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x57B38",
+      "off": "3000BF8F2C",
+      "on": "E938030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x57B3E",
+      "off": "B58F",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

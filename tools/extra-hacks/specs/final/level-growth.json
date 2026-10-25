@@ -1,0 +1,87 @@
+{
+  "id": "level-growth",
+  "label": "Deterministic level growth",
+  "category": "Alucard abilities and spells",
+  "summary": "Alucard's level-up gains are fixed instead of random.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EC0",
+      "off": "01",
+      "on": "14"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EC4",
+      "off": "03",
+      "on": "1E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EC8",
+      "off": "06",
+      "on": "28"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ECC",
+      "off": "0A",
+      "on": "28"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED0",
+      "off": "14",
+      "on": "32"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED4",
+      "off": "1E",
+      "on": "32"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED8",
+      "off": "28",
+      "on": "46"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EDC",
+      "off": "32",
+      "on": "46"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EE0",
+      "off": "64",
+      "on": "50"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EE4",
+      "off": "C8",
+      "on": "64"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DF12",
+      "off": "4230",
+      "on": "0234"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DF7C",
+      "off": "02",
+      "on": "05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DFAA",
+      "off": "4230",
+      "on": "0234"
+    }
+  ],
+  "requires": []
+}

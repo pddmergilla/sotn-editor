@@ -1,0 +1,243 @@
+{
+  "id": "death-return",
+  "label": "Death returns to the last save room",
+  "category": "World and story",
+  "summary": "Death returns Alucard to the last save room he visited, refilling his Life Apple charges, with a graphics fix for returns across zones.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E21C",
+      "off": "00000000000000000000000000",
+      "on": "0980083C1479098D07800A3C0A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E22A",
+      "off": "00000000000000000000000000000000000000",
+      "on": "2015B0304B8DB4304C8DA0740D8D0D80083C09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E23E",
+      "off": "000000",
+      "on": "093407"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E242",
+      "off": "000000",
+      "on": "A91101"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E246",
+      "off": "00000000000000000000000000000000000000000000",
+      "on": "AD25B0DC0DADB4DC0BADB8DC0CADD8FFBD270C150408"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E25D",
+      "off": "00000000",
+      "on": "0104342D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E262",
+      "off": "00000000000000",
+      "on": "0934F8FF691521"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E26A",
+      "off": "000000000000",
+      "on": "0934F9FF8911"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E274",
+      "off": "0000",
+      "on": "F4FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E277",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E358",
+      "off": "000000000000",
+      "on": "0D80083CB0DC"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E35F",
+      "off": "0000000000",
+      "on": "AD923A0308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E368",
+      "off": "000000000000",
+      "on": "0D80083CB0DC"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E36F",
+      "off": "0000000000",
+      "on": "AD973A0308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EB94",
+      "off": "00000000000000000000000000000000000000000000",
+      "on": "0980083CA47B098DB47B0A8DA07B09ADB07B0AAD987C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EBAB",
+      "off": "00000000000000",
+      "on": "AD0D80083C78E3"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EBB3",
+      "off": "000000",
+      "on": "AD10F0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EBB7",
+      "off": "00000000000000",
+      "on": "AD1380083C9875"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EBBF",
+      "off": "0000000000",
+      "on": "AD48C8030C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EBC8",
+      "off": "0000000000",
+      "on": "0780083C07"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EBCE",
+      "off": "00000000000000000000",
+      "on": "093474C309AD06D20308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED04",
+      "off": "00000000000000000000000000",
+      "on": "0D80083CB0DC098D04800A3C1A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED12",
+      "off": "0000000000000000000000",
+      "on": "2011A0C94B8D09800A3C17"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED1E",
+      "off": "000000000000",
+      "on": "601514794B8D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED28",
+      "off": "00",
+      "on": "14"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED2A",
+      "off": "00000000000000",
+      "on": "6015FFFF29251F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED32",
+      "off": "000000000000",
+      "on": "0B34A0744C8D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED3C",
+      "off": "00",
+      "on": "0F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED3E",
+      "off": "00000000000000000000000000000000000000000000000000000000000000",
+      "on": "8B11B4DC0B8DB8DC0C8DA07449AD0780093CB0302BADB4302CAD74C320AD04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED5E",
+      "off": "0000000000000000000000",
+      "on": "0B3460302BAD0480093C01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED6A",
+      "off": "0000000000000000000000000000",
+      "on": "0B3430C72BADA4C920ADE53A0308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED7C",
+      "off": "00000000000000000000000000",
+      "on": "0F801F3C5047FF27FED1040881"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2ED8A",
+      "off": "0000",
+      "on": "0434"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4A47C",
+      "off": "0980",
+      "on": "D638"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x54748",
+      "off": "FED1040C81",
+      "on": "413B030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5474E",
+      "off": "0434",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5F9D8",
+      "off": "0780",
+      "on": "DA38"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x65428",
+      "off": "D8FFBD27",
+      "on": "87380308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6542D",
+      "off": "010434",
+      "on": "000000"
+    }
+  ],
+  "requires": []
+}

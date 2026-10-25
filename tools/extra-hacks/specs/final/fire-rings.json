@@ -1,0 +1,183 @@
+{
+  "id": "fire-rings",
+  "label": "Fire Rings",
+  "category": "Weapons and specials",
+  "summary": "A thrown fire ring with Chakram flight and a fire trail, costing MP per throw.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FFC",
+      "off": "40040533",
+      "on": "0080080C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6001",
+      "off": "066830020F80B8",
+      "on": "82603800000200"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x600A",
+      "off": "0F",
+      "on": "1E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6014",
+      "off": "00",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x601C",
+      "off": "67",
+      "on": "85"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x601E",
+      "off": "67",
+      "on": "84"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6020",
+      "off": "01",
+      "on": "20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3DC40",
+      "off": "2E7B4355542030305741542046726F6D204765726D616E79000000",
+      "on": "464C412052696E6773206C65617665206669726520747261696C73"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3DC5C",
+      "off": "3A574549",
+      "on": "26495245"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3DC61",
+      "off": "4841",
+      "on": "3249"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3DC64",
+      "off": "444552FF",
+      "on": "4753FF00"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x599A0",
+      "off": "09F84000",
+      "on": "2CF3050C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACB0",
+      "off": "00",
+      "on": "AE"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACB2",
+      "off": "000000",
+      "on": "889467"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACB6",
+      "off": "000000",
+      "on": "093403"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACBA",
+      "off": "0000",
+      "on": "0915"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACC0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACC2",
+      "off": "000000",
+      "on": "053C24"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACC6",
+      "off": "000000",
+      "on": "A53408"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0x5ACCA",
+      "off": "00",
+      "on": "40"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x599A0",
+      "off": "09F84000",
+      "on": "2CFF050C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACB0",
+      "off": "00",
+      "on": "AE"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACB2",
+      "off": "000000",
+      "on": "889467"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACB6",
+      "off": "000000",
+      "on": "093403"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACBA",
+      "off": "0000",
+      "on": "0915"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACC0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACC2",
+      "off": "000000",
+      "on": "053C24"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACC6",
+      "off": "000000",
+      "on": "A53408"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0x5ACCA",
+      "off": "00",
+      "on": "40"
+    }
+  ],
+  "requires": []
+}

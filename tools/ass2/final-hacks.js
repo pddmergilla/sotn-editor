@@ -24,7 +24,7 @@ const FEATURES = [
       /^Ascaln-Gram-Sword-Familiar-DAR/, /^Greater-Demon-Dracula-Hands-DEF/, /^Alucard-Rebalance/,
       /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/]},
   {id: 'content', kind: 'content', title: 'Map, pickup and text edits', category: 'Content',
-    match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/,
+    match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
       /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/]},
 
   // ---- Boss AI: one patch for every boss.
@@ -153,7 +153,7 @@ const FEATURES = [
     about: 'The main menu shows Alucard\'s resistances and weaknesses below GOLD.'},
   {id: 'system-settings', kind: 'hack', category: MENU, title: 'Minimap setting and item shortcut button', match: [/^System-Settings/],
     about: 'System gains Show minimap: Yes/No; Button Config gains a remappable Item Shortcut.'},
-  {id: 'damage-colors', kind: 'hack', category: MENU, title: 'Damage number colors: weak and resist', match: [/^Damage-Number-(Colors|Helper)-/],
+  {id: 'damage-colors-weak', kind: 'hack', category: MENU, title: 'Damage number colors: weak and resist', match: [/^Damage-Number-(Colors|Helper)-/],
     about: 'Weakness hits flash the GUARD colors and resisted hits are grey (update to the existing Damage Number Colors hack).'},
   {id: 'title-final', kind: 'hack', category: MENU, title: 'Title: Alternate Scarlet Symphony -Final-', match: [/^Title-Alternate/, /Title-Placement/],
     about: 'The title screen reads Alternate Scarlet Symphony -Final-. Always included in the full ASS -Final- patch.'},

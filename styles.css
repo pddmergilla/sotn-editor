@@ -200,6 +200,8 @@ input:disabled, select:disabled { opacity:.55; }
 .extraHacksConflict { flex:none; margin:8px 16px 0; padding:8px 10px; border-left:2px solid #e0525a; background:#2a1719; color:#ffb4b8; font-size:12px; line-height:1.45; }
 .extraHacksList { flex:1; min-height:0; overflow:auto; padding:14px; display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:10px; align-content:start; }
 .extraHackCard { min-width:0; padding:10px 12px; border:1px solid #313948; border-radius:8px; background:#171c24; }
+.extraHacksGroup { grid-column:1 / -1; margin:10px 0 0; padding-bottom:4px; border-bottom:1px solid #2a3240; color:#c9d3e1; font-size:13px; font-weight:600; letter-spacing:.02em; }
+.extraHacksGroup:first-child { margin-top:0; }
 .extraHackHead { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
 .extraHackLabel { margin:0; display:flex; align-items:flex-start; gap:9px; color:#e9edf4; font-size:13px; line-height:1.4; }
 .extraHackLabel input { flex:none; width:16px; height:16px; margin:1px 0 0; accent-color:#6da9ff; }

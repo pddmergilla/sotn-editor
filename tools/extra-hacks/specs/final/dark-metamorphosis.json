@@ -1,0 +1,57 @@
+{
+  "id": "dark-metamorphosis",
+  "label": "Dark Metamorphosis rework",
+  "category": "Alucard abilities and spells",
+  "summary": "Casting returns control at once and keeps Alucard's form; its 1.25x speed is safe at save points, and saving (Up at a save point) clears it.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42918",
+      "off": "43",
+      "on": "83"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6938E",
+      "off": "6324",
+      "on": "6284"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x69391",
+      "off": "00628400",
+      "on": "F0E83305"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x69396",
+      "off": "00000400401000",
+      "on": "401000B0093403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6939E",
+      "off": "0000000060A4",
+      "on": "091121200000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x693A8",
+      "off": "21200000",
+      "on": "162F60A4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x78620",
+      "off": "03",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x78622",
+      "off": "4104",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

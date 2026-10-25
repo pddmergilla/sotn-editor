@@ -1,0 +1,575 @@
+{
+  "id": "ice-specials",
+  "label": "Icebrand and Zero Celsius separate special stats",
+  "category": "Weapons and specials",
+  "summary": "Icebrand and Zero Celsius specials get independent stats.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E00",
+      "off": "00",
+      "on": "B5"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E70",
+      "off": "00000000000000000000",
+      "on": "8CD10D8088D10D80DC05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E7D",
+      "off": "000000",
+      "on": "200132"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E81",
+      "off": "000000000000",
+      "on": "164130010D80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E8A",
+      "off": "00",
+      "on": "14"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E94",
+      "off": "00",
+      "on": "0F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E96",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E98",
+      "off": "00",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13E9A",
+      "off": "00",
+      "on": "06"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EA0",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EA4",
+      "off": "00000000",
+      "on": "49434531"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EB0",
+      "off": "00000000000000000000000000",
+      "on": "0780083CEC2E098D682F0A95A0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EBE",
+      "off": "000000",
+      "on": "293121"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EC2",
+      "off": "0000",
+      "on": "4015"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EC8",
+      "off": "0000000000000000",
+      "on": "E82E0A8D09800B3C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13ED1",
+      "off": "000000",
+      "on": "7C6C8D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13ED8",
+      "off": "000000",
+      "on": "40680C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EDC",
+      "off": "00000000000000",
+      "on": "2168AC0180680D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EE4",
+      "off": "00000000000000",
+      "on": "2168AC0180680D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EEC",
+      "off": "00000000000000000000000000",
+      "on": "0A800E3C2168AE01124BAD9109"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EFA",
+      "off": "000000",
+      "on": "0E3403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13EFE",
+      "off": "0000",
+      "on": "AE15"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F04",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F06",
+      "off": "00000000000000000000",
+      "on": "4D3125482D01047C6C8D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F14",
+      "off": "000000",
+      "on": "40680C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F18",
+      "off": "00000000000000",
+      "on": "2168AC0180680D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F20",
+      "off": "00000000000000",
+      "on": "2168AC0180680D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F28",
+      "off": "00000000000000000000000000",
+      "on": "0A800E3C2168AE01124BAD9109"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F36",
+      "off": "000000",
+      "on": "0E3403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F3A",
+      "off": "0000",
+      "on": "AE15"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F40",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F42",
+      "off": "00000000000000",
+      "on": "4D3125482D0120"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F4A",
+      "off": "00000000000000",
+      "on": "0A3409800B3C04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F52",
+      "off": "0000",
+      "on": "2A15"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F58",
+      "off": "0000000000",
+      "on": "047C6C8D03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F5F",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F65",
+      "off": "000000",
+      "on": "7C6C8D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F6C",
+      "off": "00",
+      "on": "5D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F6E",
+      "off": "000000",
+      "on": "0A3435"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F72",
+      "off": "0000",
+      "on": "8A15"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F78",
+      "off": "00",
+      "on": "0D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F7B",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F80",
+      "off": "00",
+      "on": "B5"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F82",
+      "off": "000000",
+      "on": "083434"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F86",
+      "off": "0000",
+      "on": "C814"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F8C",
+      "off": "000000",
+      "on": "804004"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F90",
+      "off": "0000000000000000",
+      "on": "0980093C21482801"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F99",
+      "off": "00000000",
+      "on": "7C298D5D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13F9E",
+      "off": "000000",
+      "on": "08342D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FA2",
+      "off": "0000",
+      "on": "2815"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FA8",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FAB",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FB0",
+      "off": "000000000000000000",
+      "on": "0B80193C4840393703"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FBB",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FC0",
+      "off": "00000000000000000000000000",
+      "on": "0B80193C58403937A8FFBD2754"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FCE",
+      "off": "00000000000000000000000000000000000000",
+      "on": "BFAF0A80083CC86F08350B80093C703E293510"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FE2",
+      "off": "000000",
+      "on": "AA2734"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FE6",
+      "off": "0000",
+      "on": "0B25"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FEA",
+      "off": "0000",
+      "on": "0C8D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FEE",
+      "off": "000000",
+      "on": "2D8D04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FF2",
+      "off": "0000",
+      "on": "2925"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FF6",
+      "off": "0000",
+      "on": "4CAD"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FFA",
+      "off": "000000",
+      "on": "0DAD04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x13FFE",
+      "off": "00000000000000",
+      "on": "0825F9FF0B1504"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14006",
+      "off": "000000000000",
+      "on": "4A2509F82003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14010",
+      "off": "000000000000000000",
+      "on": "0A80083CC86F083510"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1401A",
+      "off": "000000",
+      "on": "A92734"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1401E",
+      "off": "0000",
+      "on": "0B25"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14022",
+      "off": "000000",
+      "on": "2C8D04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14026",
+      "off": "0000",
+      "on": "2925"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1402A",
+      "off": "000000",
+      "on": "0CAD04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1402E",
+      "off": "000000000000",
+      "on": "0825FBFF0B15"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14038",
+      "off": "00",
+      "on": "54"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1403A",
+      "off": "000000",
+      "on": "BF8F58"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1403E",
+      "off": "000000",
+      "on": "BD2708"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14042",
+      "off": "0000",
+      "on": "E003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14048",
+      "off": "000000000000000000000000",
+      "on": "0780033CEC2E638C703B0408"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x14058",
+      "off": "0000000000",
+      "on": "D8FFBD2720"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x1405E",
+      "off": "000000000000",
+      "on": "B4AFCCF90308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x54D64",
+      "off": "0A80",
+      "on": "18D5"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x54E08",
+      "off": "0A80",
+      "on": "2CD5"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E728",
+      "off": "D8FFBD2720",
+      "on": "E0CF020800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E72E",
+      "off": "B4AF",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E764",
+      "off": "2130",
+      "on": "F0D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E830",
+      "off": "0A80",
+      "on": "04D5"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6ECA1",
+      "off": "80",
+      "on": "D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6EDB8",
+      "off": "0780033CEC2E638C",
+      "on": "ACCF020800000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6EF18",
+      "off": "2188",
+      "on": "64D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6EF58",
+      "off": "0A80",
+      "on": "78D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6F014",
+      "off": "2188",
+      "on": "8CD4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6F0FC",
+      "off": "2188",
+      "on": "A0D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6F128",
+      "off": "0A80",
+      "on": "B4D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6F1B0",
+      "off": "2188",
+      "on": "C8D4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6F3CC",
+      "off": "0A80",
+      "on": "DCD4"
+    }
+  ],
+  "requires": [
+    "elemental-swords"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "id": "clock-tower-doors",
+  "label": "Clock Tower gear doors always open",
+  "category": "World and story",
+  "summary": "Both Clock Tower gear doors stay open.",
+  "edits": [
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x28AF8",
+      "off": "D00F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x28B58",
+      "off": "D00F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x28C30",
+      "off": "D00F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/NZ1/NZ1.BIN",
+      "offset": "0x28D0C",
+      "off": "D00F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x283E4",
+      "off": "6C0F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x28444",
+      "off": "6C0F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x28530",
+      "off": "6C0F638C",
+      "on": "0F000334"
+    },
+    {
+      "file": "ST/RNZ1/RNZ1.BIN",
+      "offset": "0x28608",
+      "off": "6C0F638C",
+      "on": "0F000334"
+    }
+  ],
+  "requires": []
+}

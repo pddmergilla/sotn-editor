@@ -1,0 +1,243 @@
+{
+  "id": "spell-int",
+  "label": "Spells scale with INT",
+  "category": "Alucard abilities and spells",
+  "summary": "Spell and form attack damage is multiplied by (INT + 500) / 500 instead of a flat bonus.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8518",
+      "off": "1E",
+      "on": "0F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8540",
+      "off": "23",
+      "on": "64"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5D9FC",
+      "off": "0B80013C2108220014",
+      "on": "1484248C1884258C1C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA06",
+      "off": "24",
+      "on": "26"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA08",
+      "off": "0B80013C210822001884258C0B80013C210822001C",
+      "on": "000003AE040004AE080005AE0C0006AE2084238C24"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA1E",
+      "off": "26",
+      "on": "24"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA20",
+      "off": "000003AE04",
+      "on": "2884258C10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA26",
+      "off": "04",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA28",
+      "off": "08",
+      "on": "14"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA2A",
+      "off": "05",
+      "on": "04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA2C",
+      "off": "0C",
+      "on": "18"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA2E",
+      "off": "06",
+      "on": "05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA30",
+      "off": "0B",
+      "on": "11"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA32",
+      "off": "01",
+      "on": "08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA34",
+      "off": "210822002084238C0B80013C21082200248424",
+      "on": "40A308350C00E817180002960980033CE07B63"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA48",
+      "off": "0B80013C210822002884258C100003AE14",
+      "on": "F4010934F4016324180043001210000015"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA5B",
+      "off": "AE18",
+      "on": "3402"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA5F",
+      "off": "AE3958000C00000000AA2A033CABAA633418",
+      "on": "341A004900B4F60308121000003958000C00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA72",
+      "off": "43",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA74",
+      "off": "6666063C6766C634",
+      "on": "0C0003341A004300"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA84",
+      "off": "C31F0200402805",
+      "on": "0A000334101000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA8C",
+      "off": "102000",
+      "on": "402805"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA90",
+      "off": "432004",
+      "on": "2128A2"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA94",
+      "off": "232083",
+      "on": "1A00A3"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DA98",
+      "off": "401804002118640080",
+      "on": "180002961500043412"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAA2",
+      "off": "03",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAA4",
+      "off": "23104300",
+      "on": "02000534"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAA9",
+      "off": "28A2",
+      "on": "1043"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAAC",
+      "off": "18",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAAE",
+      "off": "A6",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAB0",
+      "off": "C32F05",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAB4",
+      "off": "15",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAB6",
+      "off": "043418",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DABA",
+      "off": "02961018",
+      "on": "00000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAC0",
+      "off": "831803",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAC4",
+      "off": "231865",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DAC8",
+      "off": "211043",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DACC",
+      "off": "02",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DACE",
+      "off": "0534",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

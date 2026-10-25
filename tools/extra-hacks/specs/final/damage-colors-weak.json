@@ -1,0 +1,81 @@
+{
+  "id": "damage-colors-weak",
+  "label": "Damage number colors: weak and resist",
+  "category": "Menus and presentation",
+  "summary": "Weakness hits flash the GUARD colors and resisted hits are grey (update to the existing Damage Number Colors hack).",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E304",
+      "off": "B0",
+      "on": "A0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E32C",
+      "off": "B0",
+      "on": "A0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2E350",
+      "off": "B0",
+      "on": "A0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EAD4",
+      "off": "8D",
+      "on": "B0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EAD6",
+      "off": "0834",
+      "on": "4824"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EB14",
+      "off": "B0",
+      "on": "A0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EB18",
+      "off": "B0",
+      "on": "A0"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EB1C",
+      "off": "86",
+      "on": "08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EB1E",
+      "off": "29A208",
+      "on": "E00386"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2EB22",
+      "off": "E003",
+      "on": "29A2"
+    },
+    {
+      "file": "BIN/F_GAME.BIN",
+      "offset": "0x411C2",
+      "off": "22FE00",
+      "on": "10C221"
+    },
+    {
+      "file": "BIN/F_GAME.BIN",
+      "offset": "0x411C6",
+      "off": "22FE24FE45FE22FE22FE22FE22FE01C161D5C2E922FE45FE68FE",
+      "on": "10C210C2B5D610C210C210C210C208A16BADADB510C210C210C2"
+    }
+  ],
+  "requires": []
+}

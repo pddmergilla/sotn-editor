@@ -1,0 +1,159 @@
+{
+  "id": "duplichaos",
+  "label": "Duplichaos",
+  "category": "Items, relics and shops",
+  "summary": "The Duplicator becomes Duplichaos, an accessory that grants the power of Chaos on the Mystic Pendant tick.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x81A0",
+      "off": "0CFE",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x81A6",
+      "off": "0C5AE0FF",
+      "on": "00000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F040",
+      "off": "000000000000000000",
+      "on": "0480023CC4C8428C1F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F04A",
+      "off": "000000",
+      "on": "03343F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F04E",
+      "off": "000000",
+      "on": "42300E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F052",
+      "off": "0000",
+      "on": "4314"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F058",
+      "off": "0000000000",
+      "on": "E8FFBD2710"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F05E",
+      "off": "000000",
+      "on": "BFAF54"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F062",
+      "off": "00000000000000",
+      "on": "0434F0F5030C04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F06A",
+      "off": "000000",
+      "on": "053410"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F06E",
+      "off": "000000",
+      "on": "BF8F06"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F072",
+      "off": "000000",
+      "on": "401018"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F076",
+      "off": "00000000000000000000",
+      "on": "BD270980033CB07B628C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F084",
+      "off": "00",
+      "on": "1E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F086",
+      "off": "0000000000000000000000",
+      "on": "4224B07B62AC0980043C08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F092",
+      "off": "000000000000",
+      "on": "E003B07B8424"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED44",
+      "off": "5745414B",
+      "on": "4761696E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED49",
+      "off": "414C4C",
+      "on": "746865"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED4D",
+      "off": "496E66696E697465",
+      "on": "706F776572206F66"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED56",
+      "off": "4974656D",
+      "on": "4368616F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED5B",
+      "off": "20",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED66",
+      "off": "4154",
+      "on": "4841"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3ED69",
+      "off": "52",
+      "on": "53"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DD5C",
+      "off": "5400",
+      "on": "FFFF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x61DA8",
+      "off": "0980043CB07B8424",
+      "on": "103C030C00000000"
+    }
+  ],
+  "requires": []
+}

@@ -1,0 +1,135 @@
+{
+  "id": "prologue-skip",
+  "label": "Prologue skip",
+  "category": "World and story",
+  "summary": "New Alucard games skip the intro movie, the Richter prologue and the story scroll and start with the forest run into the castle; no prologue rewards, and boss records and the clock are reset.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x46FB0",
+      "off": "4990",
+      "on": "C2FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDB0",
+      "off": "14",
+      "on": "04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDB2",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDB4",
+      "off": "FC97428C000000000500401056",
+      "on": "0100023420BE20A075FF030803"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDC2",
+      "off": "04",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDD4",
+      "off": "09",
+      "on": "04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDD6",
+      "off": "04",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDD8",
+      "off": "A07B848C0980033CA47B638C00000000170083",
+      "on": "28CA632420000234000060ACFFFF4224FDFF40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDEC",
+      "off": "C217030009",
+      "on": "0400632404"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDF2",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FDF4",
+      "off": "B87B428C0980033CBC7B638C010042240980013CB87B22",
+      "on": "00CB20AC04CB20AC0980013C307C20AC347C20AC387C20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FE0C",
+      "off": "0980023CC07B428C01",
+      "on": "3C7C20ACAEFF030803"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FE16",
+      "off": "6324",
+      "on": "1034"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF00",
+      "off": "29",
+      "on": "64"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF02",
+      "off": "42280B0040143F0004341DF6030C04",
+      "on": "0408218000000980023CA074428C1F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF12",
+      "off": "05",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF14",
+      "off": "0980023CC07B428C00000000010042240980013CC07B22ACD3FF0308000000000980023CB87B428C",
+      "on": "10004314000000000480023CA0C9438C000000000B0060140000000030C7438C0000000007006014"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF40",
+      "off": "010042240980013CB87B22AC0980033CFC7B638C04",
+      "on": "0980023C1479438C00000000020060140000000007"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF56",
+      "off": "02",
+      "on": "04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF58",
+      "off": "1000621403",
+      "on": "4990030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5FF5E",
+      "off": "0234",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

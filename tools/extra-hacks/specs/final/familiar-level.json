@@ -1,0 +1,27 @@
+{
+  "id": "familiar-level",
+  "label": "Familiars gain a level per kill",
+  "category": "Familiars",
+  "summary": "Each kill gives the active familiar one level.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E1C4",
+      "off": "75",
+      "on": "36"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E1D8",
+      "off": "70",
+      "on": "31"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E338",
+      "off": "AB260234",
+      "on": "64004224"
+    }
+  ],
+  "requires": []
+}

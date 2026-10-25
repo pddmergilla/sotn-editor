@@ -1,0 +1,33 @@
+{
+  "id": "dropkick",
+  "label": "Down+X dropkick priority",
+  "category": "Alucard abilities and spells",
+  "summary": "Down + a fresh jump press always dropkicks, even after Sky Walker jumps.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x702B4",
+      "off": "04000234",
+      "on": "E82E428C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x702BC",
+      "off": "0100",
+      "on": "0040"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73095",
+      "off": "10",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x730AC",
+      "off": "10",
+      "on": "40"
+    }
+  ],
+  "requires": []
+}

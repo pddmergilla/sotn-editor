@@ -13,7 +13,9 @@ DL = Path(os.environ.get('SOTN_DOWNLOADS', r'C:\Users\omergilla\Downloads'))
 IMAGES = {
     'v': Path(os.environ.get('SOTN_VANILLA_BIN', DL / 'Castlevania - Symphony of the Night (USA)' / 'Castlevania - Symphony of the Night (USA) (Track 1).bin')),
     'o': Path(os.environ.get('SOTN_ASS_OLD_BIN', DL / 'Castlevania - Symphony of the Night Alter.bin')),   # ASS 1.3.1 (old base)
-    'a': Path(os.environ.get('SOTN_ASS_BIN', DL / 'Castlevania - Alternate Scarlet Symphony 2.0.bin')),    # current ASS
+    # ASS 2.0.10, the last 2.0 release; tools/ass2/build-final-hacks.js writes it from vanilla + the shipped PPF.
+    'a': Path(os.environ.get('SOTN_ASS_BIN', HERE.parents[1] / 'outputs' / 'ref' / 'ASS-2.0.10.bin')),
+    'f': Path(os.environ.get('SOTN_FINAL_BIN', HERE.parents[1] / 'MainBIN' / 'Castlevania - Alternate Scarlet Symphony 2.0.bin')),  # ASS -Final-
     'b': DL / 'Castlevania - Alternate Scarlet Symphony 2.0 - backup before Eat-Food-On-Pickup.bin',
     't': DL / 'Castlevania - ASS Test.bin',
 }

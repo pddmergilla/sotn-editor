@@ -1,0 +1,1263 @@
+{
+  "id": "title-final",
+  "label": "Title: Alternate Scarlet Symphony -Final-",
+  "category": "Menus and presentation",
+  "summary": "The title screen reads Alternate Scarlet Symphony -Final-. Always included in the full ASS -Final- patch.",
+  "edits": [
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36412",
+      "off": "0000",
+      "on": "1001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36416",
+      "off": "0000",
+      "on": "1001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3641B",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3641E",
+      "off": "1001",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36422",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3642E",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36436",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3643A",
+      "off": "0000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36452",
+      "off": "0000",
+      "on": "0110"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36457",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3645A",
+      "off": "0110",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3645F",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36462",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3646E",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36476",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36479",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3647C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36491",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36494",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36497",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3649A",
+      "off": "000001",
+      "on": "111100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3649E",
+      "off": "0001",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364A2",
+      "off": "11",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364A5",
+      "off": "0011",
+      "on": "1010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364A9",
+      "off": "101011",
+      "on": "001101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364AE",
+      "off": "10",
+      "on": "11"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364B3",
+      "off": "01",
+      "on": "11"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364B5",
+      "off": "101111",
+      "on": "000000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364B9",
+      "off": "001111",
+      "on": "100000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364BE",
+      "off": "0000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364D1",
+      "off": "00000000",
+      "on": "10111101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364D7",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364D9",
+      "off": "1011110100",
+      "on": "0010000010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364DF",
+      "off": "01000010",
+      "on": "00011001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364E4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364E6",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364E9",
+      "off": "100100011001",
+      "on": "000010000010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364F0",
+      "off": "0100",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364F3",
+      "off": "1000",
+      "on": "0001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364F6",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x364F9",
+      "off": "1000000100",
+      "on": "0011110010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36511",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36514",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36517",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36519",
+      "off": "1000",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3651C",
+      "off": "01000001000010",
+      "on": "00101111011000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36526",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36529",
+      "off": "100000",
+      "on": "001111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3652D",
+      "off": "1000",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36530",
+      "off": "0100",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36534",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36536",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36539",
+      "off": "101111",
+      "on": "000000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3653D",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36551",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36554",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36557",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36559",
+      "off": "1000",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3655D",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3655F",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36561",
+      "off": "0010",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36564",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36568",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3656B",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3656D",
+      "off": "1000",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36573",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36576",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36578",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3657C",
+      "off": "0000",
+      "on": "0110"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36591",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36594",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36596",
+      "off": "0000",
+      "on": "1011"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x36599",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3659B",
+      "off": "0001",
+      "on": "1100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3659E",
+      "off": "10",
+      "on": "11"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365A1",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365A3",
+      "off": "11",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365A5",
+      "off": "001111001000000010",
+      "on": "100000010011110100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365AF",
+      "off": "0001",
+      "on": "1100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365B4",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365B7",
+      "off": "11",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x365BE",
+      "off": "0000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C402",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C40A",
+      "off": "0000",
+      "on": "1001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C413",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C41A",
+      "off": "1000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C422",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C429",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C431",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C441",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C444",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C44B",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C452",
+      "off": "0001",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C459",
+      "off": "0010",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C45C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C461",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C464",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C469",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C471",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C481",
+      "off": "100000",
+      "on": "001101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C485",
+      "off": "0011",
+      "on": "1010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C48A",
+      "off": "11",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C48D",
+      "off": "1010",
+      "on": "0011"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C491",
+      "off": "000001",
+      "on": "101111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C496",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C49A",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C49D",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4A0",
+      "off": "00100000",
+      "on": "01110111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4A6",
+      "off": "0000011101",
+      "on": "1011001010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4AD",
+      "off": "1010",
+      "on": "0011"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4B5",
+      "off": "00111100101011",
+      "on": "10000001000000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4BD",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4C0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4C2",
+      "off": "1111",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4C6",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4CB",
+      "off": "10",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4CE",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4D2",
+      "off": "0001",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4D5",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4D8",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4DA",
+      "off": "1000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4DD",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4E0",
+      "off": "0000111100",
+      "on": "0101100001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4E6",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4E9",
+      "off": "0110",
+      "on": "1001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4EE",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4F9",
+      "off": "1001",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4FC",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C4FE",
+      "off": "0000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C502",
+      "off": "000001",
+      "on": "111100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C50A",
+      "off": "1111",
+      "on": "0001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C50E",
+      "off": "000000",
+      "on": "111101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C512",
+      "off": "0001",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C515",
+      "off": "10111101",
+      "on": "00000000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C51A",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C51C",
+      "off": "0000",
+      "on": "0110"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C51F",
+      "off": "00000000",
+      "on": "10010110"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C526",
+      "off": "0010",
+      "on": "0100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C529",
+      "off": "0110",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C52E",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C537",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C539",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C53C",
+      "off": "0110",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C53F",
+      "off": "1000",
+      "on": "0001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C543",
+      "off": "0001",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C548",
+      "off": "0110",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C54B",
+      "off": "10",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C552",
+      "off": "00010010",
+      "on": "10000100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C559",
+      "off": "0010",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C55E",
+      "off": "0000001000",
+      "on": "1101010110"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C565",
+      "off": "001101010110",
+      "on": "101011001000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C56E",
+      "off": "101100",
+      "on": "000001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C575",
+      "off": "100000",
+      "on": "001101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C579",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C57C",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C57E",
+      "off": "1101",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C584",
+      "off": "00001111",
+      "on": "01100000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C58A",
+      "off": "11",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C58C",
+      "off": "01100000",
+      "on": "00001111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C592",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C596",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C59A",
+      "off": "00",
+      "on": "11"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5A0",
+      "off": "000011110000",
+      "on": "010110000110"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5A8",
+      "off": "010110",
+      "on": "001000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5AD",
+      "off": "100000",
+      "on": "001111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5B6",
+      "off": "11110010",
+      "on": "00000100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5BC",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5DE",
+      "off": "0000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5E5",
+      "off": "001111",
+      "on": "100000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5ED",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5F6",
+      "off": "0000",
+      "on": "1111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3C5FE",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E401",
+      "off": "00000000",
+      "on": "10111101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E406",
+      "off": "1111",
+      "on": "0001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E40E",
+      "off": "1111",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E412",
+      "off": "0000",
+      "on": "1001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E441",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E445",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E448",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E44D",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E450",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E453",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E480",
+      "off": "0100",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E486",
+      "off": "000001000000",
+      "on": "100100101011"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E48D",
+      "off": "10001001",
+      "on": "00110100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E493",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E4C0",
+      "off": "01000000",
+      "on": "00101101"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E4C7",
+      "off": "11",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E4C9",
+      "off": "0000",
+      "on": "1001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E4CC",
+      "off": "0010100101",
+      "on": "0100001000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E4D3",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E4D5",
+      "off": "000000",
+      "on": "101111"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E500",
+      "off": "0100",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E506",
+      "off": "1100",
+      "on": "0001"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E509",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E50C",
+      "off": "0010010001",
+      "on": "0100111100"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E513",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E540",
+      "off": "0100",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E545",
+      "off": "10",
+      "on": "00"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E547",
+      "off": "00010011",
+      "on": "01001000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E54C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E54F",
+      "off": "0001",
+      "on": "1000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E553",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E580",
+      "off": "0100",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E585",
+      "off": "1011",
+      "on": "0010"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E588",
+      "off": "010011",
+      "on": "001000"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E58C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E590",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/F_TITLE1.BIN",
+      "offset": "0x3E592",
+      "off": "0000",
+      "on": "1011"
+    }
+  ],
+  "requires": []
+}

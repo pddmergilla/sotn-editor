@@ -1,0 +1,111 @@
+{
+  "id": "petrification",
+  "label": "Petrification rework",
+  "category": "Status and damage rules",
+  "summary": "Petrification lasts 3 seconds with no directional escape; hits while petrified have a 30-frame cooldown.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x74E14",
+      "off": "0000239601",
+      "on": "5854040800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x74E1A",
+      "off": "0234",
+      "on": "2396"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x74ED8",
+      "off": "C6F6030C08",
+      "on": "B400023400"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x74EDE",
+      "off": "0534",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75114",
+      "off": "0780023CEC2E428C0000000000F0423008004014",
+      "on": "A1540408000000000980023C0D006010A07B428C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7512C",
+      "off": "07",
+      "on": "0A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7512E",
+      "off": "00161000",
+      "on": "40100780"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75133",
+      "off": "340B80023C44CE428C00000000500040100000000010",
+      "on": "3C7E2F429400000000FFFF42240780013C7E2F22A403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7514A",
+      "off": "02340780033C7E2F63940780053CEC2EA5240780013C2A3422A4",
+      "on": "401C000000006654040821900000875304080100023403000016"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75166",
+      "off": "A28CFF",
+      "on": "0000EC"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7516A",
+      "off": "6324",
+      "on": "6014"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7516D",
+      "off": "F0423400",
+      "on": "00000001"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75172",
+      "off": "A2AC0780013C7E2F23A4FED1",
+      "on": "04345A38040C1E0005344754"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7517F",
+      "off": "0C080604340780023C7E2F4294",
+      "on": "08000023960000000000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75190",
+      "off": "1E",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75192",
+      "off": "401401",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x75196",
+      "off": "0434",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

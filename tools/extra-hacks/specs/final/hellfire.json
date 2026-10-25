@@ -1,0 +1,171 @@
+{
+  "id": "hellfire",
+  "label": "Hellfire casts in place",
+  "category": "Alucard abilities and spells",
+  "summary": "Hellfire skips the teleport and its windup is under half a second.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0xD2A5",
+      "off": "39",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xD2AB",
+      "off": "35",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA74",
+      "off": "18",
+      "on": "06"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA78",
+      "off": "04",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA7C",
+      "off": "04",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA80",
+      "off": "04",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA84",
+      "off": "06",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA88",
+      "off": "07",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA8C",
+      "off": "04",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA90",
+      "off": "19",
+      "on": "07"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA94",
+      "off": "04",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xEA98",
+      "off": "04",
+      "on": "01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7646C",
+      "off": "01",
+      "on": "3C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x76470",
+      "off": "23",
+      "on": "6B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x76474",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x76476",
+      "off": "0000",
+      "on": "0234"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x86FB0",
+      "off": "C94A",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x86FB3",
+      "off": "0C",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x86FBC",
+      "off": "900784240B80053C2807A524C94A000C",
+      "on": "7C0000A67E0000A648000234800002A6"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x87034",
+      "off": "31",
+      "on": "39"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x87044",
+      "off": "FED1040C",
+      "on": "00000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8704C",
+      "off": "2C",
+      "on": "07"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8704F",
+      "off": "96",
+      "on": "34"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x87054",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x87056",
+      "off": "4224",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x87264",
+      "off": "50",
+      "on": "48"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x872BC",
+      "off": "50",
+      "on": "48"
+    }
+  ],
+  "requires": []
+}

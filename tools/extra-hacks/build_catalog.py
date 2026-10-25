@@ -1,9 +1,14 @@
-"""Build ../../extra-hacks-catalog.js from specs/*.json (one research spec per hack), ui.json (labels and
-UI text), overrides.json (catalog-only adjustments) and a code fingerprint taken from the reference images.
+"""Build ../../extra-hacks-catalog.js from specs/*.json (one research spec per hack), specs/final/ (the ASS -Final-
+hacks written by tools/ass2/build-final-hacks.js), ui.json (labels and UI text), overrides.json (catalog-only
+adjustments) and a code fingerprint taken from the reference images.
 
-Needs the vanilla US track 1, ASS 1.3.1 and ASS 2.0 BINs (paths in sotn.py, or SOTN_VANILLA_BIN,
-SOTN_ASS_OLD_BIN, SOTN_ASS_BIN). Every spec "on" run is checked against ASS 2.0 before writing.
+Needs the vanilla US track 1, ASS 1.3.1, ASS 2.0.10 and ASS -Final- BINs (paths in sotn.py, or SOTN_VANILLA_BIN,
+SOTN_ASS_OLD_BIN, SOTN_ASS_BIN, SOTN_FINAL_BIN). Every 2.0 spec "on" run is checked against ASS 2.0.10 and every
+Final spec against ASS -Final- before writing.
 Only needed when a hack is added or changed; stat, text and map edits in later builds need no rebuild.
+
+A Final hack may rewrite bytes an earlier hack owns. Those bytes stay with the earlier hack as a layer: the later
+hack's bytes are written over the earlier hack's when the later one is selected, and the later hack requires it.
 
 usage: python build_catalog.py [--out PATH] [--allow-missing]
 """
@@ -14,6 +19,8 @@ from stat_buffs import dark_extension, write_stones, stone_edits
 
 OUT = Path(__file__).resolve().parents[2] / 'extra-hacks-catalog.js'
 SPECS = HERE / 'specs'
+FINAL = SPECS / 'final'
+CLASSIC = 'Alternate Scarlet Symphony 2.0'
 ORDER = ['minimap', 'fast-warp', 'damage-colors', 'mist-gas-swap', 'aggressive-enemy', 'karasuman', 'slogra', 'dopplegangers', 'succubus',
          'richter-no-flinch', 'richter-ai', 'richter-save', 'quick-items', 'mp-items', 'heal-hearts', 'instant-food', 'eat-food-on-pickup',
          'hint-items-no-attack', 'subweapon-mp', 'agunea-limit', 'stopwatch-rework', 'holy-water-richter', 'wolf-no-jump', 'subweapon-weapon', 'all-cloaks-hearts',
@@ -70,7 +77,7 @@ def load_specs(allow_missing):
 
 def convert(spec):
     edits = []
-    for e in spec.get('edits', []):
+    for index, e in enumerate(spec.get('edits', [])):
         f, off, on, of = e['file'], h(e['offset']), bytes.fromhex(e['on']), bytes.fromhex(e['off'])
         assert len(on) == len(of) and on, (spec['id'], e)
         base_van = None
@@ -83,9 +90,15 @@ def convert(spec):
         # ASS 2.0 holds either the plain form or, where another hack changes this one's bytes, the combined form.
         # A work-in-progress hack ("wip") may be left off in ASS 2.0.
         allowed = (on, with_on, of) if spec.get('wip') or e.get('optional') else (on, with_on)
+        # The reference ASS image may hold an earlier version the spec still recognizes.
+        allowed += tuple(bytes.fromhex(version[index]) for version in spec.get('onVersions', []))
         rec = {'file': f, 'offset': off, 'off': of.hex().upper(), 'on': on.hex().upper()}
         if e.get('optional'):
             rec['optional'] = True
+        locate = OVERRIDES.get(spec['id'], {}).get('locate', {}).get(f'{f}:{off:#x}')
+        if locate:
+            # A stage entity's params, found by its layout record (x, y, id, slot) because map edits re-pack layouts.
+            rec['locate'] = locate
         if with_on is not None:
             assert len(with_on) == len(on)
             rec['with'] = {'feature': e['with']['feature'], 'on': with_on.hex().upper()}
@@ -177,6 +190,78 @@ def convert_entities(spec):
     return rows
 
 
+def add_final(features):
+    """Append the ASS -Final- hacks. A byte an earlier hack already owns becomes a layer on that hack's edit
+    (written over it while the Final hack is selected), and the Final hack then requires that hack."""
+    index = json.loads((FINAL / 'index.json').read_text(encoding='utf-8'))
+    claim = {}  # (file, offset) -> (owner id, edit record, position in the record)
+    for ft in features:
+        for e in ft['edits']:
+            for i in range(len(e['on']) // 2):
+                claim[(e['file'], e['offset'] + i)] = (ft['id'], e, i)
+    for fid in index['order']:
+        s = json.loads((FINAL / f'{fid}.json').read_text(encoding='utf-8'))
+        requires, recs = list(s.get('requires', [])), []
+        for e in s['edits']:
+            f, off, on, of = e['file'], h(e['offset']), bytes.fromhex(e['on']), bytes.fromhex(e['off'])
+            old = read(f, 'a')
+            n = min(len(on), max(0, len(old) - off))
+            assert old[off:off + n] == of[:n], f'{fid}: off bytes do not match ASS 2.0.10 at {f} {off:#x}'
+            run = None
+            for i in range(len(on)):
+                key = (f, off + i)
+                if key in claim:
+                    owner, rec, pos = claim[key]
+                    layer = next((x for x in rec.setdefault('layers', []) if x['feature'] == fid), None)
+                    if layer is None:
+                        layer = {'feature': fid, 'at': []}
+                        rec['layers'].append(layer)
+                    layer['at'].append((pos, on[i]))
+                    if owner not in requires:
+                        requires.append(owner)
+                    run = None
+                    continue
+                if run is None:
+                    run = {'file': f, 'offset': off + i, 'off': bytearray(), 'on': bytearray()}
+                    recs.append(run)
+                claim[key] = (fid, run, len(run['on']))
+                run['off'].append(of[i])
+                run['on'].append(on[i])
+        feat = {'id': fid, 'label': s['label'], 'category': s['category'], 'summary': s['summary'], 'final': True,
+                'vanilla': 'Available only on Alternate Scarlet Symphony images.', 'edits': recs}
+        if requires:
+            feat['requires'] = requires
+        if s.get('finalOnly'):
+            feat['finalOnly'] = True
+        features.append(feat)
+    # A Final hack's bytes with every later layer written over them are what ASS -Final- holds.
+    for ft in features:
+        for e in ft['edits'] if ft.get('final') else []:
+            expect = bytearray(e['on'])
+            for layer in e.get('layers', []):
+                for pos, value in layer['at']:
+                    expect[pos] = value
+            fin = read(e['file'], 'f')
+            assert fin[e['offset']:e['offset'] + len(expect)] == expect, f"{ft['id']}: bytes do not match ASS -Final- at {e['file']} {e['offset']:#x}"
+    # Layers as runs of [position, bytes]; edit bytes as hex.
+    for ft in features:
+        for e in ft['edits']:
+            if isinstance(e['on'], bytearray):
+                e['off'], e['on'] = bytes(e['off']).hex().upper(), bytes(e['on']).hex().upper()
+            for layer in e.get('layers', []):
+                if layer['at'] and isinstance(layer['at'][0], tuple):
+                    runs = []
+                    for pos, value in sorted(layer['at']):
+                        if runs and runs[-1][0] + len(runs[-1][1]) == pos:
+                            runs[-1][1].append(value)
+                        else:
+                            runs.append([pos, bytearray([value])])
+                    layer['at'] = [[pos, bytes(b).hex().upper()] for pos, b in runs]
+        if ft.get('final') and not ft['edits']:
+            ft['layerOnly'] = True  # every byte rewrites another hack: present when its layers are
+    return index
+
+
 def exclusion_map(specs):
     excl = {f: bytearray(len(read(f, 'v'))) for f in MARKER_FILES}
 
@@ -196,11 +281,12 @@ def exclusion_map(specs):
     dra = read('DRA.BIN', 'v')
     init = struct.unpack_from('<I', dra, 0x8003C854 - 0x8003C770)[0] - 0x800A0000
     mark('DRA.BIN', init, init + 0x1400, 0)
-    # Anything the private ASS 2.0 patches or editor builds changed is not a stable family marker.
+    # Anything the private ASS 2.0 patches, the Final hacks or editor builds changed is not a stable family marker.
     for f in MARKER_FILES:
-        o, a = read(f, 'o'), read(f, 'a')
-        for s0, e0 in ranges(o, a):
-            mark(f, s0, e0, 4)
+        o = read(f, 'o')
+        for kind in ('a', 'f'):
+            for s0, e0 in ranges(o, read(f, kind)):
+                mark(f, s0, e0, 4)
     return excl
 
 
@@ -277,7 +363,9 @@ def main():
                 vedits.append({'file': f, 'offset': off, 'off': of.hex().upper(), 'on': on.hex().upper()})
             feat['vanillaEdits'] = vedits
             feat['vanilla'] = True
+        feat['category'] = CLASSIC
         features.append(feat)
+    final_index = add_final(features)
     ids = {ft['id'] for ft in features}
     for ft in features:
         for e in ft['edits']:
@@ -287,9 +375,10 @@ def main():
     fp = fingerprint(specs)
     sizes = {}
     for f in sorted({e['file'] for ft in features for e in ft['edits']} | set(MARKER_FILES)):
-        sizes[f] = files_v_size(f)
-    source_hash = hashlib.sha256(IMAGES['a'].read_bytes()).hexdigest().upper()[:8]
-    catalog = {'version': 2, 'built': f'from ASS 1.3.1, ASS 2.0 ({source_hash}) and vanilla US', 'files': sizes,
+        # Files ASS -Final- enlarged are accepted at either size.
+        sizes[f] = files_v_size(f) if files('f')[f][1] == files_v_size(f) else [files_v_size(f), files('f')[f][1]]
+    built = f"from ASS 1.3.1, ASS 2.0.10 ({final_index['base']['sha256'][:8]}), ASS -Final- ({final_index['final']['sha256'][:8]}) and vanilla US"
+    catalog = {'version': 2, 'built': built, 'files': sizes,
                'fingerprint': fp, 'features': features}
     text = '// Extra Hacks catalog (generated). Byte signatures per hack, plus a code fingerprint for vanilla US / ASS.\n'
     text += 'window.SotnExtraHacks = ' + json.dumps(catalog, separators=(',', ':')) + ';\n'

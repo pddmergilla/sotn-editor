@@ -1,0 +1,5853 @@
+{
+  "id": "stone-sword",
+  "label": "Stone Sword Medusa Shield special",
+  "category": "Weapons and specials",
+  "summary": "QCF + attack casts the Medusa Shield spell without a shield.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x623B",
+      "off": "25",
+      "on": "1B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6244",
+      "off": "00",
+      "on": "D3"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF8E0",
+      "off": "000000000000",
+      "on": "444444046006"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF949",
+      "off": "00",
+      "on": "0C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF95C",
+      "off": "000000000000",
+      "on": "444444444404"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF965",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF9C9",
+      "off": "000000000000000000",
+      "on": "6D7766666666766656"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF9D8",
+      "off": "000000000000",
+      "on": "444444444444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBF9E6",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFA49",
+      "off": "0000000000000000",
+      "on": "3B44444444444444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFA54",
+      "off": "000000000000",
+      "on": "404444444444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFA67",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFAC9",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFAD4",
+      "off": "0000",
+      "on": "4044"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFAE8",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFB45",
+      "off": "0000",
+      "on": "5005"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFB69",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFBC4",
+      "off": "000000",
+      "on": "604603"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFBEA",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFC43",
+      "off": "000000",
+      "on": "604603"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFC6B",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFCC1",
+      "off": "00000000",
+      "on": "C0604603"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFCEC",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFD41",
+      "off": "000000",
+      "on": "DB4503"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFD4E",
+      "off": "00",
+      "on": "0C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFD6D",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFDC1",
+      "off": "0000",
+      "on": "C133"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFDCB",
+      "off": "00000000",
+      "on": "545655C4"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFDEE",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFE41",
+      "off": "0000",
+      "on": "100B"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFE4B",
+      "off": "00000000",
+      "on": "303333A2"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFE6F",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFEF0",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFF71",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xBFFF2",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0073",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC00F4",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0175",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC01C0",
+      "off": "00000000000000000000000000000000000000000000000000000000",
+      "on": "50657677777777777777777777777777777777777777777777777706"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC01F6",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0277",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC02F8",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0379",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC03FA",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0542",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC05C2",
+      "off": "00",
+      "on": "CA"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC05CC",
+      "off": "0000",
+      "on": "4044"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0641",
+      "off": "000000",
+      "on": "A04D07"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC064D",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC06C1",
+      "off": "000000",
+      "on": "A03C74"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC06CF",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0743",
+      "off": "0000",
+      "on": "4466"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0750",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC07C4",
+      "off": "0000",
+      "on": "5406"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC07D2",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0845",
+      "off": "0000",
+      "on": "6406"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0853",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC08C5",
+      "off": "0000",
+      "on": "4075"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC08D5",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0946",
+      "off": "0000",
+      "on": "4067"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0956",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC09C7",
+      "off": "0000",
+      "on": "5406"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC09D8",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0A48",
+      "off": "0000",
+      "on": "6406"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0A59",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC0AC9",
+      "off": "00",
+      "on": "54"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC1000",
+      "off": "F8B1",
+      "on": "3CCF"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC1E00",
+      "off": "0000A29402",
+      "on": "D9F3050800"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC1E06",
+      "off": "A524",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC36F4",
+      "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "8CC71780A8C71780C4C71780E0C71780FCC7178018C8178034C8178050C817806CC8178088C81780A4C81780C0C81780DCC81780F8C8178014C9178030C917804CC9178068C9178084C91780A0C91780BCC91780D8C91780F4C9178010CA17802CCA178048CA178064CA178080CA17809CCA1780B8CA1780D4CA1780F0CA17800CCB178028CB178044CB178060CB17807CCB178098CB178001"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC378E",
+      "off": "00000000000000",
+      "on": "3001FBFFE0FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3796",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC379C",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC379E",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37A0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37A2",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37A8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37AA",
+      "off": "00000000000000",
+      "on": "1001F6FFEFFF38"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37B2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37B8",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37BA",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37BC",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37BE",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37C4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37C6",
+      "off": "000000",
+      "on": "20011C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37CA",
+      "off": "000000",
+      "on": "EFFF18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37CE",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37D4",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37D6",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37D8",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37DA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37E0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37E2",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37E4",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37E6",
+      "off": "000000",
+      "on": "F1FF20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37EA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37F0",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37F2",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37F4",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37F6",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC37FC",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3800",
+      "off": "0000000000",
+      "on": "F4FFF4FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3806",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC380C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC380E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3810",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3812",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3818",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC381C",
+      "off": "0000000000",
+      "on": "ECFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3822",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3828",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC382A",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC382C",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC382E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3834",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3837",
+      "off": "000000000000",
+      "on": "01EBFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC383E",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3844",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3846",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3848",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC384A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3850",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3853",
+      "off": "000000000000",
+      "on": "01EAFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC385A",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3860",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3862",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3864",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3866",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC386C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC386F",
+      "off": "000000000000",
+      "on": "01EAFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3876",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC387C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC387E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3880",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3882",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3888",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC388A",
+      "off": "00000000000000",
+      "on": "3001F3FFF1FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3892",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3898",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC389A",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC389C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC389E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38A4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38A6",
+      "off": "00000000",
+      "on": "1001EEFF"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38AC",
+      "off": "00",
+      "on": "38"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38AE",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38B4",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38B6",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38B8",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38BA",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38C0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38C2",
+      "off": "000000",
+      "on": "200114"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38C8",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38CA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38D0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38D2",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38D4",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38D6",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38DC",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38DE",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38E0",
+      "off": "000000",
+      "on": "FDFF03"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38E4",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38E6",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38EC",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38EE",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38F0",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38F2",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38F8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC38FC",
+      "off": "000000",
+      "on": "EDFF05"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3900",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3902",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3908",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC390A",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC390C",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC390E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3914",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3916",
+      "off": "00000000000000",
+      "on": "2001EDFFFFFF30"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC391E",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3924",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3926",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3928",
+      "off": "00",
+      "on": "F8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC392A",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3930",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3932",
+      "off": "000000",
+      "on": "10010E"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3936",
+      "off": "00",
+      "on": "0D"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3938",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC393A",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3940",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3942",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3944",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3946",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC394C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3950",
+      "off": "000000",
+      "on": "FCFF07"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3954",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3956",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC395C",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC395E",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3960",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3962",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3968",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC396C",
+      "off": "000000",
+      "on": "EBFF06"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3970",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3972",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3978",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC397A",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC397C",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC397E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3984",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3988",
+      "off": "000000",
+      "on": "E5FF06"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC398C",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC398E",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3994",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3996",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3998",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC399A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39A0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39A3",
+      "off": "00000000",
+      "on": "01E4FF06"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39A8",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39AA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39B0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39B2",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39B4",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39B6",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39BC",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39BF",
+      "off": "00000000",
+      "on": "01E3FF06"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39C4",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39C6",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39CC",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39CE",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39D0",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39D2",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39D8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39DB",
+      "off": "00000000",
+      "on": "01E2FF06"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39E0",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39E2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39E8",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39EA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39EC",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39EE",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39F4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39F6",
+      "off": "00000000000000",
+      "on": "3001F7FFDFFF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC39FE",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A04",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A06",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A08",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A0A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A10",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A12",
+      "off": "00000000000000",
+      "on": "1001F4FFEDFF38"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A1A",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A20",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A22",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A24",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A26",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A2C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A2E",
+      "off": "000000",
+      "on": "20011A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A32",
+      "off": "000000",
+      "on": "EDFF18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A36",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A3C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A3E",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A40",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A42",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A48",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A4A",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A4C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A4E",
+      "off": "000000",
+      "on": "F0FF20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A52",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A58",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A5A",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A5C",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A5E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A64",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A68",
+      "off": "0000000000",
+      "on": "F2FFF3FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A6E",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A74",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A76",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A78",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A7A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A80",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A84",
+      "off": "0000000000",
+      "on": "EEFFF6FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A8A",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A90",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A92",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A94",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A96",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A9C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3A9E",
+      "off": "00000000000000",
+      "on": "3001EFFFDDFF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AA6",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AAC",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AAE",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AB0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AB2",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AB8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ABA",
+      "off": "00000000000000",
+      "on": "1001EFFFEFFF38"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AC2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AC8",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ACA",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ACC",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ACE",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AD4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AD6",
+      "off": "000000",
+      "on": "200116"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ADA",
+      "off": "000000",
+      "on": "EFFF18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ADE",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AE4",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AE6",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AE8",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AEA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AF0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AF2",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AF4",
+      "off": "0000000000",
+      "on": "FEFFF2FF20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3AFA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B00",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B02",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B04",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B06",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B0C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B10",
+      "off": "0000000000",
+      "on": "EFFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B16",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B1C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B1E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B20",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B22",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B28",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B2A",
+      "off": "00000000000000",
+      "on": "2001F4FFF4FF30"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B32",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B38",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B3A",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B3C",
+      "off": "00",
+      "on": "F8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B3E",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B44",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B46",
+      "off": "000000",
+      "on": "100115"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B4A",
+      "off": "00",
+      "on": "02"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B4C",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B4E",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B54",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B56",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B58",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B5A",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B60",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B66",
+      "off": "000000",
+      "on": "FCFF20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B6A",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B70",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B72",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B74",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B76",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B7C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B80",
+      "off": "0000000000",
+      "on": "ECFFF7FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B86",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B8C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B8E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B90",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B92",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B98",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3B9B",
+      "off": "000000000000",
+      "on": "01E5FFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3BA2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3BA8",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3BAA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3BAC",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3BAE",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3BB6",
+      "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "2104C6186B2D1042B45E376FFF7F427C8410EB107321182E3C43010202040304040605060606070608060906FFFF0A080B0A0C0A0D060E061306140615061606FFFF0A080F0C100E111012061306140615061606FFFF1712181419141A061B061C06FFFF"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3C1C",
+      "off": "0000000000000000000000000000",
+      "on": "1D161E181F18200621062606FFFF"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3C2C",
+      "off": "0000000000000000000000000000",
+      "on": "1D16221A231C240625062606FFFF"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3C40",
+      "off": "00000000000000000000",
+      "on": "03E8050419F31803E0E1"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3C4C",
+      "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "FBFB050411041803070F0E0813150F070D121105FFE7050417F11807F7E5050413F218070F02130A1D080B08A4CF17803CCC1780"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3C82",
+      "off": "00000000",
+      "on": "0B06A704"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3C8A",
+      "off": "0000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "2104C6186B2D1042B45E376FFF7F427C8410EB107321182E3C43DF18E107E0FFBD2710"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CAE",
+      "off": "0000000000",
+      "on": "B0AF218080"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CB4",
+      "off": "00",
+      "on": "1C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CB6",
+      "off": "000000",
+      "on": "BFAF18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CBA",
+      "off": "000000",
+      "on": "B2AF14"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CBE",
+      "off": "000000",
+      "on": "B1AF30"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CC2",
+      "off": "0000000000000000000000000000",
+      "on": "03960780023CD833428CFF7F6330"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CD2",
+      "off": "00000000000000000000000000",
+      "on": "02AE0780023CDC33428C021A03"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CE0",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CE2",
+      "off": "00000000000000000000",
+      "on": "02AE0780023CEC334294"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CED",
+      "off": "0000",
+      "on": "2103"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CF0",
+      "off": "00",
+      "on": "14"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3CF2",
+      "off": "00000000000000000000000000",
+      "on": "02A61880023C48CC4224218882"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D00",
+      "off": "000000000000000000",
+      "on": "0780053C8434A5900C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D0A",
+      "off": "0000",
+      "on": "2492"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D10",
+      "off": "000000",
+      "on": "2B10A4"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D14",
+      "off": "00",
+      "on": "55"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D16",
+      "off": "0000000000",
+      "on": "4014219060"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D1C",
+      "off": "00",
+      "on": "07"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D1E",
+      "off": "0000000000",
+      "on": "82242A10A2"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D24",
+      "off": "00",
+      "on": "51"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D26",
+      "off": "0000",
+      "on": "4010"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D2C",
+      "off": "0000000000000000",
+      "on": "0780023C662F4294"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D38",
+      "off": "00",
+      "on": "4C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D3A",
+      "off": "0000",
+      "on": "4010"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D40",
+      "off": "00",
+      "on": "2C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D42",
+      "off": "0000",
+      "on": "0296"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D48",
+      "off": "00",
+      "on": "28"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D4A",
+      "off": "0000",
+      "on": "4014"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D50",
+      "off": "000000000000000000000000",
+      "on": "1880043CF0C68424A0EB050C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D60",
+      "off": "00000000000000000000000000",
+      "on": "1880033CC8AC638C1180022454"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D6E",
+      "off": "00000000000000",
+      "on": "02A62401023416"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D76",
+      "off": "000000",
+      "on": "02A664"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D7A",
+      "off": "000000",
+      "on": "02340A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D7E",
+      "off": "000000",
+      "on": "60105A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D82",
+      "off": "000000",
+      "on": "02A654"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D86",
+      "off": "000000",
+      "on": "02965A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D8A",
+      "off": "000000",
+      "on": "039602"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D8E",
+      "off": "000000",
+      "on": "422454"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D92",
+      "off": "000000",
+      "on": "02A616"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D96",
+      "off": "000000",
+      "on": "029602"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D9A",
+      "off": "000000",
+      "on": "63245A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3D9E",
+      "off": "000000",
+      "on": "03A618"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DA2",
+      "off": "000000",
+      "on": "422416"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DA6",
+      "off": "00000000",
+      "on": "02A62120"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DAB",
+      "off": "0000",
+      "on": "0216"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DAE",
+      "off": "000000",
+      "on": "039608"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DB2",
+      "off": "000000",
+      "on": "259606"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DB6",
+      "off": "000000",
+      "on": "023C34"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DBA",
+      "off": "0000000000",
+      "on": "02AE211865"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DC0",
+      "off": "00",
+      "on": "16"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DC2",
+      "off": "000000000000000000000000",
+      "on": "03A60780023CFC3342942128"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DD0",
+      "off": "000000000000000000",
+      "on": "FEFF4224FDEB050C24"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DDA",
+      "off": "000000",
+      "on": "02A62C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DDE",
+      "off": "0000",
+      "on": "0296"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DE4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DE6",
+      "off": "000000",
+      "on": "42242C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DEA",
+      "off": "0000000000000000000000",
+      "on": "02A60780023C843442900C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DF6",
+      "off": "0000",
+      "on": "2392"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3DFC",
+      "off": "000000",
+      "on": "231043"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E00",
+      "off": "00",
+      "on": "AC"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E02",
+      "off": "0000000000000000000000",
+      "on": "02A20780033C2A34638401"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E0E",
+      "off": "000000",
+      "on": "02340D"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E12",
+      "off": "0000",
+      "on": "6214"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E18",
+      "off": "000000000000000000",
+      "on": "0780033C283463940D"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E22",
+      "off": "0000",
+      "on": "2292"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E28",
+      "off": "00",
+      "on": "07"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E2A",
+      "off": "0000",
+      "on": "6214"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E30",
+      "off": "00",
+      "on": "0A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E32",
+      "off": "00000000000000000000",
+      "on": "24960480023CDCC7428C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E40",
+      "off": "000000",
+      "on": "09F840"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E48",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E4A",
+      "off": "0000",
+      "on": "248E"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E4E",
+      "off": "00000000000000000000",
+      "on": "258E0480023C14C8428C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E5C",
+      "off": "000000",
+      "on": "09F840"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E64",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E66",
+      "off": "0000",
+      "on": "4104"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E6C",
+      "off": "000000000000",
+      "on": "55EB050C2120"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E73",
+      "off": "0000000000",
+      "on": "02C8F30508"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E7C",
+      "off": "0000000000000000",
+      "on": "1880023CA0CF428C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E88",
+      "off": "00",
+      "on": "16"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E8A",
+      "off": "000000",
+      "on": "401401"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E8E",
+      "off": "00000000000000000000",
+      "on": "02340780033C28346394"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E9C",
+      "off": "00",
+      "on": "11"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3E9E",
+      "off": "00000000000000",
+      "on": "6214FFFF422602"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EA6",
+      "off": "000000",
+      "on": "422C0E"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EAA",
+      "off": "00000000",
+      "on": "40102120"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EAF",
+      "off": "0000000000",
+      "on": "02FFFF4526"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EB5",
+      "off": "0000",
+      "on": "2C05"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EB8",
+      "off": "000000000000000000",
+      "on": "1880023CC8AC428C3A"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EC2",
+      "off": "000000",
+      "on": "A52401"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EC6",
+      "off": "0000",
+      "on": "4224"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EC9",
+      "off": "0000",
+      "on": "1302"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ECC",
+      "off": "000000",
+      "on": "212845"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3ED0",
+      "off": "0000000000000000",
+      "on": "0480023CF4C7428C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EDC",
+      "off": "000000",
+      "on": "09F840"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EE0",
+      "off": "0000",
+      "on": "2130"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EE4",
+      "off": "00000000000000000000000000000000000000000000000000",
+      "on": "0780023C283442940780033CF13363901880013CA0CF22AC19"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3EFE",
+      "off": "00000000000000000000",
+      "on": "03A20780023CF4334294"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F0C",
+      "off": "00",
+      "on": "1C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F0E",
+      "off": "00000000000000000000",
+      "on": "02A60780023CFA334294"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F1C",
+      "off": "00",
+      "on": "22"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F1E",
+      "off": "000000",
+      "on": "02A61C"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F22",
+      "off": "000000",
+      "on": "BF8F18"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F26",
+      "off": "000000",
+      "on": "B28F14"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F2A",
+      "off": "000000",
+      "on": "B18F10"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F2E",
+      "off": "000000",
+      "on": "B08F20"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F32",
+      "off": "000000",
+      "on": "BD2708"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F36",
+      "off": "0000",
+      "on": "E003"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F3C",
+      "off": "00",
+      "on": "AE"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F3E",
+      "off": "000000",
+      "on": "829472"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F42",
+      "off": "000000",
+      "on": "033403"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F46",
+      "off": "0000",
+      "on": "4310"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F4C",
+      "off": "00000000",
+      "on": "7EEC0508"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F54",
+      "off": "00000000",
+      "on": "2AF30508"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F64",
+      "off": "0000000000",
+      "on": "C0FE882410"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F6A",
+      "off": "000000",
+      "on": "092D07"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F6E",
+      "off": "0000000000",
+      "on": "2011404008"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F74",
+      "off": "000000000000000000000000",
+      "on": "1880093C88CC292521400901"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F82",
+      "off": "00000000000000",
+      "on": "029582EB050802"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F8A",
+      "off": "0000",
+      "on": "A524"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F8E",
+      "off": "00000000000000",
+      "on": "A29482EB050802"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3F96",
+      "off": "0000",
+      "on": "A524"
+    },
+    {
+      "file": "BIN/WEAPON0.BIN",
+      "offset": "0xC3FA4",
+      "off": "00000000000000000000000000000000000000000000000000000000",
+      "on": "D0CB1780D0CB1780E4CB1780F8CB17800CCC17801CCC17802CCC1780"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF8E0",
+      "off": "000000000000",
+      "on": "444444046006"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF949",
+      "off": "00",
+      "on": "0C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF95C",
+      "off": "000000000000",
+      "on": "444444444404"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF965",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF9C9",
+      "off": "000000000000000000",
+      "on": "6D7766666666766656"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF9D8",
+      "off": "000000000000",
+      "on": "444444444444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBF9E6",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFA49",
+      "off": "0000000000000000",
+      "on": "3B44444444444444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFA54",
+      "off": "000000000000",
+      "on": "404444444444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFA67",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFAC9",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFAD4",
+      "off": "0000",
+      "on": "4044"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFAE8",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFB45",
+      "off": "0000",
+      "on": "5005"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFB69",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFBC4",
+      "off": "000000",
+      "on": "604603"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFBEA",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFC43",
+      "off": "000000",
+      "on": "604603"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFC6B",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFCC1",
+      "off": "00000000",
+      "on": "C0604603"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFCEC",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFD41",
+      "off": "000000",
+      "on": "DB4503"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFD4E",
+      "off": "00",
+      "on": "0C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFD6D",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFDC1",
+      "off": "0000",
+      "on": "C133"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFDCB",
+      "off": "00000000",
+      "on": "545655C4"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFDEE",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFE41",
+      "off": "0000",
+      "on": "100B"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFE4B",
+      "off": "00000000",
+      "on": "303333A2"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFE6F",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFEF0",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFF71",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xBFFF2",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0073",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC00F4",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0175",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC01C0",
+      "off": "00000000000000000000000000000000000000000000000000000000",
+      "on": "50657677777777777777777777777777777777777777777777777706"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC01F6",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0277",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC02F8",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0379",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC03FA",
+      "off": "0000",
+      "on": "7007"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0542",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC05C2",
+      "off": "00",
+      "on": "CA"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC05CC",
+      "off": "0000",
+      "on": "4044"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0641",
+      "off": "000000",
+      "on": "A04D07"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC064D",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC06C1",
+      "off": "000000",
+      "on": "A03C74"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC06CF",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0743",
+      "off": "0000",
+      "on": "4466"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0750",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC07C4",
+      "off": "0000",
+      "on": "5406"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC07D2",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0845",
+      "off": "0000",
+      "on": "6406"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0853",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC08C5",
+      "off": "0000",
+      "on": "4075"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC08D5",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0946",
+      "off": "0000",
+      "on": "4067"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0956",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC09C7",
+      "off": "0000",
+      "on": "5406"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC09D8",
+      "off": "0000",
+      "on": "4444"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0A48",
+      "off": "0000",
+      "on": "6406"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0A59",
+      "off": "000000",
+      "on": "404404"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC0AC9",
+      "off": "00",
+      "on": "54"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC1000",
+      "off": "F8E1",
+      "on": "3CFF"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC1E00",
+      "off": "0000A29402",
+      "on": "D9FF050800"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC1E06",
+      "off": "A524",
+      "on": "0000"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC36F4",
+      "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "8CF71780A8F71780C4F71780E0F71780FCF7178018F8178034F8178050F817806CF8178088F81780A4F81780C0F81780DCF81780F8F8178014F9178030F917804CF9178068F9178084F91780A0F91780BCF91780D8F91780F4F9178010FA17802CFA178048FA178064FA178080FA17809CFA1780B8FA1780D4FA1780F0FA17800CFB178028FB178044FB178060FB17807CFB178098FB178001"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC378E",
+      "off": "00000000000000",
+      "on": "3001FBFFE0FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3796",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC379C",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC379E",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37A0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37A2",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37A8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37AA",
+      "off": "00000000000000",
+      "on": "1001F6FFEFFF38"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37B2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37B8",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37BA",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37BC",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37BE",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37C4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37C6",
+      "off": "000000",
+      "on": "20011C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37CA",
+      "off": "000000",
+      "on": "EFFF18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37CE",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37D4",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37D6",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37D8",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37DA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37E0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37E2",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37E4",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37E6",
+      "off": "000000",
+      "on": "F1FF20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37EA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37F0",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37F2",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37F4",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37F6",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC37FC",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3800",
+      "off": "0000000000",
+      "on": "F4FFF4FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3806",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC380C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC380E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3810",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3812",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3818",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC381C",
+      "off": "0000000000",
+      "on": "ECFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3822",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3828",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC382A",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC382C",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC382E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3834",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3837",
+      "off": "000000000000",
+      "on": "01EBFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC383E",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3844",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3846",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3848",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC384A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3850",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3853",
+      "off": "000000000000",
+      "on": "01EAFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC385A",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3860",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3862",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3864",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3866",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC386C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC386F",
+      "off": "000000000000",
+      "on": "01EAFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3876",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC387C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC387E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3880",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3882",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3888",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC388A",
+      "off": "00000000000000",
+      "on": "3001F3FFF1FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3892",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3898",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC389A",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC389C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC389E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38A4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38A6",
+      "off": "00000000",
+      "on": "1001EEFF"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38AC",
+      "off": "00",
+      "on": "38"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38AE",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38B4",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38B6",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38B8",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38BA",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38C0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38C2",
+      "off": "000000",
+      "on": "200114"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38C8",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38CA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38D0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38D2",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38D4",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38D6",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38DC",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38DE",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38E0",
+      "off": "000000",
+      "on": "FDFF03"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38E4",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38E6",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38EC",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38EE",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38F0",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38F2",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38F8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC38FC",
+      "off": "000000",
+      "on": "EDFF05"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3900",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3902",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3908",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC390A",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC390C",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC390E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3914",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3916",
+      "off": "00000000000000",
+      "on": "2001EDFFFFFF30"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC391E",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3924",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3926",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3928",
+      "off": "00",
+      "on": "F8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC392A",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3930",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3932",
+      "off": "000000",
+      "on": "10010E"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3936",
+      "off": "00",
+      "on": "0D"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3938",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC393A",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3940",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3942",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3944",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3946",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC394C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3950",
+      "off": "000000",
+      "on": "FCFF07"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3954",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3956",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC395C",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC395E",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3960",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3962",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3968",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC396C",
+      "off": "000000",
+      "on": "EBFF06"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3970",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3972",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3978",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC397A",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC397C",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC397E",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3984",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3988",
+      "off": "000000",
+      "on": "E5FF06"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC398C",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC398E",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3994",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3996",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3998",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC399A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39A0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39A3",
+      "off": "00000000",
+      "on": "01E4FF06"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39A8",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39AA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39B0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39B2",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39B4",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39B6",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39BC",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39BF",
+      "off": "00000000",
+      "on": "01E3FF06"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39C4",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39C6",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39CC",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39CE",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39D0",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39D2",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39D8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39DB",
+      "off": "00000000",
+      "on": "01E2FF06"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39E0",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39E2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39E8",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39EA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39EC",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39EE",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39F4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39F6",
+      "off": "00000000000000",
+      "on": "3001F7FFDFFF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC39FE",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A04",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A06",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A08",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A0A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A10",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A12",
+      "off": "00000000000000",
+      "on": "1001F4FFEDFF38"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A1A",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A20",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A22",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A24",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A26",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A2C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A2E",
+      "off": "000000",
+      "on": "20011A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A32",
+      "off": "000000",
+      "on": "EDFF18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A36",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A3C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A3E",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A40",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A42",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A48",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A4A",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A4C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A4E",
+      "off": "000000",
+      "on": "F0FF20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A52",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A58",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A5A",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A5C",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A5E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A64",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A68",
+      "off": "0000000000",
+      "on": "F2FFF3FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A6E",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A74",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A76",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A78",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A7A",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A80",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A84",
+      "off": "0000000000",
+      "on": "EEFFF6FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A8A",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A90",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A92",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A94",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A96",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A9C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3A9E",
+      "off": "00000000000000",
+      "on": "3001EFFFDDFF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AA6",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AAC",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AAE",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AB0",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AB2",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AB8",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ABA",
+      "off": "00000000000000",
+      "on": "1001EFFFEFFF38"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AC2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AC8",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ACA",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ACC",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ACE",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AD4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AD6",
+      "off": "000000",
+      "on": "200116"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ADA",
+      "off": "000000",
+      "on": "EFFF18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ADE",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AE4",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AE6",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AE8",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AEA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AF0",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AF2",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AF4",
+      "off": "0000000000",
+      "on": "FEFFF2FF20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3AFA",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B00",
+      "off": "00",
+      "on": "A8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B02",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B04",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B06",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B0C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B10",
+      "off": "0000000000",
+      "on": "EFFFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B16",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B1C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B1E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B20",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B22",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B28",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B2A",
+      "off": "00000000000000",
+      "on": "2001F4FFF4FF30"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B32",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B38",
+      "off": "00",
+      "on": "C8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B3A",
+      "off": "00",
+      "on": "50"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B3C",
+      "off": "00",
+      "on": "F8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B3E",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B44",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B46",
+      "off": "000000",
+      "on": "100115"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B4A",
+      "off": "00",
+      "on": "02"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B4C",
+      "off": "00",
+      "on": "18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B4E",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B54",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B56",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B58",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B5A",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B60",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B66",
+      "off": "000000",
+      "on": "FCFF20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B6A",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B70",
+      "off": "00",
+      "on": "98"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B72",
+      "off": "00",
+      "on": "68"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B74",
+      "off": "00",
+      "on": "B8"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B76",
+      "off": "00",
+      "on": "78"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B7C",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B80",
+      "off": "0000000000",
+      "on": "ECFFF7FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B86",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B8C",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B8E",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B90",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B92",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B98",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3B9B",
+      "off": "000000000000",
+      "on": "01E5FFF5FF10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3BA2",
+      "off": "00",
+      "on": "08"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3BA8",
+      "off": "00",
+      "on": "90"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3BAA",
+      "off": "00",
+      "on": "58"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3BAC",
+      "off": "00",
+      "on": "A0"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3BAE",
+      "off": "00",
+      "on": "60"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3BB6",
+      "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "2104C6186B2D1042B45E376FFF7F427C8410EB107321182E3C43010202040304040605060606070608060906FFFF0A080B0A0C0A0D060E061306140615061606FFFF0A080F0C100E111012061306140615061606FFFF1712181419141A061B061C06FFFF"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3C1C",
+      "off": "0000000000000000000000000000",
+      "on": "1D161E181F18200621062606FFFF"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3C2C",
+      "off": "0000000000000000000000000000",
+      "on": "1D16221A231C240625062606FFFF"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3C40",
+      "off": "00000000000000000000",
+      "on": "03E8050419F31803E0E1"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3C4C",
+      "off": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "FBFB050411041803070F0E0813150F070D121105FFE7050417F11807F7E5050413F218070F02130A1D080B08A4FF17803CFC1780"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3C82",
+      "off": "00000000",
+      "on": "0B06A704"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3C8A",
+      "off": "0000000000000000000000000000000000000000000000000000000000000000000000",
+      "on": "2104C6186B2D1042B45E376FFF7F427C8410EB107321182E3C43DF18E107E0FFBD2710"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CAE",
+      "off": "0000000000",
+      "on": "B0AF218080"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CB4",
+      "off": "00",
+      "on": "1C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CB6",
+      "off": "000000",
+      "on": "BFAF18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CBA",
+      "off": "000000",
+      "on": "B2AF14"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CBE",
+      "off": "000000",
+      "on": "B1AF30"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CC2",
+      "off": "0000000000000000000000000000",
+      "on": "03960780023CD833428CFF7F6330"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CD2",
+      "off": "00000000000000000000000000",
+      "on": "02AE0780023CDC33428C021A03"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CE0",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CE2",
+      "off": "00000000000000000000",
+      "on": "02AE0780023CEC334294"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CED",
+      "off": "0000",
+      "on": "2103"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CF0",
+      "off": "00",
+      "on": "14"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3CF2",
+      "off": "00000000000000000000000000",
+      "on": "02A61880023C48FC4224218882"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D00",
+      "off": "000000000000000000",
+      "on": "0780053C8434A5900C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D0A",
+      "off": "0000",
+      "on": "2492"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D10",
+      "off": "000000",
+      "on": "2B10A4"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D14",
+      "off": "00",
+      "on": "55"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D16",
+      "off": "0000000000",
+      "on": "4014219060"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D1C",
+      "off": "00",
+      "on": "07"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D1E",
+      "off": "0000000000",
+      "on": "82242A10A2"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D24",
+      "off": "00",
+      "on": "51"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D26",
+      "off": "0000",
+      "on": "4010"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D2C",
+      "off": "0000000000000000",
+      "on": "0780023C662F4294"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D38",
+      "off": "00",
+      "on": "4C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D3A",
+      "off": "0000",
+      "on": "4010"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D40",
+      "off": "00",
+      "on": "2C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D42",
+      "off": "0000",
+      "on": "0296"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D48",
+      "off": "00",
+      "on": "28"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D4A",
+      "off": "0000",
+      "on": "4014"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D50",
+      "off": "000000000000000000000000",
+      "on": "1880043CF0F68424A0F7050C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D60",
+      "off": "00000000000000000000000000",
+      "on": "1880033CC8DC638C1180022454"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D6E",
+      "off": "00000000000000",
+      "on": "02A62401023416"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D76",
+      "off": "000000",
+      "on": "02A664"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D7A",
+      "off": "000000",
+      "on": "02340A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D7E",
+      "off": "000000",
+      "on": "60105A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D82",
+      "off": "000000",
+      "on": "02A654"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D86",
+      "off": "000000",
+      "on": "02965A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D8A",
+      "off": "000000",
+      "on": "039602"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D8E",
+      "off": "000000",
+      "on": "422454"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D92",
+      "off": "000000",
+      "on": "02A616"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D96",
+      "off": "000000",
+      "on": "029602"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D9A",
+      "off": "000000",
+      "on": "63245A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3D9E",
+      "off": "000000",
+      "on": "03A618"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DA2",
+      "off": "000000",
+      "on": "422416"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DA6",
+      "off": "00000000",
+      "on": "02A62120"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DAB",
+      "off": "0000",
+      "on": "0216"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DAE",
+      "off": "000000",
+      "on": "039608"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DB2",
+      "off": "000000",
+      "on": "259606"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DB6",
+      "off": "000000",
+      "on": "023C34"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DBA",
+      "off": "0000000000",
+      "on": "02AE211865"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DC0",
+      "off": "00",
+      "on": "16"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DC2",
+      "off": "000000000000000000000000",
+      "on": "03A60780023CFC3342942128"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DD0",
+      "off": "000000000000000000",
+      "on": "FEFF4224FDF7050C24"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DDA",
+      "off": "000000",
+      "on": "02A62C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DDE",
+      "off": "0000",
+      "on": "0296"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DE4",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DE6",
+      "off": "000000",
+      "on": "42242C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DEA",
+      "off": "0000000000000000000000",
+      "on": "02A60780023C843442900C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DF6",
+      "off": "0000",
+      "on": "2392"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3DFC",
+      "off": "000000",
+      "on": "231043"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E00",
+      "off": "00",
+      "on": "AC"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E02",
+      "off": "0000000000000000000000",
+      "on": "02A20780033C2A34638401"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E0E",
+      "off": "000000",
+      "on": "02340D"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E12",
+      "off": "0000",
+      "on": "6214"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E18",
+      "off": "000000000000000000",
+      "on": "0780033C283463940D"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E22",
+      "off": "0000",
+      "on": "2292"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E28",
+      "off": "00",
+      "on": "07"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E2A",
+      "off": "0000",
+      "on": "6214"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E30",
+      "off": "00",
+      "on": "0A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E32",
+      "off": "00000000000000000000",
+      "on": "24960480023CDCC7428C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E40",
+      "off": "000000",
+      "on": "09F840"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E48",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E4A",
+      "off": "0000",
+      "on": "248E"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E4E",
+      "off": "00000000000000000000",
+      "on": "258E0480023C14C8428C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E5C",
+      "off": "000000",
+      "on": "09F840"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E64",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E66",
+      "off": "0000",
+      "on": "4104"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E6C",
+      "off": "000000000000",
+      "on": "55F7050C2120"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E73",
+      "off": "0000000000",
+      "on": "02C8FF0508"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E7C",
+      "off": "0000000000000000",
+      "on": "1880023CA0FF428C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E88",
+      "off": "00",
+      "on": "16"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E8A",
+      "off": "000000",
+      "on": "401401"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E8E",
+      "off": "00000000000000000000",
+      "on": "02340780033C28346394"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E9C",
+      "off": "00",
+      "on": "11"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3E9E",
+      "off": "00000000000000",
+      "on": "6214FFFF422602"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EA6",
+      "off": "000000",
+      "on": "422C0E"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EAA",
+      "off": "00000000",
+      "on": "40102120"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EAF",
+      "off": "0000000000",
+      "on": "02FFFF4526"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EB5",
+      "off": "0000",
+      "on": "2C05"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EB8",
+      "off": "000000000000000000",
+      "on": "1880023CC8DC428C3A"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EC2",
+      "off": "000000",
+      "on": "A52401"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EC6",
+      "off": "0000",
+      "on": "4224"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EC9",
+      "off": "0000",
+      "on": "1302"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ECC",
+      "off": "000000",
+      "on": "212845"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3ED0",
+      "off": "0000000000000000",
+      "on": "0480023CF4C7428C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EDC",
+      "off": "000000",
+      "on": "09F840"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EE0",
+      "off": "0000",
+      "on": "2130"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EE4",
+      "off": "00000000000000000000000000000000000000000000000000",
+      "on": "0780023C283442940780033CF13363901880013CA0FF22AC19"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3EFE",
+      "off": "00000000000000000000",
+      "on": "03A20780023CF4334294"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F0C",
+      "off": "00",
+      "on": "1C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F0E",
+      "off": "00000000000000000000",
+      "on": "02A60780023CFA334294"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F1C",
+      "off": "00",
+      "on": "22"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F1E",
+      "off": "000000",
+      "on": "02A61C"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F22",
+      "off": "000000",
+      "on": "BF8F18"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F26",
+      "off": "000000",
+      "on": "B28F14"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F2A",
+      "off": "000000",
+      "on": "B18F10"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F2E",
+      "off": "000000",
+      "on": "B08F20"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F32",
+      "off": "000000",
+      "on": "BD2708"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F36",
+      "off": "0000",
+      "on": "E003"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F3C",
+      "off": "00",
+      "on": "AE"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F3E",
+      "off": "000000",
+      "on": "829472"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F42",
+      "off": "000000",
+      "on": "033403"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F46",
+      "off": "0000",
+      "on": "4310"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F4C",
+      "off": "00000000",
+      "on": "7EF80508"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F54",
+      "off": "00000000",
+      "on": "2AFF0508"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F64",
+      "off": "0000000000",
+      "on": "C0FE882410"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F6A",
+      "off": "000000",
+      "on": "092D07"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F6E",
+      "off": "0000000000",
+      "on": "2011404008"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F74",
+      "off": "000000000000000000000000",
+      "on": "1880093C88FC292521400901"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F82",
+      "off": "00000000000000",
+      "on": "029582F7050802"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F8A",
+      "off": "0000",
+      "on": "A524"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F8E",
+      "off": "00000000000000",
+      "on": "A29482F7050802"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3F96",
+      "off": "0000",
+      "on": "A524"
+    },
+    {
+      "file": "BIN/WEAPON1.BIN",
+      "offset": "0xC3FA4",
+      "off": "00000000000000000000000000000000000000000000000000000000",
+      "on": "D0FB1780D0FB1780E4FB1780F8FB17800CFC17801CFC17802CFC1780"
+    }
+  ],
+  "requires": []
+}

@@ -1,0 +1,213 @@
+{
+  "id": "bat-form",
+  "label": "Bat form and Wing Smash",
+  "category": "Alucard abilities and spells",
+  "summary": "Bat form flies twice as fast; Power of Mist makes Wing Smash unlimited.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F0F0",
+      "off": "0000000000000000",
+      "on": "0980013C6C792190"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F0FC",
+      "off": "00",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F0FE",
+      "off": "000000",
+      "on": "213003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F102",
+      "off": "0000",
+      "on": "2010"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F105",
+      "off": "0000000000000000",
+      "on": "101132035D040801"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F10E",
+      "off": "000000000000",
+      "on": "4224F35C0408"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x76FE0",
+      "off": "FE",
+      "on": "FD"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x76FE5",
+      "off": "C0",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7704C",
+      "off": "01",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7705D",
+      "off": "40",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x770B8",
+      "off": "01",
+      "on": "02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x770C5",
+      "off": "40",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x770FC",
+      "off": "FE",
+      "on": "FD"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77109",
+      "off": "C0",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77174",
+      "off": "078002",
+      "on": "010003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7717A",
+      "off": "42",
+      "on": "22"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7717D",
+      "off": "E003",
+      "on": "C063"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77198",
+      "off": "FF",
+      "on": "FE"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x771A4",
+      "off": "FF",
+      "on": "FE"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x771B5",
+      "off": "20",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x771EC",
+      "off": "FF",
+      "on": "FE"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x771F9",
+      "off": "20",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77244",
+      "off": "078002",
+      "on": "010003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7724A",
+      "off": "42",
+      "on": "22"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x7724D",
+      "off": "E003",
+      "on": "C063"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77268",
+      "off": "01",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77274",
+      "off": "01",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77285",
+      "off": "C0",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x772D4",
+      "off": "FF",
+      "on": "FE"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x772E1",
+      "off": "20",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x772FC",
+      "off": "01",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77308",
+      "off": "01",
+      "on": "03"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x77319",
+      "off": "C0",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x773C4",
+      "off": "0000000000000000",
+      "on": "3C3C0308FFFF4224"
+    }
+  ],
+  "requires": []
+}

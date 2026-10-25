@@ -1,0 +1,135 @@
+{
+  "id": "poison",
+  "label": "Poison damage over time",
+  "category": "Status and damage rules",
+  "summary": "Poison deals 5 HP every 10 frames for its duration.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x40E48",
+      "off": "FCA910",
+      "on": "50DB0F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x40E88",
+      "off": "38",
+      "on": "54"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DB48",
+      "off": "0980023CDC7B428C",
+      "on": "1EF7030808071034"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DB52",
+      "off": "0000001102002310A2",
+      "on": "62960A0003341B0043"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DB5C",
+      "off": "218040",
+      "on": "101000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DB60",
+      "off": "00140200031402000001422843",
+      "on": "A63340140980033CA07B628C00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DB6E",
+      "off": "4010001410001EF7",
+      "on": "0000FBFF422417FB"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5DB79",
+      "off": "011034",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E870",
+      "off": "0780023C2C2F428C000000000040423003004010",
+      "on": "24FA0308000000006135040C10000434D82C0408"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E885",
+      "off": "1403",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E888",
+      "off": "431402",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E88C",
+      "off": "08",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E88E",
+      "off": "42A6",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EC54",
+      "off": "0780023C2C2F428C00000000",
+      "on": "1FFB030853000434762F401C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EC61",
+      "off": "4042300500401053",
+      "on": "000000A07B60AC10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EC6A",
+      "off": "04340800428E000000004010020008",
+      "on": "A0AF0780033C043476941EFA030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5EC7A",
+      "off": "42AE",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6AA38",
+      "off": "0000428E00000000808042303D",
+      "on": "A07B62AC7F2A04080000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6AA46",
+      "off": "4014",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6AA4C",
+      "off": "A92A040801",
+      "on": "0000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6AA52",
+      "off": "0434",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

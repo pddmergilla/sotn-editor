@@ -70,12 +70,28 @@
       onAlt.push(withEdit.on);
       onAltTunable.push(tunable);
     }
+    // layers: bytes of this edit that a later ASS -Final- hack rewrites while it is selected (that hack requires
+    // this one). Either value reads as on.
+    const layers = (edit.layers || []).map(layer => ({feature: layer.feature, at: layer.at.map(([pos, value]) => {
+      const bytes = hexBytes(value);
+      if (!bytes || pos < 0 || pos + bytes.length > on.length) throw new Error(`Extra Hacks catalog: invalid layer in ${feature.id}.`);
+      return [pos, bytes];
+    })}));
+    const layered = layers.length ? Array.from({length: on.length}, () => []) : null;
+    for (const layer of layers) for (const [pos, bytes] of layer.at) bytes.forEach((value, i) => layered[pos + i].push(value));
     // Written when toggling but not used to decide whether the hack is present: edits made only of
     // tunable bytes (item-table values the Stats Editor can change), and install-only code that
     // other ASS features share (its ASS off bytes equal its on bytes).
     const detect = tunable.some(flag => !flag) && on.some((value, i) => value !== off[i]);
     // stats: an item cost the Stats Editor shows; the app writes it through the stats model.
-    return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, onAltTunable, detect, with: withEdit, stats: !!edit.stats, free: !!edit.free, optional: !!edit.optional};
+    return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, onAltTunable, detect, with: withEdit, layers, layered,
+      locate: edit.locate ? {...edit.locate, offset: edit.offset} : null, stats: !!edit.stats, free: !!edit.free, optional: !!edit.optional};
+  }
+  // The bytes an edit writes when on: its own form (or the with-form), then every selected layer over it.
+  function onBytes(edit, selected, vanilla) {
+    const bytes = (edit.with && selected.get(edit.with.feature) ? edit.with.on : (vanilla ? edit.vanillaOn : edit.on)).slice();
+    for (const layer of edit.layers) if (selected.get(layer.feature)) for (const [pos, value] of layer.at) bytes.set(value, pos);
+    return bytes;
   }
 
   // Stage entity-layout records are 10 bytes: x, y, entity id, slot, params (u16 each). The map
@@ -126,8 +142,19 @@
       // vanillaEdits: a hack that needs different bytes on vanilla (the relic swap uses other pedestals).
       vanillaEdits: feature.vanillaEdits ? feature.vanillaEdits.map(edit => prepareEdit(feature, edit)) : null
     }));
+    // valueLayers: hacks whose layers rewrite the code holding this hack's tuning values (Stat-scaled buffs
+    // replaces the Dark Metamorphosis bonuses); while one is selected the values cannot be edited.
+    for (const feature of features) {
+      const ids = new Set();
+      for (const def of feature.values || []) for (const offset of def.offsets || [def.offset]) for (const edit of feature.edits) {
+        if (edit.file !== def.file || offset + 2 <= edit.offset || offset >= edit.offset + edit.on.length) continue;
+        for (const layer of edit.layers) if (layer.at.some(([pos, bytes]) => edit.offset + pos < offset + 2 && offset < edit.offset + pos + bytes.length)) ids.add(layer.feature);
+      }
+      feature.valueLayers = [...ids];
+    }
     return {...raw, features};
   }
+  const valuesReplaced = (feature, selected) => feature.valueLayers?.find(id => selected.get(id));
 
   // vanillaRequires: dependencies that apply only when adding hacks to a vanilla image.
   const requiresFor = (feature, profile) => profile === "vanilla" ? [...feature.requires, ...feature.vanillaRequires] : feature.requires;
@@ -175,25 +202,55 @@
   }
 
   const NONE = new Uint8Array(0);
-  function matches(actual, expected, tunable = NONE) {
-    for (let i = 0; i < expected.length; i++) if (!tunable[i] && actual[i] !== expected[i]) return false;
+  // layered: per byte, the values later hacks may have written there instead (null when none).
+  function matches(actual, expected, tunable = NONE, layered = null) {
+    for (let i = 0; i < expected.length; i++) if (!tunable[i] && actual[i] !== expected[i] && !layered?.[i].includes(actual[i])) return false;
     return true;
   }
 
   // Exact off bytes read as off. Otherwise the hack's fixed bytes decide: tunable bytes (balance
   // numbers inside the hack) may hold any value, so a retuned hack still reads as on.
-  function editState(actual, edit, profile) {
+  function editState(actual, edit, profile, layered = edit.layered) {
     const offBytes = profile === "vanilla" ? edit.vanillaOff : edit.off;
-    const exactOn = matches(actual, edit.on) || edit.onAlt.some(alt => matches(actual, alt));
+    const exactOn = matches(actual, edit.on, NONE, layered) || edit.onAlt.some(alt => matches(actual, alt, NONE, layered));
     const exactOff = matches(actual, offBytes);
     if (exactOn && exactOff) return "same";
     if (exactOff) return "off";
-    if (exactOn || matches(actual, edit.on, edit.tunable) || edit.onAlt.some((alt, i) => matches(actual, alt, edit.onAltTunable[i]))) return "on";
+    if (exactOn || matches(actual, edit.on, edit.tunable, layered) || edit.onAlt.some((alt, i) => matches(actual, alt, edit.onAltTunable[i], layered))) return "on";
     if (matches(actual, offBytes, edit.tunable)) return "off";
     return "unknown";
   }
 
-  function featureState(feature, files, profile) {
+  // A hack made only of layers (every byte rewrites another hack) is on where its layers are.
+  function layerState(catalog, feature, files) {
+    let on = 0, off = 0;
+    for (const base of catalog.features) for (const edit of base.edits) for (const layer of edit.layers) {
+      if (layer.feature !== feature.id) continue;
+      const bytes = files.get(edit.file);
+      if (!bytes || edit.offset + edit.on.length > bytes.length) return {state: "unknown", short: true};
+      // Byte by byte: a later layer may have rewritten a byte again, which says nothing about this one.
+      for (const [pos, value] of layer.at) for (let i = 0; i < value.length; i++) {
+        const at = pos + i, actual = bytes[edit.offset + at];
+        if (actual === value[i]) on++;
+        else if (edit.layered[at].includes(actual)) continue;
+        else if (actual === edit.on[at] || actual === edit.off[at] || edit.onAlt.some(alt => alt[at] === actual)) off++;
+        else return {state: "unknown"};
+      }
+    }
+    return {state: on && off ? "mixed" : on ? "on" : "off"};
+  }
+
+  // present: the hacks known to be on; only their layers explain bytes (none when unknown).
+  function layeredFor(edit, present) {
+    if (!edit.layered) return null;
+    if (!present) return Array.from({length: edit.on.length}, () => []);
+    const out = Array.from({length: edit.on.length}, () => []);
+    for (const layer of edit.layers) if (present.has(layer.feature)) for (const [pos, bytes] of layer.at) bytes.forEach((value, i) => out[pos + i].push(value));
+    return out;
+  }
+
+  function featureState(feature, files, profile, catalog = null, present = null) {
+    if (feature.layerOnly && catalog) return layerState(catalog, feature, files);
     // Recognize complete earlier versions.
     for (const [version, forms] of (feature.onVersions || []).entries()) {
       if (editsFor(feature, profile) !== feature.edits) continue;
@@ -206,11 +263,15 @@
     const optional = [];
     for (const edit of editsFor(feature, profile)) {
       const bytes = files.get(edit.file);
-      if (!bytes || edit.offset + edit.on.length > bytes.length) return {state: "unknown", mismatch: edit};
+      // short: the file is smaller than the hack needs (an ASS -Final- hack on an image without its enlarged files).
+      if (!bytes || edit.offset + edit.on.length > bytes.length) return {state: "unknown", mismatch: edit, short: true};
       if (!edit.detect) continue;
-      const state = editState(bytes.subarray(edit.offset, edit.offset + edit.on.length), edit, profile);
+      const actual = bytes.subarray(edit.offset, edit.offset + edit.on.length), layered = layeredFor(edit, present);
+      const state = editState(actual, edit, profile, layered);
       if (state === "unknown") return {state, mismatch: edit};
       if (edit.optional) {
+        // A present hack's layer can put back the off bytes, so such an edit says nothing either way.
+        if (state === "same" && layered?.some(values => values.length)) continue;
         optional.push(matches(bytes.subarray(edit.offset, edit.offset + edit.on.length), edit.off) ? "off" : "on");
         continue;
       }
@@ -256,21 +317,44 @@
 
   // Inspect an image. files: Map of ISO path -> Uint8Array (missing files may be absent).
   function analyze(catalog, files) {
+    // A file ASS -Final- enlarged lists both sizes; final: every such file has its Final size.
+    let final = false;
     for (const [file, size] of Object.entries(catalog.files || {})) {
-      if (!files.has(file) || files.get(file).length !== size) {
+      const sizes = Array.isArray(size) ? size : [size];
+      if (!files.has(file) || !sizes.includes(files.get(file).length)) {
         return {profile: null, reason: `${file} is missing or has an unexpected size.`, features: []};
       }
+      if (sizes.length > 1) final = files.get(file).length === sizes[sizes.length - 1];
+    }
+    // locate: an entity's params found by its first layout record (map edits re-pack layouts), else the catalog offset.
+    for (const feature of catalog.features) for (const edit of [...feature.edits, ...feature.vanillaEdits || []]) {
+      if (!edit.locate) continue;
+      const bytes = files.get(edit.file), at = bytes ? entityParams(bytes, edit.locate)[0] : undefined;
+      edit.offset = at ?? edit.locate.offset;
     }
     const print = fingerprint(catalog, files);
-    const result = {profile: print.profile, print, features: []};
+    const result = {profile: print.profile, print, final, features: []};
     if (!print.profile) {
       result.reason = print.windowMisses > catalog.fingerprint.windowTolerance
         ? `Its game code differs from vanilla US and Alternate Scarlet Symphony in ${print.windowMisses} of ${print.windows} checked regions.`
         : `Its code matches neither vanilla US nor Alternate Scarlet Symphony (${print.vanillaVotes} vanilla and ${print.assVotes} ASS markers of ${print.markers}).`;
       return result;
     }
+    // Hacks other hacks layer onto are read again with the layering hacks found present, until nothing changes.
+    const states = new Map(catalog.features.map(feature => [feature.id, featureState(feature, files, print.profile, catalog)]));
+    const layeredOn = catalog.features.filter(feature => feature.edits.some(edit => edit.layers.length));
+    for (let pass = 0; pass < 8; pass++) {
+      const present = new Set([...states].filter(([, state]) => state.state === "on").map(([id]) => id));
+      let changed = false;
+      for (const feature of layeredOn) {
+        const next = featureState(feature, files, print.profile, catalog, present);
+        if (next.state !== states.get(feature.id).state) changed = true;
+        states.set(feature.id, next);
+      }
+      if (!changed) break;
+    }
     for (const feature of catalog.features) {
-      const state = featureState(feature, files, print.profile);
+      const state = states.get(feature.id);
       // free: code placed in spare space (for example text padding) installs only where that space is still free.
       const taken = editsFor(feature, print.profile).find(edit => {
         const bytes = files.get(edit.file);
@@ -291,11 +375,21 @@
       let reason = "", canToggle = false;
       if (!analysis.profile || !info) reason = UNSUPPORTED;
       else if (analysis.profile === "vanilla" && feature.vanilla !== true && info.state !== "on") reason = typeof feature.vanilla === "string" ? feature.vanilla : "Available only on Alternate Scarlet Symphony images.";
+      else if (info.state === "unknown" && info.short && feature.finalOnly) reason = "Available only on Alternate Scarlet Symphony -Final-: it needs files that -Final- enlarged.";
       else if (info.state === "unknown" || info.state === "mixed") reason = UNSUPPORTED;
       else if (info.state === "off" && info.blocked) reason = `The spare space this hack needs (${info.blocked}) holds other data in this BIN, such as longer item text.`;
       else if (info.state === "off" && !info.context) reason = feature.contextReason || "This BIN lacks the Alternate Scarlet Symphony code this hack builds on.";
       else canToggle = true;
       out.set(feature.id, {feature, info, reason, canToggle, source: info?.state === "on"});
+    }
+    // A hack that is off and needs a hack this BIN cannot enable cannot be added either.
+    for (let changed = true; changed;) {
+      changed = false;
+      for (const entry of out.values()) {
+        if (!entry.canToggle || entry.source) continue;
+        const need = requiresFor(entry.feature, analysis.profile).map(id => out.get(id)).find(other => other && !other.canToggle && !other.source);
+        if (need) { entry.canToggle = false; entry.reason = `Needs ${need.feature.label}, which this BIN cannot enable.`; changed = true; }
+      }
     }
     return out;
   }
@@ -320,21 +414,21 @@
   }
 
   // Every edit a selection implies: the hacks whose selection differs from the source image, plus
-  // the "with" bytes of a selected hack when the hack they depend on changes.
+  // the "with" and layer bytes of a selected hack when the hack they depend on changes.
   function plannedEdits(catalog, analysis, selected) {
     const edits = [];
     const source = new Map(analysis.features.map(item => [item.id, item.state === "on"]));
-    const changed = id => !!selected.get(id) !== source.get(id);
+    const changed = id => !!selected.get(id) !== !!source.get(id);
     const vanilla = analysis.profile === "vanilla";
     for (const feature of catalog.features) {
       const info = analysis.features.find(item => item.id === feature.id);
       if (!info || (info.state !== "on" && info.state !== "off")) continue;
       const want = !!selected.get(feature.id), self = changed(feature.id);
       for (const edit of editsFor(feature, analysis.profile)) {
-        if (want && edit.optional) continue;
-        if (!self && !(want && edit.with && changed(edit.with.feature))) continue;
-        const bytes = !want ? (vanilla ? edit.vanillaOff : edit.off) :
-          edit.with && selected.get(edit.with.feature) ? edit.with.on : (vanilla ? edit.vanillaOn : edit.on);
+        // Optional install-on-demand code is still written when a hack that layers its own bytes into it is selected or changes.
+        if (want && edit.optional && !edit.layers.some(layer => selected.get(layer.feature) || changed(layer.feature))) continue;
+        if (!self && !(want && ((edit.with && changed(edit.with.feature)) || edit.layers.some(layer => changed(layer.feature))))) continue;
+        const bytes = !want ? (vanilla ? edit.vanillaOff : edit.off) : onBytes(edit, selected, vanilla);
         edits.push({file: edit.file, offset: edit.offset, bytes, label: feature.label, stats: edit.stats});
       }
       if (!self) continue;
@@ -350,7 +444,7 @@
     const edits = plannedEdits(catalog, analysis, selected).filter(edit => !(edit.stats && options.statsOwned?.(edit.file, edit.offset)));
     for (const feature of catalog.features) {
       const tuning = options.tuning?.get(feature.id);
-      if (!selected.get(feature.id) || !tuning || !Object.keys(tuning).length) continue;
+      if (!selected.get(feature.id) || !tuning || !Object.keys(tuning).length || valuesReplaced(feature, selected)) continue;
       const info = analysis.features.find(f => f.id === feature.id);
       if (!info || !["on", "off"].includes(info.state)) throw new Error(`${feature.label}: bonus code is not recognized.`);
       const baseline = info.state === "on" ? info.values : feature.defaults;
@@ -471,7 +565,12 @@
     if (!list || !global.document) return;
     list.replaceChildren();
     list.classList.toggle("blocked", phase === "unsupported");
+    let category = null;
     for (const feature of catalog?.features || []) {
+      if (feature.category && feature.category !== category) {
+        category = feature.category;
+        list.append(element("h3", "extraHacksGroup", category));
+      }
       const entry = avail.get(feature.id);
       const info = entry?.info;
       const on = !!selected.get(feature.id);
@@ -501,9 +600,11 @@
         const e = info.entities;
         card.append(element("p", "extraHackDetail", `${feature.entityLabel || "Entities"}: ${e.on} of ${e.total} ${feature.entityOnText || "changed"} in this BIN${e.missing + e.other ? `; ${e.missing + e.other} were moved or changed in the map editor and are left as they are` : ""}.`));
       }
-      const values = on ? valueText(feature, info) : "";
+      const replaced = valuesReplaced(feature, selected);
+      const values = on && !replaced ? valueText(feature, info) : "";
       if (values) card.append(element("p", "extraHackDetail extraHackBonus", values));
-      if ((feature.values || []).some(v => v.editable)) {
+      if (on && replaced) card.append(element("p", "extraHackDetail", `${catalog.features.find(item => item.id === replaced)?.label || replaced} replaces these bonuses while it is checked.`));
+      else if ((feature.values || []).some(v => v.editable)) {
         const controls = element("div", "sfGrid");
         for (const def of feature.values.filter(v => v.editable)) {
           const label = element("label", "sf");
@@ -619,7 +720,7 @@
       phase = "ready";
       statusText = analysis.profile === "vanilla"
         ? `Vanilla US BIN detected. ${found ? `${found} of ${catalog.features.length} hacks are already present.` : "No hacks are present; check the ones to add."}`
-        : `Alternate Scarlet Symphony BIN detected. ${found} of ${catalog.features.length} hacks are present${unknown ? `; ${unknown} could not be recognized and are locked` : ""}.`;
+        : `Alternate Scarlet Symphony${analysis.final ? " -Final-" : ""} BIN detected. ${found} of ${catalog.features.length} hacks are present${unknown ? `; ${unknown} could not be recognized and are locked` : ""}.`;
       notifySelection(); hooks.onReady?.();
     } catch (error) {
       if (token !== loadToken) return;
