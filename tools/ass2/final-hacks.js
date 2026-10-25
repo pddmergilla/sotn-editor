@@ -121,7 +121,8 @@ const FEATURES = [
   {id: 'scaled-buffs', kind: 'hack', category: ALUCARD, title: 'Stat-scaled buffs', match: [/^Dark-Metamorphosis-(Scaled|DEF-CON|Base-Stat)/, /^Buff-Potions-Faerie/, /^Shared-DEF-Buff/],
     about: 'Dark Metamorphosis, the buff potions and the Faerie\'s buffs add half of Alucard\'s base STR/CON/INT/LCK instead of flat values; the shared DEF buff is floor(CON / 10) (updates the existing Dark Metamorphosis stat buff hack).'},
   {id: 'blue-metalmorphosis', kind: 'hack', category: ALUCARD, title: 'Blue Metalmorphosis spell', match: [/^Blue-Metalmorphosis/],
-    about: 'Up, Up, Down, Down, Left, Right, Left, Right + attack turns Alucard into the Axe Lord for 30 MP; opening the menu cancels it.'},
+    // Public text stays cryptic on purpose: the input is a secret for players to find.
+    about: 'Transform into the Axe Lord using a spell.'},
   {id: 'level-growth', kind: 'hack', category: ALUCARD, title: 'Deterministic level growth', match: [/^Alucard-Level-Growth/],
     about: 'Alucard\'s level-up gains are fixed instead of random.'},
   {id: 'dropkick', kind: 'hack', category: ALUCARD, title: 'Down+X dropkick priority', match: [/^Down-X-Dropkick/],
@@ -155,7 +156,7 @@ const FEATURES = [
   {id: 'damage-colors', kind: 'hack', category: MENU, title: 'Damage number colors: weak and resist', match: [/^Damage-Number-(Colors|Helper)-/],
     about: 'Weakness hits flash the GUARD colors and resisted hits are grey (update to the existing Damage Number Colors hack).'},
   {id: 'title-final', kind: 'hack', category: MENU, title: 'Title: Alternate Scarlet Symphony -Final-', match: [/^Title-Alternate/, /Title-Placement/],
-    about: 'The title screen reads Alternate Scarlet Symphony -Final-.'},
+    about: 'The title screen reads Alternate Scarlet Symphony -Final-. Always included in the full ASS -Final- patch.'},
 
   // ---- World.
   {id: 'clock-tower-doors', kind: 'hack', category: WORLD, title: 'Clock Tower gear doors always open', match: [/^Clock-Towers-/],

@@ -15,6 +15,7 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 
 
 
+
 ### Boss AI
 
 | Feature | What it does | Requires | Bytes | Patch |
@@ -90,7 +91,7 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 |---|---|---|---:|---|
 | **Dark Metamorphosis rework** | Casting returns control at once and keeps Alucard's form; its 1.25x speed is safe at save points, and saving (Up at a save point) clears it. | — | 27 | `ASS-Final-Dark-Metamorphosis-rework.ppf` |
 | **Stat-scaled buffs** | Dark Metamorphosis, the buff potions and the Faerie's buffs add half of Alucard's base STR/CON/INT/LCK instead of flat values; the shared DEF buff is floor(CON / 10) (updates the existing Dark Metamorphosis stat buff hack). | — | 372 | `ASS-Final-Stat-scaled-buffs.ppf` |
-| **Blue Metalmorphosis spell** | Up, Up, Down, Down, Left, Right, Left, Right + attack turns Alucard into the Axe Lord for 30 MP; opening the menu cancels it. | — | 1,717 | `ASS-Final-Blue-Metalmorphosis-spell.ppf` |
+| **Blue Metalmorphosis spell** | Transform into the Axe Lord using a spell. | — | 1,717 | `ASS-Final-Blue-Metalmorphosis-spell.ppf` |
 | **Deterministic level growth** | Alucard's level-up gains are fixed instead of random. | — | 15 | `ASS-Final-Deterministic-level-growth.ppf` |
 | **Down+X dropkick priority** | Down + a fresh jump press always dropkicks, even after Sky Walker jumps. | — | 8 | `ASS-Final-Down-X-dropkick-priority.ppf` |
 | **Air control and hurt recovery** | Air control after leaving a ledge or transforming, recovery from airborne hurt after 60 frames, and hurt cancels into Richter's backflip and Alucard's dropkick. | — | 550 | `ASS-Final-Air-control-and-hurt-recovery.ppf` |
@@ -114,7 +115,7 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 | **RES/WEAK element line** | The main menu shows Alucard's resistances and weaknesses below GOLD. | — | 409 | `ASS-Final-RES-WEAK-element-line.ppf` |
 | **Minimap setting and item shortcut button** | System gains Show minimap: Yes/No; Button Config gains a remappable Item Shortcut. | — | 388 | `ASS-Final-Minimap-setting-and-item-shortcut-button.ppf` |
 | **Damage number colors: weak and resist** | Weakness hits flash the GUARD colors and resisted hits are grey (update to the existing Damage Number Colors hack). | — | 40 | `ASS-Final-Damage-number-colors-weak-and-resist.ppf` |
-| **Title: Alternate Scarlet Symphony -Final-** | The title screen reads Alternate Scarlet Symphony -Final-. | — | 417 | `ASS-Final-Title-Alternate-Scarlet-Symphony-Final.ppf` |
+| **Title: Alternate Scarlet Symphony -Final-** | The title screen reads Alternate Scarlet Symphony -Final-. Always included in the full ASS -Final- patch. | — | 417 | `ASS-Final-Title-Alternate-Scarlet-Symphony-Final.ppf` |
 
 ### Richter Mode
 
