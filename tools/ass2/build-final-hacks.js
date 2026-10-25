@@ -63,13 +63,14 @@ async function walk(disc, dir, prefix, out) {
   return out;
 }
 
-// Image offsets covered by Stats Editor fields (the editor's own balance controls).
+// Image offsets covered by Stats Editor fields (the editor's own balance controls), and the DEF column of
+// Alucard's equipment and of the enemies, which belongs to Percent DEF.
 async function statFieldOffsets(disc, files) {
-  const model = await M.loadFromDisc(disc, C.normalizeIsoName), out = new Set();
+  const model = await M.loadFromDisc(disc, C.normalizeIsoName), out = new Set(), def = new Set();
   const isoPath = key => key === 'DRA' ? 'DRA.BIN' : key === 'RIC' ? 'BIN/RIC.BIN' : `${key}/${key.split('/')[1]}.BIN`;
-  const mark = (key, off, size) => {
+  const mark = (key, off, size, set = out) => {
     const rec = files.get(isoPath(key)); if (!rec) return;
-    for (let i = 0; i < size; i++) { const o = off + i; out.add((rec.extent + Math.floor(o / 2048)) * SECTOR + DATA + o % 2048); }
+    for (let i = 0; i < size; i++) { const o = off + i; set.add((rec.extent + Math.floor(o / 2048)) * SECTOR + DATA + o % 2048); }
   };
   // Whole data tables count too: the Stats Editor shows only some of their columns (enemy level, for one).
   const t = model.tables;
@@ -80,7 +81,11 @@ async function statFieldOffsets(disc, files) {
     else if (f.kind === 'text') mark(f.file, f.off, f.capacity);
     else if (f.kind === 'sites' || f.kind === 'effect') for (const s of f.sites || []) mark(s.file, s.off, s.size || 2);
   }
-  return out;
+  // DEF is the s16 at +0x0A of every hand item, body item and enemy row (named enemies and their attack rows).
+  for (const [start, stride, count] of [[t.equip, 0x34, 169], [t.acc, 0x20, 90], [t.enemy, 0x28, 400]])
+    for (let i = 0; i < count; i++) mark('DRA', start + i * stride + 0x0A, 2, def);
+  assert.equal(model.field(model.sections.enemies[0].defense).off, t.enemy + model.sections.enemies[0].index * 0x28 + 0x0A);
+  return {all: out, def};
 }
 
 function topoOrder(ids, deps) {
@@ -156,8 +161,7 @@ async function main() {
   const rank = i => (ppfs[i].recovery ? 0 : 2) + (ppfs[i].mirror ? 0 : 1);
   for (const own of changed.values()) own.sort((a, b) => rank(b) - rank(a) || ppfs[b].mtime.localeCompare(ppfs[a].mtime));
 
-  let stats = new Set();
-  try { stats = await statFieldOffsets(disc, files); } catch (e) { console.error('Stats model unavailable:', e.message); }
+  const {all: stats, def: defense} = await statFieldOffsets(disc, files);
   const ruleFor = o => {
     const f = fileOf(o);
     if (/TT_006|FT_006/.test(f)) return 'dawn';
@@ -175,6 +179,7 @@ async function main() {
     const top = own.map(i => ppfs[i]).find(p => !p.recovery);
     assert.ok(!top || top.feature, `Unclassified PPF ${top?.file}`);
     let id = top?.feature || null;
+    if (defense.has(o)) { group.set(o, 'percent-def'); if (top) owner.set(o, ppfs.indexOf(top)); continue; }
     if (kind(id) === 'hack') { group.set(o, id); owner.set(o, ppfs.indexOf(top)); continue; }
     const hackWriter = (writers.get(o) || []).map(i => ppfs[i]).filter(p => p.applied && kind(p.feature) === 'hack')
       .sort((a, b) => b.mtime.localeCompare(a.mtime))[0];
@@ -208,7 +213,7 @@ async function main() {
   const hacks = FEATURES.filter(f => f.kind === 'hack').map(f => f.id);
   const value = new Map(hacks.map(id => [id, new Map()]));
   for (const p of [...ppfs].filter(p => p.applied && kind(p.feature) === 'hack').sort((a, b) => a.mtime.localeCompare(b.mtime)))
-    for (const [o, v] of p.written) value.get(p.feature).set(o, v);
+    for (const [o, v] of p.written) if (!defense.has(o) || p.feature === 'percent-def') value.get(p.feature).set(o, v);
   for (const [o, id] of group) if (kind(id) === 'hack') value.get(id).set(o, cur[o]);
   const deps = new Map(hacks.map(id => [id, new Set()]));
   for (const [o, id] of group) if (kind(id) === 'hack')

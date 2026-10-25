@@ -10,7 +10,8 @@ For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements �
 
 Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E7110224B22182CE6912A73`. Rerun the builder after further BIN changes. Excluded: balance 3,183 bytes, map/pickup/text content 31,461 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+Built on 2026-10-25 against main BIN `D1B124A121DE1C7D829DC7A9D812639D1E161201217077609908755834DD8934`. Rerun the builder after further BIN changes. Excluded: balance 2,966 bytes, map/pickup/text content 31,461 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+
 
 ### Boss AI
 
@@ -29,8 +30,8 @@ Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E
 | **The Creature AI** | Timed jumping rolls every second, a jump before each hammer swing and a floor-wide landing smash, at 1.5x speed with safe jumps. | — | 839 | `ASS-Final-The-Creature-AI.ppf` |
 | **Doppleganger40 AI** | A new AI with crouch pursuit and height-based choices, corner Wing Smash with a five-second cooldown, and crouching melee. | — | 2,874 | `ASS-Final-Doppleganger40-AI.ppf` |
 | **Akmodan II AI** | A scheduled cycle of aimed poison gas, bursts, dash grabs and a fast fireball barrage, with more aimed fireballs and a longer arm stretch. | — | 811 | `ASS-Final-Akmodan-II-AI.ppf` |
-| **Galamoth AI** | Height- and reach-based attack choices, kept inside the walls, a native four-second lightning, a barrage that is cancelled when Alucard leaves its target, a ground mace wave with orbs and a mid-height far mace, and a damageable head. | — | 1,347 | `ASS-Final-Galamoth-AI.ppf` |
-| **Shaft/Dracula AI and Greater Demon final phase** | Random move selection with a full-screen Pentagram, a swipe/special cycle with native swipes and no repeats, faster specials, bloodsuck portal cleanup, ground hover with resting hands, a new Greater Demon final phase (mega fireballs, edge-to-edge flight) and the Richter ending reach. | — | 197,344 | `ASS-Final-Shaft-Dracula-AI-and-Greater-Demon-final-phase.ppf` |
+| **Galamoth AI** | Height- and reach-based attack choices, kept inside the walls, a native four-second lightning, a barrage that is cancelled when Alucard leaves its target, a ground mace wave with orbs and a mid-height far mace, and a damageable head. | — | 1,345 | `ASS-Final-Galamoth-AI.ppf` |
+| **Shaft/Dracula AI and Greater Demon final phase** | Random move selection with a full-screen Pentagram, a swipe/special cycle with native swipes and no repeats, faster specials, bloodsuck portal cleanup, ground hover with resting hands, a new Greater Demon final phase (mega fireballs, edge-to-edge flight) and the Richter ending reach. | — | 197,343 | `ASS-Final-Shaft-Dracula-AI-and-Greater-Demon-final-phase.ppf` |
 | **Succubus AI** | Teleport combos and attack routing, shorter clone and decision waits, a faster grab, and a reworked wing spike (original tip hitbox, 48-frame windup, 32-frame hold, petals every 16 frames). | — | 1,740 | `ASS-Final-Succubus-AI.ppf` |
 | **Darkwing Bat AI** | Faster flight and rolls, and more rolls. | — | 26 | `ASS-Final-Darkwing-Bat-AI.ppf` |
 
@@ -38,7 +39,7 @@ Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Enemy AI pack** | Frozen Half ice-ball/rain cycle with smoke escape; Lesser Demon scripted summon-flight pattern at 1.5x; Skull Lord teleports behind Alucard; Wereskeleton head stretch; no idling and faster charges for several enemies; Bone Ark close lightning burst; Balloon Pods fly like crows with homing seeds; Hammer, Blade and Gurkha ignore hurt reactions; Stone Skulls chase when hurt; Salome's shield resists instead of blocking; Guardian wave, barrage, shield and teleport rework; Sniper of Goth dash and arrows; faster Anti-Chapel Archers. | — | 11,025 | `ASS-Final-Enemy-AI-pack.ppf` |
+| **Enemy AI pack** | Frozen Half ice-ball/rain cycle with smoke escape; Lesser Demon scripted summon-flight pattern at 1.5x; Skull Lord teleports behind Alucard; Wereskeleton head stretch; no idling and faster charges for several enemies; Bone Ark close lightning burst; Balloon Pods fly like crows with homing seeds; Hammer, Blade and Gurkha ignore hurt reactions; Stone Skulls chase when hurt; Salome's shield resists instead of blocking; Guardian wave, barrage, shield and teleport rework; Sniper of Goth dash and arrows; faster Anti-Chapel Archers. | — | 11,024 | `ASS-Final-Enemy-AI-pack.ppf` |
 
 ### Weapons and specials
 
@@ -55,7 +56,7 @@ Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E
 | **Spirit Wand rework** | Down, forward + attack casts Tetra Spirit; a Holy Rod swing with white lightning as the basic attack. | — | 1,738 | `ASS-Final-Spirit-Wand-rework.ppf` |
 | **Gram Pentagram special** | Gram's special casts the Pentagram spell. | — | 21,704 | `ASS-Final-Gram-Pentagram-special.ppf` |
 | **Staurolite doubles all subweapons** | Staurolite doubles the base damage of every subweapon. | — | 88 | `ASS-Final-Staurolite-doubles-all-subweapons.ppf` |
-| **Fire Rings** | A thrown fire ring with Chakram flight and a fire trail, costing MP per throw. | — | 96 | `ASS-Final-Fire-Rings.ppf` |
+| **Fire Rings** | A thrown fire ring with Chakram flight and a fire trail, costing MP per throw. | — | 95 | `ASS-Final-Fire-Rings.ppf` |
 | **Real-time shield spells** | Shield spells run in real time and drain MP while held; Alucard Shield heals and lasts 16 seconds; Medusa Shield lasers expire after 5 seconds. | — | 582 | `ASS-Final-Real-time-shield-spells.ppf` |
 | **Axe Armor jumps** | Axe Armor jumps like Alucard and can use a double-height jump with the Gravity Boots. | — | 1,014 | `ASS-Final-Axe-Armor-jumps.ppf` |
 | **Melee and Ranged weapon categories** | Short swords, clubs and fists sort under Melee; throwing weapons under Ranged. | — | 34 | `ASS-Final-Melee-and-Ranged-weapon-categories.ppf` |
@@ -73,8 +74,8 @@ Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Scorpion and noiL warp cards** | Library Card becomes the Scorpion Card (Outer Wall warp) and Takemitsu the noiL Card (inverted Castle Keep warp), reusable from either castle with the right map. | Death returns to the last save room, Shop Card | 295 | `ASS-Final-Scorpion-and-noiL-warp-cards.ppf` |
-| **Duplichaos** | The Duplicator becomes Duplichaos, an accessory that grants the power of Chaos on the Mystic Pendant tick. | — | 110 | `ASS-Final-Duplichaos.ppf` |
+| **Scorpion and noiL warp cards** | Library Card becomes the Scorpion Card (Outer Wall warp) and Takemitsu the noiL Card (inverted Castle Keep warp), reusable from either castle with the right map. | Death returns to the last save room, Shop Card | 294 | `ASS-Final-Scorpion-and-noiL-warp-cards.ppf` |
+| **Duplichaos** | The Duplicator becomes Duplichaos, an accessory that grants the power of Chaos on the Mystic Pendant tick. | — | 108 | `ASS-Final-Duplichaos.ppf` |
 | **Enemy food and watch drops** | Each enemy drops one healing food chosen by its size, plus the current castle's watch at a fixed 5% (exclusive with food). | — | 2,553 | `ASS-Final-Enemy-food-and-watch-drops.ppf` |
 | **Library Practice and Boss cRush** | The Library shop sells boss practice fights with full death animations and no EXP; Boss cRush keeps item slots and blocks warp cards. | Familiars gain a level per kill | 980 | `ASS-Final-Library-Practice-and-Boss-cRush.ppf` |
 | **Shop Card** | A Shop Card that opens the Librarian's shop from anywhere, returning to the correct castle and map. | Death returns to the last save room | 669 | `ASS-Final-Shop-Card.ppf` |
@@ -118,7 +119,7 @@ Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E
 |---|---|---|---:|---|
 | **Petrification rework** | Petrification lasts 3 seconds with no directional escape; hits while petrified have a 30-frame cooldown. | — | 127 | `ASS-Final-Petrification-rework.ppf` |
 | **Poison damage over time** | Poison deals 5 HP every 10 frames for its duration. | — | 135 | `ASS-Final-Poison-damage-over-time.ppf` |
-| **Percent DEF** | DEF reduces damage by a percentage instead of subtracting, replacing the separate inverted-castle +200; Walk Armor's map DEF is capped at 15. | Damage number colors: weak and resist | 966 | `ASS-Final-Percent-DEF.ppf` |
+| **Percent DEF** | DEF reduces damage by a percentage instead of subtracting, replacing the separate inverted-castle +200; Walk Armor's map DEF is capped at 15. Carries the current DEF of all of Alucard's equipment and every enemy, whichever patch set it. | Damage number colors: weak and resist | 1,197 | `ASS-Final-Percent-DEF.ppf` |
 
 ### Menus and presentation
 
@@ -133,4 +134,4 @@ Built on 2026-10-24 against main BIN `D390CB9023C525783F6FCE2ADA267AE82B8554091E
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Richter Mode overhaul** | Playable Richter rebuilt: Rest levels and milestones, healing and collection growth, four-digit hearts, Heart Regen, relic abilities, Blade Dash, Roundhouse, Rising Hurricane, default run with L2 walk, new pause pages with a guide, all Alucard bosses, and many fixes. | Shaft/Dracula AI and Greater Demon final phase, Death returns to the last save room, Life Apple auto-revive, Stat-scaled buffs, Damage number colors: weak and resist, Percent DEF | 29,556 | `ASS-Final-Richter-Mode-overhaul.ppf` |
+| **Richter Mode overhaul** | Playable Richter rebuilt: Rest levels and milestones, healing and collection growth, four-digit hearts, Heart Regen, relic abilities, Blade Dash, Roundhouse, Rising Hurricane, default run with L2 walk, new pause pages with a guide, all Alucard bosses, and many fixes. | Shaft/Dracula AI and Greater Demon final phase, Death returns to the last save room, Life Apple auto-revive, Stat-scaled buffs, Damage number colors: weak and resist, Percent DEF | 29,766 | `ASS-Final-Richter-Mode-overhaul.ppf` |

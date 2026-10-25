@@ -10,8 +10,9 @@ const BOSS = 'Boss AI', ENEMY = 'Enemy AI', WEAPON = 'Weapons and specials', FAM
   ITEM = 'Items, relics and shops', ALUCARD = 'Alucard abilities and spells', MECHANIC = 'Status and damage rules',
   MENU = 'Menus and presentation', RICHTER = 'Richter Mode', WORLD = 'World and story';
 
-// A Richter patch that wrote BIN/RIC.BIN (or the stage relic code) is Richter Mode; the rest touched only the BO6 boss.
-const ricOnly = p => !Object.keys(p.files || {}).some(f => /RIC\.BIN|NO0\.BIN/.test(f));
+// A Richter patch that wrote the BO6 boss overlay and not BIN/RIC.BIN (or the stage relic code) is the boss fight;
+// the rest is Richter Mode.
+const ricOnly = p => { const f = Object.keys(p.files || {}); return f.some(x => /BO6\.BIN/.test(x)) && !f.some(x => /RIC\.BIN|NO0\.BIN/.test(x)); };
 
 const FEATURES = [
   // Balance first, so tuning-only patches inside a feature's name family are not mistaken for the feature.
@@ -21,7 +22,7 @@ const FEATURES = [
       /^Creature-Hammer-Only-LIT/, /^Cerberus-Water-Neutral/, /^Succubus-All-Attack-Damage/, /^Succubus-Wing-Spike-Damage/,
       /^Pentagram-35MP/, /^Potions-900/, /^Librarian-/, /^Water-Enemy-Attacks/, /^Dark-Resist-Undead/, /^Enemy-Element-Only/,
       /^Ascaln-Gram-Sword-Familiar-DAR/, /^Greater-Demon-Dracula-Hands-DEF/, /^Alucard-Rebalance/,
-      /^Castle-Levels-Inverted/, /^First-Castle-Level-/]},
+      /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/]},
   {id: 'content', kind: 'content', title: 'Map, pickup and text edits', category: 'Content',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/,
       /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/]},
@@ -173,7 +174,7 @@ const FEATURES = [
   {id: 'poison', kind: 'hack', category: MECHANIC, title: 'Poison damage over time', match: [/^Poison-/],
     about: 'Poison deals 5 HP every 10 frames for its duration.'},
   {id: 'percent-def', kind: 'hack', category: MECHANIC, title: 'Percent DEF', match: [/^Percent-DEF-/, /^Walk-Armor-/],
-    about: 'DEF reduces damage by a percentage instead of subtracting, replacing the separate inverted-castle +200; Walk Armor\'s map DEF is capped at 15.'},
+    about: 'DEF reduces damage by a percentage instead of subtracting, replacing the separate inverted-castle +200; Walk Armor\'s map DEF is capped at 15. Carries the current DEF of all of Alucard\'s equipment and every enemy, whichever patch set it.'},
   {id: 'second-castle-attacks', kind: 'balance', category: 'Balance', title: 'Second-castle attack helper', match: []},
 
   // ---- Menus.
