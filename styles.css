@@ -301,6 +301,7 @@ input:disabled, select:disabled { opacity:.55; }
 .ass2Shot img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; }
 .ass2Shot figcaption { padding:8px 10px; color:var(--mute); font-size:12px; background:#140e12; }
 .ass2Hacks { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:8px; align-items:start; }
+.ass2HackGroup { margin:22px 0 10px; color:var(--ink); font:600 16px/1.3 "Palatino Linotype",Georgia,serif; letter-spacing:.01em; }
 .ass2Hack { padding:10px 12px; border:1px solid #2c1d21; border-radius:8px; background:#120d11; }
 .ass2Hack strong { display:block; color:var(--ink); font-size:13px; }
 .ass2Hack strong::before { content:"º6  "; color:var(--blood); }

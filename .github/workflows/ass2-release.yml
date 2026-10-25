@@ -1,10 +1,10 @@
-name: Publish ASS 2.0 downloads
+name: Publish ASS -Final- downloads
 
 on:
   push:
     branches: [main]
     paths:
-      - ass2/Alternate-Scarlet-Symphony-2.0.ppf
+      - ass2/ASS-Final.ppf
       - ass2/ass2-release.js
       - ass2-downloads.js
       - tools/ass2/publish-release.js

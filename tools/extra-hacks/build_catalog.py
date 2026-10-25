@@ -366,6 +366,9 @@ def main():
         feat['category'] = CLASSIC
         features.append(feat)
     final_index = add_final(features)
+    # Shared bytes were resolved in install order; list the Final hacks grouped by category.
+    rank = {fid: i for i, fid in enumerate(final_index.get('display', final_index['order']))}
+    features.sort(key=lambda ft: (1, rank[ft['id']]) if ft.get('final') else (0, 0))
     ids = {ft['id'] for ft in features}
     for ft in features:
         for e in ft['edits']:

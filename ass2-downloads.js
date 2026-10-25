@@ -7,10 +7,13 @@
   "use strict";
   const repository = "pddmergilla/sotn-editor";
 
+  // ASS 2.0 builds: tag ass2-v2.0.NN, Alternate-Scarlet-Symphony-2.0.NN.ppf; ASS -Final- builds: ass-vF.NN, ASS-F.NN.ppf.
   function details(release) {
-    if (!/^2\.0\.\d{2,}$/.test(release?.version || "")) throw new Error("Missing ASS build version.");
-    const tag = `ass2-v${release.version}`;
-    const name = `Alternate-Scarlet-Symphony-${release.version}.ppf`;
+    const version = release?.version || "";
+    if (!/^(2\.0|F)\.\d{2,}$/.test(version)) throw new Error("Missing ASS build version.");
+    const final = version.startsWith("F.");
+    const tag = final ? `ass-v${version}` : `ass2-v${version}`;
+    const name = final ? `ASS-${version}.ppf` : `Alternate-Scarlet-Symphony-${version}.ppf`;
     return {tag, name, api: `https://api.github.com/repos/${repository}/releases/tags/${tag}`,
       url: `https://github.com/${repository}/releases/download/${tag}/${name}`};
   }
@@ -43,7 +46,7 @@
       const releases = await response.json();
       if (!Array.isArray(releases)) throw new Error("Invalid download history.");
       for (const release of releases) {
-        const version = /^ass2-v(2\.0\.\d{2,})$/.exec(release.tag_name || "")?.[1];
+        const version = /^(?:ass2-v(2\.0\.\d{2,})|ass-v(F\.\d{2,}))$/.exec(release.tag_name || "")?.slice(1).find(Boolean);
         if (!version || release.draft || release.prerelease) continue;
         const info = details({version});
         for (const asset of release.assets || []) {

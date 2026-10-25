@@ -382,12 +382,20 @@ async function main() {
   if (!DRY) {
     fs.writeFileSync(path.join(OUT, 'README.md'), readme(report));
     fs.writeFileSync(path.join(SPEC_DIR, 'index.json'), JSON.stringify({generatedBy: 'tools/ass2/build-final-hacks.js',
-      base: {name: `ASS ${rel.version}`, sha256: baseSha}, final: {sha256: curSha}, order: order.filter(id => specIndex.includes(id))}, null, 2) + '\n');
+      base: {name: `ASS ${rel.version}`, sha256: baseSha}, final: {sha256: curSha}, order: order.filter(id => specIndex.includes(id)),
+      display: displayOrder(specIndex)}, null, 2) + '\n');
   }
   const json = JSON.stringify(report, null, 2) + '\n';
   fs.writeFileSync(DRY ? path.join(ROOT, 'outputs/final-audit-2026-10-24/dry-report.json') : path.join(OUT, 'ASS-Final-Hacks.verification.json'), json);
   console.log(JSON.stringify({features: report.features.filter(e => e.bytes).length, order: report.installOrder.length,
     excluded: Object.fromEntries(Object.entries(report.excluded).map(([k, v]) => [k, v.bytes])), current: curSha}));
+}
+
+// Hacks grouped by category (categories in the order they first appear in final-hacks.js), for display; the
+// catalog resolves shared bytes in install order (index.json "order") and lists the hacks in this order.
+function displayOrder(ids) {
+  const categories = [...new Set(FEATURES.map(f => f.category))], category = id => FEATURES.find(f => f.id === id).category;
+  return ids.map((id, i) => [id, i]).sort((a, b) => categories.indexOf(category(a[0])) - categories.indexOf(category(b[0])) || a[1] - b[1]).map(([id]) => id);
 }
 
 // The feature list by category, as used for docs/final-hacks.md and the website's Hacks list.

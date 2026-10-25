@@ -1,4 +1,4 @@
-// [Alternate Scarlet Symphony 2.0] tab: what the mod is, the release PPF, and a builder that applies it
+// [Alternate Scarlet Symphony -Final-] tab: what the mod is, the release PPF, and a builder that applies it
 // to the vanilla US BIN opened in the editor. Numbers come from ass2/ass2-release.js (tools/ass2/build-release.js)
 // and the hack list from the Extra Hacks catalog, so both follow the shipped BIN.
 (function () {
@@ -7,9 +7,9 @@
   const $ = id => document.getElementById(id);
   const fmt = n => Number(n).toLocaleString("en-US");
   const mb = n => `${(n / 1048576).toFixed(1)} MB`;
-  // "ASS 2.0.03": the build number goes up with every release of the BIN (tools/ass2/build-release.js).
-  const VERSION = R?.version ? `ASS ${R.version}` : "ASS 2.0";
-  const PPF_DOWNLOAD = R?.version ? `Alternate-Scarlet-Symphony-${R.version}.ppf` : R?.ppf.name;
+  // "ASS-F.01": the build number goes up with every release of the BIN (tools/ass2/build-release.js).
+  const VERSION = R?.version ? `ASS-${R.version}` : "ASS -Final-";
+  const PPF_DOWNLOAD = R?.version ? `ASS-${R.version}.ppf` : R?.ppf.name;
 
   function el(tag, attrs = {}, ...kids) {
     const node = document.createElement(tag);
@@ -79,7 +79,7 @@
       const disc = state.disc;
       const parts = [];
       const {crc} = await Core.buildWithCredits(disc.file, state.ppf, {write: chunk => { parts.push(chunk); }},
-        {expectedCrc: R.result.crc32, onProgress: p => setBuildStatus("busy", `Building Alternate Scarlet Symphony 2.0… ${Math.round(p * 100)}%`)});
+        {expectedCrc: R.result.crc32, onProgress: p => setBuildStatus("busy", `Building Alternate Scarlet Symphony -Final-… ${Math.round(p * 100)}%`)});
       const saved = await window.SotnSafeSave.save(new Blob(parts, {type: "application/octet-stream"}), R.result.name,
         {sourceHandle: state.handle, sourceFile: disc.file, allowSourceOverwrite: true,
           onSourceSnapshot: file => { disc.file = file; }});
@@ -121,14 +121,14 @@
     if (!state.disc) return setBuildStatus("idle", "Open your vanilla US BIN (Track 1) with Open SOTN BIN at the top, then build here.");
     if (state.checking || !c) return setBuildStatus("busy", `Checking ${state.name}…`);
     if (c.status === "vanilla") return setBuildStatus("ok", `${state.name} is an untouched US Track 1. Ready to build.`);
-    if (c.status === "patched") return setBuildStatus("ok", `${state.name} is already Alternate Scarlet Symphony 2.0. Nothing to build.`);
+    if (c.status === "patched") return setBuildStatus("ok", `${state.name} is already Alternate Scarlet Symphony -Final-. Nothing to build.`);
     if (c.status === "size") return setBuildStatus("bad", `${state.name} isn't the size of the US Track 1 BIN (${fmt(R.vanilla.size)} bytes). Use the Track 1 file from a two-track BIN/CUE dump.`);
     setBuildStatus("bad", `${state.name} isn't an unmodified US Track 1: ${fmt(c.vanillaMismatch)} of ${fmt(c.records)} patched regions don't match. Open the vanilla BIN instead.`);
   }
 
   // ---- content (descriptive, no raw values: the numbers live in the Stats Editor and the Extra Hacks tab)
   const n = R.numbers;
-  // Hacks that ship in ASS 2.0 (work-in-progress hacks are off in the release).
+  // Hacks that ship in ASS -Final- (work-in-progress hacks are off in the release).
   const hacks = () => (window.SotnExtraHacks?.features || []).filter(f => !f.wip);
   const BLURBS = {
     "minimap": "A small map in the corner keeps track of where you are.",
@@ -166,8 +166,8 @@
     return el("section", {class: "ass2Hero"},
       el("div", {class: "ass2HeroInner"},
         el("p", {class: "ass2Kicker", text: "Castlevania: Symphony of the Night"}),
-        el("h2", {class: "ass2Title"}, "Alternate Scarlet Symphony ", el("span", {text: "2.0"})),
-        el("p", {class: "ass2Tagline", text: "The castle you know, rebuilt to hit back. Harder fights, bosses that won't flinch, a Richter with a new brain, and an arsenal reworked down to the last Holy Water flame."}),
+        el("h2", {class: "ass2Title"}, "Alternate Scarlet Symphony ", el("span", {text: "-Final-"})),
+        el("p", {class: "ass2Tagline", text: "The final cut. Every boss rethought, a playable Richter rebuilt from the ground up, new familiars, new weapon arts, and a castle that never stops pushing back."}),
         el("div", {class: "ass2Cta"},
           el("a", {class: "ass2Button primary ass2PpfDownload", href: R.ppf.file, download: PPF_DOWNLOAD}, "Download the PPF ", el("small", {text: `${VERSION} · ${mb(R.ppf.size)}`})),
           el("a", {class: "ass2Button", href: "#ass2Install", onclick: e => { e.preventDefault(); $("ass2Install")?.scrollIntoView({behavior: "smooth"}); }}, "Build it from your vanilla BIN")),
@@ -188,34 +188,41 @@
 
   function features() {
     return el("section", {class: "ass2Section"},
-      el("h2", {class: "ass2H", text: "What's new"}),
+      el("h2", {class: "ass2H", text: "What's new in -Final-"}),
       el("div", {class: "ass2Features"},
-        feature("⚔", "Re-Rebalanced combat", "Enemies hit hard. Alucard hits hard too. Every enemy, weapon, spell and item has been retuned so every fight matters. This game is hard, but not too hard. Think Order of Ecclesia hard.",
-          ["Retuned enemies", "Retuned gear", "Retuned spells"]),
-        feature("☗", "A castle that's never empty", "New enemy placements fill the new areas, and no room sits empty anymore. Enemies will ambush you, gang up on you, and sometimes vanish without a trace. Keep your guard up. You've been warned.",
-          ["New placements", "No empty rooms", "Ambushes"]),
-        feature("☠", "Bosses that hold their ground", "Karasuman, Slogra, both Doppelgangers and Richter shrug off hit-stun. Succubus only flinches during her clone attack and fights faster. The Stopwatch's freeze is shorter, but the bosses that used to ignore it are now slowed by it.",
-          ["No Flinch", "Faster Succubus", "Stopwatch slows bosses"]),
-        feature("✠", "Epic Richter", "A completely new boss AI: distance-based combos, slide kicks, blade dashes and backflips, every subweapon and item crash, and a faster aggressive phase after Hydro Storm.",
-          ["New AI", "No Flinch", "Item crashes"]),
-        feature("✦", "Your weapon picks your subweapon", "The subweapon follows the weapon in your first hand, and its icon sits beside the weapon in the equipment menu. Subweapon candles drop Big Hearts instead, Holy Water flies in Richter's arc with flames that race along the floor, and Agunea's chain is capped.",
-          ["Weapon pairings", "Richter-style Holy Water", "Agunea Limit"]),
-        feature("✚", "Healing, reinvented", "Potions are never used up. Hold L2 and tap a face button to drink without opening the menu. Food is eaten the moment you use it or pick it up, hearts trickle back on their own, and every cloak turns survived damage into hearts.",
-          ["Quick Items (L2)", "Eat Food on Pickup", "Heart Regeneration", "All Cloaks give Hearts"]),
-        feature("☾", "Dark Metamorphosis unleashed", "Dark Metamorphosis now raises ATK, INT and DEF and speeds up walking, jumping, falling and backdashing while it lasts. Spells hit like they mean it.",
-          ["Stat buff", "SpeedUp"]),
-        feature("❖", "A sharper castle", "Enemies notice you from much farther away. A MiniMap tracks your position, warp rooms teleport in a blink, and damage numbers color-code weaknesses and resistances. And an actual underwater level!",
-          ["MiniMap", "Fast Warp", "Damage Number Colors", "Underwater level"])));
+        feature("☠", "Every boss, rethought", "Seventeen bosses fight with new patterns. Olrox aims his breath, Medusa's heads strike from the edges of the screen, Death opens with a barrage, Galamoth reads where you stand, and Dracula has one more form waiting at the end.",
+          ["Boss AI pack", "New final phase", "Epic Richter finisher"]),
+        feature("✠", "Richter Mode, rebuilt", "Play as Richter with Rest levels, growth from everything you collect, relic abilities, Blade Dash, Rising Hurricane, a running stance and a new pause menu with a guide. He can take on every boss Alucard faces.",
+          ["Rest levels", "Relic abilities", "New moves", "All bosses"]),
+        feature("⚔", "A smarter bestiary", "Frozen Half, Lesser Demon, Guardian, Skull Lord, Balloon Pods and more fight with new patterns, and enemies no longer stand around waiting for you to strike first.",
+          ["Enemy AI pack", "No idling"]),
+        feature("✦", "New weapon arts", "The Hunter Sword returns like a boomerang, the Stone Sword raises Medusa's shield, Terminus Est borrows Crissaegrim, the Hunting Blade throws a Heaven Sword, and the elemental swords, Spirit Wand and Gram all learn something new.",
+          ["Weapon specials", "Fire Rings", "Real-time shield spells"]),
+        feature("❖", "New familiars", "Dawn and Ouroboros join your party, the Sword Familiar can call in a friend, and every familiar grows a level with each kill.",
+          ["Dawn", "Ouroboros", "Familiar swap"]),
+        feature("✚", "Survive on your terms", "Life Apples revive you on the spot, death sends you back to your last save room, the Shop Card brings the Librarian to you, and two new warp cards cut the walk home. Practice any boss in the Library before the real thing.",
+          ["Life Apple revive", "Shop Card", "Warp cards", "Library Practice"]),
+        feature("☾", "Alucard, sharpened", "Spells scale with INT, DEF works as a percentage, Dark Metamorphosis and the buff potions grow with your stats, and air control is tighter. Some say a secret spell lets him become the Axe Lord.",
+          ["Percent DEF", "Stat-scaled buffs", "A secret spell"]),
+        feature("⚙", "Built on 2.0", "Everything from 2.0 is still here: the re-rebalanced combat, a castle with no empty rooms, weapons that pick your subweapon, potions that are never used up, Heart Regeneration, the MiniMap and Fast Warp.",
+          ["Re-Rebalanced", "Quick Items (L2)", "MiniMap", "Fast Warp"])));
   }
 
   function hackList() {
     const list = hacks();
     if (!list.length) return null;
+    const groups = [];
+    for (const f of list) {
+      const name = f.category || "Alternate Scarlet Symphony 2.0";
+      if (groups[groups.length - 1]?.name !== name) groups.push({name, items: []});
+      groups[groups.length - 1].items.push(f);
+    }
     return el("section", {class: "ass2Section"},
       el("h2", {class: "ass2H", text: `All ${list.length} gameplay hacks`}),
-      el("p", {class: "ass2Lead", text: "Every one of these is in ASS 2.0. The Extra Hacks tab can also add most of them to a vanilla BIN one at a time, or remove them from ASS 2.0."}),
-      el("div", {class: "ass2Hacks"}, list.map(f => el("div", {class: "ass2Hack"},
-        el("strong", {text: f.label}), el("p", {text: BLURBS[f.id] || f.subtitle || ""})))));
+      el("p", {class: "ass2Lead", text: "Every one of these is in ASS -Final-. The Extra Hacks tab can remove any of them one at a time, add most of the -Final- hacks to ASS 2.0, and add the original ones to a vanilla BIN."}),
+      groups.flatMap(group => [el("h3", {class: "ass2HackGroup", text: group.name}),
+        el("div", {class: "ass2Hacks"}, group.items.map(f => el("div", {class: "ass2Hack"},
+          el("strong", {text: f.label}), el("p", {text: BLURBS[f.id] || f.summary || f.subtitle || ""}))))]));
   }
 
   // ass2/screenshots/screenshots.json: [{file | url, caption?, source?}]
@@ -262,14 +269,14 @@
           el("dl", {class: "ass2Hashes"},
             el("dt", {text: "Build"}), el("dd", {}, el("code", {text: VERSION})),
             el("dt", {text: "Input: US Track 1"}), el("dd", {}, el("code", {text: `SHA-256 ${R.vanilla.sha256}`})),
-            el("dt", {text: "Output: ASS 2.0"}), el("dd", {}, el("code", {text: `SHA-256 ${R.result.sha256}`}), el("code", {text: `CRC32 ${R.result.crc32}`})),
+            el("dt", {text: `Output: ${VERSION}`}), el("dd", {}, el("code", {text: `SHA-256 ${R.result.sha256}`}), el("code", {text: `CRC32 ${R.result.crc32}`})),
             el("dt", {text: "Patch"}), el("dd", {}, el("code", {text: `SHA-256 ${R.ppf.sha256}`}))),
           el("p", {class: "ass2Fine", text: "The patch includes a PPF3 block check and undo data, so patchers can verify the input and undo it."}))));
   }
 
   function credits() {
     return el("section", {class: "ass2Section ass2Credits"},
-      el("p", {text: "Alternate Scarlet Symphony 2.0 builds on Alternate Scarlet Symphony 1.3.1 and the BigNumbers rebalance. QoL features such as MiniMap, Fast Warp and Damage Number Colors are ported from Reawakened. Research used the sotn-decomp project. Castlevania: Symphony of the Night is © Konami; this is an unofficial fan modification. And yes, this page is designed by Opus 5.5."}),
+      el("p", {text: "Alternate Scarlet Symphony -Final- completes Alternate Scarlet Symphony 2.0, which builds on Alternate Scarlet Symphony 1.3.1 and the BigNumbers rebalance. Dawn and Ouroboros, MiniMap, Fast Warp and Damage Number Colors are ported from Reawakened. Research used the sotn-decomp project. Castlevania: Symphony of the Night is © Konami; this is an unofficial fan modification. And yes, this page is designed by Opus 5.5."}),
       el("p", {class: "ass2Support"}, "Enjoying Alternate Scarlet Symphony? ",
         el("a", {class: "donateButton", href: "https://buymeacoffee.com/nukesheart", target: "_blank", rel: "noopener noreferrer"}, "Donate ♥️")),
       el("p", {class: "ass2Fine", text: `Release data built ${R.built}.`}));
@@ -278,7 +285,7 @@
   function render() {
     const view = $("ass2View");
     if (!view) return;
-    if (!R || !Core) { view.replaceChildren(el("p", {class: "ass2Fine", text: "The ASS 2.0 release data is missing."})); return; }
+    if (!R || !Core) { view.replaceChildren(el("p", {class: "ass2Fine", text: "The ASS -Final- release data is missing."})); return; }
     if (!rendered) {
       view.replaceChildren(el("div", {class: "ass2Page"}, hero(), features(), gallery(), hackList(), install(), credits()));
       rendered = true;

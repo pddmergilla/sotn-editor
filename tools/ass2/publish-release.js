@@ -7,7 +7,7 @@ const D = require("../../ass2-downloads.js");
 function validate(release, patch) {
   const info = D.details(release);
   if (!Number.isInteger(release.build) || release.build < 1 ||
-      release.version !== `2.0.${String(release.build).padStart(2, "0")}`)
+      release.version !== `F.${String(release.build).padStart(2, "0")}`)
     throw new Error("The build number and version differ.");
   const digest = crypto.createHash("sha256").update(patch).digest("hex");
   if (patch.length !== release.ppf.size || digest !== release.ppf.sha256.toLowerCase())
@@ -25,7 +25,7 @@ async function publish(release, patch, {repository, commit, request}) {
   catch (error) { if (error.status !== 404) throw error; }
   if (!current) {
     current = await request(api, {method: "POST", json: {
-      tag_name: info.tag, target_commitish: commit, name: `Alternate Scarlet Symphony ${release.version}`,
+      tag_name: info.tag, target_commitish: commit, name: `Alternate Scarlet Symphony -Final- (ASS-${release.version})`,
       draft: true, prerelease: false,
       body: `PPF3 patch for the US Track 1 BIN.\n\nPatch SHA-256: ${release.ppf.sha256}\n\n` +
         `Install and build in the browser: https://pddmergilla.github.io/sotn-editor/\n\n` +

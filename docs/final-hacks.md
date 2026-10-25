@@ -10,7 +10,8 @@ For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements �
 
 Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D3F58981BC98F2DAFF14814`. Rerun the builder after further BIN changes. Excluded: balance 2,966 bytes, map/pickup/text content 31,461 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+Built on 2026-10-25 against main BIN `8150DE0D72BA535CB19E966FC08DF088AC1E7746B72946A6F036409AAFD59D63`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: balance 2,966 bytes, map/pickup/text content 31,471 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+
 
 
 
@@ -68,7 +69,7 @@ Built on 2026-10-25 against main BIN `6AA63A9425ECDA8D1A06B8BD8FFB3EE325E33AF66D
 | **Shop Card** | A Shop Card that opens the Librarian's shop from anywhere, returning to the correct castle and map. | Death returns to the last save room | 669 | `ASS-Final-Shop-Card.ppf` |
 | **Life Apple auto-revive** | Life Apples revive Alucard automatically with HP equal to his max hearts, shown as a HUD of charges that refill at save points and on load. | Death returns to the last save room | 1,000 | `ASS-Final-Life-Apple-auto-revive.ppf` |
 | **Equipment item slots** | Two selectable medicine/food equipment slots used by the item shortcut. | Melee and Ranged weapon categories | 2,390 | `ASS-Final-Equipment-item-slots.ppf` |
-| **Faerie item use** | The Faerie heals with Potions only and lets you drink potions yourself; Antivenom and Uncurse cost 100 Hearts, including when the Faerie uses them. | — | 220 | `ASS-Final-Faerie-item-use.ppf` |
+| **Faerie item use** | The Faerie heals with Potions only and lets you drink potions yourself; Antivenom and Uncurse cost 100 Hearts, including when the Faerie uses them. | — | 236 | `ASS-Final-Faerie-item-use.ppf` |
 | **Reusable Mana Prism** | The Mana Prism is reusable for 1000 Hearts and limited to one copy in the shop. | Library shop order and one-copy limits | 35 | `ASS-Final-Reusable-Mana-Prism.ppf` |
 | **Library shop order and one-copy limits** | The Library shop is reordered with new Hint prices, and eight items, cloaks included, can be bought only once. | — | 243 | `ASS-Final-Library-shop-order-and-one-copy-limits.ppf` |
 | **Gravity Boots once per landing** | Gravity Boots can be used once until Alucard lands. | — | 386 | `ASS-Final-Gravity-Boots-once-per-landing.ppf` |

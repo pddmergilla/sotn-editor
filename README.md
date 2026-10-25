@@ -1,4 +1,4 @@
-# SOTN Editor v7.0
+# SOTN Editor v8.0
 
 Build your own *Castlevania: Symphony of the Night* ROM hack in the browser. Edit maps, stats, shops and gameplay, then save a new BIN or a PPF3 patch.
 
@@ -6,16 +6,16 @@ Build your own *Castlevania: Symphony of the Night* ROM hack in the browser. Edi
 
 Everything runs locally. You open your own US PlayStation disc image, and the editor reads it in the browser. Nothing is uploaded and no game assets are included. You can save a new BIN or replace an existing BIN with a verified backup protecting it.
 
-## Play Alternate Scarlet Symphony 2.0
+## Play Alternate Scarlet Symphony -Final-
 
-This editor is also home to **Alternate Scarlet Symphony 2.0**, a hard-hitting remix of Symphony of the Night. It has retuned combat, new enemy placements, bosses that won't flinch, an all-new Richter fight and a rebuilt arsenal.
+This editor is also home to **Alternate Scarlet Symphony -Final-**, the final cut of a hard-hitting remix of Symphony of the Night. It has retuned combat, new enemy placements, new AI for seventeen bosses and many enemies, a rebuilt playable Richter, new familiars and weapon arts.
 
 You can get it two ways:
 
-- **Build it in the browser.** Open your vanilla US BIN with **Open SOTN BIN**, go to the **Alternate Scarlet Symphony 2.0** tab, and select **Build**. The editor checks your BIN against vanilla before it writes anything.
-- **Patch it yourself.** Use the download button in the **Alternate Scarlet Symphony 2.0** tab and apply the PPF to `Castlevania - Symphony of the Night (USA) (Track 1).bin` with any PPF3 patcher. The button uses the matching [GitHub Release](https://github.com/pddmergilla/sotn-editor/releases) when available so downloads are counted; the page shows the total tracked PPF downloads across all builds. The [website copy](ass2/Alternate-Scarlet-Symphony-2.0.ppf) remains a fallback.
+- **Build it in the browser.** Open your vanilla US BIN with **Open SOTN BIN**, go to the **Alternate Scarlet Symphony -Final-** tab, and select **Build**. The editor checks your BIN against vanilla before it writes anything.
+- **Patch it yourself.** Use the download button in the **Alternate Scarlet Symphony -Final-** tab and apply the PPF to `Castlevania - Symphony of the Night (USA) (Track 1).bin` with any PPF3 patcher. The button uses the matching [GitHub Release](https://github.com/pddmergilla/sotn-editor/releases) when available so downloads are counted; the page shows the total tracked PPF downloads across all builds. The [website copy](ass2/ASS-Final.ppf) remains a fallback.
 
-Keep the original Track 2 next to the patched Track 1. The tab can also download a matching `.cue`. [More about the ASS 2.0 tab](docs/ass2.md).
+Keep the original Track 2 next to the patched Track 1. The tab can also download a matching `.cue`. [More about the ASS -Final- tab](docs/ass2.md).
 
 ## What you can edit
 
@@ -24,12 +24,12 @@ Keep the original Track 2 next to the patched Track 1. The tab can also download
 | **Map Editor** | Paint foreground and background tiles with the stage's real artwork. Edit collision, room entities, item drops, relic orbs and object graphics banks. [Details](docs/map-editor.md) |
 | **Stats Editor** | Change Alucard's and Richter's starting stats and gear, pickups and healing, spells, subweapons, familiars, enemies, every weapon, armor and accessory, weapon movesets and special effects. [Details](docs/stats-editor.md) |
 | **Library Shop Editor** | Choose what the Master Librarian sells and when, set prices, and edit the relic and magic scrolls, the gems he buys, tactics prices and the menu. |
-| **Extra Hacks** | Turn on or off 30 gameplay hacks (one is still a work in progress), from a MiniMap and Fast Warp to an all-new Richter AI. They can be added to vanilla or removed from Alternate Scarlet Symphony. [Details](docs/extra-hacks.md) |
-| **Alternate Scarlet Symphony 2.0** | Read about the mod and download it, or build it from your vanilla BIN. [Details](docs/ass2.md) |
+| **Extra Hacks** | Turn on or off 87 gameplay hacks (one is still a work in progress), from a MiniMap and Fast Warp to new boss AI, familiars and Richter Mode. The ASS 2.0 hacks can be added to vanilla; the -Final- hacks can be removed from ASS -Final- or added to ASS 2.0. [Details](docs/extra-hacks.md) |
+| **Alternate Scarlet Symphony -Final-** | Read about the mod and download it, or build it from your vanilla BIN. [Details](docs/ass2.md) |
 
 Every edit can be undone with the toolbar Undo button or Ctrl+Z.
 
-Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at the bottom left of the title screen, including builds with a single stat edit. Exported PPF3 patches and browser tests include the same credit. ASS builds place their existing Alternate Scarlet Symphony 2.0 title below the Symphony of the Night logo; ordinary edits to vanilla preserve its copyright line and do not add the ASS title. Earlier editor exports adopt the new layout when rebuilt. Unsupported title-screen changes stop the export instead of overwriting artwork.
+Every BIN built here includes `https://pddmergilla.github.io/sotn-editor/` at the bottom left of the title screen, including builds with a single stat edit. Exported PPF3 patches and browser tests include the same credit. ASS builds place their existing Alternate Scarlet Symphony title below the Symphony of the Night logo (ASS -Final- ships with it and the link in place); ordinary edits to vanilla preserve its copyright line and do not add the ASS title. Earlier editor exports adopt the new layout when rebuilt. Unsupported title-screen changes stop the export instead of overwriting artwork.
 
 ## Quick start
 
@@ -57,7 +57,7 @@ Alternatively, in the repository folder, run:
 node serve.js
 ```
 
-Then open `http://127.0.0.1:8765` in desktop Chrome, Edge or Firefox. Browser testing and the ASS 2.0 build need the local server; opening `index.html` from disk only supports editing and exporting. Export any unsaved edits before switching from a file tab.
+Then open `http://127.0.0.1:8765` in desktop Chrome, Edge or Firefox. Browser testing and the ASS -Final- build need the local server; opening `index.html` from disk only supports editing and exporting. Export any unsaved edits before switching from a file tab.
 
 ## Compatibility
 
@@ -80,17 +80,18 @@ The editor is plain HTML, CSS and JavaScript with no build step. Browser testing
 | `entity-*.js` | Entity catalog, templates and editing model |
 | `stats-*.js`, `shop-*.js` | Stats and Library shop models and UI |
 | `extra-hacks-ui.js`, `extra-hacks-catalog.js` | Hack detection and toggling; the catalog is generated |
-| `ass2-core.js`, `ass2-ui.js`, `ass2/` | ASS 2.0 tab, release PPF and release data |
-| `tools/extra-hacks/` | Hack specs and `build_catalog.py`, which generates the catalog |
-| `tools/ass2/build-release.js` | Rebuilds the ASS 2.0 PPF and release data from the BINs |
+| `ass2-core.js`, `ass2-ui.js`, `ass2/` | ASS -Final- tab, release PPF and release data |
+| `tools/extra-hacks/` | Hack specs (`specs/final/` for the -Final- hacks) and `build_catalog.py`, which generates the catalog |
+| `tools/ass2/build-release.js` | Rebuilds the ASS -Final- PPF and release data from the BINs |
+| `tools/ass2/build-final-hacks.js` | Splits the -Final- changes into separate patches and catalog specs |
 | `tests/` | Node test scripts |
 
 Run the tests with `node tests/<name>.test.js`. Some checks need real disc images and skip without them. See [docs/testing.md](docs/testing.md) for the full list and the environment variables that point to your images.
 
 To regenerate generated files:
 
-- **After changing a hack spec**, run `python tools/extra-hacks/build_catalog.py`. It needs the vanilla, ASS 1.3.1 and ASS 2.0 BINs.
-- **After changing the ASS 2.0 BIN**, run `node tools/ass2/build-release.js`.
+- **After changing the main BIN**, run `node tools/ass2/build-final-hacks.js` (separate patches and `specs/final/`), then `python tools/extra-hacks/build_catalog.py` (needs the vanilla, ASS 1.3.1, ASS 2.0.10 and ASS -Final- BINs), then `node tools/ass2/build-release.js`.
+- **After changing a hack spec**, run `python tools/extra-hacks/build_catalog.py`.
 
 ## Support
 

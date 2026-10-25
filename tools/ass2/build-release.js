@@ -1,12 +1,13 @@
-// Build the Alternate Scarlet Symphony 2.0 release for the [Alternate Scarlet Symphony 2.0] tab:
-//   ass2/Alternate-Scarlet-Symphony-2.0.ppf  PPF3 from vanilla US Track 1 to the ASS 2.0 BIN (block check + undo data)
-//   ass2/ass2-release.js                     hashes, sizes and the headline numbers the tab shows
-// Rerun after changing the ASS 2.0 BIN. Neither BIN is modified.
+// Build the Alternate Scarlet Symphony -Final- release for the [Alternate Scarlet Symphony -Final-] tab:
+//   ass2/ASS-Final.ppf      PPF3 from vanilla US Track 1 to the ASS -Final- BIN (block check + undo data)
+//   ass2/ass2-release.js    hashes, sizes and the headline numbers the tab shows
+// Rerun after changing the main BIN. Neither BIN is modified.
 //
 // usage: node tools/ass2/build-release.js [--vanilla PATH] [--ass PATH] [--build N]
-//   defaults: SOTN_VANILLA_BIN / SOTN_ASS_BIN, else the usual Downloads paths.
-// Build number: shown as ASS 2.0.NN. Without --build it goes up by one whenever the ASS BIN differs
-// from the one the previous ass2/ass2-release.js was built from, and stays the same otherwise.
+//   defaults: SOTN_VANILLA_BIN / SOTN_ASS_BIN, else the Downloads vanilla BIN and MainBIN's main BIN.
+// Build number: shown as ASS-F.NN (the 2.0 builds were ASS 2.0.01-2.0.10). Without --build it starts at 1 after
+// a 2.0 build, then goes up by one whenever the BIN differs from the one the previous ass2/ass2-release.js was
+// built from, and stays the same otherwise.
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
@@ -20,9 +21,9 @@ const home = process.env.USERPROFILE || process.env.HOME || "";
 const arg = name => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const VANILLA = arg("--vanilla") || process.env.SOTN_VANILLA_BIN ||
   `${home}/Downloads/Castlevania - Symphony of the Night (USA)/Castlevania - Symphony of the Night (USA) (Track 1).bin`;
-const ASS = arg("--ass") || process.env.SOTN_ASS_BIN || `${home}/Downloads/Castlevania - Alternate Scarlet Symphony 2.0.bin`;
+const ASS = arg("--ass") || process.env.SOTN_ASS_BIN || path.join(root, "MainBIN", "Castlevania - Alternate Scarlet Symphony 2.0.bin");
 const OUT = path.join(root, "ass2");
-const PPF_NAME = "Alternate-Scarlet-Symphony-2.0.ppf";
+const PPF_NAME = "ASS-Final.ppf";
 const SECTOR = 2352, GAP = 4, BLOCK_CHECK = 0x9320;
 
 // Enemy table rows shown in the boss table (index into g_EnemyDefs).
@@ -53,7 +54,7 @@ function buildPpf(v, a, description) {
     const h = Buffer.alloc(9); h.writeBigUInt64LE(BigInt(x), 0); h[8] = y - x;
     parts.push(h, a.subarray(x, y), v.subarray(x, y));
   }
-  // Round trip: the records turn vanilla into ASS 2.0.
+  // Round trip: the records turn vanilla into the release BIN.
   const check = Buffer.from(v);
   for (const [x, y] of records) a.copy(check, x, x, y);
   if (!check.equals(a)) throw new Error("PPF round trip failed");
@@ -100,11 +101,13 @@ async function changedFiles(dv, v, a) {
     } catch { return null; }
   })();
   const resultSha = sha(a);
+  const final = /^F./.test(previous?.version || "");
   const build = arg("--build") ? Number(arg("--build")) :
-    previous?.build ? previous.build + (previous.result?.sha256 === resultSha ? 0 : 1) : 1;
+    final ? previous.build + (previous.result?.sha256 === resultSha ? 0 : 1) : 1;
   if (!Number.isInteger(build) || build < 1) throw new Error("--build must be a whole number of at least 1");
-  const version = `2.0.${String(build).padStart(2, "0")}`;
-  const {ppf, records, sectors} = buildPpf(v, a, `Alternate Scarlet Symphony ${version}`);
+  const version = `F.${String(build).padStart(2, "0")}`;
+  const {ppf, records, sectors} = buildPpf(v, a, `Alternate Scarlet Symphony ASS-${version}`);
+  if (previous?.ppf?.file && previous.ppf.file !== `ass2/${PPF_NAME}`) fs.rmSync(path.join(root, previous.ppf.file), {force: true});
   fs.mkdirSync(OUT, {recursive: true});
   fs.writeFileSync(path.join(OUT, PPF_NAME), ppf);
 
@@ -141,12 +144,12 @@ async function changedFiles(dv, v, a) {
   const files = await changedFiles(V.disc, v, a);
 
   const release = {
-    title: "Alternate Scarlet Symphony 2.0",
+    title: "Alternate Scarlet Symphony -Final-",
     build, version,
     built: (d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`)(new Date()), // local date
     ppf: {file: `ass2/${PPF_NAME}`, name: PPF_NAME, size: ppf.length, sha256: sha(ppf), records, sectors},
     vanilla: {name: path.basename(VANILLA), size: v.length, sha256: sha(v), crc32: crc(v)},
-    result: {name: "Castlevania - Alternate Scarlet Symphony 2.0 (Track 1).bin", size: a.length, sha256: resultSha, crc32: crc(a)},
+    result: {name: "Castlevania - Alternate Scarlet Symphony Final (Track 1).bin", size: a.length, sha256: resultSha, crc32: crc(a)},
     disc: {filesChanged: files.changed.length, filesTotal: files.total,
       stagesChanged: files.changed.filter(f => /^(ST|BOSS)\//.test(f)).length},
     numbers: {
@@ -156,10 +159,10 @@ async function changedFiles(dv, v, a) {
     }
   };
   fs.writeFileSync(path.join(OUT, "ass2-release.js"),
-    "// Generated by tools/ass2/build-release.js from the vanilla US and ASS 2.0 BINs. Do not edit by hand.\n" +
+    "// Generated by tools/ass2/build-release.js from the vanilla US and ASS -Final- BINs. Do not edit by hand.\n" +
     `window.SotnAss2Release = ${JSON.stringify(release, null, 1)};\n`);
-  console.log(`Build ASS ${version}`);
+  console.log(`Build ASS-${version}`);
   console.log(`PPF ${PPF_NAME}: ${ppf.length} bytes, ${records} records, ${sectors} sectors, SHA-256 ${release.ppf.sha256}`);
-  console.log(`vanilla ${release.vanilla.sha256}  ->  ASS 2.0 ${release.result.sha256} (CRC32 ${release.result.crc32})`);
+  console.log(`vanilla ${release.vanilla.sha256}  ->  ASS-${version} ${release.result.sha256} (CRC32 ${release.result.crc32})`);
   console.log(`${changedValues} changed stat values; ${files.changed.length} of ${files.total} disc files differ.`);
 })().catch(e => { console.error(e); process.exit(1); });
