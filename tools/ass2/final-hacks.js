@@ -25,7 +25,7 @@ const FEATURES = [
       /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/]},
   {id: 'content', kind: 'content', title: 'Map, pickup and text edits', category: 'Content',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
-      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/, /^Credits-Oy-Final/, /^Prologue-Welcome-/]},
+      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/, /^Credits-Oy-Final/, /^Credits-Centered/, /^Prologue-Welcome-/]},
 
   // ---- Boss AI: one patch for every boss.
   {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',

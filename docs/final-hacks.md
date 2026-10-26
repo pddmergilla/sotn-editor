@@ -10,7 +10,7 @@ For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements â
 
 Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-10-26 against main BIN `7156BE53B54C7FCC7AED1A87EA415CF12357C29AF2D3844ED9F9B673D1E624ED`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: balance 2,982 bytes, map/pickup/text content 34,559 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+Built on 2026-10-26 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451EBF7C3E6BCD459CA2DC7CA`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: balance 2,982 bytes, map/pickup/text content 34,565 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
 
 ### Boss AI
 
