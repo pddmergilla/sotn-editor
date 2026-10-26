@@ -371,6 +371,8 @@ async function main() {
     entry.reversal = {path: path.join(OUT, `Reverse-${name}.ppf`), size: reversal.length, sha256: sha(reversal), records: A.parsePpf(reversal).offsets.length, appliesTo: `current main BIN ${curSha.slice(0, 8)}`};
     const spec = await catalogSpec(f, own);
     spec.requires = need;
+    // joinInto: Extra Hacks shows this hack inside an earlier hack's checkbox.
+    if (f.joinInto) spec.joinInto = f.joinInto;
     specIndex.push(f.id);
     if (!DRY) {
       fs.writeFileSync(entry.forward.path, forward); fs.writeFileSync(entry.reversal.path, reversal);

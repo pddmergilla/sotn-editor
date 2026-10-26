@@ -214,6 +214,8 @@ input:disabled, select:disabled { opacity:.55; }
 .extraHacksList.blocked .extraHackCard { opacity:.55; }
 .extraHackStates { display:flex; flex-wrap:wrap; gap:6px 14px; margin:8px 0 0 25px; color:#8997a9; font-size:10.5px; }
 .extraHackSelected.changed { color:#e6cf8f; }
+.extraHackUpdate { padding:1px 8px; border:1px solid #4a5a73; border-radius:6px; color:#d6e4ff; background:#1d2633; font-size:10.5px; cursor:pointer; }
+.extraHackUpdate:disabled { opacity:.5; cursor:default; }
 .extraHackReason,.extraHackDetail { margin:7px 0 0 25px; color:#d7c79f; font-size:11px; line-height:1.45; }
 .extraHackDetail { color:#9eacbe; }
 .extraHackBonus { color:#b8e4bd; }

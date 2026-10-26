@@ -29,5 +29,6 @@
       "on": "40"
     }
   ],
-  "requires": []
+  "requires": [],
+  "joinInto": "sky-walker"
 }

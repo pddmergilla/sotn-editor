@@ -233,6 +233,8 @@ def add_final(features):
             feat['requires'] = requires
         if s.get('finalOnly'):
             feat['finalOnly'] = True
+        if s.get('joinInto'):
+            feat['joinInto'] = s['joinInto']  # shown inside that hack's checkbox
         features.append(feat)
     # A Final hack's bytes with every later layer written over them are what ASS -Final- holds.
     for ft in features:

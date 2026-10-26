@@ -152,6 +152,14 @@
       }
       feature.valueLayers = [...ids];
     }
+    // joinInto: a later hack shown inside an earlier hack's checkbox (Stat-scaled buffs in Dark Metamorphosis stat buff).
+    for (const feature of features) {
+      const host = feature.joinInto && features.find(item => item.id === feature.joinInto);
+      if (!host) continue;
+      (host.joined ??= []).push(feature.id);
+      feature.ownLabel = feature.label;
+      feature.label = host.label;
+    }
     return {...raw, features};
   }
   const valuesReplaced = (feature, selected) => feature.valueLayers?.find(id => selected.get(id));
@@ -567,20 +575,24 @@
     list.classList.toggle("blocked", phase === "unsupported");
     let category = null;
     for (const feature of catalog?.features || []) {
+      if (feature.joinInto) continue;
       if (feature.category && feature.category !== category) {
         category = feature.category;
         list.append(element("h3", "extraHacksGroup", category));
       }
       const entry = avail.get(feature.id);
       const info = entry?.info;
+      // Joined hacks this BIN can take are added with the checkbox; an earlier version (without them) gets an Update button.
+      const joined = (feature.joined || []).map(id => avail.get(id)).filter(item => item && (item.canToggle || item.source));
       const on = !!selected.get(feature.id);
+      const outdated = on && joined.filter(item => !selected.get(item.feature.id));
       const card = element("article", "extraHackCard");
       const label = element("label", "extraHackLabel");
       const input = element("input");
       input.type = "checkbox";
       input.checked = on;
       input.disabled = phase !== "ready" || !entry?.canToggle;
-      input.addEventListener("change", () => toggle(feature.id, input.checked));
+      input.addEventListener("change", () => toggle(feature.id, input.checked, input.checked ? joined.map(item => item.feature.id) : []));
       const text = element("span", "extraHackText");
       const name = element("span", "extraHackName", feature.label);
       if (feature.wip) name.append(" ", element("span", "extraHackWip", "WIP"));
@@ -591,8 +603,17 @@
       if (phase === "ready" && info) {
         const states = element("div", "extraHackStates");
         const vanillaOnly = analysis.profile === "vanilla" && feature.vanilla !== true && info.state !== "on";
-        states.append(element("span", "", `In this BIN: ${vanillaOnly ? "Not available on vanilla" : stateLabel(info.state)}`));
-        if (entry.canToggle && on !== entry.source) states.append(element("span", "extraHackSelected changed", `Build: ${on ? "adds it" : "removes it"}`));
+        const earlier = info.state === "on" && joined.some(item => !item.source);
+        states.append(element("span", "", `In this BIN: ${vanillaOnly ? "Not available on vanilla" : earlier ? "On (earlier version)" : stateLabel(info.state)}`));
+        const updating = on && entry.source && joined.some(item => selected.get(item.feature.id) && !item.source);
+        if ((entry.canToggle && on !== entry.source) || updating) states.append(element("span", "extraHackSelected changed", `Build: ${updating ? "updates it" : on ? "adds it" : "removes it"}`));
+        if (outdated.length) {
+          const button = element("button", "extraHackUpdate", "Update");
+          button.type = "button";
+          button.disabled = phase !== "ready";
+          button.addEventListener("click", () => toggle(outdated[0].feature.id, true, outdated.slice(1).map(item => item.feature.id)));
+          states.append(button);
+        }
         card.append(states);
       }
       if (feature.summary) card.append(element("p", "extraHackDetail", feature.summary));
@@ -600,11 +621,11 @@
         const e = info.entities;
         card.append(element("p", "extraHackDetail", `${feature.entityLabel || "Entities"}: ${e.on} of ${e.total} ${feature.entityOnText || "changed"} in this BIN${e.missing + e.other ? `; ${e.missing + e.other} were moved or changed in the map editor and are left as they are` : ""}.`));
       }
-      const replaced = valuesReplaced(feature, selected);
+      // A later version that is selected or can be added here (Stat-scaled buffs) replaces the editable bonuses.
+      const replaced = valuesReplaced(feature, selected) || feature.valueLayers?.some(id => avail.get(id)?.canToggle);
       const values = on && !replaced ? valueText(feature, info) : "";
       if (values) card.append(element("p", "extraHackDetail extraHackBonus", values));
-      if (on && replaced) card.append(element("p", "extraHackDetail", `${catalog.features.find(item => item.id === replaced)?.label || replaced} replaces these bonuses while it is checked.`));
-      else if ((feature.values || []).some(v => v.editable)) {
+      if (!replaced && (feature.values || []).some(v => v.editable)) {
         const controls = element("div", "sfGrid");
         for (const def of feature.values.filter(v => v.editable)) {
           const label = element("label", "sf");
@@ -636,7 +657,7 @@
       if (on && analysis?.profile === "vanilla" && feature.vanillaNote) card.append(element("p", "extraHackDetail", feature.vanillaNote));
       const needs = requiresFor(feature, analysis?.profile);
       if (needs.length) {
-        const names = needs.map(id => catalog.features.find(item => item.id === id)?.label || id);
+        const names = [...new Set(needs.map(id => catalog.features.find(item => item.id === id)?.label || id))].filter(name => name !== feature.label);
         card.append(element("p", "extraHackDetail", `Needs: ${names.join(", ")}.`));
       }
       if (phase === "ready" && entry?.reason) card.append(element("p", "extraHackReason", entry.reason));
@@ -645,16 +666,26 @@
     renderStatus();
   }
 
-  function toggle(id, value) {
+  // also: joined hacks switched on together with this one.
+  function toggle(id, value, also = []) {
     const previous = selected;
     try {
-      const result = cascade(catalog, avail, selected, id, value, analysis?.profile);
-      for (const [key, on] of result.selected) {
+      let next = selected;
+      const notes = [];
+      for (const key of [id, ...also]) {
+        const result = cascade(catalog, avail, next, key, value, analysis?.profile);
+        next = result.selected; notes.push(...result.notes);
+      }
+      for (const [key, on] of next) {
         const entry = avail.get(key);
         if (on !== entry.source && !entry.canToggle) throw new Error(`${entry.feature.label}: ${entry.reason}`);
       }
-      selected = result.selected;
-      noteText = result.notes.join(" ");
+      selected = next;
+      // A joined hack shares its host's label, so notes naming the same hack twice say nothing.
+      noteText = [...new Set(notes)].filter(note => {
+        const [a, b] = note.split(" was turned on because "), [c, d] = note.split(" was turned off because it needs ");
+        return b !== `${a} needs it.` && d !== `${c}.`;
+      }).join(" ");
     } catch (error) {
       noteText = error.message;
     }
@@ -715,12 +746,15 @@
       }
       avail = availability(catalog, analysis);
       for (const entry of avail.values()) selected.set(entry.feature.id, entry.source);
-      const found = analysis.features.filter(item => item.state === "on").length;
-      const unknown = analysis.features.filter(item => item.state === "unknown" || item.state === "mixed").length;
+      // Counted as the tab shows them: a joined hack is part of its host's checkbox.
+      const shown = analysis.features.filter(item => !catalog.features.find(f => f.id === item.id).joinInto);
+      const found = shown.filter(item => item.state === "on").length;
+      const finalOnly = shown.filter(item => item.short && catalog.features.find(f => f.id === item.id).finalOnly).length;
+      const unknown = shown.filter(item => item.state === "unknown" || item.state === "mixed").length - finalOnly;
       phase = "ready";
       statusText = analysis.profile === "vanilla"
-        ? `Vanilla US BIN detected. ${found ? `${found} of ${catalog.features.length} hacks are already present.` : "No hacks are present; check the ones to add."}`
-        : `Alternate Scarlet Symphony${analysis.final ? " -Final-" : ""} BIN detected. ${found} of ${catalog.features.length} hacks are present${unknown ? `; ${unknown} could not be recognized and are locked` : ""}.`;
+        ? `Vanilla US BIN detected. ${found ? `${found} of ${shown.length} hacks are already present.` : "No hacks are present; check the ones to add."}`
+        : `Alternate Scarlet Symphony${analysis.final ? " -Final-" : ""} BIN detected. ${found} of ${shown.length} hacks are present${finalOnly ? `; ${finalOnly} need -Final-` : ""}${unknown ? `; ${unknown} could not be recognized and are locked` : ""}.`;
       notifySelection(); hooks.onReady?.();
     } catch (error) {
       if (token !== loadToken) return;

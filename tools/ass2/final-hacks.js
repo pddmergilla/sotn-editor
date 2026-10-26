@@ -69,14 +69,14 @@ const FEATURES = [
   // ---- Alucard.
   {id: 'dark-metamorphosis', kind: 'hack', category: ALUCARD, title: 'Dark Metamorphosis rework', match: [/^Dark-Metamorphosis-(Instant|1\.25x)/, /^Save-Up-Cancel-Dark/],
     about: 'Dark Metamorphosis returns control at once, keeps Alucard\'s form and is safe at save points.'},
-  {id: 'scaled-buffs', kind: 'hack', category: ALUCARD, title: 'Stat-scaled buffs', match: [/^Dark-Metamorphosis-(Scaled|DEF-CON|Base-Stat)/, /^Buff-Potions-Faerie/, /^Shared-DEF-Buff/],
+  {id: 'scaled-buffs', kind: 'hack', category: ALUCARD, title: 'Stat-scaled buffs', joinInto: 'dark-stats', match: [/^Dark-Metamorphosis-(Scaled|DEF-CON|Base-Stat)/, /^Buff-Potions-Faerie/, /^Shared-DEF-Buff/],
     about: 'Dark Metamorphosis, the buff potions and the Faerie\'s buffs grow with Alucard\'s stats.'},
   {id: 'blue-metalmorphosis', kind: 'hack', category: ALUCARD, title: 'Blue Metalmorphosis spell', match: [/^Blue-Metalmorphosis/],
     // Public text stays cryptic on purpose: the input is a secret for players to find.
     about: 'Transform into the Axe Lord using a spell.'},
   {id: 'level-growth', kind: 'hack', category: ALUCARD, title: 'Deterministic level growth', match: [/^Alucard-Level-Growth/],
     about: 'Alucard\'s level-up gains are fixed instead of random.'},
-  {id: 'dropkick', kind: 'hack', category: ALUCARD, title: 'Down+X dropkick priority', match: [/^Down-X-Dropkick/],
+  {id: 'dropkick', kind: 'hack', category: ALUCARD, title: 'Down+X dropkick priority', joinInto: 'sky-walker', match: [/^Down-X-Dropkick/],
     about: 'Down + jump always dropkicks, even after Sky Walker jumps.'},
   {id: 'air-control', kind: 'hack', category: ALUCARD, title: 'Air control and hurt recovery',
     match: [/^Air-Hurt-Cancel/, /^Alucard-(Ledge-Jump|Transform)-Air-Control/, /^Alucard-Air-Hurt-Recovery/],

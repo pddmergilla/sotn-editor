@@ -287,5 +287,6 @@
       "on": "F4D3"
     }
   ],
-  "requires": []
+  "requires": [],
+  "joinInto": "dark-stats"
 }
