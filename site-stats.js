@@ -4,7 +4,7 @@
 // nothing is loaded. GoatCounter itself ignores localhost, so local testing is not counted.
 (function (global) {
   "use strict";
-  const CODE = "";
+  const CODE = "pddmergilla";
   const pending = [];
 
   // count("download/ASS-F.01"): one event; queued until GoatCounter's script has loaded.

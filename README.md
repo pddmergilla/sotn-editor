@@ -67,6 +67,10 @@ Then open `http://127.0.0.1:8765` in desktop Chrome, Edge or Firefox. Browser te
 - Raw 2352-byte sectors get recalculated EDC/ECC, so the output stays a valid disc image.
 - Chrome and Edge use native open and destination-folder dialogs; Firefox opens files with a standard file picker and saves BINs and patches as downloads. Download-only browsers cannot verify files on disk or manage replacement backups. The legacy Asset folder tools require Chrome or Edge.
 
+## Privacy
+
+The hosted site counts page visits, ASS PPF downloads and browser builds with [GoatCounter](https://www.goatcounter.com). The counts are anonymous: no cookies, and nothing from your BIN or edits is sent. Your files never leave your computer.
+
 ## For developers
 
 The editor is plain HTML, CSS and JavaScript with no build step. Browser testing loads the pinned EmulatorJS 4.2.3 runtime and PCSX-ReARMed core from its CDN.
