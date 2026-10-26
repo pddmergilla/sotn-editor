@@ -22,7 +22,7 @@ const child = require('node:child_process');
 const ROOT = path.join(__dirname, '../..');
 const C = require('../../sotn-core.js'), A = require('../../ass2-core.js'), M = require('../../stats-model.js');
 const {ppf, apply} = require('../weapons/build-stone-sword-patch.js');
-const {FEATURES, classify} = require('./final-hacks.js');
+const {FEATURES, SPLITS, classify} = require('./final-hacks.js');
 
 const arg = name => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const DOWNLOADS = 'C:/Users/omergilla/Downloads', CODEX = 'C:/Users/omergilla/Documents/Codex';
@@ -144,7 +144,10 @@ async function main() {
       if (!Buffer.compare(cur.subarray(o, o + n), p.bytes.subarray(p.data[i], p.data[i] + n))) mod++;
       if (!Buffer.compare(cur.subarray(o, o + n), p.bytes.subarray(p.data[i] + n, p.data[i] + 2 * n))) und++;
     });
-    const reverse = und > mod, index = ppfs.length, written = new Map(), filesWritten = {};
+    // A PPF listed in SPLITS becomes one entry per feature, each holding the bytes of that feature's files.
+    const name = path.basename(file).replace(/^(Reverse|Undo)-/, ''), split = SPLITS.find(s => s.match.test(name));
+    const parts = split ? split.features : [null], partOf = o => split ? parts.indexOf(split.feature(fileOf(o))) : 0;
+    const reverse = und > mod, first = ppfs.length, writtenBy = parts.map(() => new Map()), filesBy = parts.map(() => ({}));
     let applied = false;
     p.offsets.forEach((o, i) => {
       const n = p.lengths[i], at = p.data[i] + (reverse ? n : 0);
@@ -153,6 +156,7 @@ async function main() {
         const v = p.bytes[at + k];
         if (cur[o + k] !== v) live = false; if (base[o + k] !== v) differs = true;
         if (!changed.has(o + k) || v === base[o + k]) continue;
+        const part = partOf(o + k), index = first + part, written = writtenBy[part], filesWritten = filesBy[part];
         written.set(o + k, v);
         if (!writers.has(o + k)) writers.set(o + k, []); writers.get(o + k).push(index);
         if (cur[o + k] === v) changed.get(o + k).push(index);
@@ -160,11 +164,13 @@ async function main() {
       }
       if (live && differs) applied = true;
     });
-    const name = path.basename(file).replace(/^(Reverse|Undo)-/, '');
-    const entry = {file: file.replace(/\\/g, '/'), name, mtime: fs.statSync(file).mtime.toISOString(), description: p.description, reverse, applied,
-      recovery: /bin-recovery/.test(file), mirror: /^(Reverse|Undo)-|REVERT/i.test(path.basename(file)), written, files: filesWritten};
-    entry.feature = entry.recovery || !written.size ? null : classify(entry);
-    ppfs.push(entry);
+    parts.forEach((part, i) => {
+      const written = writtenBy[i];
+      const entry = {file: file.replace(/\\/g, '/'), name, mtime: fs.statSync(file).mtime.toISOString(), description: p.description, reverse, applied,
+        recovery: /bin-recovery/.test(file), mirror: /^(Reverse|Undo)-|REVERT/i.test(path.basename(file)), written, files: filesBy[i]};
+      entry.feature = entry.recovery || !written.size ? null : part || classify(entry);
+      ppfs.push(entry);
+    });
   }
   const rank = i => (ppfs[i].recovery ? 0 : 2) + (ppfs[i].mirror ? 0 : 1);
   for (const own of changed.values()) own.sort((a, b) => rank(b) - rank(a) || ppfs[b].mtime.localeCompare(ppfs[a].mtime));
@@ -189,7 +195,7 @@ async function main() {
     let id = top?.feature || null;
     if (defense.has(o)) { group.set(o, 'percent-def'); if (top) owner.set(o, ppfs.indexOf(top)); continue; }
     if (kind(id) === 'hack') { group.set(o, id); owner.set(o, ppfs.indexOf(top)); continue; }
-    const hackWriter = (writers.get(o) || []).map(i => ppfs[i]).filter(p => p.applied && kind(p.feature) === 'hack')
+    const hackWriter = (writers.get(o) || []).map(i => ppfs[i]).filter(p => p.applied && kind(p.feature) === 'hack' && p.written.get(o) !== base[o])   // a block rewrite that kept the 2.0.10 byte is not the hack's
       .sort((a, b) => b.mtime.localeCompare(a.mtime))[0];
     if (hackWriter) { group.set(o, hackWriter.feature); absorbed.set(hackWriter.feature, (absorbed.get(hackWriter.feature) || 0) + 1); continue; }
     id = id || ruleFor(o);

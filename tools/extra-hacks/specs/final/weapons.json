@@ -6,6 +6,48 @@
   "edits": [
     {
       "file": "DRA.BIN",
+      "offset": "0x2301",
+      "off": "000000",
+      "on": "010207"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2319",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x234B",
+      "off": "0000000000000000",
+      "on": "0301070802020105"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2354",
+      "off": "05",
+      "on": "09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2366",
+      "off": "05",
+      "on": "06"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2386",
+      "off": "0000",
+      "on": "0208"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x238A",
+      "off": "00",
+      "on": "06"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0x4B12",
       "off": "03",
       "on": "01"

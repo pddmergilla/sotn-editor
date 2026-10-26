@@ -10,31 +10,25 @@ For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements �
 
 Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-10-25 against main BIN `8150DE0D72BA535CB19E966FC08DF088AC1E7746B72946A6F036409AAFD59D63`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: balance 2,966 bytes, map/pickup/text content 31,471 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
-
-
-
-
-
-
+Built on 2026-10-26 against main BIN `7156BE53B54C7FCC7AED1A87EA415CF12357C29AF2D3844ED9F9B673D1E624ED`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: balance 2,982 bytes, map/pickup/text content 34,559 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
 
 ### Boss AI
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Boss AI pack** | Bosses fight with new AI and new attack patterns. | — | 221,579 | `ASS-Final-Boss-AI-pack.ppf` |
+| **Boss AI pack** | Bosses fight with new AI and new attack patterns. | — | 221,642 | `ASS-Final-Boss-AI-pack.ppf` |
 
 ### Enemy AI
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Enemy AI pack** | Enemies fight with new AI and new attack patterns. | — | 11,024 | `ASS-Final-Enemy-AI-pack.ppf` |
+| **Enemy AI pack** | Enemies fight with new AI and new attack patterns. | — | 11,048 | `ASS-Final-Enemy-AI-pack.ppf` |
 
 ### Weapons and specials
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **New Weapons and Specials** | New weapons, and new special moves for many existing ones. | — | 47,060 | `ASS-Final-New-Weapons-and-Specials.ppf` |
+| **New Weapons and Specials** | New weapons, and new special moves for many existing ones. | — | 47,077 | `ASS-Final-New-Weapons-and-Specials.ppf` |
 
 ### Familiars
 
@@ -49,7 +43,7 @@ Built on 2026-10-25 against main BIN `8150DE0D72BA535CB19E966FC08DF088AC1E7746B7
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Items, relics and shops** | New and reworked items, relics and shop goods, including the item slots for the L2 shortcut and the Boss CRush mode. | New Weapons and Specials, Familiars gain a level per kill, No more game over | 9,244 | `ASS-Final-Items-relics-and-shops.ppf` |
+| **Items, relics and shops** | New and reworked items, relics and shop goods, including the item slots for the L2 shortcut and the Boss CRush mode. | New Weapons and Specials, Familiars gain a level per kill, No more game over | 9,337 | `ASS-Final-Items-relics-and-shops.ppf` |
 
 ### Alucard abilities and spells
 
@@ -64,7 +58,7 @@ Built on 2026-10-25 against main BIN `8150DE0D72BA535CB19E966FC08DF088AC1E7746B7
 | **Bat form and Wing Smash** | Bat form flies faster, and Power of Mist makes Wing Smash unlimited. | — | 69 | `ASS-Final-Bat-form-and-Wing-Smash.ppf` |
 | **Heart Refresh shortcut** | Heart Refresh runs in real time from the item shortcut. | New Weapons and Specials, Familiars gain a level per kill, No more game over, Items, relics and shops | 7,121 | `ASS-Final-Heart-Refresh-shortcut.ppf` |
 | **Hellfire casts in place** | Hellfire casts where Alucard stands, with a shorter windup. | — | 48 | `ASS-Final-Hellfire-casts-in-place.ppf` |
-| **Spells scale with INT** | Spells and form attacks grow stronger with INT. | — | 168 | `ASS-Final-Spells-scale-with-INT.ppf` |
+| **Spells and subweapons scale with INT** | Spells, form attacks and subweapons grow stronger with INT. | — | 253 | `ASS-Final-Spells-and-subweapons-scale-with-INT.ppf` |
 
 ### Status and damage rules
 

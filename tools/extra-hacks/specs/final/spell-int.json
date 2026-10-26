@@ -1,8 +1,8 @@
 {
   "id": "spell-int",
-  "label": "Spells scale with INT",
+  "label": "Spells and subweapons scale with INT",
   "category": "Alucard abilities and spells",
-  "summary": "Spells and form attacks grow stronger with INT.",
+  "summary": "Spells, form attacks and subweapons grow stronger with INT.",
   "edits": [
     {
       "file": "DRA.BIN",
@@ -236,6 +236,132 @@
       "file": "DRA.BIN",
       "offset": "0x5DACE",
       "off": "0534",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E69C",
+      "off": "3958000C00000000AA2A033CABAA",
+      "on": "0980033CE07B638C00000496F401"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6AB",
+      "off": "34",
+      "on": "24"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6AE",
+      "off": "43",
+      "on": "83"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6B0",
+      "off": "6666063C6766C6",
+      "on": "12180000F40105"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6B8",
+      "off": "0980053CE07BA58CC31F02",
+      "on": "211020021A006500121800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6C4",
+      "off": "402805001020",
+      "on": "000003A60000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6CC",
+      "off": "432004",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6D0",
+      "off": "232083",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6D4",
+      "off": "401804",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6D8",
+      "off": "211864",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6DC",
+      "off": "801803",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6E0",
+      "off": "231043",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6E4",
+      "off": "2128A2",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6E8",
+      "off": "18",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6EA",
+      "off": "A6",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6EC",
+      "off": "21102002C32F05",
+      "on": "00000000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6F6",
+      "off": "03961020",
+      "on": "00000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E6FC",
+      "off": "832004",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E700",
+      "off": "232085",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E704",
+      "off": "211864",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5E70A",
+      "off": "03A6",
       "on": "0000"
     }
   ],

@@ -7014,6 +7014,12 @@
     },
     {
       "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x384D8",
+      "off": "09F86000",
+      "on": "1AFD030C"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
       "offset": "0x3EB58",
       "off": "C8FFBD272C00B1AF218880003000BFAF2800B0AF2C",
       "on": "0780083C8E300985C0300A8DC8300B8D2148240120"
@@ -8094,21 +8100,21 @@
     },
     {
       "file": "ST/RNO0/RNO0.BIN",
-      "offset": "0x47F36",
-      "off": "03",
-      "on": "02"
+      "offset": "0x47F34",
+      "off": "2C00",
+      "on": "3BFD"
+    },
+    {
+      "file": "ST/RNO0/RNO0.BIN",
+      "offset": "0x47F37",
+      "off": "9601",
+      "on": "0C00"
     },
     {
       "file": "ST/RNO0/RNO0.BIN",
       "offset": "0x47F3A",
-      "off": "02",
-      "on": "03"
-    },
-    {
-      "file": "ST/RNO0/RNO0.BIN",
-      "offset": "0x47F3C",
-      "off": "1B",
-      "on": "12"
+      "off": "02341B",
+      "on": "000012"
     },
     {
       "file": "ST/RNO0/RNO0.BIN",
@@ -8472,27 +8478,33 @@
     },
     {
       "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x2AE50",
+      "off": "09F86000",
+      "on": "1AFD030C"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
       "offset": "0x34430",
       "off": "64024014",
       "on": "00000000"
     },
     {
       "file": "ST/RNO1/RNO1.BIN",
-      "offset": "0x351AE",
-      "off": "03",
-      "on": "02"
+      "offset": "0x351AC",
+      "off": "2C00",
+      "on": "3BFD"
+    },
+    {
+      "file": "ST/RNO1/RNO1.BIN",
+      "offset": "0x351AF",
+      "off": "9601",
+      "on": "0C00"
     },
     {
       "file": "ST/RNO1/RNO1.BIN",
       "offset": "0x351B2",
-      "off": "02",
-      "on": "03"
-    },
-    {
-      "file": "ST/RNO1/RNO1.BIN",
-      "offset": "0x351B4",
-      "off": "1B",
-      "on": "12"
+      "off": "02341B",
+      "on": "000012"
     },
     {
       "file": "ST/RNO1/RNO1.BIN",
@@ -10398,6 +10410,12 @@
     },
     {
       "file": "ST/RARE/RARE.BIN",
+      "offset": "0x27CF4",
+      "off": "09F86000",
+      "on": "1AFD030C"
+    },
+    {
+      "file": "ST/RARE/RARE.BIN",
       "offset": "0x31E2E",
       "off": "60",
       "on": "00"
@@ -10416,21 +10434,21 @@
     },
     {
       "file": "ST/RARE/RARE.BIN",
-      "offset": "0x36836",
-      "off": "03",
-      "on": "02"
+      "offset": "0x36834",
+      "off": "2C00",
+      "on": "3BFD"
+    },
+    {
+      "file": "ST/RARE/RARE.BIN",
+      "offset": "0x36837",
+      "off": "9601",
+      "on": "0C00"
     },
     {
       "file": "ST/RARE/RARE.BIN",
       "offset": "0x3683A",
-      "off": "02",
-      "on": "03"
-    },
-    {
-      "file": "ST/RARE/RARE.BIN",
-      "offset": "0x3683C",
-      "off": "1B",
-      "on": "12"
+      "off": "02341B",
+      "on": "000012"
     },
     {
       "file": "ST/RARE/RARE.BIN",

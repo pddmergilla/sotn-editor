@@ -163,7 +163,7 @@
           ["Dawn", "Ouroboros", "Familiar swap"]),
         feature("✚", "Quality of Life and Extra Stuff", "No more game over screens: death just brings you back to your last save point. Equip two item slots to drink potions from the L2 shortcut, find new items that help you explore the castle, and take on the all-new Boss CRush mode.",
           ["No game over", "L2 item slots", "Exploration items", "Boss CRush"]),
-        feature("☾", "Alucard, sharpened", "Spells scale with INT, DEF works as a percentage, Dark Metamorphosis and the buff potions grow with your stats, and air control is tighter. Some say a secret spell lets him become the Axe Lord.",
+        feature("☾", "Alucard, sharpened", "Spells and subweapons scale with INT, DEF works as a percentage, Dark Metamorphosis and the buff potions grow with your stats, and air control is tighter. Some say a secret spell lets him become the Axe Lord.",
           ["Percent DEF", "Stat-scaled buffs", "A secret spell"]),
         feature("⚙", "Inverted Castle Complete", "The long-awaited Inverted Castle is finally complete. Turn the world upside down for a second journey with tougher enemies, rethought bosses and secrets of its own. The night is only half over.",
           ["Inverted Castle", "Second journey", "New secrets"])));

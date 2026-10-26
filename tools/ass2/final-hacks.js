@@ -18,20 +18,20 @@ const FEATURES = [
   // Balance first, so tuning-only patches inside a feature's name family are not mistaken for the feature.
   {id: 'balance', kind: 'balance', title: 'Balance and stat values', category: 'Balance',
     match: [/^Boss-DEF-Retune/, /^Enemy-HP-Percent-DEF-Retune/, /^Equipment-DEF-99/, /^Inverted-Bosses-DEF/, /^Inverted-Exclusive-Plus1000/,
-      /^Forward\.ppf$/, /^Zwei-600/, /^Duplichaos-Price/, /^Vlad-Relics/, /^Akmodan-II-DEF145/, /^Dracula-Hands-DEF66/, /^Medusa-DEF169/,
+      /^Forward\.ppf$/, /^Zwei-600/, /^Duplichaos-Price/, /^Vlad-Relics/, /^Akmodan-II-DEF145/, /^Akmodan-II-WAT-Weakness/, /Half-Food-Heals/, /^Dracula-Hands-DEF66/, /^Medusa-DEF169/,
       /^Creature-Hammer-Only-LIT/, /^Cerberus-Water-Neutral/, /^Succubus-All-Attack-Damage/, /^Succubus-Wing-Spike-Damage/,
       /^Pentagram-35MP/, /^Potions-900/, /^Librarian-/, /^Water-Enemy-Attacks/, /^Dark-Resist-Undead/, /^Enemy-Element-Only/,
       /^Ascaln-Gram-Sword-Familiar-DAR/, /^Greater-Demon-Dracula-Hands-DEF/, /^Alucard-Rebalance/,
       /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/]},
   {id: 'content', kind: 'content', title: 'Map, pickup and text edits', category: 'Content',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
-      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/]},
+      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/, /^Credits-Oy-Final/, /^Prologue-Welcome-/]},
 
   // ---- Boss AI: one patch for every boss.
   {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',
     match: [/^Olrox-/, /^Granfaloon-/, /^Scylla-/, /Hippogryph/, p => /^Richter-/.test(p.name) && !/Rescue/.test(p.name) && ricOnly(p),
       /Cerberus-/, /^Fake-Heroes-/, /^Beelzebub-/, /^Death-(Second-Form|Barrage|Four-Normal|Final-Form)/, /^(ASS2-)?Medusa-(?!Shield-Laser)/,
-      /Creature-(?!Hammer-Only)/, /^Doppleganger40-/, /^Akmodan-II-(Behavior|Scheduled|Attack)/, /Galamoth-/,
+      /Creature-(?!Hammer-Only)/, /^Doppleganger40-/, /^Akmodan-II-(Behavior|Scheduled|Attack|Grab)/, /Galamoth-/,
       /^Dracula-(?!Hands-DEF)/, /^Greater-Demon-Random-Angles/, /^Succubus-/, /Darkwing-Bat/],
     about: 'Bosses fight with new AI and new attack patterns.'},
 
@@ -45,7 +45,7 @@ const FEATURES = [
   {id: 'weapons', kind: 'hack', category: WEAPON, title: 'New Weapons and Specials',
     match: [/^Hunter-Sword-/, /^Stone-Sword-/, /^Alucard-Sword-Soul-Steal/, /^Terminus-Est-/, /^Elemental-Swords-/, /^Icebrand-Zero-Cel/,
       /^Kidlat-/, /^Hunting-Blade-/, /^Spirit-Wand-/, /Gram-Pentagram-Special/, /^Staurolite-/, /^Fire-Rings-/,
-      /^Shield-Spells-/, /^Alucard-Shield-/, /^Medusa-Shield-Laser/, /^Axe-Armor-/, /^Melee-Ranged-/],
+      /^Shield-Spells-/, /^Alucard-Shield-/, /^Medusa-Shield-Laser/, /^Axe-Armor-/, /^Melee-Ranged-/, /^Ranged-Weapon-Subweapons/],
     about: 'New weapons, and new special moves for many existing ones.'},
 
   // ---- Familiars.
@@ -87,8 +87,8 @@ const FEATURES = [
     about: 'Heart Refresh runs in real time from the item shortcut.'},
   {id: 'hellfire', kind: 'hack', category: ALUCARD, title: 'Hellfire casts in place', match: [/^Hellfire-/],
     about: 'Hellfire casts where Alucard stands, with a shorter windup.'},
-  {id: 'spell-int', kind: 'hack', category: ALUCARD, title: 'Spells scale with INT', match: [/^Spell-INT-/],
-    about: 'Spells and form attacks grow stronger with INT.'},
+  {id: 'spell-int', kind: 'hack', category: ALUCARD, title: 'Spells and subweapons scale with INT', match: [/^Spell-INT-/, /^Subweapon-Spell-INT-/],
+    about: 'Spells, form attacks and subweapons grow stronger with INT.'},
 
   // ---- Status and damage rules.
   {id: 'petrification', kind: 'hack', category: MECHANIC, title: 'Petrification rework', match: [/^Petrification-/],
@@ -124,10 +124,16 @@ const FEATURES = [
     about: 'Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces.'}
 ];
 
+// PPFs that carry two features: each byte goes to the feature of the file it is in.
+const SPLITS = [
+  // The Stone Skull death fix is enemy code in the stage overlays; Patek's 100% drop is the Items drop hook in DRA.
+  {match: /^Guardian-Stone-Skull-Patek/, features: ['enemy-ai', 'items'], feature: file => /^ST\//.test(file) ? 'enemy-ai' : 'items'},
+];
+
 function classify(ppf) {
   const p = {...ppf, name: ppf.name || require('node:path').basename(ppf.file).replace(/^(Reverse|Undo)-/, '')};
   for (const f of FEATURES) for (const m of f.match) if (typeof m === 'function' ? m(p) : m.test(p.name)) return f.id;
   return null;
 }
 
-module.exports = {FEATURES, classify};
+module.exports = {FEATURES, SPLITS, classify};

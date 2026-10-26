@@ -26832,6 +26832,48 @@
     },
     {
       "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x14448",
+      "off": "01",
+      "on": "87"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x1444A",
+      "off": "42300100543814",
+      "on": "48920980093C0A"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x14452",
+      "off": "42960780113CE033318E02",
+      "on": "0011A07B288D0000000007"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x1445E",
+      "off": "401000000000238811007B65060C0000000040",
+      "on": "001D0780093C802F20A5870040A2D367060C05"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x14472",
+      "off": "42280E004010",
+      "on": "04345E520608"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x1447C",
+      "off": "7B65060C0000000039",
+      "on": "2E0043966251060800"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x14486",
+      "off": "4228",
+      "on": "0000"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
       "offset": "0x144CC",
       "off": "7B65",
       "on": "C555"
@@ -26865,6 +26907,12 @@
       "offset": "0x144E0",
       "off": "14004296",
       "on": "B78B0608"
+    },
+    {
+      "file": "BOSS/RBO7/RBO7.BIN",
+      "offset": "0x14580",
+      "off": "2E004396",
+      "on": "12510608"
     },
     {
       "file": "BOSS/RBO7/RBO7.BIN",
@@ -29268,27 +29316,21 @@
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",
-      "offset": "0x81C",
-      "off": "E8",
-      "on": "E0"
-    },
-    {
-      "file": "BOSS/RBO6/RBO6.BIN",
       "offset": "0x81E",
       "off": "F0",
-      "on": "F8"
+      "on": "E1"
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",
-      "offset": "0x824",
-      "off": "18",
-      "on": "20"
+      "offset": "0x822",
+      "off": "10",
+      "on": "01"
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",
       "offset": "0x826",
       "off": "F0",
-      "on": "F8"
+      "on": "E1"
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",
@@ -29337,12 +29379,6 @@
       "offset": "0x1F260",
       "off": "79A506",
       "on": "C81307"
-    },
-    {
-      "file": "BOSS/RBO6/RBO6.BIN",
-      "offset": "0x1FA2C",
-      "off": "1880023C",
-      "on": "A013070C"
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",
