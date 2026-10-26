@@ -1,49 +1,56 @@
 {
  "minimap": {
-  "label": "MiniMap"
+  "label": "MiniMap",
+  "summary": "A small map in the corner shows where you are."
  },
  "fast-warp": {
-  "label": "Fast Warp"
+  "label": "Fast Warp",
+  "summary": "Warp rooms send you on your way much faster."
  },
  "mist-gas-swap": {
   "label": "Swap Power of Mist and Gas Cloud",
-  "summary": "ASS: Power of Mist sits on the Floating Catacombs pedestal and Gas Cloud on the Long Library pedestal; unchecking puts each back on the other's pedestal. Vanilla: swaps the Castle Keep (Power of Mist) and Floating Catacombs (Gas Cloud) relics."
+  "summary": "Power of Mist and Gas Cloud trade places, which changes your route through the castle."
  },
  "aggressive-enemy": {
   "label": "Aggressive Enemy",
   "subtitle": "Detection range increased",
-  "partialIsOn": true
+  "partialIsOn": true,
+  "summary": "Enemies notice Alucard from much farther away."
  },
  "karasuman": {
-  "label": "No Flinch Karasuman"
+  "label": "No Flinch Karasuman",
+  "summary": "Karasuman keeps coming no matter how hard you hit him."
  },
  "slogra": {
-  "label": "No Flinch Slogra"
+  "label": "No Flinch Slogra",
+  "summary": "Slogra holds his ground when hit, so Gaibon can no longer carry him into their combo."
  },
  "dopplegangers": {
-  "label": "No Flinch Dopplegangers"
+  "label": "No Flinch Dopplegangers",
+  "summary": "Both Doppelgangers fight straight through your hits."
  },
  "succubus": {
   "label": "No Flinch and Faster Succubus",
-  "summary": "Succubus only flinches when hit during her clone attack, and her animations, attack timers, clones and wing spikes run faster (the wing-spike tips also get a 12×12 hitbox)."
+  "summary": "Succubus only flinches during her clone attack and fights faster."
  },
  "richter-no-flinch": {
-  "label": "No Flinch Richter"
+  "label": "No Flinch Richter",
+  "summary": "Richter shrugs off your hits."
  },
  "richter-ai": {
   "label": "Epic Richter AI",
-  "vanillaNote": "On vanilla, the AI's knife, vibhuti and rebound-stone hits use Richter's Cross damage instead of the ASS-scaled 250–350.",
-  "summary": "Below 15% HP, Richter waits for Alucard to land and grabs him with the real Stopwatch item crash: four staggered clocks with their waves, each ending in lightning. He keeps his current side, stops four tiles away or at the room edge, then holds his Up stance and laughs for one second before firing 10 HP daggers. The last clock completes its five-second countdown before releasing Alucard and starting Hydrostorm. Richter is immune to Stopwatch slowdown. In the aggressive phase below 25% HP, he crouches for one second with his hurt grunt after each Cross, Bible or Agunea crash."
+  "vanillaNote": "On vanilla, some of the AI's subweapon hits use Richter's Cross damage.",
+  "summary": "Richter's AI has been reworked, and it is much more amazing."
  },
  "quick-items": {
   "label": "Quick Items",
-  "subtitle": "L2 shortcuts",
-  "summary": "Hold L2 and press Square, Circle, Triangle or Cross to use a Potion, High Potion, X-Potion or Meal Ticket (thrown random food) without equipping it. Each shortcut costs the item's MP (hearts with Healing items use Hearts) and needs HP below max, and while L2 is held the face buttons don't attack, jump or backdash."
+  "subtitle": "L2 shortcut",
+  "summary": "Hold L2 and press a face button to use an item without opening the menu. Choose the items for the shortcut by equipping them in the equipment menu."
  },
  "mp-items": {
   "label": "MP Cost Items instead of consumables",
   "subtitle": "Includes MP gating",
-  "summary": "Potion, High Potion, X-Potion, Meal Ticket and Library Card are no longer used up; using one costs MP (or hearts, with Healing items use Hearts) instead (Antivenom, Uncurse and Hammer also cost MP), and a hand item that costs more MP than you have can't be used. Unchecking it on an ASS BIN restores ASS 1.3.1 item behaviour; checking it on vanilla also makes the throwing items reusable as in ASS.",
+  "summary": "Potions and other items are no longer used up; each use costs MP instead, and an item you cannot pay for cannot be used.",
   "values": [
    {
     "key": "potion",
@@ -99,17 +106,17 @@
    "extra": 5
   },
   "valueTemplate": "Limit in this BIN: the first strike plus up to {extra} extra strikes.",
-  "summary": "Holding Agunea stops after a fixed number of paid extra lightning strikes instead of continuing while hearts last."
+  "summary": "Agunea's lightning chain has a limit, so it cannot run forever."
  },
  "wolf-no-jump": {
-  "label": "No Jump Wolf Transformation"
+  "label": "No Jump Wolf Transformation",
+  "summary": "Turning into the Wolf no longer makes Alucard hop."
  },
  "subweapon-weapon": {
   "label": "Subweapon Attached to Weapon",
-  "subtitle": "Also removes subweapon pickups, adds L1/R1 subweapon change for Richter, and shows the subweapon icon beside the equipped weapon in the menu",
   "entityLabel": "Candle pickups",
   "entityOnText": "give Big Hearts instead of a subweapon",
-  "summary": "Alucard's subweapon follows the weapon in his first hand slot (72 weapons) and its icon appears beside the weapon in the equipment menu; candles and lamps that dropped subweapons drop Big Hearts; DOWN+TRIANGLE subweapon cycling is removed; Richter switches subweapons with L1/R1. Unchecking it on an ASS BIN restores ASS 1.3.1 behaviour (subweapon candles and DOWN+TRIANGLE); Richter's L1/R1 came with ASS 1.3.1 and stays."
+  "summary": "Every weapon you equip comes with a subweapon attached."
  },
  "dark-stats": {
   "label": "Dark Metamorphosis stat buff",
@@ -146,7 +153,7 @@
    "cap": 999
   },
   "valueTemplate": "Bonuses: +{atk} ATK, +{def} DEF, +{str} STR, +{con} CON, +{int} INT, +{lck} LCK (ATK and DEF capped at {cap}).",
-  "summary": "Choose the temporary ATK, DEF, STR, CON, INT and LCK bonuses while Dark Metamorphosis is active. ATK applies to non-zero attack values."
+  "summary": "Dark Metamorphosis raises Alucard's stats while it lasts; choose the bonuses below."
  },
  "dark-speed": {
   "label": "Dark Metamorphosis SpeedUp",
@@ -162,16 +169,17 @@
    "mult": 1.5
   },
   "valueTemplate": "Speed in this BIN: {mult}× while active.",
-  "summary": "Alucard's walking, jumping, falling and backdash horizontal speed goes up while Dark Metamorphosis is active."
+  "summary": "Dark Metamorphosis makes Alucard faster on his feet."
  },
  "sky-walker": {
   "label": "Sky Walker",
-  "subtitle": "Infinite jump on Leap Stone, includes Up+Triangle to dropkick"
+  "subtitle": "Infinite jump on Leap Stone, includes Up+Triangle to dropkick",
+  "summary": "The Leap Stone becomes Sky Walker: jump in midair as often as you like."
  },
  "heal-hearts": {
   "label": "Healing items use Hearts instead of MP",
   "subtitle": "Requires MP Cost Items instead of consumables",
-  "summary": "Potion, High Potion, X-Potion and Meal Ticket spend hearts instead of MP, from the menu and from the L2 shortcuts. Checking it sets their costs to 300, 700, 1500 and 500 hearts; unchecking it sets them back to 30, 70, 200 and 50 MP. The Stats Editor shows these as heart costs while it is checked. Item descriptions are not changed.",
+  "summary": "Healing items cost hearts instead of MP, from the menu and from the L2 shortcut.",
   "values": [
    {
     "key": "potion",
@@ -199,16 +207,16 @@
    }
   ],
   "valueTemplate": "Costs: Potion {potion}, High Potion {high}, X-Potion {x}, Meal Ticket {meal}.",
-  "vanillaNote": "The heart costs are ASS-sized; on vanilla, lower them in the Stats Editor."
+  "vanillaNote": "The heart costs are sized for ASS; on vanilla, lower them in the Stats Editor."
  },
  "subweapon-mp": {
   "label": "Subweapon use MP instead of Hearts",
-  "summary": "Alucard's subweapons and Agunea's follow-up strikes spend MP instead of hearts, using the costs in the Stats Editor's Subweapons section (shown as MP costs while this is checked). Richter still uses hearts."
+  "summary": "Alucard's subweapons spend MP instead of hearts."
  },
  "faerie-behavior": {
   "label": "Faerie Behavior",
   "subtitle": "Free items and buffs",
-  "summary": "The Faerie no longer uses up items. A Hammer, Uncurse or Antivenom must still be in your inventory, but each use costs MP instead of the item, and the Faerie won't use one when you have less MP than that. Potion and High Potion heals from the Faerie are free and keep the potion. When you take a hit and stay above a quarter of your max HP, the Faerie casts a random free buff: STR, LCK, INT, ATK or DEF +20 for about 68 seconds.",
+  "summary": "The Faerie stops using up your items and casts buffs when you get hit.",
   "values": [
    {
     "key": "mp",
@@ -221,11 +229,38 @@
  "holy-water-richter": {
   "label": "Richter-style Holy Water",
   "subtitle": "Traveling flames",
-  "summary": "Alucard throws Holy Water in Richter's angled arc. When the bottle breaks, the fire travels along the ground for about 80 frames, leaving a flame every 4th frame, instead of burning in one spot. Damage, hit cooldown, Max on screen and the heart (or MP) cost still come from the Holy Water rows in the Stats Editor."
+  "summary": "Holy Water flies in Richter's arc, and its fire races along the floor."
  },
  "richter-save": {
   "label": "Richter always saved",
-  "subtitle": "Fix ready: gameplay test pending",
-  "summary": "Defeating Richter also defeats Shaft's orb and starts its rescue sequence. The missing cutscene trigger has been added; dialogue and Inverted Castle access still need a fresh-boot gameplay test, so ASS 2.0 keeps this WIP hack off. To upgrade the earlier sitting-only patch, remove it, rebuild and reopen the BIN, then add it again."
+  "summary": "You can save Richter after you get the Holy Glasses, but you still need to fight and defeat him."
+ },
+ "damage-colors": {
+  "label": "Damage Number Colors",
+  "summary": "Damage numbers show at a glance when you hit a weakness or a resistance."
+ },
+ "instant-food": {
+  "label": "Instant Food",
+  "summary": "Food heals the moment you use it, and the Meal Ticket serves up a random dish."
+ },
+ "eat-food-on-pickup": {
+  "label": "Eat Food on Pickup",
+  "summary": "Food you find is eaten on the spot."
+ },
+ "hint-items-no-attack": {
+  "label": "Hint Items",
+  "summary": "Some foods and medicines become Hint items, and Hint items carry no attack, shown or dealt."
+ },
+ "stopwatch-rework": {
+  "label": "Stopwatch slows bosses",
+  "summary": "The Stopwatch's freeze is shorter, but bosses that used to ignore it are now slowed by it."
+ },
+ "all-cloaks-hearts": {
+  "label": "All Cloaks give Hearts",
+  "summary": "Every cloak turns the damage you survive into hearts."
+ },
+ "heart-regen": {
+  "label": "Heart Regeneration",
+  "summary": "Hearts slowly come back on their own, faster with more CON."
  }
 }

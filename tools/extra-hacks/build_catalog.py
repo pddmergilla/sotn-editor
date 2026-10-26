@@ -88,8 +88,8 @@ def convert(spec):
         a = read(f, 'a')
         with_on = bytes.fromhex(e['with']['on']) if e.get('with') else None
         # ASS 2.0 holds either the plain form or, where another hack changes this one's bytes, the combined form.
-        # A work-in-progress hack ("wip") may be left off in ASS 2.0.
-        allowed = (on, with_on, of) if spec.get('wip') or e.get('optional') else (on, with_on)
+        # A work-in-progress hack ("wip"), or one first shipped on in ASS -Final-, may be left off in ASS 2.0.
+        allowed = (on, with_on, of) if spec.get('wip') or spec.get('shippedIn') == 'final' or e.get('optional') else (on, with_on)
         # The reference ASS image may hold an earlier version the spec still recognizes.
         allowed += tuple(bytes.fromhex(version[index]) for version in spec.get('onVersions', []))
         rec = {'file': f, 'offset': off, 'off': of.hex().upper(), 'on': on.hex().upper()}
@@ -334,7 +334,7 @@ def main():
                 owner[key] = s['id']
         vanilla = s.get('vanilla', {})
         feat = {'id': s['id'], 'label': s.get('label', s['id'])}
-        for k in ('wip', 'subtitle', 'summary', 'requires', 'valueTemplate', 'defaults', 'values', 'contextReason', 'partialIsOn', 'vanillaNote'):
+        for k in ('wip', 'shippedIn', 'subtitle', 'summary', 'requires', 'valueTemplate', 'defaults', 'values', 'contextReason', 'partialIsOn', 'vanillaNote'):
             if s.get(k):
                 feat[k] = s[k]
         if vanilla.get('vanillaRequires'):

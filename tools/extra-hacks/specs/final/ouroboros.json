@@ -2,7 +2,7 @@
   "id": "ouroboros",
   "label": "Ouroboros familiar",
   "category": "Familiars",
-  "summary": "Reawakened's Ouroboros (Dragon Card) in the unused Sprite slot, found in the Reverse Castle Entrance; scales with CON.",
+  "summary": "Reawakened's Ouroboros familiar joins the castle and grows stronger with CON.",
   "edits": [
     {
       "file": "DRA.BIN",

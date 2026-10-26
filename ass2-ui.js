@@ -128,57 +128,17 @@
   }
 
   // ---- content (descriptive, no raw values: the numbers live in the Stats Editor and the Extra Hacks tab)
-  const n = R.numbers;
-  // Hacks that ship in ASS -Final- (work-in-progress hacks are off in the release).
-  const hacks = () => (window.SotnExtraHacks?.features || []).filter(f => !f.wip);
-  const BLURBS = {
-    "minimap": "A small map in the corner keeps track of where you are.",
-    "fast-warp": "Warp rooms send you on your way almost instantly.",
-    "damage-colors": "Damage numbers show at a glance whether you hit a weakness or a resistance.",
-    "mist-gas-swap": "Power of Mist and Gas Cloud trade places, and your route through the castle changes with them.",
-    "aggressive-enemy": "Enemies spot you from much farther away.",
-    "karasuman": "Karasuman keeps coming no matter how hard you hit him.",
-    "slogra": "Slogra stands his ground when you hit him.",
-    "dopplegangers": "Both Doppelgangers fight straight through your hits.",
-    "succubus": "Succubus fights faster and only flinches if you catch her during her clone attack.",
-    "richter-no-flinch": "Richter shrugs off your hits.",
-    "richter-ai": "Richter gets a whole new fighting brain: combos, crashes and a furious second phase.",
-    "quick-items": "Hold L2 and tap a face button to use a healing item without opening the menu.",
-    "mp-items": "Potions and other healing items are never used up. Each use costs a resource instead.",
-    "heal-hearts": "Healing items cost hearts, so every candle counts.",
-    "instant-food": "Food heals the moment you use it, and the Meal Ticket serves up a random dish.",
-    "eat-food-on-pickup": "Food you find is eaten on the spot.",
-    "hint-items-no-attack": "Hint items are just hints and no longer count as weapons.",
-    "subweapon-mp": "Subweapons draw on your MP instead of your hearts.",
-    "agunea-limit": "Agunea's lightning chain has a limit, so it can't run forever.",
-    "stopwatch-rework": "The Stopwatch slows down the bosses that used to ignore it.",
-    "holy-water-richter": "Holy Water flies in Richter's arc, and its fire races along the floor.",
-    "wolf-no-jump": "Turning into the Wolf no longer makes you hop.",
-    "subweapon-weapon": "Your subweapon comes with the weapon you hold, and its icon sits right beside it in the menu.",
-    "all-cloaks-hearts": "Every cloak turns the damage you survive into hearts.",
-    "heart-regen": "Hearts slowly come back on their own.",
-    "dark-stats": "Dark Metamorphosis makes you stronger, smarter and tougher.",
-    "dark-speed": "Dark Metamorphosis makes you faster on your feet.",
-    "sky-walker": "The Leap Stone becomes Sky Walker: jump in midair as often as you like.",
-    "faerie-behavior": "The Faerie stops using up your items and casts buffs when you get hit."
-  };
-
   function hero() {
     return el("section", {class: "ass2Hero"},
       el("div", {class: "ass2HeroInner"},
         el("p", {class: "ass2Kicker", text: "Castlevania: Symphony of the Night"}),
         el("h2", {class: "ass2Title"}, "Alternate Scarlet Symphony ", el("span", {text: "-Final-"})),
-        el("p", {class: "ass2Tagline", text: "The final cut. Every boss rethought, a playable Richter rebuilt from the ground up, new familiars, new weapon arts, and a castle that never stops pushing back."}),
+        el("p", {class: "ass2Tagline", text: "The final cut. Every boss rethought, a playable Richter rebuilt from the ground up, new familiars, new weapons, and a castle that never stops pushing back."}),
         el("div", {class: "ass2Cta"},
           el("a", {class: "ass2Button primary ass2PpfDownload", href: R.ppf.file, download: PPF_DOWNLOAD}, "Download the PPF ", el("small", {text: `${VERSION} · ${mb(R.ppf.size)}`})),
           el("a", {class: "ass2Button", href: "#ass2Install", onclick: e => { e.preventDefault(); $("ass2Install")?.scrollIntoView({behavior: "smooth"}); }}, "Build it from your vanilla BIN")),
-        el("p", {class: "ass2Fine", text: "For the US release (Track 1). You need your own copy of the game: the patch only holds the mod's changes."})),
-      el("div", {class: "ass2Ribbon"},
-        stat(hacks().length, "gameplay hacks"),
-        stat(fmt(n.changedValues), "rebalanced values"),
-        stat(R.disc.stagesChanged, "stage & boss files changed")));
+        el("p", {class: "ass2Fine", text: "For the US release (Track 1). You need your own copy of the game: the patch only holds the mod's changes."})));
   }
-  const stat = (big, small) => el("div", {class: "ass2Stat"}, el("strong", {text: String(big)}), el("span", {text: small}));
 
   function feature(icon, title, text, tags = []) {
     return el("article", {class: "ass2Feature"},
@@ -197,33 +157,16 @@
           ["Rest levels", "Relic abilities", "New moves", "All bosses"]),
         feature("⚔", "A smarter bestiary", "Frozen Half, Lesser Demon, Guardian, Skull Lord, Balloon Pods and more fight with new patterns, and enemies no longer stand around waiting for you to strike first.",
           ["Enemy AI pack", "No idling"]),
-        feature("✦", "New weapon arts", "The Hunter Sword returns like a boomerang, the Stone Sword raises Medusa's shield, Terminus Est borrows Crissaegrim, the Hunting Blade throws a Heaven Sword, and the elemental swords, Spirit Wand and Gram all learn something new.",
-          ["Weapon specials", "Fire Rings", "Real-time shield spells"]),
-        feature("❖", "New familiars", "Dawn and Ouroboros join your party, the Sword Familiar can call in a friend, and every familiar grows a level with each kill.",
+        feature("✦", "New Weapons and Arts", "New weapons join the arsenal, and many familiar blades, wands and shields learn special moves of their own. Try everything you find: you never know what a weapon can do until you swing it.",
+          ["New weapons", "New special moves"]),
+        feature("❖", "New familiars", "Dawn and Ouroboros join your party, the Sword Familiar can call in a friend, and every familiar grows a level with each kill. Thanks to Fael for letting me borrow them!",
           ["Dawn", "Ouroboros", "Familiar swap"]),
-        feature("✚", "Survive on your terms", "Life Apples revive you on the spot, death sends you back to your last save room, the Shop Card brings the Librarian to you, and two new warp cards cut the walk home. Practice any boss in the Library before the real thing.",
-          ["Life Apple revive", "Shop Card", "Warp cards", "Library Practice"]),
+        feature("✚", "Quality of Life and Extra Stuff", "No more game over screens: death just brings you back to your last save point. Equip two item slots to drink potions from the L2 shortcut, find new items that help you explore the castle, and take on the all-new Boss CRush mode.",
+          ["No game over", "L2 item slots", "Exploration items", "Boss CRush"]),
         feature("☾", "Alucard, sharpened", "Spells scale with INT, DEF works as a percentage, Dark Metamorphosis and the buff potions grow with your stats, and air control is tighter. Some say a secret spell lets him become the Axe Lord.",
           ["Percent DEF", "Stat-scaled buffs", "A secret spell"]),
-        feature("⚙", "Built on 2.0", "Everything from 2.0 is still here: the re-rebalanced combat, a castle with no empty rooms, weapons that pick your subweapon, potions that are never used up, Heart Regeneration, the MiniMap and Fast Warp.",
-          ["Re-Rebalanced", "Quick Items (L2)", "MiniMap", "Fast Warp"])));
-  }
-
-  function hackList() {
-    const list = hacks();
-    if (!list.length) return null;
-    const groups = [];
-    for (const f of list) {
-      const name = f.category || "Alternate Scarlet Symphony 2.0";
-      if (groups[groups.length - 1]?.name !== name) groups.push({name, items: []});
-      groups[groups.length - 1].items.push(f);
-    }
-    return el("section", {class: "ass2Section"},
-      el("h2", {class: "ass2H", text: `All ${list.length} gameplay hacks`}),
-      el("p", {class: "ass2Lead", text: "Every one of these is in ASS -Final-. The Extra Hacks tab can remove any of them one at a time, add most of the -Final- hacks to ASS 2.0, and add the original ones to a vanilla BIN."}),
-      groups.flatMap(group => [el("h3", {class: "ass2HackGroup", text: group.name}),
-        el("div", {class: "ass2Hacks"}, group.items.map(f => el("div", {class: "ass2Hack"},
-          el("strong", {text: f.label}), el("p", {text: BLURBS[f.id] || f.summary || f.subtitle || ""}))))]));
+        feature("⚙", "Inverted Castle Complete", "The long-awaited Inverted Castle is finally complete. Turn the world upside down for a second journey with tougher enemies, rethought bosses and secrets of its own. The night is only half over.",
+          ["Inverted Castle", "Second journey", "New secrets"])));
   }
 
   // ass2/screenshots/screenshots.json: [{file | url, caption?, source?}]
@@ -288,7 +231,7 @@
     if (!view) return;
     if (!R || !Core) { view.replaceChildren(el("p", {class: "ass2Fine", text: "The ASS -Final- release data is missing."})); return; }
     if (!rendered) {
-      view.replaceChildren(el("div", {class: "ass2Page"}, hero(), features(), gallery(), hackList(), install(), credits()));
+      view.replaceChildren(el("div", {class: "ass2Page"}, hero(), features(), gallery(), install(), credits()));
       rendered = true;
       loadDownloads();
     }

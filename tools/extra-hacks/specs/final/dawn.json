@@ -2,7 +2,7 @@
   "id": "dawn",
   "label": "Dawn familiar",
   "category": "Familiars",
-  "summary": "Reawakened's Dawn familiar from the Sword of Dawn wall in the inverted Castle Keep, with its own menu icon, three swords per wave and up to six active.",
+  "summary": "Reawakened's Dawn familiar joins the castle, with its own menu icon.",
   "edits": [
     {
       "file": "DRA.BIN",

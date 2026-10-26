@@ -2,7 +2,7 @@
   "id": "bat-form",
   "label": "Bat form and Wing Smash",
   "category": "Alucard abilities and spells",
-  "summary": "Bat form flies twice as fast; Power of Mist makes Wing Smash unlimited.",
+  "summary": "Bat form flies faster, and Power of Mist makes Wing Smash unlimited.",
   "edits": [
     {
       "file": "DRA.BIN",

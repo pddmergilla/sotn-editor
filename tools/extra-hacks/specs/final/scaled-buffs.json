@@ -2,7 +2,7 @@
   "id": "scaled-buffs",
   "label": "Stat-scaled buffs",
   "category": "Alucard abilities and spells",
-  "summary": "Dark Metamorphosis, the buff potions and the Faerie's buffs add half of Alucard's base STR/CON/INT/LCK instead of flat values; the shared DEF buff is floor(CON / 10) (updates the existing Dark Metamorphosis stat buff hack).",
+  "summary": "Dark Metamorphosis, the buff potions and the Faerie's buffs grow with Alucard's stats.",
   "edits": [
     {
       "file": "DRA.BIN",

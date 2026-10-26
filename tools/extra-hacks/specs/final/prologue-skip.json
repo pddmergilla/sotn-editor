@@ -2,7 +2,7 @@
   "id": "prologue-skip",
   "label": "Prologue skip",
   "category": "World and story",
-  "summary": "New Alucard games skip the intro movie, the Richter prologue and the story scroll and start with the forest run into the castle; no prologue rewards, and boss records and the clock are reset.",
+  "summary": "New Alucard games skip the Richter prologue and start with the story scroll.",
   "edits": [
     {
       "file": "DRA.BIN",

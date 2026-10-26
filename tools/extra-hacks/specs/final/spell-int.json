@@ -2,7 +2,7 @@
   "id": "spell-int",
   "label": "Spells scale with INT",
   "category": "Alucard abilities and spells",
-  "summary": "Spell and form attack damage is multiplied by (INT + 500) / 500 instead of a flat bonus.",
+  "summary": "Spells and form attacks grow stronger with INT.",
   "edits": [
     {
       "file": "DRA.BIN",

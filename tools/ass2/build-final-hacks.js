@@ -38,10 +38,19 @@ const hex = v => '0x' + v.toString(16).toUpperCase();
 const revision = cwd => { try { return child.execFileSync('git', ['-c', 'safe.directory=*', 'rev-parse', 'HEAD'], {cwd, encoding: 'utf8'}).trim(); } catch { return null; } };
 const slug = t => t.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+// The base is always the last 2.0 release, ASS 2.0.10: outputs/ref/ASS-2.0.10.bin, else vanilla + its PPF from git.
+const BASE = {version: '2.0.10', sha256: '8F9B4F05CF8E8F8E08CEFD8CEA5EA43B9D365D5A3D1920DA248645702771751A',
+  vanilla: 'CE01203A9DF93E001B88EF4C350889C19F11FFBA89D20F214BDD8DEC0B2D8D7C', commit: '0debdca', ppf: 'ass2/Alternate-Scarlet-Symphony-2.0.ppf'};
+const REF = path.join(ROOT, 'outputs/ref/ASS-2.0.10.bin');
 function release() {
-  global.window = global.window || {};
-  require('../../ass2/ass2-release.js');
-  return global.window.SotnAss2Release;
+  return {version: BASE.version, ppf: {file: `${BASE.ppf} (${BASE.commit})`}, vanilla: {sha256: BASE.vanilla}, result: {sha256: BASE.sha256}};
+}
+function baseImage(vanilla) {
+  if (fs.existsSync(REF)) return fs.readFileSync(REF);
+  const image = Buffer.from(vanilla);
+  const p = A.parsePpf(child.execFileSync('git', ['-c', 'safe.directory=*', 'show', `${BASE.commit}:${BASE.ppf}`], {cwd: ROOT, maxBuffer: 1 << 26}));
+  p.offsets.forEach((o, i) => image.set(p.bytes.subarray(p.data[i], p.data[i] + p.lengths[i]), o));
+  return image;
 }
 
 function listPpfs(dir, depth, out = []) {
@@ -105,8 +114,7 @@ async function main() {
   const rel = release();
   const vanilla = fs.readFileSync(VANILLA);
   assert.equal(sha(vanilla), rel.vanilla.sha256, 'Vanilla US Track 1 hash');
-  const base = Buffer.from(vanilla);
-  { const p = A.parsePpf(fs.readFileSync(path.join(ROOT, rel.ppf.file))); p.offsets.forEach((o, i) => base.set(p.bytes.subarray(p.data[i], p.data[i] + p.lengths[i]), o)); }
+  const base = Buffer.from(baseImage(vanilla));
   const baseSha = sha(base);
   assert.equal(baseSha, rel.result.sha256, `ASS ${rel.version} rebuild`);
   const cur = fs.readFileSync(MAIN), curSha = sha(cur);
@@ -309,8 +317,7 @@ async function main() {
     return spec;
   }
   const SPEC_DIR = path.join(ROOT, 'tools/extra-hacks/specs/final'), specIndex = [];
-  // The Extra Hacks catalog builder reads 2.0.10 from here (tools/extra-hacks/sotn.py, image 'a').
-  const REF = path.join(ROOT, 'outputs/ref/ASS-2.0.10.bin');
+  // The Extra Hacks catalog builder reads 2.0.10 from REF (tools/extra-hacks/sotn.py, image 'a').
   if (!DRY && !fs.existsSync(REF)) { fs.mkdirSync(path.dirname(REF), {recursive: true}); fs.writeFileSync(REF, base); }
   if (!DRY) { fs.mkdirSync(OUT, {recursive: true}); fs.rmSync(SPEC_DIR, {recursive: true, force: true}); fs.mkdirSync(SPEC_DIR, {recursive: true}); }
   const block = base.subarray(0x9320, 0x9720), curBlock = cur.subarray(0x9320, 0x9720);

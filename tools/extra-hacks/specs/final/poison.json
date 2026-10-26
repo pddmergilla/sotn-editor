@@ -2,7 +2,7 @@
   "id": "poison",
   "label": "Poison damage over time",
   "category": "Status and damage rules",
-  "summary": "Poison deals 5 HP every 10 frames for its duration.",
+  "summary": "Poison drains HP over time.",
   "edits": [
     {
       "file": "DRA.BIN",

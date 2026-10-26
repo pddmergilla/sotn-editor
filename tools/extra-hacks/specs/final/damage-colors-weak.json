@@ -2,7 +2,7 @@
   "id": "damage-colors-weak",
   "label": "Damage number colors: weak and resist",
   "category": "Menus and presentation",
-  "summary": "Weakness hits flash the GUARD colors and resisted hits are grey (update to the existing Damage Number Colors hack).",
+  "summary": "Weakness and resisted hits get their own damage number colors (adds to Damage Number Colors).",
   "edits": [
     {
       "file": "DRA.BIN",

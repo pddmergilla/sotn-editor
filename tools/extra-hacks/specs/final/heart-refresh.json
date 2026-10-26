@@ -2,7 +2,7 @@
   "id": "heart-refresh",
   "label": "Heart Refresh shortcut",
   "category": "Alucard abilities and spells",
-  "summary": "Heart Refresh runs in real time from the item shortcut with its native animation.",
+  "summary": "Heart Refresh runs in real time from the item shortcut.",
   "edits": [
     {
       "file": "DRA.BIN",
@@ -4434,7 +4434,9 @@
     }
   ],
   "requires": [
-    "melee-ranged",
-    "item-slots"
+    "weapons",
+    "familiar-level",
+    "death-return",
+    "items"
   ]
 }

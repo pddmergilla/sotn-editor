@@ -2,7 +2,7 @@
   "id": "air-control",
   "label": "Air control and hurt recovery",
   "category": "Alucard abilities and spells",
-  "summary": "Air control after leaving a ledge or transforming, recovery from airborne hurt after 60 frames, and hurt cancels into Richter's backflip and Alucard's dropkick.",
+  "summary": "Better control in the air after leaving a ledge, transforming or getting hit.",
   "edits": [
     {
       "file": "DRA.BIN",

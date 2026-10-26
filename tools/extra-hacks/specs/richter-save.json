@@ -1,7 +1,6 @@
 {
   "id": "richter-save",
   "label": "Richter always saved",
-  "wip": true,
   "summary": "Defeating Richter always takes the 'Richter saved' route (the Shaft's-orb cutscene that opens the Inverted Castle) instead of his normal defeat.",
   "requires": [],
   "edits": [
@@ -71,5 +70,6 @@
       "offset": "0x40830",
       "length": 68
     }
-  ]
+  ],
+  "shippedIn": "final"
 }

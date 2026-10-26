@@ -2,7 +2,7 @@
   "id": "richter-mode",
   "label": "Richter Mode overhaul",
   "category": "Richter Mode",
-  "summary": "Playable Richter rebuilt: Rest levels and milestones, healing and collection growth, four-digit hearts, Heart Regen, relic abilities, Blade Dash, Roundhouse, Rising Hurricane, default run with L2 walk, new pause pages with a guide, all Alucard bosses, and many fixes.",
+  "summary": "Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces.",
   "edits": [
     {
       "file": "DRA.BIN",
@@ -22388,8 +22388,10 @@
   "finalOnly": true,
   "requires": [
     "boss-ai",
+    "weapons",
+    "familiar-level",
     "death-return",
-    "life-apple",
+    "items",
     "scaled-buffs",
     "damage-colors-weak",
     "percent-def"

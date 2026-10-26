@@ -2,7 +2,7 @@
   "id": "hellfire",
   "label": "Hellfire casts in place",
   "category": "Alucard abilities and spells",
-  "summary": "Hellfire skips the teleport and its windup is under half a second.",
+  "summary": "Hellfire casts where Alucard stands, with a shorter windup.",
   "edits": [
     {
       "file": "DRA.BIN",

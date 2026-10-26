@@ -2,7 +2,7 @@
   "id": "boss-ai",
   "label": "Boss AI pack",
   "category": "Boss AI",
-  "summary": "Olrox, Granfaloon, Scylla, Hippogryph, Richter (Epic Richter AI clock finisher), Cerberus, the Fake Trevor/Grant/Sypha, Beelzebub, Death, Medusa, The Creature, Doppleganger40, Akmodan II, Galamoth, Shaft/Dracula with a new Greater Demon final phase, Succubus and Darkwing Bat all get new attack patterns and AI.",
+  "summary": "Bosses fight with new AI and new attack patterns.",
   "edits": [
     {
       "file": "DRA.BIN",

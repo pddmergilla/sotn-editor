@@ -1,8 +1,8 @@
 {
   "id": "richter-rescue",
-  "label": "Richter rescue fix and skip",
+  "label": "Richter rescue cutscene fixes",
   "category": "World and story",
-  "summary": "Defeating Richter goes through Shaft's orb rescue correctly, and the rescue requirement can be skipped while keeping the cutscene voices (supersedes the WIP Richter always saved hack).",
+  "summary": "The Richter rescue cutscene plays correctly, with its voices.",
   "edits": [
     {
       "file": "BOSS/BO6/BO6.BIN",

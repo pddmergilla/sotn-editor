@@ -2,7 +2,7 @@
   "id": "enemy-ai",
   "label": "Enemy AI pack",
   "category": "Enemy AI",
-  "summary": "Frozen Half ice-ball/rain cycle with smoke escape; Lesser Demon scripted summon-flight pattern at 1.5x; Skull Lord teleports behind Alucard; Wereskeleton head stretch; no idling and faster charges for several enemies; Bone Ark close lightning burst; Balloon Pods fly like crows with homing seeds; Hammer, Blade and Gurkha ignore hurt reactions; Stone Skulls chase when hurt; Salome's shield resists instead of blocking; Guardian wave, barrage, shield and teleport rework; Sniper of Goth dash and arrows; faster Anti-Chapel Archers.",
+  "summary": "Enemies fight with new AI and new attack patterns.",
   "edits": [
     {
       "file": "DRA.BIN",

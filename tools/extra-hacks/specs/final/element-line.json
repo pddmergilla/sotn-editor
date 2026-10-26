@@ -2,7 +2,7 @@
   "id": "element-line",
   "label": "RES/WEAK element line",
   "category": "Menus and presentation",
-  "summary": "The main menu shows Alucard's resistances and weaknesses below GOLD.",
+  "summary": "The main menu shows Alucard's resistances and weaknesses.",
   "edits": [
     {
       "file": "DRA.BIN",

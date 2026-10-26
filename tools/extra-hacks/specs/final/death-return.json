@@ -1,8 +1,8 @@
 {
   "id": "death-return",
-  "label": "Death returns to the last save room",
+  "label": "No more game over",
   "category": "World and story",
-  "summary": "Death returns Alucard to the last save room he visited, refilling his Life Apple charges, with a graphics fix for returns across zones.",
+  "summary": "Death just brings Alucard back to the last save point.",
   "edits": [
     {
       "file": "DRA.BIN",

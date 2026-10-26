@@ -2,7 +2,7 @@
   "id": "system-settings",
   "label": "Minimap setting and item shortcut button",
   "category": "Menus and presentation",
-  "summary": "System gains Show minimap: Yes/No; Button Config gains a remappable Item Shortcut.",
+  "summary": "System gains a setting to show or hide the minimap, and Button Config gains a remappable item shortcut.",
   "edits": [
     {
       "file": "DRA.BIN",

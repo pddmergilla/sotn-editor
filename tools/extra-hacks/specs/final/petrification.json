@@ -2,7 +2,7 @@
   "id": "petrification",
   "label": "Petrification rework",
   "category": "Status and damage rules",
-  "summary": "Petrification lasts 3 seconds with no directional escape; hits while petrified have a 30-frame cooldown.",
+  "summary": "Petrification is shorter and harder to wiggle out of, and hits while petrified are spaced out.",
   "edits": [
     {
       "file": "DRA.BIN",

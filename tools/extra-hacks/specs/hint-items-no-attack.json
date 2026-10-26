@@ -1,34 +1,455 @@
 {
-  "id": "hint-items-no-attack",
-  "label": "Hint items have no attack",
-  "summary": "Items of category 2 (ASS's Hint items) are treated like food and medicine when attack is calculated, so they show and deal no weapon attack.",
-  "requires": [],
-  "edits": [
-    {
-      "file": "DRA.BIN",
-      "offset": "0x54D70",
-      "off": "060002340e0062102190a0000a0002340b006210",
-      "on": "2190a00002006238030042300c00401000000000",
-      "why": "GetEquipProperties: 'cat==6 || cat==10' (food/medicine keep their raw attack) -> '(cat^2)&3==0' (also category 2 = THROW_1)",
-      "origin": "unattributed (food/Hint build)"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x5E83C",
-      "off": "06000234130062100a00023411006210",
-      "on": "00000000020062380300423011004010",
-      "why": "CalcAttack: the same category test widened to category 2 (attack 0 for THROW_1 items)",
-      "origin": "unattributed (food/Hint build)"
-    }
-  ],
-  "vanilla": {
-    "supported": false,
-    "reason": "In vanilla category 2 is the Heaven Sword, Shakram and Runesword, which would lose their attack; this only makes sense with ASS's Hint items.",
-    "vanillaOff": []
+ "id": "hint-items-no-attack",
+ "label": "Hint items have no attack",
+ "summary": "Food and medicine items that ASS turned into Hints are listed in the Hint category, the vanilla throwing weapons leave it, and Hint items carry no attack, shown or dealt.",
+ "requires": [],
+ "edits": [
+  {
+   "file": "DRA.BIN",
+   "offset": "0x54D70",
+   "off": "060002340e0062102190a0000a0002340b006210",
+   "on": "2190a00002006238030042300c00401000000000",
+   "why": "GetEquipProperties: 'cat==6 || cat==10' (food/medicine keep their raw attack) -> '(cat^2)&3==0' (also category 2 = THROW_1)",
+   "origin": "unattributed (food/Hint build)"
   },
-  "tunables": [],
-  "entityEdits": [],
-  "overlaps": [],
-  "confidence": "medium",
-  "notes": "(cat^2)&3==0 matches categories 2, 6, 10, 14 = THROW_1, FOOD, MEDICINE. ASS 2.0 has 22 items in category 2 (food Hints 0x1E-0x2A/0x3F and the Hint items 0x94-0x9E) and none of the three vanilla THROW_1 weapons. Added between image t (09-27) and b (10-01), no PPF. Probably part of the food/Hint work; could be merged into instant-food (ASS only)."
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5E83C",
+   "off": "06000234130062100a00023411006210",
+   "on": "00000000020062380300423011004010",
+   "why": "CalcAttack: the same category test widened to category 2 (attack 0 for THROW_1 items)",
+   "origin": "unattributed (food/Hint build)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x4B46",
+   "off": "02",
+   "on": "08",
+   "category": true,
+   "why": "item 0x01 category Hint -> category 8"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x512A",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x1E category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x515E",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x1F category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5192",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x20 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x51C6",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x21 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x51FA",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x22 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x52CA",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x26 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x52FE",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x27 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5332",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x28 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5366",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x29 category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x539A",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x2A category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x57DE",
+   "off": "06",
+   "on": "02",
+   "category": true,
+   "why": "item 0x3F category food -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5FCA",
+   "off": "02",
+   "on": "08",
+   "category": true,
+   "why": "item 0x66 category Hint -> category 8"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x630A",
+   "off": "02",
+   "on": "08",
+   "category": true,
+   "why": "item 0x76 category Hint -> category 8"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x633E",
+   "off": "02",
+   "on": "08",
+   "category": true,
+   "why": "item 0x77 category Hint -> category 8"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6616",
+   "off": "02",
+   "on": "08",
+   "category": true,
+   "why": "item 0x85 category Hint -> category 8"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x681E",
+   "off": "02",
+   "on": "08",
+   "category": true,
+   "why": "item 0x8F category Hint -> category 8"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6922",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x94 category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6956",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x95 category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x698A",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x96 category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x69BE",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x97 category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x69F2",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x98 category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6A26",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x99 category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6A5A",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x9A category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6A8E",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x9B category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6AC2",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x9C category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6AF6",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x9D category medicine -> Hint"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6B2A",
+   "off": "0A",
+   "on": "02",
+   "category": true,
+   "why": "item 0x9E category medicine -> Hint"
+  }
+ ],
+ "vanilla": {
+  "supported": false,
+  "reason": "In vanilla category 2 is the Heaven Sword, Shakram and Runesword, which would lose their attack; this only makes sense with ASS's Hint items.",
+  "vanillaOff": []
+ },
+ "tunables": [
+  {
+   "file": "DRA.BIN",
+   "offset": "0x4b46",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x512a",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x515e",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5192",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x51c6",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x51fa",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x52ca",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x52fe",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5332",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5366",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x539a",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x57de",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x5fca",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x630a",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x633e",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6616",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x681e",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6922",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6956",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x698a",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x69be",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x69f2",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6a26",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6a5a",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6a8e",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6ac2",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6af6",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  },
+  {
+   "file": "DRA.BIN",
+   "offset": "0x6b2a",
+   "length": 1,
+   "category": true,
+   "why": "item category: written when toggling, not used to detect the hack (the Stats Editor can change it)"
+  }
+ ],
+ "entityEdits": [],
+ "overlaps": [],
+ "confidence": "medium",
+ "notes": "(cat^2)&3==0 matches categories 2, 6, 10, 14 = THROW_1, FOOD, MEDICINE. ASS 2.0 has 22 items in category 2 (food Hints 0x1E-0x2A/0x3F and the Hint items 0x94-0x9E) and none of the three vanilla THROW_1 weapons. Added between image t (09-27) and b (10-01), no PPF. Probably part of the food/Hint work; could be merged into instant-food (ASS only)."
 }

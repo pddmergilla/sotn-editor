@@ -2,7 +2,7 @@
   "id": "sword-familiar",
   "label": "Sword Familiar QCF swap",
   "category": "Familiars",
-  "summary": "QCF with the Sword Familiar swaps in another familiar temporarily; \"Your best friend\" description.",
+  "summary": "The Sword Familiar can call in another familiar for a while.",
   "edits": [
     {
       "file": "DRA.BIN",

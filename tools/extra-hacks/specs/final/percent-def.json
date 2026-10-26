@@ -2,7 +2,7 @@
   "id": "percent-def",
   "label": "Percent DEF",
   "category": "Status and damage rules",
-  "summary": "DEF reduces damage by a percentage instead of subtracting, replacing the separate inverted-castle +200; Walk Armor's map DEF is capped at 15. Carries the current DEF of all of Alucard's equipment and every enemy, whichever patch set it.",
+  "summary": "DEF reduces damage by a percentage. Brings the current DEF of all equipment and enemies with it.",
   "edits": [
     {
       "file": "DRA.BIN",
