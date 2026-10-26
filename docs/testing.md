@@ -31,6 +31,7 @@ node tests/safe-save.test.js
 node tests/edit-session.test.js
 node tests/extra-hacks-ui.test.js
 node tests/final-hacks.test.js
+node tests/site-stats.test.js
 node tests/richter-save.test.js
 node tests/richter-crash-recovery.test.js
 node tests/richter-stopwatch-crash.test.js

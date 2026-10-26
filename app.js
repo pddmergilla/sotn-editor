@@ -1310,8 +1310,9 @@
       setStatus("Checking edited overlays and disc sectors...");
       const changes=await collectChanges();
       const stem=state.discName.replace(/\.[^.]+$/,"");
-      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v7.0"):C.modifiedBlob(state.disc.file,changes);
+      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v8.0"):C.modifiedBlob(state.disc.file,changes);
       const saved=await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`,kind==="bin");
+      window.SotnSiteStats?.count(kind==="ppf"?"editor/export-ppf":"editor/build-bin");
       setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} ${saved.downloaded?"download started":"saved and verified"} (${changes.length} changed sectors). ${saved.warning||""}`);
     } catch(e){if(e.name!=="AbortError"){
       console.error(e);if(e.extraHackConflict)window.SotnExtraHacksUI?.setConflict(e.message);

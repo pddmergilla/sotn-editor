@@ -84,6 +84,7 @@
         {sourceHandle: state.handle, sourceFile: disc.file, allowSourceOverwrite: true,
           onSourceSnapshot: file => { disc.file = file; }});
       state.built = {...saved, crc};
+      window.SotnSiteStats?.count(`build/${PPF_DOWNLOAD.replace(/\.ppf$/, "")}`);
     } catch (e) {
       if (e.name === "AbortError") { state.busy = false; updateBuild(); return; }
       state.built = {error: e.message || String(e)};
