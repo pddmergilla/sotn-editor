@@ -2,13 +2,16 @@
 // Each applied PPF found next to the main BIN, in outputs/ or in Downloads is assigned to exactly one group by
 // its file name (first match wins). `kind` decides what gets a separate patch:
 //   hack     a feature or behaviour change that gets its own guarded PPF pair
-//   balance  stats, costs, DEF/HP/attack values or element tables only (no separate patch, left out of the list)
-//   content  map, room, pickup placement or text edits (no separate patch, listed separately)
+//   balance  stats, costs, DEF/HP/attack values or element tables only
+//   content  map, room, pickup placement or relic edits
+//   text     the -Final- credits and prologue text (no separate patch; only in the full ASS -Final- patch)
+// `toggle: true` builds a balance or content group as one hack as well (ASS -Final- Stats Rebalanced and Castle). Bytes
+// are still attributed by kind, so a retune of a hack's own bytes stays with that hack.
 // All boss AI changes share one group and all normal-enemy AI changes another, as requested for the Final release.
 
 const BOSS = 'Boss AI', ENEMY = 'Enemy AI', WEAPON = 'Weapons and specials', FAMILIAR = 'Familiars',
   ITEM = 'Items, relics and shops', ALUCARD = 'Alucard abilities and spells', MECHANIC = 'Status and damage rules',
-  MENU = 'Menus and presentation', RICHTER = 'Richter Mode', WORLD = 'World and story';
+  MENU = 'Menus and presentation', RICHTER = 'Richter Mode', WORLD = 'World and story', FINAL = 'ASS -Final- stats and castle';
 
 // A Richter patch that wrote the BO6 boss overlay and not BIN/RIC.BIN (or the stage relic code) is the boss fight;
 // the rest is Richter Mode.
@@ -16,16 +19,19 @@ const ricOnly = p => { const f = Object.keys(p.files || {}); return f.some(x => 
 
 const FEATURES = [
   // Balance first, so tuning-only patches inside a feature's name family are not mistaken for the feature.
-  {id: 'balance', kind: 'balance', title: 'Balance and stat values', category: 'Balance',
+  {id: 'balance', kind: 'balance', toggle: true, title: 'ASS -Final- Stats Rebalanced', category: FINAL,
+    about: 'The -Final- balance: stats of enemies, bosses, weapons, armor, items and relics, castle levels, damage and resistances.',
     match: [/^Boss-DEF-Retune/, /^Enemy-HP-Percent-DEF-Retune/, /^Equipment-DEF-99/, /^Inverted-Bosses-DEF/, /^Inverted-Exclusive-Plus1000/,
       /^Forward\.ppf$/, /^Zwei-600/, /^Duplichaos-Price/, /^Vlad-Relics/, /^Akmodan-II-DEF145/, /^Akmodan-II-WAT-Weakness/, /Half-Food-Heals/, /^Dracula-Hands-DEF66/, /^Medusa-DEF169/,
       /^Creature-Hammer-Only-LIT/, /^Cerberus-Water-Neutral/, /^Succubus-All-Attack-Damage/, /^Succubus-Wing-Spike-Damage/,
       /^Pentagram-35MP/, /^Potions-900/, /^Librarian-/, /^Water-Enemy-Attacks/, /^Dark-Resist-Undead/, /^Enemy-Element-Only/,
       /^Ascaln-Gram-Sword-Familiar-DAR/, /^Greater-Demon-Dracula-Hands-DEF/, /^Alucard-Rebalance/,
       /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/]},
-  {id: 'content', kind: 'content', title: 'Map, pickup and text edits', category: 'Content',
+  {id: 'text', kind: 'text', title: 'Credits and prologue text', category: 'Text', match: [/^Credits-Oy-Final/, /^Credits-Centered/, /^Prologue-Welcome-/]},
+  {id: 'content', kind: 'content', toggle: true, title: 'ASS -Final- Castle', category: FINAL,
+    about: 'The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression.',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
-      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/, /^Credits-Oy-Final/, /^Credits-Centered/, /^Prologue-Welcome-/]},
+      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/]},
 
   // ---- Boss AI: one patch for every boss.
   {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',
@@ -124,6 +130,9 @@ const FEATURES = [
     about: 'Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces.'}
 ];
 
+// Patches for other BINs next to the main one (the Maria build), left out of the scan.
+const OTHER_IMAGES = [/^Maria-/, /Saturn-Maria/];
+
 // PPFs that carry two features: each byte goes to the feature of the file it is in.
 const SPLITS = [
   // The Stone Skull death fix is enemy code in the stage overlays; Patek's 100% drop is the Items drop hook in DRA.
@@ -136,4 +145,4 @@ function classify(ppf) {
   return null;
 }
 
-module.exports = {FEATURES, SPLITS, classify};
+module.exports = {FEATURES, SPLITS, OTHER_IMAGES, classify};

@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.md)
 
-The main BIN gained 30 features after ASS 2.0.10. This page lists them for the editor v8.0 / ASS -Final- release and the Extra Hacks update. Balance changes (stat, cost, DEF/HP/attack values, element tables) are left out.
+The main BIN gained 32 features after ASS 2.0.10. This page lists them for the editor v8.0 / ASS -Final- release and the Extra Hacks update. The -Final- balance (stat, cost, DEF/HP/attack values, element tables) and the revised castle (maps, pickups, relic placements, boss rooms) are one feature each; the credits and prologue welcome text are left out.
 
 `node tools/ass2/build-final-hacks.js` reads ASS 2.0.10 (`outputs/ref/ASS-2.0.10.bin`, or vanilla plus the 2.0.10 PPF from git history), then assigns every byte that differs in the main BIN to the newest applied PPF that wrote it. It searches next to the main BIN, `outputs/`, Downloads and the Documents/Codex session outputs. The groups are defined in `tools/ass2/final-hacks.js`. All boss AI changes share one group, all normal-enemy AI changes another, and so do the weapons and the items. A later retune of a feature's own bytes stays with that feature. When a feature replaced bytes that another wrote, it is built on top of that feature and lists it under **Requires**.
 
@@ -10,13 +10,20 @@ For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements �
 
 Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-10-26 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451EBF7C3E6BCD459CA2DC7CA`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: balance 2,982 bytes, map/pickup/text content 34,565 bytes, unattributed 2 bytes. 197 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+Built on 2026-10-27 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451EBF7C3E6BCD459CA2DC7CA`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: credits and prologue text 3,091 bytes, unattributed 2 bytes. 501 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+
+### ASS -Final- stats and castle
+
+| Feature | What it does | Requires | Bytes | Patch |
+|---|---|---|---:|---|
+| **ASS -Final- Stats Rebalanced** | The -Final- balance: stats of enemies, bosses, weapons, armor, items and relics, castle levels, damage and resistances. | — | 2,982 | `ASS-Final-Stats-Rebalanced.ppf` |
+| **ASS -Final- Castle** | The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression. | — | 31,170 | `ASS-Final-Castle.ppf` |
 
 ### Boss AI
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Boss AI pack** | Bosses fight with new AI and new attack patterns. | — | 221,642 | `ASS-Final-Boss-AI-pack.ppf` |
+| **Boss AI pack** | Bosses fight with new AI and new attack patterns. | — | 221,922 | `ASS-Final-Boss-AI-pack.ppf` |
 
 ### Enemy AI
 
@@ -83,7 +90,7 @@ Built on 2026-10-26 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451
 |---|---|---|---:|---|
 | **No more game over** | Death just brings Alucard back to the last save point. | — | 275 | `ASS-Final-No-more-game-over.ppf` |
 | **Clock Tower gear doors always open** | Both Clock Tower gear doors stay open. | — | 32 | `ASS-Final-Clock-Tower-gear-doors-always-open.ppf` |
-| **Richter rescue cutscene fixes** | The Richter rescue cutscene plays correctly, with its voices. | Boss AI pack | 132 | `ASS-Final-Richter-rescue-cutscene-fixes.ppf` |
+| **Richter rescue cutscene fixes** | The Richter rescue cutscene plays correctly, with its voices. | Boss AI pack | 156 | `ASS-Final-Richter-rescue-cutscene-fixes.ppf` |
 | **Prologue skip** | New Alucard games skip the Richter prologue and start with the story scroll. | — | 165 | `ASS-Final-Prologue-skip.ppf` |
 
 ### Richter Mode

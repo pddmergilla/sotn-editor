@@ -437,10 +437,28 @@
         if (want && edit.optional && !edit.layers.some(layer => selected.get(layer.feature) || changed(layer.feature))) continue;
         if (!self && !(want && ((edit.with && changed(edit.with.feature)) || edit.layers.some(layer => changed(layer.feature))))) continue;
         const bytes = !want ? (vanilla ? edit.vanillaOff : edit.off) : onBytes(edit, selected, vanilla);
-        edits.push({file: edit.file, offset: edit.offset, bytes, label: feature.label, stats: edit.stats});
+        edits.push({file: edit.file, offset: edit.offset, bytes, label: feature.label, stats: edit.stats, locate: edit.locate});
       }
       if (!self) continue;
       for (const entity of entitiesFor(feature, analysis.profile)) {
+        edits.push({file: entity.file, entity, from: want ? entity.off : entity.on, to: want ? entity.on : entity.off, label: feature.label});
+      }
+    }
+    // A located edit whose file another edit rewrites (ASS -Final- Castle rewrites RCAT's layout) is written again
+    // with its own hack's value, since the layout bytes carry the entity's params too.
+    for (const feature of catalog.features) {
+      const info = analysis.features.find(item => item.id === feature.id);
+      if (!info || (info.state !== "on" && info.state !== "off")) continue;
+      const want = !!selected.get(feature.id);
+      for (const edit of editsFor(feature, analysis.profile)) {
+        if (!edit.locate || edits.some(e => e.locate === edit.locate)) continue;
+        if (!edits.some(e => e.file === edit.file && !e.entity)) continue;
+        edits.push({file: edit.file, offset: edit.offset, bytes: !want ? (vanilla ? edit.vanillaOff : edit.off) : onBytes(edit, selected, vanilla),
+          label: feature.label, locate: edit.locate});
+      }
+      if (changed(feature.id)) continue;
+      for (const entity of entitiesFor(feature, analysis.profile)) {
+        if (!edits.some(e => e.file === entity.file && !e.entity && !e.locate)) continue;
         edits.push({file: entity.file, entity, from: want ? entity.off : entity.on, to: want ? entity.on : entity.off, label: feature.label});
       }
     }
@@ -503,7 +521,23 @@
   // Entity edits are matched in the already edited file, so a map edit made in this session that
   // moved the layout is followed; a record the user moved or retyped keeps the user's version.
   function applyEdits(file, edits, path) {
-    for (const edit of edits) {
+    // Located edits go last and find their entity in the result, after any layout bytes this build writes.
+    // They may rewrite bytes this build wrote (the params inside a new layout), not a map or stats edit.
+    // Entity-list edits also go after the layout bytes.
+    const pre = file.after.slice(), late = edit => edit.locate || edit.entity;
+    for (const edit of [...edits.filter(edit => !late(edit)), ...edits.filter(late)]) {
+      if (edit.locate) {
+        const at = entityParams(file.after, edit.locate)[0];
+        if (at === undefined) throw conflict(`${edit.label}: its entity is missing from ${path} after this build. Undo the map edit or leave the hack unchanged.`);
+        for (let i = 0; i < edit.bytes.length; i++) {
+          const p = at + i;
+          if (file.after[p] === pre[p] && pre[p] !== file.before[p] && pre[p] !== edit.bytes[i]) {
+            throw conflict(`${edit.label} conflicts with a map, stats or shop edit in ${path} at 0x${p.toString(16).toUpperCase()}. Undo that edit or leave the hack unchanged.`);
+          }
+          file.after[p] = edit.bytes[i];
+        }
+        continue;
+      }
       if (edit.entity) {
         for (const at of entityParams(file.after, edit.entity)) {
           if (u16(file.after, at) === edit.from) { file.after[at] = edit.to & 255; file.after[at + 1] = edit.to >> 8; }

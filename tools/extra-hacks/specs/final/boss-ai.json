@@ -3504,6 +3504,12 @@
     },
     {
       "file": "BOSS/BO1/BO1.BIN",
+      "offset": "0x21954",
+      "off": "FC026210",
+      "on": "00000000"
+    },
+    {
+      "file": "BOSS/BO1/BO1.BIN",
       "offset": "0x21C40",
       "off": "8001",
       "on": "C000"
@@ -5227,14 +5233,8 @@
     {
       "file": "BOSS/BO5/BO5.BIN",
       "offset": "0x2294C",
-      "off": "11",
-      "on": "16"
-    },
-    {
-      "file": "BOSS/BO5/BO5.BIN",
-      "offset": "0x2294E",
-      "off": "0608",
-      "on": "4014"
+      "off": "118B0608",
+      "on": "16004014"
     },
     {
       "file": "BOSS/BO5/BO5.BIN",
@@ -5263,26 +5263,14 @@
     {
       "file": "BOSS/BO5/BO5.BIN",
       "offset": "0x2296E",
-      "off": "00001880043C8C",
-      "on": "488E0400698E20"
-    },
-    {
-      "file": "BOSS/BO5/BO5.BIN",
-      "offset": "0x22976",
-      "off": "84243FA8060C21286002E0A8060C00",
-      "on": "0A3C23400A0123400901434108000C"
+      "off": "00001880043C8C0884243FA8060C21286002E0A8060C00",
+      "on": "488E0400698E20000A3C23400A0123400901434108000C"
     },
     {
       "file": "BOSS/BO5/BO5.BIN",
       "offset": "0x22986",
-      "off": "0000C2",
-      "on": "68AE08"
-    },
-    {
-      "file": "BOSS/BO5/BO5.BIN",
-      "offset": "0x2298A",
-      "off": "060C",
-      "on": "688E"
+      "off": "0000C2A8060C",
+      "on": "68AE0800688E"
     },
     {
       "file": "BOSS/BO5/BO5.BIN",
@@ -6144,6 +6132,12 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x35A2C",
+      "off": "1D80033CD8F3628C",
+      "on": "003A070800000000"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x36B90",
       "off": "8BD606",
       "on": "9E3C07"
@@ -6151,8 +6145,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x39AA4",
-      "off": "0780",
-      "on": "4C3F"
+      "off": "0780053CB8C3A58C",
+      "on": "4C3F070800000000"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -9312,21 +9306,27 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E800",
+      "off": "0000000000",
+      "on": "E0FFBD271C"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4E806",
+      "off": "000000",
+      "on": "BFAF18"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E80A",
-      "off": "00",
-      "on": "B2"
+      "off": "000000",
+      "on": "B2AF14"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E80E",
-      "off": "00",
-      "on": "B1"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E810",
-      "off": "00",
-      "on": "10"
+      "off": "000000",
+      "on": "B1AF10"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -9505,26 +9505,14 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E8BE",
-      "off": "00",
-      "on": "B0"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E8C0",
-      "off": "00",
-      "on": "14"
+      "off": "000000",
+      "on": "B08F14"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E8C2",
-      "off": "00",
-      "on": "B1"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E8C4",
-      "off": "00",
-      "on": "18"
+      "off": "000000",
+      "on": "B18F18"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -9649,20 +9637,20 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E940",
-      "off": "0000000000",
-      "on": "1B80013C93"
+      "off": "0000000000000000",
+      "on": "1B80013C93692234"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E94C",
-      "off": "00",
-      "on": "96"
+      "offset": "0x4E94A",
+      "off": "000000000000",
+      "on": "40A096692234"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E954",
-      "off": "000000",
-      "on": "956922"
+      "offset": "0x4E952",
+      "off": "000000000000",
+      "on": "40A095692234"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -9691,26 +9679,14 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E97E",
-      "off": "00",
-      "on": "43"
+      "off": "000000000000",
+      "on": "43ACA4F32234"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E980",
-      "off": "00",
-      "on": "A4"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E988",
-      "off": "00",
-      "on": "A8"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E98A",
-      "off": "00",
-      "on": "22"
+      "offset": "0x4E986",
+      "off": "000000000000",
+      "on": "40ACA8F32234"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -9721,14 +9697,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E996",
-      "off": "0000",
-      "on": "40AC"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E99A",
-      "off": "000000000000",
-      "on": "21340B3A0708"
+      "off": "00000000000000000000",
+      "on": "40ACB0F321340B3A0708"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -9781,14 +9751,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4E9DA",
-      "off": "00000000",
-      "on": "64A4EC15"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4E9DF",
-      "off": "00",
-      "on": "34"
+      "off": "000000000000",
+      "on": "64A4EC152134"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10027,8 +9991,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EAD6",
-      "off": "0000",
-      "on": "A18C"
+      "off": "000000",
+      "on": "A18C01"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10105,20 +10069,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EB42",
-      "off": "000000",
-      "on": "20AC07"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4EB46",
-      "off": "00",
-      "on": "02"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4EB48",
-      "off": "00000000",
-      "on": "202F4134"
+      "off": "00000000000000000000",
+      "on": "20AC0780023C202F4134"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10375,8 +10327,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EC52",
-      "off": "00",
-      "on": "20"
+      "off": "0000",
+      "on": "2010"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10417,14 +10369,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EC7A",
-      "off": "00000000",
-      "on": "22AC0780"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4EC7F",
-      "off": "0000000000",
-      "on": "3C802F2334"
+      "off": "00000000000000000000",
+      "on": "22AC0780013C802F2334"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10453,8 +10399,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4ECAE",
-      "off": "00",
-      "on": "A1"
+      "off": "0000",
+      "on": "A18C"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10543,8 +10489,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4ED0E",
-      "off": "000000000000000000",
-      "on": "218C1B80053C9269A5"
+      "off": "00000000000000000000",
+      "on": "218C1B80053C9269A534"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10627,14 +10573,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4ED66",
-      "off": "000000000000000000",
-      "on": "40AC1B80013C926922"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4ED70",
-      "off": "00",
-      "on": "01"
+      "off": "0000000000000000000000",
+      "on": "40AC1B80013C9269223401"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -10815,6 +10755,12 @@
       "offset": "0x4EE16",
       "off": "0000000000",
       "on": "013C2128A1"
+    },
+    {
+      "file": "BOSS/BO6/BO6.BIN",
+      "offset": "0x4EE1C",
+      "off": "00",
+      "on": "01"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11095,14 +11041,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EF16",
-      "off": "0000000000000000",
-      "on": "112498A5393409F8"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4EF1F",
-      "off": "00",
-      "on": "03"
+      "off": "00000000000000000000",
+      "on": "112498A5393409F82003"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11245,14 +11185,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EF98",
-      "off": "0000",
-      "on": "E062"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4EF9B",
-      "off": "0000000000",
-      "on": "36213C0708"
+      "off": "0000000000000000",
+      "on": "E0620136213C0708"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11317,8 +11251,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EFE8",
-      "off": "000000",
-      "on": "FFFF01"
+      "off": "00000000",
+      "on": "FFFF013C"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11329,14 +11263,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4EFFE",
-      "off": "000000",
-      "on": "22AC07"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F002",
-      "off": "000000000000",
-      "on": "113CD8622136"
+      "off": "00000000000000000000",
+      "on": "22AC0780113CD8622136"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11749,44 +11677,26 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F400",
-      "off": "00",
-      "on": "C8"
+      "off": "0000000000",
+      "on": "C8FFBD2734"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F404",
-      "off": "00",
-      "on": "34"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F408",
-      "off": "00",
-      "on": "30"
+      "offset": "0x4F406",
+      "off": "000000",
+      "on": "BFAF30"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F40A",
-      "off": "00",
-      "on": "BE"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F40C",
-      "off": "00",
-      "on": "2C"
+      "off": "000000",
+      "on": "BEAF2C"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F40E",
-      "off": "00",
-      "on": "B7"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F410",
-      "off": "00",
-      "on": "28"
+      "off": "000000",
+      "on": "B7AF28"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11797,14 +11707,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F416",
-      "off": "00",
-      "on": "B5"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F418",
-      "off": "00",
-      "on": "20"
+      "off": "000000",
+      "on": "B5AF20"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11833,26 +11737,14 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F42A",
-      "off": "000000",
-      "on": "B0AF07"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F430",
-      "off": "0000000000",
-      "on": "C865303401"
+      "off": "0000000000000000000000",
+      "on": "B0AF0780013CC865303401"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F436",
-      "off": "000000",
-      "on": "122449"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F43A",
-      "off": "000000000000000000000000000000",
-      "on": "023C464353341A80023C6CCF513426"
+      "off": "00000000000000000000000000000000000000",
+      "on": "12244952023C464353341A80023C6CCF513426"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -11898,9 +11790,9 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F473",
-      "off": "00",
-      "on": "8E"
+      "offset": "0x4F472",
+      "off": "0000",
+      "on": "018E"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12043,14 +11935,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F4F4",
-      "off": "00",
-      "on": "FF"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F4F6",
-      "off": "000000",
-      "on": "413008"
+      "off": "0000000000",
+      "on": "FFFF413008"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12109,8 +11995,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F53E",
-      "off": "00",
-      "on": "23"
+      "off": "0000",
+      "on": "2314"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12258,9 +12144,9 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F5DF",
-      "off": "0000",
-      "on": "3001"
+      "offset": "0x4F5DE",
+      "off": "000000",
+      "on": "213001"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12373,8 +12259,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F65E",
-      "off": "000000000000000000",
-      "on": "20AC1C80013CA0F321"
+      "off": "00000000000000000000",
+      "on": "20AC1C80013CA0F32134"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12733,14 +12619,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F7B6",
-      "off": "00000000",
-      "on": "748E4952"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F7BB",
-      "off": "000000000000",
-      "on": "3C4643213413"
+      "off": "0000000000000000000000",
+      "on": "748E4952013C4643213413"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12804,27 +12684,21 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F7EB",
-      "off": "0000",
-      "on": "A67C"
+      "offset": "0x4F7EA",
+      "off": "000000",
+      "on": "01A67C"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F7EF",
-      "off": "0000",
-      "on": "9601"
+      "offset": "0x4F7EE",
+      "off": "000000",
+      "on": "019601"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F7F2",
-      "off": "00",
-      "on": "02"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F7F4",
-      "off": "00",
-      "on": "06"
+      "off": "000000",
+      "on": "022406"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12840,9 +12714,9 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F7FF",
-      "off": "0000",
-      "on": "9650"
+      "offset": "0x4F7FE",
+      "off": "000000",
+      "on": "019650"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -12865,20 +12739,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F80F",
-      "off": "0000",
-      "on": "A61C"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F814",
-      "off": "000000",
-      "on": "64B639"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F818",
-      "off": "000000000000",
-      "on": "09F820032520"
+      "off": "000000000000000000000000000000",
+      "on": "A61C80013C64B6393409F820032520"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -13009,8 +12871,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F88A",
-      "off": "0000",
-      "on": "E12C"
+      "off": "000000",
+      "on": "E12C06"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -13092,9 +12954,9 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F8C7",
-      "off": "0000",
-      "on": "9603"
+      "offset": "0x4F8C6",
+      "off": "000000",
+      "on": "019603"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -13153,38 +13015,26 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F900",
-      "off": "00",
-      "on": "A8"
+      "off": "00000000",
+      "on": "A8F34134"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F908",
-      "off": "00",
-      "on": "01"
+      "offset": "0x4F906",
+      "off": "000000",
+      "on": "218C01"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F90A",
-      "off": "000000",
-      "on": "0224A6"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F90E",
-      "off": "0000",
-      "on": "2214"
+      "off": "000000000000",
+      "on": "0224A6FF2214"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F914",
-      "off": "000000000000",
-      "on": "4952013C4643"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F91B",
-      "off": "0000",
-      "on": "34A4"
+      "off": "000000000000000000",
+      "on": "4952013C46432134A4"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -13213,20 +13063,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F94A",
-      "off": "000000",
-      "on": "538E07"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F94E",
-      "off": "00",
-      "on": "10"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F950",
-      "off": "00000000",
-      "on": "D8620136"
+      "off": "00000000000000000000",
+      "on": "538E0780103CD8620136"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -13285,20 +13123,8 @@
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F980",
-      "off": "00",
-      "on": "07"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F982",
-      "off": "00",
-      "on": "02"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F984",
-      "off": "000000",
-      "on": "FE6241"
+      "off": "0000000000000000",
+      "on": "0780023CFE624134"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -13392,21 +13218,15 @@
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F9DF",
-      "off": "00",
-      "on": "14"
+      "offset": "0x4F9DE",
+      "off": "0000",
+      "on": "2014"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
       "offset": "0x4F9E4",
-      "off": "0000",
-      "on": "1C80"
-    },
-    {
-      "file": "BOSS/BO6/BO6.BIN",
-      "offset": "0x4F9E7",
-      "off": "000000000000",
-      "on": "3CA0F3223401"
+      "off": "000000000000000000",
+      "on": "1C80013CA0F3223401"
     },
     {
       "file": "BOSS/BO6/BO6.BIN",
@@ -28057,14 +27877,8 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15AD8",
-      "off": "E0FFBD2707",
-      "on": "9993060800"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15ADE",
-      "off": "043C",
-      "on": "0000"
+      "off": "E0FFBD270780043CB8C3848C",
+      "on": "99930608000000001800B0AF"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28093,26 +27907,14 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15B02",
-      "off": "62147C",
-      "on": "0AA685"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B06",
-      "off": "8224480A822402",
-      "on": "0BA2BE000A8600"
+      "off": "62147C0C8224480A822402",
+      "on": "0AA685000BA2BE000A8600"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15B0E",
-      "off": "43840780043CB8",
-      "on": "000023502A0160"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B16",
-      "off": "848C02",
-      "on": "4A25C1"
+      "off": "43840780043CB8C3848C02",
+      "on": "000023502A0160004A25C1"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28123,44 +27925,20 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15B24",
-      "off": "0200C0102328620023",
-      "on": "23502A0170004A25E1"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B2E",
-      "off": "05000200838407",
-      "on": "4F2DDE330885C2"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B36",
-      "off": "023C8E30428403",
-      "on": "09867E010A8600"
+      "off": "0200C0102328620023280500020083840780023C8E30428403",
+      "on": "23502A0170004A25E1004F2DDE330885C20009867E010A8600"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15B3E",
-      "off": "C010218862000002023423",
-      "on": "0000EEFF4A252A58480127"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B4A",
-      "off": "5100D0FFA22814004010C0",
-      "on": "601100000D342A58090102"
+      "off": "C010218862000002023423885100D0FFA22814004010C0",
+      "on": "0000EEFF4A252A5848012700601100000D342A58090102"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15B56",
-      "off": "222A91",
-      "on": "601100"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B5A",
-      "off": "060C0B",
-      "on": "000001"
+      "off": "222A9155060C0B",
+      "on": "60110000000001"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28200,9 +27978,9 @@
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B7B",
-      "off": "14",
-      "on": "15"
+      "offset": "0x15B7A",
+      "off": "4014",
+      "on": "0015"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28213,14 +27991,8 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15B86",
-      "off": "043466",
-      "on": "A01521"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15B8A",
-      "off": "060C00",
-      "on": "482805"
+      "off": "04346667060C00",
+      "on": "A0152100482805"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28303,20 +28075,8 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15BD2",
-      "off": "401001",
-      "on": "093485"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15BD6",
-      "off": "222A0700103401",
-      "on": "09A2FB56060809"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15BDE",
-      "off": "222A04004014C1",
-      "on": "0434FB56060816"
+      "off": "40100101222A070010340101222A04004014C1",
+      "on": "0934850009A2FB56060809000434FB56060816"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28333,14 +28093,8 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15BF2",
-      "off": "103407",
-      "on": "00001C"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15BF6",
-      "off": "063C2C2FC68C00",
-      "on": "BF8F1800B08F20"
+      "off": "10340780063C2C2FC68C00",
+      "on": "00001C00BF8F1800B08F20"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28357,50 +28111,20 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15C06",
-      "off": "401000",
-      "on": "000014"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C0A",
-      "off": "C23007",
-      "on": "4296A0"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C0E",
-      "off": "033CB8C3638C02",
-      "on": "12AEB65B060814"
+      "off": "40100020C2300780033CB8C3638C02",
+      "on": "000014004296A00012AEB65B060814"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15C16",
-      "off": "E28436",
-      "on": "02A6A0"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C1A",
-      "off": "648400",
-      "on": "888C0E"
+      "off": "E2843602648400",
+      "on": "02A6A000888C0E"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15C1E",
-      "off": "000023",
-      "on": "0A342C"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C22",
-      "off": "82003A",
-      "on": "098500"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C26",
-      "off": "648406",
-      "on": "00000D"
+      "off": "0000232882003A02648406",
+      "on": "0A342C000985000000000D"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28423,14 +28147,8 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15C36",
-      "off": "601023",
-      "on": "000002"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C3A",
-      "off": "82002328050070",
-      "on": "292D0800201580"
+      "off": "6010232082002328050070",
+      "on": "00000200292D0800201580"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28453,20 +28171,20 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15C4E",
-      "off": "8104211080002310020070004228",
-      "on": "00001880023C0C0C428CFD600608"
+      "off": "810421108000231002007000422805",
+      "on": "00001880023C0C0C428CFD60060800"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C60",
-      "off": "00000000",
-      "on": "6C740608"
+      "offset": "0x15C5E",
+      "off": "40100000000001",
+      "on": "00006C74060800"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15C68",
-      "off": "02004010",
-      "on": "9B590608"
+      "offset": "0x15C66",
+      "off": "C23002004010",
+      "on": "00009B590608"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28536,21 +28254,15 @@
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15CCB",
-      "off": "3401",
-      "on": "1100"
+      "offset": "0x15CCA",
+      "off": "103401",
+      "on": "001100"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15CCE",
-      "off": "4230120040100000000047",
-      "on": "00000780083C8E30088502"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15CDA",
-      "off": "060816001034020040147000A2280E00103402",
-      "on": "4986215840022148280121502001380D4C2626"
+      "off": "423012004010000000004757060816001034020040147000A2280E00103402",
+      "on": "00000780083C8E30088502004986215840022148280121502001380D4C2626"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28573,14 +28285,8 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15D02",
-      "off": "1034666706",
-      "on": "E011000000"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D08",
-      "off": "0000000003004230",
-      "on": "2148C0012A784E01"
+      "off": "10346667060C0000000003004230",
+      "on": "E011000000002148C0012A784E01"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28591,74 +28297,38 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15D18",
-      "off": "0C00103466",
-      "on": "2150C001BC"
+      "off": "0C0010346667060C000000000F",
+      "on": "2150C001BC006B25F2FF6C1500"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D1E",
-      "off": "060C00000000",
-      "on": "6B25F2FF6C15"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D28",
-      "off": "02",
-      "on": "60"
+      "offset": "0x15D26",
+      "off": "423002",
+      "on": "000060"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15D2A",
-      "off": "401400000000050010",
-      "on": "0D342368A9012A700D"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D34",
-      "off": "07",
-      "on": "06"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D36",
-      "off": "023C",
-      "on": "C015"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D3C",
-      "off": "000000002C0043940500023403",
-      "on": "C0010D342368AA012A70A0010A"
+      "off": "401400000000050010340780023CB8C3428C000000002C0043940500023403",
+      "on": "0D342368A9012A700D000600C01500000000C0010D342368AA012A70A0010A"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15D4A",
-      "off": "6210",
-      "on": "C011"
+      "off": "621007",
+      "on": "C01100"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D50",
-      "off": "0300621421",
-      "on": "2158400226"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D56",
-      "off": "000203",
-      "on": "6E9502"
+      "offset": "0x15D4E",
+      "off": "0234030062142120000203",
+      "on": "00002158400226006E9502"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15D5A",
-      "off": "031221",
-      "on": "6F8502"
-    },
-    {
-      "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D5E",
-      "off": "00029155060C00",
-      "on": "C0112178ED0102"
+      "off": "0312212000029155060C00",
+      "on": "6F850200C0112178ED0102"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28669,14 +28339,32 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x15D6A",
-      "off": "BF8F1400B18F",
-      "on": "6B25F9FF6C15"
+      "off": "BF8F1400B18F10",
+      "on": "6B25F9FF6C1500"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
-      "offset": "0x15D74",
-      "off": "2000BD27",
-      "on": "74940608"
+      "offset": "0x15D72",
+      "off": "B08F2000BD2708",
+      "on": "00007494060800"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x15D7A",
+      "off": "E003",
+      "on": "0000"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x15DF0",
+      "off": "9155060C18",
+      "on": "0000000000"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x15DF6",
+      "off": "0434",
+      "on": "0000"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28920,6 +28608,18 @@
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x168E0",
+      "off": "04",
+      "on": "85"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x168E2",
+      "off": "0334",
+      "on": "4392"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x168F0",
       "off": "0780033CDA336384",
       "on": "2457060800000000"
@@ -28939,8 +28639,20 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x16ECC",
-      "off": "1400",
-      "on": "0257"
+      "off": "14004296",
+      "on": "02570608"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x16ED4",
+      "off": "14",
+      "on": "00"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x16ED6",
+      "off": "02A6",
+      "on": "0000"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -28951,14 +28663,26 @@
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x183EC",
-      "off": "18",
-      "on": "06"
+      "off": "1880023C0C0C428C",
+      "on": "0657060800000000"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
       "offset": "0x18A70",
-      "off": "06",
-      "on": "1A"
+      "off": "0600029628",
+      "on": "1A57060800"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x18A76",
+      "off": "601006",
+      "on": "000000"
+    },
+    {
+      "file": "BOSS/RBO8/RBO8.BIN",
+      "offset": "0x18A7A",
+      "off": "42A6",
+      "on": "0000"
     },
     {
       "file": "BOSS/RBO8/RBO8.BIN",
@@ -54204,6 +53928,180 @@
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D5C",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D5E",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D60",
+      "off": "00000000",
+      "on": "2C551880"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D65",
+      "off": "0000",
+      "on": "01A0"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D68",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D6A",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D6C",
+      "off": "00000000000000",
+      "on": "64631880800180"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D74",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D76",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D78",
+      "off": "00000000000000",
+      "on": "7C7218808001A0"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D80",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D82",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D84",
+      "off": "00000000",
+      "on": "347D1880"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D89",
+      "off": "0000",
+      "on": "01C0"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D8C",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D8E",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D90",
+      "off": "00000000",
+      "on": "248D1880"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D95",
+      "off": "0000",
+      "on": "01E0"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D98",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D9A",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38D9C",
+      "off": "00000000000000",
+      "on": "5C9B18808001C0"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DA4",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DA6",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DA8",
+      "off": "00000000000000",
+      "on": "2CB018808001E0"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DB0",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DB2",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DB4",
+      "off": "000000000000000000",
+      "on": "6CBB18808001600180"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DBE",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
+      "offset": "0x38DC0",
+      "off": "0000000000000000",
+      "on": "B0451880FFFFFFFF"
+    },
+    {
+      "file": "BOSS/RBO6/RBO6.BIN",
       "offset": "0x38E00",
       "off": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
       "on": "340118804801188034011880340118803401188034011880340118803401188034011880340118803401188034011880340118803401188034011880340118803401188034011880"
@@ -61201,20 +61099,8 @@
     {
       "file": "BOSS/RBO6/RBO6.BIN",
       "offset": "0x42F62",
-      "off": "00000000000000000000",
-      "on": "22A40480013CD8C7398C"
-    },
-    {
-      "file": "BOSS/RBO6/RBO6.BIN",
-      "offset": "0x42F6E",
-      "off": "0000",
-      "on": "0434"
-    },
-    {
-      "file": "BOSS/RBO6/RBO6.BIN",
-      "offset": "0x42F74",
-      "off": "0000000000000000",
-      "on": "09F82003047924AC"
+      "off": "0000000000000000000000000000000000000000000000000000",
+      "on": "22A40480013CD8C7398C128004340980013C09F82003047924AC"
     },
     {
       "file": "BOSS/RBO6/RBO6.BIN",

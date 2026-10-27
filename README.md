@@ -24,7 +24,7 @@ Keep the original Track 2 next to the patched Track 1. The tab can also download
 | **Map Editor** | Paint foreground and background tiles with the stage's real artwork. Edit collision, room entities, item drops, relic orbs and object graphics banks. [Details](docs/map-editor.md) |
 | **Stats Editor** | Change Alucard's and Richter's starting stats and gear, pickups and healing, spells, subweapons, familiars, enemies, every weapon, armor and accessory, weapon movesets and special effects. [Details](docs/stats-editor.md) |
 | **Library Shop Editor** | Choose what the Master Librarian sells and when, set prices, and edit the relic and magic scrolls, the gems he buys, tactics prices and the menu. |
-| **Extra Hacks** | Turn on or off 58 gameplay hacks, from a MiniMap and Fast Warp to new boss AI, familiars and Richter Mode. The ASS 2.0 hacks can be added to vanilla; the -Final- hacks can be removed from ASS -Final- or added to ASS 2.0. [Details](docs/extra-hacks.md) |
+| **Extra Hacks** | Turn on or off 60 gameplay hacks, from a MiniMap and Fast Warp to new boss AI, familiars and Richter Mode, plus the -Final- stats and castle. The ASS 2.0 hacks can be added to vanilla; the -Final- hacks can be removed from ASS -Final- or added to ASS 2.0. [Details](docs/extra-hacks.md) |
 | **Alternate Scarlet Symphony -Final-** | Read about the mod and download it, or build it from your vanilla BIN. [Details](docs/ass2.md) |
 
 Every edit can be undone with the toolbar Undo button or Ctrl+Z.

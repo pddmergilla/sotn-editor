@@ -8,6 +8,8 @@
     "sha256": "88B80D57C46C42F4A3CEF97C1DA99560309CDAC451EBF7C3E6BCD459CA2DC7CA"
   },
   "order": [
+    "balance",
+    "content",
     "boss-ai",
     "enemy-ai",
     "weapons",
@@ -40,6 +42,8 @@
     "richter-mode"
   ],
   "display": [
+    "balance",
+    "content",
     "boss-ai",
     "enemy-ai",
     "weapons",

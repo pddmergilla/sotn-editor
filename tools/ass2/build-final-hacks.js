@@ -22,7 +22,7 @@ const child = require('node:child_process');
 const ROOT = path.join(__dirname, '../..');
 const C = require('../../sotn-core.js'), A = require('../../ass2-core.js'), M = require('../../stats-model.js');
 const {ppf, apply} = require('../weapons/build-stone-sword-patch.js');
-const {FEATURES, SPLITS, classify} = require('./final-hacks.js');
+const {FEATURES, SPLITS, OTHER_IMAGES, classify} = require('./final-hacks.js');
 
 const arg = name => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const DOWNLOADS = 'C:/Users/omergilla/Downloads', CODEX = 'C:/Users/omergilla/Documents/Codex';
@@ -57,8 +57,9 @@ function listPpfs(dir, depth, out = []) {
   if (depth < 0 || !fs.existsSync(dir) || /Reawakened|ASS-Final-Hacks/.test(dir)) return out;
   for (const e of fs.readdirSync(dir, {withFileTypes: true})) {
     const p = path.join(dir, e.name);
-    // Full release patches (vanilla -> ASS) are not feature patches.
-    if (e.isDirectory()) listPpfs(p, depth - 1, out); else if (/\.ppf$/i.test(e.name) && !/^Alternate-Scarlet-Symphony-/.test(e.name)) out.push(p);
+    // Full release patches (vanilla -> ASS) are not feature patches, and OTHER_IMAGES patches target other BINs.
+    if (e.isDirectory()) listPpfs(p, depth - 1, out);
+    else if (/\.ppf$/i.test(e.name) && !/^Alternate-Scarlet-Symphony-/.test(e.name) && !OTHER_IMAGES.some(r => r.test(e.name.replace(/^(Reverse|Undo)-/, '')))) out.push(p);
   }
   return out;
 }
@@ -176,6 +177,11 @@ async function main() {
   for (const own of changed.values()) own.sort((a, b) => rank(b) - rank(a) || ppfs[b].mtime.localeCompare(ppfs[a].mtime));
 
   const {all: stats, def: defense} = await statFieldOffsets(disc, files);
+  // 2.0.10 file sizes: bytes past a file's old end are code or data the file grew for, not castle content.
+  const oldDisc = await C.DiscImage.open(new Blob([base])), oldSize = new Map();
+  for (const name of files.keys()) { try { oldSize.set(name, (await oldDisc.findPath(name.split('/'))).size); } catch { oldSize.set(name, 0); } }
+  const fileAt = o => sectorFile.get(sectorOf(o))?.at + o % SECTOR - DATA;
+  const grownAt = o => o % SECTOR >= DATA && o % SECTOR < USER_END && sectorFile.has(sectorOf(o)) && fileAt(o) >= oldSize.get(fileOf(o));
   const ruleFor = o => {
     const f = fileOf(o);
     if (/TT_006|FT_006/.test(f)) return 'dawn';
@@ -183,7 +189,8 @@ async function main() {
     if (stats.has(o)) return 'balance';
     const w = o - (o % SECTOR - DATA) % 4;
     if (cur.readUInt32LE(w) === 0x0C033729 && base.readUInt32LE(w) !== 0x0C033729) return 'second-castle-attacks';
-    if (/^(ST|BOSS)\//.test(f)) return 'content';
+    // Stage files hold the castle; boss files hold boss code and data, which the proximity rule below assigns.
+    if (/^ST\//.test(f) && !grownAt(o)) return 'content';
     return null;
   };
 
@@ -205,6 +212,16 @@ async function main() {
   const near = new Map();
   for (const [o, id] of group) if (kind(id) === 'hack') { const f = fileOf(o); if (!near.has(f)) near.set(f, []); near.get(f).push(o); }
   for (const list of near.values()) list.sort((a, b) => a - b);
+  // In a file's grown part, a leftover byte joins the hack that owns most of that part (RBO6's relocated boss code).
+  const grownOwners = new Map();
+  const grownOwner = f => {
+    if (!grownOwners.has(f)) {
+      const votes = new Map();
+      for (const x of near.get(f) || []) if (grownAt(x)) votes.set(group.get(x), (votes.get(group.get(x)) || 0) + 1);
+      grownOwners.set(f, [...votes].sort((a, b) => b[1] - a[1])[0]?.[0]);
+    }
+    return grownOwners.get(f);
+  };
   const proximity = [];
   for (const [o] of changed) if (!group.has(o) && o % SECTOR >= DATA) {
     const f = fileOf(o), at = sectorFile.get(sectorOf(o))?.at + o % SECTOR - DATA;
@@ -213,8 +230,24 @@ async function main() {
     let lo = 0, hi = list.length;
     while (lo < hi) { const mid = (lo + hi) >> 1; if (list[mid] < o) lo = mid + 1; else hi = mid; }
     const best = [list[lo - 1], list[lo]].filter(x => x !== undefined).sort((a, b) => Math.abs(a - o) - Math.abs(b - o))[0];
+    const grown = grownAt(o) && grownOwner(f);
     if (best !== undefined && Math.abs(best - o) <= 0x200) { group.set(o, group.get(best)); proximity.push({file: f, offset: hex(at), feature: group.get(best)}); }
+    else if (grown) { group.set(o, grown); proximity.push({file: f, offset: hex(at), feature: grown}); }
+    // Boss-file bytes away from any hack's code are the boss rooms' maps and layouts: castle content.
+    else if (/^BOSS\//.test(f) && !grownAt(o)) group.set(o, 'content');
     else group.set(o, 'unattributed');
+  }
+  // A jump (j/jal) in castle bytes whose target is a hack's code in the same overlay is that hack's hook
+  // (BO6's hook into the relocated Richter AI). Stage and boss overlays load at 0x80180000.
+  const discAt = (name, at) => { const e = files.get(name); return e && at >= 0 && at < e.size ? (e.extent + Math.floor(at / 2048)) * SECTOR + DATA + at % 2048 : null; };
+  for (const [o, id] of group) if (id === 'content' && /^(ST|BOSS)\//.test(fileOf(o))) {
+    const w = o - (o % SECTOR - DATA) % 4, op = cur.readUInt32LE(w) >>> 26;
+    if (op !== 2 && op !== 3) continue;
+    const target = discAt(fileOf(o), ((cur.readUInt32LE(w) & 0x3FFFFFF) << 2) - 0x180000);
+    const hack = target !== null && [0, 1, 2, 3].map(i => group.get(target + i)).find(g => kind(g) === 'hack');
+    if (!hack) continue;
+    // The jump word and its delay slot.
+    for (let i = w; i < w + 8; i++) if (group.get(i) === 'content') { group.set(i, hack); proximity.push({file: fileOf(i), offset: hex(fileAt(i)), feature: hack}); }
   }
   for (const [o] of changed) if (!group.has(o)) {
     const s = o - o % SECTOR, votes = new Map();   // header/subheader bytes follow the rest of their sector
@@ -224,13 +257,14 @@ async function main() {
   assert.equal(group.size, changed.size);
 
   // Each feature's own values: what its applied patches wrote, oldest first, then its final bytes.
-  const hacks = FEATURES.filter(f => f.kind === 'hack').map(f => f.id);
+  // Hacks plus the toggle groups (balance, content). A toggle group's values are only its own final bytes.
+  const hacks = FEATURES.filter(f => f.kind === 'hack' || f.toggle).map(f => f.id);
   const value = new Map(hacks.map(id => [id, new Map()]));
   for (const p of [...ppfs].filter(p => p.applied && kind(p.feature) === 'hack').sort((a, b) => a.mtime.localeCompare(b.mtime)))
     for (const [o, v] of p.written) if (!defense.has(o) || p.feature === 'percent-def') value.get(p.feature).set(o, v);
-  for (const [o, id] of group) if (kind(id) === 'hack') value.get(id).set(o, cur[o]);
+  for (const [o, id] of group) if (value.has(id)) value.get(id).set(o, cur[o]);
   const deps = new Map(hacks.map(id => [id, new Set()]));
-  for (const [o, id] of group) if (kind(id) === 'hack')
+  for (const [o, id] of group) if (value.has(id))
     for (const other of hacks) if (other !== id && value.get(other).has(o)) deps.get(id).add(other);
   const order = topoOrder(hacks, deps);
   const closure = id => { const out = new Set(), go = d => { for (const x of deps.get(d)) if (!out.has(x)) { out.add(x); go(x); } }; go(id); return order.filter(x => out.has(x)); };
@@ -266,13 +300,13 @@ async function main() {
       if (acc[k].offsets.length < 12) acc[k].offsets.push(p.offset); return acc; }, {})),
     installOrder: order.filter(id => value.get(id).size), features: [], excluded: {}, sharedSectors: []
   };
-  for (const id of ['balance', 'second-castle-attacks', 'content', 'unattributed']) if (byGroup.has(id)) {
+  for (const id of ['second-castle-attacks', 'text', 'unattributed']) if (byGroup.has(id)) {
     const s = summary(byGroup.get(id));
     if (id === 'unattributed') s.runs = runs(byGroup.get(id), o => base[o], o => cur[o]).slice(0, 200);
     report.excluded[id] = s;
   }
   const sectorGroups = new Map();
-  for (const [o, id] of group) if (kind(id) === 'hack') { const s = sectorOf(o); if (!sectorGroups.has(s)) sectorGroups.set(s, new Set()); sectorGroups.get(s).add(id); }
+  for (const [o, id] of group) if (value.has(id)) { const s = sectorOf(o); if (!sectorGroups.has(s)) sectorGroups.set(s, new Set()); sectorGroups.get(s).add(id); }
   const pairs = new Map();
   for (const ids of sectorGroups.values()) { const l = [...ids].sort(); for (let i = 0; i < l.length; i++) for (let j = i + 1; j < l.length; j++) { const k = l[i] + '+' + l[j]; pairs.set(k, (pairs.get(k) || 0) + 1); } }
   report.sharedSectors = [...pairs].map(([k, n]) => ({features: k.split('+'), sectors: n})).sort((a, b) => b.sectors - a.sectors);
@@ -327,7 +361,7 @@ async function main() {
   if (!DRY && !fs.existsSync(REF)) { fs.mkdirSync(path.dirname(REF), {recursive: true}); fs.writeFileSync(REF, base); }
   if (!DRY) { fs.mkdirSync(OUT, {recursive: true}); fs.rmSync(SPEC_DIR, {recursive: true, force: true}); fs.mkdirSync(SPEC_DIR, {recursive: true}); }
   const block = base.subarray(0x9320, 0x9720), curBlock = cur.subarray(0x9320, 0x9720);
-  for (const f of FEATURES.filter(f => f.kind === 'hack')) {
+  for (const f of FEATURES.filter(f => hacks.includes(f.id))) {
     const own = value.get(f.id), mine = byGroup.get(f.id) || [], need = closure(f.id);
     const entry = {id: f.id, title: f.title, category: f.category, about: f.about, requires: need, ...summary(mine)};
     if (own.size !== mine.length) entry.alsoWrites = own.size - mine.length;
@@ -355,7 +389,7 @@ async function main() {
       C.repairSector(modified, DATA);
       return {start, original, modified};
     });
-    const name = `ASS-Final-${slug(f.title)}`;
+    const name = `ASS-Final-${slug(f.title.replace(/^ASS -Final- /, ""))}`;
     const forward = ppf(add, block, `ASS Final: ${f.title}`.slice(0, 50));
     const reversal = ppf(remove, curBlock, `Remove ${f.title}`.slice(0, 50));
     // Forward: on 2.0.10 with the required features' sectors in place; reversal: on the current BIN. Both undone after.
@@ -390,7 +424,7 @@ async function main() {
   assert.equal(sha(cur), curSha, 'current image restored after checks');
   assert.equal(sha(fs.readFileSync(MAIN)), curSha, 'Main BIN unchanged while building');
   report.verified = ['vanilla and 2.0.10 rebuild hashes', 'every changed byte assigned to exactly one group',
-    '2.0.10 + all features in install order + balance/content bytes reproduces every changed sector of the current BIN',
+    '2.0.10 + all features in install order + the excluded bytes reproduces every changed sector of the current BIN',
     'forward PPF: guards pass on 2.0.10 (+ required features), expected sectors written with valid EDC/ECC, undo restores the input',
     'reversal PPF: guards pass on the current BIN, valid EDC/ECC, undo restores the current BIN', 'main BIN hash unchanged'];
   report.gameplay = 'Not played in an emulator; byte-level checks only. Install a feature\'s requirements first; remove features that require it first.';
@@ -429,7 +463,7 @@ function readme(report) {
   const ex = report.excluded, n = k => (ex[k]?.bytes || 0).toLocaleString('en-US');
   return `# Alternate Scarlet Symphony -Final-: separate feature patches
 
-Everything the main BIN gained after ${report.base.name}, split into ${report.features.filter(f => f.forward).length} features (balance changes excluded).
+Everything the main BIN gained after ${report.base.name}, split into ${report.features.filter(f => f.forward).length} features, including the -Final- balance and castle as one hack each.
 Generated by \`node tools/ass2/build-final-hacks.js\` on ${report.built.slice(0, 10)}.
 
 - Base: ${report.base.name}, SHA-256 \`${report.base.sha256}\` (vanilla US Track 1 + \`${report.base.ppf}\`).
@@ -437,7 +471,7 @@ Generated by \`node tools/ass2/build-final-hacks.js\` on ${report.built.slice(0,
 - \`ASS-Final-<feature>.ppf\` adds the feature to the base (after the features it requires). \`Reverse-ASS-Final-<feature>.ppf\` removes it from the current BIN; remove the features that require it first.
 - Every PPF is PPF3 with a block check and undo data, and writes valid sector EDC/ECC for the image it targets. Several features share sectors; chain them in the install order below with a patcher that does not check undo data, then repair sector checksums (the editor does this when it builds).
 - The Extra Hacks catalog reads each feature from \`tools/extra-hacks/specs/final/<id>.json\` (file, offset, off = 2.0.10 file bytes, on = Final bytes).
-- Excluded, no patch: balance and Stats Editor values ${n('balance')} bytes, map/pickup/text content ${n('content')} bytes, unattributed ${n('unattributed')} bytes. See \`ASS-Final-Hacks.verification.json\`.
+- Excluded, no patch: credits and prologue text ${n('text')} bytes, unattributed ${n('unattributed')} bytes. See \`ASS-Final-Hacks.verification.json\`.
 - Bytes attributed to a neighbouring feature because no PPF wrote them are listed under \`attributedByProximity\` in the verification file; review those.
 - The main BIN and its backups were not written. Nothing was played in an emulator.
 

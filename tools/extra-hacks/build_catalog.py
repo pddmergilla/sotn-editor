@@ -190,6 +190,11 @@ def convert_entities(spec):
     return rows
 
 
+def tuned(rec, pos):
+    # Only item costs the Stats Editor writes (stats); other tunable bytes still layer as usual.
+    return bool(rec.get('stats')) and any(start <= pos < start + length for start, length in rec.get('tunable', []))
+
+
 def add_final(features):
     """Append the ASS -Final- hacks. A byte an earlier hack already owns becomes a layer on that hack's edit
     (written over it while the Final hack is selected), and the Final hack then requires that hack."""
@@ -197,6 +202,8 @@ def add_final(features):
     claim = {}  # (file, offset) -> (owner id, edit record, position in the record)
     for ft in features:
         for e in ft['edits']:
+            if e.get('locate'):
+                continue  # found by its layout record, so it moves with the layout (ASS -Final- Castle moves it)
             for i in range(len(e['on']) // 2):
                 claim[(e['file'], e['offset'] + i)] = (ft['id'], e, i)
     for fid in index['order']:
@@ -212,6 +219,9 @@ def add_final(features):
                 key = (f, off + i)
                 if key in claim:
                     owner, rec, pos = claim[key]
+                    if tuned(rec, pos):
+                        run = None  # the earlier hack's tunable value (a Stats Editor cost): its tuning, not a layer
+                        continue
                     layer = next((x for x in rec.setdefault('layers', []) if x['feature'] == fid), None)
                     if layer is None:
                         layer = {'feature': fid, 'at': []}
@@ -236,6 +246,36 @@ def add_final(features):
         if s.get('joinInto'):
             feat['joinInto'] = s['joinInto']  # shown inside that hack's checkbox
         features.append(feat)
+    # Entity params inside a Final hack's layout bytes belong to the hack that edits that entity (a located edit or
+    # an entity list): the Final hack's detection ignores them, and the editor writes them again after the layout
+    # (ASS -Final- Castle rewrites stage layouts that hold Mist Gas Swap's and Subweapon Attached to Weapon's entities).
+    records = {}
+    def params(f, img):
+        if (f, img) not in records:
+            data, found = read(f, img), {}
+            for o in range(0, len(data) - 9, 2):
+                found.setdefault(tuple(int.from_bytes(data[o + k:o + k + 2], 'little') for k in (0, 2, 4, 6)), []).append(o + 8)
+            records[(f, img)] = found
+        return records[(f, img)]
+    owned = []  # (file, x, y, id, slot, length, first record only)
+    for ft in features:
+        if ft.get('final'):
+            continue
+        for e in ft['edits']:
+            if e.get('locate'):
+                loc = e['locate']
+                owned.append((e['file'], loc['x'], loc['y'], loc['id'], loc['slot'], len(e['on']) // 2 if isinstance(e['on'], str) else len(e['on']), True))
+        for ent in ft.get('entities', []):
+            owned.append((ent[0], ent[1], ent[2], ent[3], ent[4], 2, False))
+    finals = [r for ft in features if ft.get('final') for r in ft['edits']]
+    for f, x, y, eid, slot, n, first in owned:
+        for img in ('a', 'f'):
+            hits = params(f, img).get((x, y, eid, slot), [])
+            for at in hits[:1] if first else hits:
+                for r in finals:
+                    lo, hi = max(at, r['offset']), min(at + n, r['offset'] + len(r['on']))
+                    if r['file'] == f and lo < hi and [lo - r['offset'], hi - lo] not in r.setdefault('tunable', []):
+                        r['tunable'].append([lo - r['offset'], hi - lo])
     # A Final hack's bytes with every later layer written over them are what ASS -Final- holds.
     for ft in features:
         for e in ft['edits'] if ft.get('final') else []:
@@ -244,6 +284,9 @@ def add_final(features):
                 for pos, value in layer['at']:
                     expect[pos] = value
             fin = read(e['file'], 'f')
+            for pos in range(len(expect)):
+                if tuned(e, pos):
+                    expect[pos] = fin[e['offset'] + pos]  # tuning: whatever the Stats Editor value is
             assert fin[e['offset']:e['offset'] + len(expect)] == expect, f"{ft['id']}: bytes do not match ASS -Final- at {e['file']} {e['offset']:#x}"
     # Layers as runs of [position, bytes]; edit bytes as hex.
     for ft in features:
