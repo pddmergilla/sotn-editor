@@ -182,7 +182,7 @@
   async function openAreaFolder() {
     if(!window.showDirectoryPicker){alert("Use desktop Chrome/Edge; the editor needs File System Access.");return;}
     try {
-      const root=await showDirectoryPicker({mode:"readwrite"}); state.root=root;state.discStage=null;state.disc=null;state.discStages.clear();
+      const root=await showDirectoryPicker({mode:"readwrite"}); state.root=root;state.discStage=null;state.disc=null;state.discStages.clear();window.SotnSoundUI?.setDisc(null);
       $("areaSelect").replaceChildren();$("areaSelect").disabled=true;
       state.roomsFile=await resolvePath(root,"rooms.json");
       state.layersFile=await resolvePath(root,"layers.json");
@@ -267,6 +267,7 @@
       state.root=null;state.discStage=null;state.discStages.clear();clearUndo();
       window.SotnExtraHacksUI?.setDisc(disc);
       window.SotnAss2UI?.setDisc(disc,{name:file.name,handle});
+      window.SotnSoundUI?.setDisc(disc,{name:file.name,size:file.size});
       state.areaCatalog=catalog.sort((a,b)=>AREA_NAMES[a.code].localeCompare(AREA_NAMES[b.code]));
       const select=$("areaSelect");select.replaceChildren();
       for(const [label,areas] of [
@@ -1310,7 +1311,7 @@
       setStatus("Checking edited overlays and disc sectors...");
       const changes=await collectChanges();
       const stem=state.discName.replace(/\.[^.]+$/,"");
-      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v8.0"):C.modifiedBlob(state.disc.file,changes);
+      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v8.1"):C.modifiedBlob(state.disc.file,changes);
       const saved=await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`,kind==="bin");
       window.SotnSiteStats?.count(kind==="ppf"?"editor/export-ppf":"editor/build-bin");
       setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} ${saved.downloaded?"download started":"saved and verified"} (${changes.length} changed sectors). ${saved.warning||""}`);
@@ -1377,11 +1378,13 @@
     $("statsView").classList.toggle("hidden",tab!=="stats");
     $("shopView")?.classList.toggle("hidden",tab!=="shop");
     $("extraHacksView")?.classList.toggle("hidden",tab!=="extraHacks");
+    $("soundView")?.classList.toggle("hidden",tab!=="sound");
     $("ass2View")?.classList.toggle("hidden",tab!=="ass2");
     document.body.classList.toggle("statsTab",tab!=="map");
     if(tab==="stats")window.SotnStatsUI?.render();
     if(tab==="shop")window.SotnShopUI?.render();
     if(tab==="extraHacks")window.SotnExtraHacksUI?.refresh();
+    if(tab==="sound")window.SotnSoundUI?.render();
     if(tab==="ass2")window.SotnAss2UI?.render();
     if(tab==="map"){setCopyTile(false);setCopyCollision(false);redraw();}
   }

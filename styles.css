@@ -224,6 +224,54 @@ input:disabled, select:disabled { opacity:.55; }
   .extraHacksList { grid-template-columns:1fr; overflow:visible; }
 }
 
+/* Sound Browser tab */
+.soundView { min-height:0; overflow:hidden; }
+.soundBar { flex:none; padding:12px 16px 8px; background:#171c24; border-bottom:1px solid #313948; }
+.soundBar h2 { margin:0; color:#e9edf4; font-size:15px; letter-spacing:0; text-transform:none; }
+.soundBar p { margin:5px 0 0; color:#95a1b2; font-size:12px; }
+.soundStatus { flex:none; margin:0; padding:9px 16px; color:#b8e4bd; background:#122019; font-size:12px; }
+.soundStatus.error { color:#ffb4b8; background:#2a1719; }
+.soundBody { flex:1; min-height:0; display:flex; flex-direction:column; }
+.soundBody.hidden { display:none; }
+.soundControls { flex:none; display:flex; flex-wrap:wrap; gap:10px; align-items:end; padding:10px 16px; border-bottom:1px solid #313948; }
+.soundControls label { display:flex; flex-direction:column; gap:4px; margin:0; color:#95a1b2; font-size:11px; }
+.soundControls label input, .soundControls label select { width:auto; margin:0; max-width:300px; }
+.soundControls .soundGrow { flex:1 1 220px; min-width:180px; }
+.soundControls .soundGrow input { width:100%; max-width:none; }
+.soundLayout { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 360px; }
+.soundTableWrap { min-width:0; min-height:0; overflow:auto; }
+.soundTable { border-collapse:collapse; width:100%; font-size:12px; }
+.soundTable th { position:sticky; top:0; z-index:1; text-align:left; padding:8px 10px; color:#afbac9; background:#171c24; border-bottom:1px solid #313948; font-weight:600; }
+.soundTable td { padding:8px 10px; border-bottom:1px solid #232b37; vertical-align:top; overflow-wrap:anywhere; }
+.soundTable td small { display:block; margin-top:3px; max-width:520px; color:#8997a9; line-height:1.45; }
+.soundTable tbody tr { cursor:pointer; }
+.soundTable tbody tr:hover { background:#1b222d; }
+.soundTable tbody tr.selected { background:#25364d; }
+.soundTable code, .soundDetail code { color:#9fc2f2; }
+.soundDetail { min-width:0; min-height:0; overflow:auto; padding:12px 14px; background:#171c24; border-left:1px solid #313948; }
+.soundDetail h3 { margin:0 0 8px; font-size:14px; color:#e9edf4; overflow-wrap:anywhere; }
+.soundDetail p { margin:8px 0; }
+.soundDetail a { color:#9fc2f2; }
+.soundDetail label { display:flex; flex-direction:column; gap:4px; margin:8px 0; color:#95a1b2; font-size:11px; }
+.soundDetail label select { width:auto; margin:0; max-width:100%; }
+.soundDetail audio { display:block; width:100%; margin:10px 0; }
+.soundRow { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.soundRow button { font-size:12px; }
+.soundMini { padding:1px 8px; margin-left:6px; font-size:11px; }
+.soundList { max-height:160px; overflow:auto; font-size:11px; line-height:1.6; }
+.soundTiny { font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+.soundMuted { color:#95a1b2; }
+.soundError { color:#ffb4b8; }
+@media(max-width:900px) {
+  .soundView { height:auto; min-height:calc(100vh - 110px); overflow:visible; }
+  .soundBody { display:block; }
+  .soundBody.hidden { display:none; }
+  .soundLayout { display:block; }
+  .soundTableWrap { max-height:55vh; }
+  .soundDetail { border-left:0; border-top:1px solid #313948; }
+  .soundControls label input, .soundControls label select { max-width:100%; }
+}
+
 /* v6.0: weapon movesets */
 .movesetBox { margin-top:10px; padding-top:8px; border-top:1px solid #29313e; }
 .movesetBox h4 { margin:0 0 6px; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:#afbac9; }

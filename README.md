@@ -1,4 +1,4 @@
-# SOTN Editor v8.0
+# SOTN Editor v8.1
 
 Build your own *Castlevania: Symphony of the Night* ROM hack in the browser. Edit maps, stats, shops and gameplay, then save a new BIN or a PPF3 patch.
 
@@ -25,6 +25,7 @@ Keep the original Track 2 next to the patched Track 1. The tab can also download
 | **Stats Editor** | Change Alucard's and Richter's starting stats and gear, pickups and healing, spells, subweapons, familiars, enemies, every weapon, armor and accessory, weapon movesets and special effects. [Details](docs/stats-editor.md) |
 | **Library Shop Editor** | Choose what the Master Librarian sells and when, set prices, and edit the relic and magic scrolls, the gems he buys, tactics prices and the menu. |
 | **Extra Hacks** | Turn on or off 60 gameplay hacks, from a MiniMap and Fast Warp to new boss AI, familiars and Richter Mode, plus the -Final- stats and castle. The ASS 2.0 hacks can be added to vanilla; the -Final- hacks can be removed from ASS -Final- or added to ASS 2.0. [Details](docs/extra-hacks.md) |
+| **Sound Browser** | Browse, play and download the sound effects and samples of the opened BIN: the 737 sound-table slots with their names and source call sites, and every bank's raw samples. Export samples as PlayStation `.VAG` files, banks as `.VH`/`.VB`, or decoded previews as WAV. It reads the BIN as opened, so unsaved edits are not reflected. |
 | **Alternate Scarlet Symphony -Final-** | Read about the mod and download it, or build it from your vanilla BIN. [Details](docs/ass2.md) |
 
 Every edit can be undone with the toolbar Undo button or Ctrl+Z.
@@ -84,6 +85,7 @@ The editor is plain HTML, CSS and JavaScript with no build step. Browser testing
 | `entity-*.js` | Entity catalog, templates and editing model |
 | `stats-*.js`, `shop-*.js` | Stats and Library shop models and UI |
 | `extra-hacks-ui.js`, `extra-hacks-catalog.js` | Hack detection and toggling; the catalog is generated |
+| `sound-ui.js`, `tools/audio/` | Sound Browser tab; `tools/audio/` holds its parsing core and generated name catalog, plus a standalone page (`Start Sound Check.cmd` runs it locally, `node tools/audio/build-sound-check-zip.js` builds a single-file zip) |
 | `ass2-core.js`, `ass2-ui.js`, `ass2/` | ASS -Final- tab, release PPF and release data |
 | `tools/extra-hacks/` | Hack specs (`specs/final/` for the -Final- hacks) and `build_catalog.py`, which generates the catalog |
 | `tools/ass2/build-release.js` | Rebuilds the ASS -Final- PPF and release data from the BINs |
