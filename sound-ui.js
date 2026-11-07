@@ -23,8 +23,8 @@
   function loadLibs() {
     if (window.SotnSoundCore) return Promise.resolve();
     if (!libsPromise) {
-      libsPromise = (window.SOTN_SFX_CATALOG ? Promise.resolve() : loadScript("tools/audio/sound-check-catalog.js"))
-        .then(() => loadScript("tools/audio/sound-check-core.js"))
+      libsPromise = (window.SOTN_SFX_CATALOG ? Promise.resolve() : loadScript("tools/audio/sound-check-catalog.js?v=8.1"))
+        .then(() => loadScript("tools/audio/sound-check-core.js?v=8.1"))
         .catch(e => { libsPromise = null; throw e; });
     }
     return libsPromise;
