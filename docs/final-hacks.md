@@ -2,7 +2,7 @@
 
 [← Back to the README](../README.md)
 
-The main BIN gained 34 features after ASS 2.0.10. This page lists them for the ASS -Final- release (F.03) and the Extra Hacks update. Playable Maria and the Richter Mode overhaul are one feature each. The -Final- balance (stat, cost, DEF/HP/attack values, element tables) and the revised castle (maps, pickups, relic placements, boss rooms) are one feature each; the credits and prologue welcome text are left out.
+The main BIN gained 34 features after ASS 2.0.10. This page lists them for the ASS -Final- release (F.04) and the Extra Hacks update. Playable Maria and the Richter Mode overhaul are one feature each. The -Final- balance (stat, cost, DEF/HP/attack values, element tables) and the revised castle (maps, pickups, relic placements, boss rooms) are one feature each; the credits and prologue welcome text are left out.
 
 `node tools/ass2/build-final-hacks.js` reads ASS 2.0.10 (`outputs/ref/ASS-2.0.10.bin`, or vanilla plus the 2.0.10 PPF from git history), then assigns every byte that differs in the main BIN to the newest applied PPF that wrote it. It searches next to the main BIN, `outputs/`, Downloads and the Documents/Codex session outputs. The groups are defined in `tools/ass2/final-hacks.js`. All boss AI changes share one group, all normal-enemy AI changes another, and so do the weapons and the items. A later retune of a feature's own bytes stays with that feature. When a feature replaced bytes that another wrote, it is built on top of that feature and lists it under **Requires**.
 
@@ -10,14 +10,14 @@ For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements �
 
 Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Maria Mode was built on Richter Mode's collection, pause and HUD code, so it requires Richter Mode; a byte Richter Mode owns in the end drops the Maria patches that wrote it earlier (`IGNORE_HISTORY` in `final-hacks.js`). F.02 swapped NP3 and CHI with the unused test stages TE2 and TE3 on the disc so they could grow; writes to a sector that now holds another file are not counted as that file's history. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-11-09 against main BIN `F9FD1C4AB64F43E51C8A2F276B537C9BAE50A130EF63335F2B701088BA0A1A82`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: credits and prologue text 3,080 bytes, unattributed 2 bytes. 541 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+Built on 2026-11-09 against main BIN `9A8B6B63E0BA88A0C0CDD520E182D977D8BC3268F32659C648809BE366827344`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: credits and prologue text 3,080 bytes, unattributed 2 bytes. 541 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
 
 ### ASS -Final- stats and castle
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
 | **ASS -Final- Stats Rebalanced** | The -Final- balance: stats of enemies, bosses, weapons, armor, items and relics, castle levels, damage and resistances. | — | 3,045 | `ASS-Final-ASS-Final-Stats-Rebalanced.ppf` |
-| **ASS -Final- Castle** | The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression. | — | 550,392 | `ASS-Final-ASS-Final-Castle.ppf` |
+| **ASS -Final- Castle** | The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression. | — | 550,391 | `ASS-Final-ASS-Final-Castle.ppf` |
 
 ### Boss AI
 

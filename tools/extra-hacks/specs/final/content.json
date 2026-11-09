@@ -95388,9 +95388,27 @@
     },
     {
       "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1CF2",
+      "off": "B0",
+      "on": "A3"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
       "offset": "0x1CF4",
       "off": "26",
       "on": "2E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D04",
+      "off": "1E",
+      "on": "1D"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D06",
+      "off": "B0",
+      "on": "A1"
     },
     {
       "file": "ST/CHI/CHI.BIN",
@@ -95400,9 +95418,27 @@
     },
     {
       "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D18",
+      "off": "AB",
+      "on": "AE"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D1A",
+      "off": "90",
+      "on": "80"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
       "offset": "0x1D1C",
       "off": "26",
       "on": "2E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D24",
+      "off": "90",
+      "on": "80"
     },
     {
       "file": "ST/CHI/CHI.BIN",
@@ -95412,9 +95448,33 @@
     },
     {
       "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D36",
+      "off": "9D",
+      "on": "9F"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D38",
+      "off": "A0",
+      "on": "90"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
       "offset": "0x1D3A",
       "off": "26",
       "on": "2E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D54",
+      "off": "AB",
+      "on": "AE"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D56",
+      "off": "90",
+      "on": "80"
     },
     {
       "file": "ST/CHI/CHI.BIN",
@@ -95424,9 +95484,21 @@
     },
     {
       "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D60",
+      "off": "90",
+      "on": "80"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
       "offset": "0x1D62",
       "off": "26",
       "on": "2E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D68",
+      "off": "9000A0",
+      "on": "9F0390"
     },
     {
       "file": "ST/CHI/CHI.BIN",
@@ -95436,9 +95508,57 @@
     },
     {
       "file": "ST/CHI/CHI.BIN",
-      "offset": "0x1D80",
+      "offset": "0x1D6E",
+      "off": "10",
+      "on": "1E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D72",
+      "off": "40",
+      "on": "90"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D76",
       "off": "26",
       "on": "2E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D78",
+      "off": "18",
+      "on": "10"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D7A",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D7C",
+      "off": "9D03",
+      "on": "4001"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D82",
+      "off": "1E",
+      "on": "18"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D84",
+      "off": "00",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D86",
+      "off": "CA00B0",
+      "on": "1D01A1"
     },
     {
       "file": "ST/CHI/CHI.BIN",
@@ -95448,9 +95568,57 @@
     },
     {
       "file": "ST/CHI/CHI.BIN",
-      "offset": "0x1D9E",
+      "offset": "0x1D8C",
+      "off": "12",
+      "on": "16"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D90",
+      "off": "F8",
+      "on": "CA"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D92",
+      "off": "B0",
+      "on": "A3"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D94",
       "off": "26",
       "on": "2E"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D96",
+      "off": "14",
+      "on": "12"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D98",
+      "off": "01",
+      "on": "00"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1D9A",
+      "off": "1E",
+      "on": "F8"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1DA0",
+      "off": "16",
+      "on": "14"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1DA2",
+      "off": "00",
+      "on": "01"
     },
     {
       "file": "ST/CHI/CHI.BIN",
