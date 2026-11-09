@@ -6930,9 +6930,219 @@
     },
     {
       "file": "ST/LIB/LIB.BIN",
+      "offset": "0x135D",
+      "off": "00",
+      "on": "02"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1365",
+      "off": "00",
+      "on": "05"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1368",
+      "off": "581B",
+      "on": "983A"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x136D",
+      "off": "00",
+      "on": "04"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1370",
+      "off": "B004",
+      "on": "3011"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1464",
+      "off": "04",
+      "on": "00"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1482",
+      "off": "07",
+      "on": "00"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x148A",
+      "off": "07",
+      "on": "00"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x149A",
+      "off": "00",
+      "on": "03"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x14C2",
+      "off": "00",
+      "on": "0A"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x14CA",
+      "off": "00",
+      "on": "06"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
       "offset": "0x14D0",
       "off": "40",
       "on": "3F"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x14E4",
+      "off": "2003",
+      "on": "2C01"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x14EC",
+      "off": "DC05",
+      "on": "E803"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1748",
+      "off": "F401",
+      "on": "8813"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1750",
+      "off": "BC02",
+      "on": "581B"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1758",
+      "off": "E803",
+      "on": "1027"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1760",
+      "off": "B004",
+      "on": "E02E"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1768",
+      "off": "7805",
+      "on": "B036"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1770",
+      "off": "0807",
+      "on": "5046"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1778",
+      "off": "D007",
+      "on": "3075"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1780",
+      "off": "9808",
+      "on": "007D"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1788",
+      "off": "C409",
+      "on": "50C3"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1790",
+      "off": "F00A",
+      "on": "D8D6"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x1798",
+      "off": "B80B00",
+      "on": "D00101"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17A0",
+      "off": "AC0D",
+      "on": "50C3"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17A8",
+      "off": "AC0D00",
+      "on": "F82401"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17B0",
+      "off": "AC0D00",
+      "on": "F82401"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17B8",
+      "off": "AC0D00",
+      "on": "F82401"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17C0",
+      "off": "A00F00",
+      "on": "803801"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17C8",
+      "off": "941100",
+      "on": "880D01"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17D0",
+      "off": "881300",
+      "on": "701101"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17D8",
+      "off": "7017",
+      "on": "60EA"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17E0",
+      "off": "581B00",
+      "on": "9F8601"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17E8",
+      "off": "342100",
+      "on": "803801"
+    },
+    {
+      "file": "ST/LIB/LIB.BIN",
+      "offset": "0x17F0",
+      "off": "102700",
+      "on": "9E8601"
     },
     {
       "file": "ST/LIB/LIB.BIN",

@@ -7,9 +7,9 @@ window.SotnAss2Release = {
  "ppf": {
   "file": "ass2/ASS-Final.ppf",
   "name": "ASS-Final.ppf",
-  "size": 8744637,
-  "sha256": "5563E8455686C69B8A41BB68692173B6415CEE07B6CB5B599809E5A8AC6F57BC",
-  "records": 211503,
+  "size": 8744642,
+  "sha256": "7F72EE6FA12F40AE4E53AF7722C74D8ECBE7E2428ED685A1D264CC33D7954F9D",
+  "records": 211502,
   "sectors": 175891
  },
  "vanilla": {
@@ -21,8 +21,8 @@ window.SotnAss2Release = {
  "result": {
   "name": "Castlevania - Alternate Scarlet Symphony Final (Track 1).bin",
   "size": 538655040,
-  "sha256": "983D01B59CAFFFC7717883BD084026C6681C13FE3533A7FA217F712EC1473DAB",
-  "crc32": "820F5C1F"
+  "sha256": "4FDDA40623E97B659E6F12EA2F8D0130ECE47B7B04293FB75175EC386458E906",
+  "crc32": "ABB7A0BE"
  },
  "disc": {
   "filesChanged": 79,
@@ -30,7 +30,7 @@ window.SotnAss2Release = {
   "stagesChanged": 63
  },
  "numbers": {
-  "changedValues": 4312,
+  "changedValues": 4473,
   "enemies": [
    168,
    168
