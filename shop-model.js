@@ -28,6 +28,9 @@
     menus: ["sll v0,v0,2", "lui at,*", "addu at,at,v0", "lw a0,*(at)", "nop", "lbu v0,0(a0)"],
     bossNames: ["sll v0,v1,2", "sll a2,s3,16", "sw s2,16(sp)", "lui at,*", "addu at,at,v0", "lw a3,*(at)", "jal *", "sra a2,a2,16"]
   };
+  // ASS -Final- (Richter/Maria shop) moves the relic check into a helper loaded
+  // from LIB's sector padding, past the end of LIB.BIN, so it cannot be edited here.
+  const RELIC_HOOK = ["ori v0,zero,0xff", "bne a0,v0,*", "nop", "j *", "nop", "j *", "andi v0,v0,1"];
 
   function parse(m, h) {
     const shop = m.sections.shop = {found: false};
@@ -36,7 +39,11 @@
     const b = file.bytes;
     const at = {};
     for (const [key, lines] of Object.entries(TEMPLATES)) {
-      const hits = h.findTemplate(b, 0, b.length, lines);
+      let hits = h.findTemplate(b, 0, b.length, lines);
+      if (key === "relicCheck" && !hits.length) {
+        hits = h.findTemplate(b, 0, b.length, RELIC_HOOK);
+        at.relicHook = hits.length === 1;
+      }
       if (hits.length !== 1) throw new Error(`The library shop code (${key}) was not found in LIB.BIN (${hits.length} matches), so the shop is not editable.`);
       at[key] = hits[0];
     }
@@ -102,7 +109,8 @@
         price: num(o + 4, 4, "Price", {max: MAX_PRICE})};
     });
     const relicCheck = u32(b, at.relicCheck + 16), owned = ((relicCheck << 16) >> 16) - RELICS_LO;
-    shop.relicCheck = imm(at.relicCheck + 16, "Hide the relic entry once you own", {immBase: RELICS_LO, min: 0, max: 29, ui: "relic",
+    if (at.relicHook) shop.relicHook = BASE + at.relicCheck + 12;
+    shop.relicCheck = at.relicHook ? null : imm(at.relicCheck + 16, "Hide the relic entry once you own", {immBase: RELICS_LO, min: 0, max: 29, ui: "relic",
       readOnly: owned < 0 || owned > 29 ? "This check does not read a relic flag." : null,
       hint: `Entries with the relic rule stay listed until you own this relic. It is an instruction in the list builder (LIB ${hex(BASE + at.relicCheck + 16)}); vanilla checks Jewel of Open.`});
     shop.relics = [0, 1].map(i => ({slot: i, relic: num(t.relicIds + i * 2, 2, `Relic slot ${i + 1}`, {max: 29, ui: "relic"})}));

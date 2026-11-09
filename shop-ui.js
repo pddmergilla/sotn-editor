@@ -53,7 +53,7 @@
     shopLevel: id => lazy(id, () => [{group: "Unlock level", items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({value, label: S.unlockLabel(value)}))}], v => S.unlockLabel(v)),
     bodyAny: id => lazy(id, () => ui.itemOptions("bodyAny"), v => ui.itemLabel("bodyAny", v, id))
   };
-  const unlockText = v => S.unlockLabel(v, relicName(ui.val(shop().relicCheck)));
+  const unlockText = v => S.unlockLabel(v, shop().relicCheck ? relicName(ui.val(shop().relicCheck)) : "the relic");
 
   // One select sets both the category and the item ID of a buy-list entry.
   function entryItemSelect(e) {
@@ -133,7 +133,8 @@
     if (!s?.found) return [];
     const relic = card(el("strong", {text: "Relic for sale"}), "D_us_801814D4",
       grid(sf("Relic slot 1", s.relics[0].relic, {wide: true}), sf("Name in the list", s.relicName, {wide: true}),
-        sf("Hide entries with the relic rule once you own", s.relicCheck, {wide: true}),
+        s.relicCheck ? sf("Hide entries with the relic rule once you own", s.relicCheck, {wide: true})
+          : el("p", {class: "statHint", text: `The relic rule's check jumps to a character-aware helper outside LIB.BIN (LIB ${"0x" + s.relicHook.toString(16).toUpperCase()}), so it is not editable here. Alucard's check is Jewel of Open.`}),
         sf("Relic slot 2", s.relics[1].relic, {wide: true, note: "Shown under the castle map's name, since the game has one relic name."})),
       el("p", {class: "statHint", text: "The relic's description and icon come from the relic itself. Match the name and the hide rule to the relic you sell."}));
     const docs = s.documents.map(d => {
