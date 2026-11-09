@@ -11,7 +11,7 @@
 
 const BOSS = 'Boss AI', ENEMY = 'Enemy AI', WEAPON = 'Weapons and specials', FAMILIAR = 'Familiars',
   ITEM = 'Items, relics and shops', ALUCARD = 'Alucard abilities and spells', MECHANIC = 'Status and damage rules',
-  MENU = 'Menus and presentation', RICHTER = 'Richter Mode', WORLD = 'World and story', FINAL = 'ASS -Final- stats and castle';
+  MENU = 'Menus and presentation', RICHTER = 'Richter Mode', MARIA = 'Maria Mode', WORLD = 'World and story', FINAL = 'ASS -Final- stats and castle';
 
 // A Richter patch that wrote the BO6 boss overlay and not BIN/RIC.BIN (or the stage relic code) is the boss fight;
 // the rest is Richter Mode.
@@ -26,25 +26,27 @@ const FEATURES = [
       /^Creature-Hammer-Only-LIT/, /^Cerberus-Water-Neutral/, /^Succubus-All-Attack-Damage/, /^Succubus-Wing-Spike-Damage/,
       /^Pentagram-35MP/, /^Potions-900/, /^Librarian-/, /^Water-Enemy-Attacks/, /^Dark-Resist-Undead/, /^Enemy-Element-Only/,
       /^Ascaln-Gram-Sword-Familiar-DAR/, /^Greater-Demon-Dracula-Hands-DEF/, /^Alucard-Rebalance/,
-      /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/]},
+      /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/, /^Wall-Slam-Half-Hit-Damage/]},
   {id: 'text', kind: 'text', title: 'Credits and prologue text', category: 'Text', match: [/^Credits-Oy-Final/, /^Credits-Centered/, /^Prologue-Welcome-/]},
   {id: 'content', kind: 'content', toggle: true, title: 'ASS -Final- Castle', category: FINAL,
     about: 'The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression.',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
-      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/]},
+      /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/,
+      /^Clock-Room-Statues-/, /^Entity-List-Sync-/, /^Entity-Slot-Overlap-Fix/, /^Jewel-Sword-Door-/, /^Relic-Orb-Vertical-Sync/, /^Skelerang-Slots-/,
+      /^Mudman-CHI-/, /^Warg-NP3-Gate/]},
 
   // ---- Boss AI: one patch for every boss.
   {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',
     match: [/^Olrox-/, /^Granfaloon-/, /^Scylla-/, /Hippogryph/, p => /^Richter-/.test(p.name) && !/Rescue/.test(p.name) && ricOnly(p),
       /Cerberus-/, /^Fake-Heroes-/, /^Beelzebub-/, /^Death-(Second-Form|Barrage|Four-Normal|Final-Form)/, /^(ASS2-)?Medusa-(?!Shield-Laser)/,
       /Creature-(?!Hammer-Only)/, /^Doppleganger40-/, /^Akmodan-II-(Behavior|Scheduled|Attack|Grab)/, /Galamoth-/,
-      /^Dracula-(?!Hands-DEF)/, /^Greater-Demon-Random-Angles/, /^Succubus-/, /Darkwing-Bat/],
+      /^Dracula-(?!Hands-DEF)/, /^Greater-Demon-Random-Angles/, /^Succubus-(?!Maria)/, /Darkwing-Bat/],
     about: 'Bosses fight with new AI and new attack patterns.'},
 
   // ---- Normal enemies: one patch.
   {id: 'enemy-ai', kind: 'hack', category: ENEMY, title: 'Enemy AI pack',
     match: [/^Frozen-Half-/, /^Lesser-Demon-/, /^Skull-Lord-/, /^Wereskeleton-/, /^Enemy-No-Idle/, /^Bone-Ark-/, /^Balloon-Pod-/,
-      /^Stone-Skull-/, /^Salome-/, /^Guardian-/, /^Sniper-/, /^Archer-/, /^Hammer-Blade-Gurkha/],
+      /^Stone-Skull-/, /^Salome-/, /^Guardian-/, /^Sniper-/, /^Archer-/, /^Hammer-Blade-Gurkha/, /^Salem-Witch-/],
     about: 'Enemies fight with new AI and new attack patterns.'},
 
   // ---- Weapons: one patch.
@@ -69,7 +71,7 @@ const FEATURES = [
     match: [/Scorpion-and-noiL/, /^noiL-Card/, /^Duplichaos-ASS/, /Enemy-Watches/, /Food-Drops-Healing/, /Food-By-Enemy-Size/,
       /^Library-Practice/, /^Practice-Block/, /^Boss-cRush-/i, /Shop ?Card/i, /^Life-Apple-(Revive|Full|Auto|Max)/, /^Equipment-Item-Slot/,
       /^Faerie-/, /^Antivenom-Uncurse/, /^Mana-Prism-/, /^Manna-Prism-/, /^Cloaks-One-Copy/, /^Library-Shop-Order/, /^Gravity-Boots-/,
-      /^Bloodlust-Ring-/, /^Weapons-Sort-/, /Equip-Sort-/, /^Stats-Past-99/],
+      /^Bloodlust-Ring-/, /^Weapons-Sort-/, /Equip-Sort-/, /^Stats-Past-99/, /^Gear-Desc-Fullwidth/],
     about: 'New and reworked items, relics and shop goods, including the item slots for the L2 shortcut and the Boss CRush mode.'},
 
   // ---- Alucard.
@@ -89,11 +91,14 @@ const FEATURES = [
     about: 'Better control in the air after leaving a ledge, transforming or getting hit.'},
   {id: 'bat-form', kind: 'hack', category: ALUCARD, title: 'Bat form and Wing Smash', match: [/^Bat-Form-/, /^Wing-Smash-/, /^Power-of-Mist-Infinite/],
     about: 'Bat form flies faster, and Power of Mist makes Wing Smash unlimited.'},
+  {id: 'instant-wolf', kind: 'hack', category: ALUCARD, title: 'Instant wolf transformation',
+    match: [/^Alucard-Instant-Wolf/, /^Alucard-Restore-Snapshot-Sync/],
+    about: 'Alucard turns into the wolf at once, and Down + jump starts a Wolf Dash run.'},
   {id: 'heart-refresh', kind: 'hack', category: ALUCARD, title: 'Heart Refresh shortcut', match: [/^Heart-Refresh-/],
     about: 'Heart Refresh runs in real time from the item shortcut.'},
   {id: 'hellfire', kind: 'hack', category: ALUCARD, title: 'Hellfire casts in place', match: [/^Hellfire-/],
     about: 'Hellfire casts where Alucard stands, with a shorter windup.'},
-  {id: 'spell-int', kind: 'hack', category: ALUCARD, title: 'Spells and subweapons scale with INT', match: [/^Spell-INT-/, /^Subweapon-Spell-INT-/],
+  {id: 'spell-int', kind: 'hack', category: ALUCARD, title: 'Spells and subweapons scale with INT', match: [/^Spell-INT-/, /^Subweapon-Spell-INT-/, /^Subweapon-INT-/],
     about: 'Spells, form attacks and subweapons grow stronger with INT.'},
 
   // ---- Status and damage rules.
@@ -126,12 +131,18 @@ const FEATURES = [
     about: 'New Alucard games skip the Richter prologue and start with the story scroll.'},
 
   // ---- Richter Mode (playable Richter). One patch: the parts share code caves and build on each other.
-  {id: 'richter-mode', kind: 'hack', category: RICHTER, title: 'Richter Mode overhaul', match: [/^Richter-/],
-    about: 'Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces.'}
+  {id: 'richter-mode', kind: 'hack', category: RICHTER, title: 'Richter Mode overhaul',
+    match: [/^Richter-/, /^TEST-Richter-/, /^Balls-of-Shaft-/, /^Bible-(Double-)?Orbit/, /^Collection_Sort_and_X_Activation/, /^Relic-Text-Per-Character/],
+    about: 'Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces.'},
+
+  // ---- Maria Mode (playable Maria). One patch, like Richter Mode.
+  {id: 'maria-mode', kind: 'hack', category: MARIA, title: 'Maria Mode',
+    match: [/^Maria-/, /^Main-Menu-Maria-/, /Succubus.Maria/],
+    about: 'Play the castle as Maria, with her own moves, spells, guardian beasts, pause guide and voices.'}
 ];
 
 // Patches for other BINs next to the main one (the Maria build), left out of the scan.
-const OTHER_IMAGES = [/^Maria-/, /Saturn-Maria/];
+const OTHER_IMAGES = [/Saturn-Maria/];
 
 // PPFs that carry two features: each byte goes to the feature of the file it is in.
 const SPLITS = [
@@ -139,10 +150,16 @@ const SPLITS = [
   {match: /^Guardian-Stone-Skull-Patek/, features: ['enemy-ai', 'items'], feature: file => /^ST\//.test(file) ? 'enemy-ai' : 'items'},
 ];
 
+// A byte whose final value belongs to `owner` drops what the `of` patches wrote there earlier, so `owner` does not
+// require `of`. Maria Mode was built on Richter Mode's collection, pause and HUD code, and later Richter patches
+// rewrote some of those shared bytes: Maria Mode requires Richter Mode, not the other way round. Early Maria patches
+// resynced the whole F_TE5 restore snapshot; Instant wolf's own snapshot bytes do not need Maria Mode.
+const IGNORE_HISTORY = [{owner: 'richter-mode', of: 'maria-mode'}, {owner: 'instant-wolf', of: 'maria-mode'}];
+
 function classify(ppf) {
   const p = {...ppf, name: ppf.name || require('node:path').basename(ppf.file).replace(/^(Reverse|Undo)-/, '')};
   for (const f of FEATURES) for (const m of f.match) if (typeof m === 'function' ? m(p) : m.test(p.name)) return f.id;
   return null;
 }
 
-module.exports = {FEATURES, SPLITS, OTHER_IMAGES, classify};
+module.exports = {FEATURES, SPLITS, OTHER_IMAGES, IGNORE_HISTORY, classify};

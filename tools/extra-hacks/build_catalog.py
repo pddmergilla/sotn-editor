@@ -27,6 +27,8 @@ ORDER = ['minimap', 'fast-warp', 'damage-colors', 'mist-gas-swap', 'aggressive-e
          'heart-regen', 'dark-stats', 'dark-speed', 'sky-walker', 'faerie-behavior']
 TEXT = {'DRA.BIN': (0x42398, 0x962AC), 'BIN/RIC.BIN': (0x1AC60, 0x39890)}
 MARKER_FILES = ['DRA.BIN', 'BIN/RIC.BIN']
+# Unused test stages whose directory records ASS -Final- F.02 swapped with NP3 and CHI, so those two could grow.
+SWAPPED = {'ST/TE2/TE2.BIN', 'ST/TE3/TE3.BIN'}
 WINDOW = 256
 OVERRIDES = json.loads((HERE / 'overrides.json').read_text(encoding='utf-8')) if (HERE / 'overrides.json').exists() else {}
 
@@ -105,6 +107,9 @@ def convert(spec):
         if e.get('vanillaOn'):
             assert len(bytes.fromhex(e['vanillaOn'])) == len(on)
             rec['vanillaOn'] = e['vanillaOn'].upper()
+        if f in SWAPPED:
+            # ASS -Final- moved another stage's old data under this name: the edit applies only at the earlier sizes.
+            rec['fileSize'] = sorted({len(read(f, k)) for k in ('v', 'a')})
         if e.get('needsFree'):
             rec['free'] = 1  # installed only where the image still holds the off bytes (free space)
         if is_cost_field(f, off, len(on)):
@@ -287,7 +292,9 @@ def add_final(features):
             for pos in range(len(expect)):
                 if tuned(e, pos):
                     expect[pos] = fin[e['offset'] + pos]  # tuning: whatever the Stats Editor value is
-            assert fin[e['offset']:e['offset'] + len(expect)] == expect, f"{ft['id']}: bytes do not match ASS -Final- at {e['file']} {e['offset']:#x}"
+            got = fin[e['offset']:e['offset'] + len(expect)]
+            diff = [hex(e['offset'] + i) for i in range(len(expect)) if i >= len(got) or got[i] != expect[i]]
+            assert not diff, f"{ft['id']}: bytes do not match ASS -Final- at {e['file']} {e['offset']:#x} (length {len(expect)}, file {len(fin)}; differ at {diff[:8]}, {len(diff)} bytes; layers {[(l.get('feature'), l['at']) for l in e.get('layers', [])]}; tunable {e.get('tunable')})"
     # Layers as runs of [position, bytes]; edit bytes as hex.
     for ft in features:
         for e in ft['edits']:

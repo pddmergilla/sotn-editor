@@ -1,0 +1,459 @@
+{
+  "id": "instant-wolf",
+  "label": "Instant wolf transformation",
+  "category": "Alucard abilities and spells",
+  "summary": "Alucard turns into the wolf at once, and Down + jump starts a Wolf Dash run.",
+  "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5037C",
+      "off": "11008014666605",
+      "on": "0780183C0F8019"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50384",
+      "off": "0E80053C90C4A524",
+      "on": "043409978404288F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5038E",
+      "off": "A28C04",
+      "on": "00000A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50392",
+      "off": "A38C08",
+      "on": "001118"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50396",
+      "off": "A48C10",
+      "on": "0A3407"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5039A",
+      "off": "A2AF1400A3AF18",
+      "on": "2A15E82E0B8F00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503A2",
+      "off": "A4AF0C00A28C10",
+      "on": "000000406C3103"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503AA",
+      "off": "A38C1400A48C1C00A2AF2000A3",
+      "on": "801123586C01EFC00308E82E0B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503B8",
+      "off": "2400A4",
+      "on": "840420"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503BC",
+      "off": "19C1030810",
+      "on": "03002A2D2B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503C2",
+      "off": "A4271380033C9475638C6766A53418006500C31703001020",
+      "on": "4011202F088FEC2E0B8FE82E0C8F662F0D97010008312500"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503DB",
+      "off": "0083200400",
+      "on": "1140006B31"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503E1",
+      "off": "208200180085000E80073CA8C4E72400",
+      "on": "00601100408C31210080110080AD311F"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503F2",
+      "off": "E28C0400E58C0800E68C1000A2AF1400A5AF1800A6AF0C00E28C1000E58C14",
+      "on": "A015D02B088FF42B098F182C0A8F3C2C0B8F2540090125400A0125400B0140"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50412",
+      "off": "E6841C",
+      "on": "083116"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50416",
+      "off": "A2AF2000A5AF2400A6A7801004",
+      "on": "00150980083C4C74088D000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50424",
+      "off": "21104400401002",
+      "on": "04000011000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5042C",
+      "off": "2318620030",
+      "on": "EAF8030C0E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50432",
+      "off": "6324C317040020",
+      "on": "04340E00401002"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5043A",
+      "off": "A3A310180000831803",
+      "on": "0434A9FB030C212800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50444",
+      "off": "23186200801003",
+      "on": "0A004014000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5044C",
+      "off": "21104300401002",
+      "on": "CA24040C000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50454",
+      "off": "2320820030",
+      "on": "6135040C18"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5045A",
+      "off": "84241F00A4A310",
+      "on": "04340F80193C01"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50462",
+      "off": "A4276254000C0100053421804000",
+      "on": "0834840428AFD62C040868060434"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50471",
+      "off": "000006212000021E80053C0080A5346A54000C",
+      "on": "80023CEC2E428C00000000A82C040802004230"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50485",
+      "off": "2006347254",
+      "on": "0000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5048B",
+      "off": "0C2120",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5048F",
+      "off": "021401BF8F1001B08F1801BD2708",
+      "on": "0000000000000000000000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5049E",
+      "off": "E003",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504A4",
+      "off": "E0FEBD271801BFAF1401B1AF1001B0AF0E80053C90C4A5240000A28C0400A38C08",
+      "on": "0780183CFC3302A70F80193C8404298F202F028F05000834063408A7E8FFBD2710"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504C6",
+      "off": "A48C10",
+      "on": "BFAF09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504CA",
+      "off": "A2AF14",
+      "on": "201501"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504CE",
+      "off": "A3AF18",
+      "on": "423003"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504D2",
+      "off": "A4AF0C",
+      "on": "401000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504D6",
+      "off": "A28C1000A38C14",
+      "on": "000099B2040C00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504DE",
+      "off": "A48C1C",
+      "on": "000010"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504E2",
+      "off": "A2AF20",
+      "on": "BF8F18"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504E6",
+      "off": "A3AF24",
+      "on": "BD2708"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504EA",
+      "off": "A4AF10",
+      "on": "E00300"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x504EE",
+      "off": "B127212020026254000C000205342180400017",
+      "on": "000002000834063408A7EAF8030C060004340D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50502",
+      "off": "00062120",
+      "on": "40100000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50507",
+      "off": "021E80053C0080A5",
+      "on": "0025F7030C040004"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50510",
+      "off": "6E54000C",
+      "on": "09004010"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50515",
+      "off": "20063405004104",
+      "on": "0000009F38040C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50520",
+      "off": "725400",
+      "on": "38F703"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50524",
+      "off": "2120000258C1030800",
+      "on": "040004340400023405"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5052E",
+      "off": "00007254000C2120000209",
+      "on": "043C51C10308ED00083402"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5053A",
+      "off": "400400",
+      "on": "023403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5053E",
+      "off": "00000E80023CC0C4428C0E80033CC4C4638010",
+      "on": "043CE20008340B80013C140922ACE438040C14"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50552",
+      "off": "A2",
+      "on": "A8"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50556",
+      "off": "A3A30E89030C21202002",
+      "on": "A48F1000BF8F92360408"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50561",
+      "off": "01BF8F1401B18F1001B08F2001BD2708",
+      "on": "00BD2700000000000000000000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x50572",
+      "off": "E003",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x6B290",
+      "off": "0780023CEC2E428C",
+      "on": "DFC0030800000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8C908",
+      "off": "24",
+      "on": "1B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8E7D8",
+      "off": "23",
+      "on": "1B"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8E7E8",
+      "off": "6C",
+      "on": "09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8E994",
+      "off": "0780013CFC3322A4",
+      "on": "29C1030C00000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8EB88",
+      "off": "FFFF8224",
+      "on": "0000C284"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8EC74",
+      "off": "29",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8EC76",
+      "off": "6214",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8ECFC",
+      "off": "07",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x8ECFE",
+      "off": "6214",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x109B0",
+      "off": "88",
+      "on": "02"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x109C0",
+      "off": "98",
+      "on": "40"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x11778",
+      "off": "8E",
+      "on": "1B"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13648",
+      "off": "CD",
+      "on": "1B"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13658",
+      "off": "BD",
+      "on": "09"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13804",
+      "off": "8888F8FF8F888888",
+      "on": "29C1030C00000000"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x139FA",
+      "off": "0000",
+      "on": "C284"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13AE4",
+      "off": "CD",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13AE6",
+      "off": "8CFF",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13B6C",
+      "off": "8D",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE5/F_TE5.BIN",
+      "offset": "0x13B6E",
+      "off": "8EEF",
+      "on": "0000"
+    }
+  ],
+  "requires": []
+}

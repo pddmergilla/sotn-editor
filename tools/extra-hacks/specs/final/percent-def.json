@@ -1176,12 +1176,6 @@
     },
     {
       "file": "DRA.BIN",
-      "offset": "0xB902",
-      "off": "32",
-      "on": "43"
-    },
-    {
-      "file": "DRA.BIN",
       "offset": "0xBB5A",
       "off": "0C",
       "on": "16"

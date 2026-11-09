@@ -2,46 +2,46 @@
 
 [← Back to the README](../README.md)
 
-The main BIN gained 32 features after ASS 2.0.10. This page lists them for the editor v8.0 / ASS -Final- release and the Extra Hacks update. The -Final- balance (stat, cost, DEF/HP/attack values, element tables) and the revised castle (maps, pickups, relic placements, boss rooms) are one feature each; the credits and prologue welcome text are left out.
+The main BIN gained 34 features after ASS 2.0.10. This page lists them for the ASS -Final- release (F.02) and the Extra Hacks update. Playable Maria and the Richter Mode overhaul are one feature each. The -Final- balance (stat, cost, DEF/HP/attack values, element tables) and the revised castle (maps, pickups, relic placements, boss rooms) are one feature each; the credits and prologue welcome text are left out.
 
 `node tools/ass2/build-final-hacks.js` reads ASS 2.0.10 (`outputs/ref/ASS-2.0.10.bin`, or vanilla plus the 2.0.10 PPF from git history), then assigns every byte that differs in the main BIN to the newest applied PPF that wrote it. It searches next to the main BIN, `outputs/`, Downloads and the Documents/Codex session outputs. The groups are defined in `tools/ass2/final-hacks.js`. All boss AI changes share one group, all normal-enemy AI changes another, and so do the weapons and the items. A later retune of a feature's own bytes stays with that feature. When a feature replaced bytes that another wrote, it is built on top of that feature and lists it under **Requires**.
 
 For each feature it writes `ASS-Final-<feature>.ppf` (2.0.10 plus requirements → with the feature) and `Reverse-ASS-Final-<feature>.ppf` (current BIN → without it), both guarded PPF3 with undo data and repaired EDC/ECC, plus `specs/<id>.json` with Extra Hacks-style edit runs. Output goes to `MainBIN/ASS-Final-Hacks/` with a README and `ASS-Final-Hacks.verification.json`. The main BIN is only read.
 
-Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
+Checks: 2.0.10 plus every feature in install order plus the excluded bytes reproduces every changed sector of the main BIN. Each forward and reversal PPF applies with its guards, writes valid EDC/ECC and undoes exactly. Chaining all forward PPFs from disk reproduces the main BIN except the excluded bytes. Maria Mode was built on Richter Mode's collection, pause and HUD code, so it requires Richter Mode; a byte Richter Mode owns in the end drops the Maria patches that wrote it earlier (`IGNORE_HISTORY` in `final-hacks.js`). F.02 swapped NP3 and CHI with the unused test stages TE2 and TE3 on the disc so they could grow; writes to a sector that now holds another file are not counted as that file's history. Patches that share a sector carry EDC/ECC for their own target only. When you chain them outside the editor, use a patcher that skips undo checks, then repair sector checksums. None of this was played in an emulator.
 
-Built on 2026-10-27 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451EBF7C3E6BCD459CA2DC7CA`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: credits and prologue text 3,091 bytes, unattributed 2 bytes. 501 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
+Built on 2026-11-09 against main BIN `983D01B59CAFFFC7717883BD084026C6681C13FE3533A7FA217F712EC1473DAB`. Rerun the builder after further BIN changes. Every hack below can be toggled in the Extra Hacks tab ([details](extra-hacks.md#ass--final--hacks)). Excluded: credits and prologue text 3,080 bytes, unattributed 2 bytes. 541 bytes that no PPF wrote were joined to the neighbouring feature in the same file. They are listed under `attributedByProximity` for review.
 
 ### ASS -Final- stats and castle
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **ASS -Final- Stats Rebalanced** | The -Final- balance: stats of enemies, bosses, weapons, armor, items and relics, castle levels, damage and resistances. | — | 2,982 | `ASS-Final-Stats-Rebalanced.ppf` |
-| **ASS -Final- Castle** | The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression. | — | 31,170 | `ASS-Final-Castle.ppf` |
+| **ASS -Final- Stats Rebalanced** | The -Final- balance: stats of enemies, bosses, weapons, armor, items and relics, castle levels, damage and resistances. | — | 2,970 | `ASS-Final-ASS-Final-Stats-Rebalanced.ppf` |
+| **ASS -Final- Castle** | The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression. | — | 550,462 | `ASS-Final-ASS-Final-Castle.ppf` |
 
 ### Boss AI
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Boss AI pack** | Bosses fight with new AI and new attack patterns. | — | 221,922 | `ASS-Final-Boss-AI-pack.ppf` |
+| **Boss AI pack** | Bosses fight with new AI and new attack patterns. | — | 221,893 | `ASS-Final-Boss-AI-pack.ppf` |
 
 ### Enemy AI
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Enemy AI pack** | Enemies fight with new AI and new attack patterns. | — | 11,048 | `ASS-Final-Enemy-AI-pack.ppf` |
+| **Enemy AI pack** | Enemies fight with new AI and new attack patterns. | — | 11,369 | `ASS-Final-Enemy-AI-pack.ppf` |
 
 ### Weapons and specials
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **New Weapons and Specials** | New weapons, and new special moves for many existing ones. | — | 47,077 | `ASS-Final-New-Weapons-and-Specials.ppf` |
+| **New Weapons and Specials** | New weapons, and new special moves for many existing ones. | — | 47,063 | `ASS-Final-New-Weapons-and-Specials.ppf` |
 
 ### Familiars
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Dawn familiar** | Reawakened's Dawn familiar joins the castle, with its own menu icon. | — | 34,023 | `ASS-Final-Dawn-familiar.ppf` |
+| **Dawn familiar** | Reawakened's Dawn familiar joins the castle, with its own menu icon. | — | 34,021 | `ASS-Final-Dawn-familiar.ppf` |
 | **Ouroboros familiar** | Reawakened's Ouroboros familiar joins the castle and grows stronger with CON. | Dawn familiar | 35,622 | `ASS-Final-Ouroboros-familiar.ppf` |
 | **Sword Familiar QCF swap** | The Sword Familiar can call in another familiar for a while. | — | 1,525 | `ASS-Final-Sword-Familiar-QCF-swap.ppf` |
 | **Familiars gain a level per kill** | Familiars level up with every kill. | — | 5 | `ASS-Final-Familiars-gain-a-level-per-kill.ppf` |
@@ -50,7 +50,7 @@ Built on 2026-10-27 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Items, relics and shops** | New and reworked items, relics and shop goods, including the item slots for the L2 shortcut and the Boss CRush mode. | New Weapons and Specials, Familiars gain a level per kill, No more game over | 9,337 | `ASS-Final-Items-relics-and-shops.ppf` |
+| **Items, relics and shops** | New and reworked items, relics and shop goods, including the item slots for the L2 shortcut and the Boss CRush mode. | New Weapons and Specials, Familiars gain a level per kill, No more game over, Damage number colors: weak and resist, Percent DEF | 9,313 | `ASS-Final-Items-relics-and-shops.ppf` |
 
 ### Alucard abilities and spells
 
@@ -63,9 +63,10 @@ Built on 2026-10-27 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451
 | **Down+X dropkick priority** | Down + jump always dropkicks, even after Sky Walker jumps. | — | 8 | `ASS-Final-Down-X-dropkick-priority.ppf` |
 | **Air control and hurt recovery** | Better control in the air after leaving a ledge, transforming or getting hit. | — | 550 | `ASS-Final-Air-control-and-hurt-recovery.ppf` |
 | **Bat form and Wing Smash** | Bat form flies faster, and Power of Mist makes Wing Smash unlimited. | — | 69 | `ASS-Final-Bat-form-and-Wing-Smash.ppf` |
-| **Heart Refresh shortcut** | Heart Refresh runs in real time from the item shortcut. | New Weapons and Specials, Familiars gain a level per kill, No more game over, Items, relics and shops | 7,121 | `ASS-Final-Heart-Refresh-shortcut.ppf` |
+| **Instant wolf transformation** | Alucard turns into the wolf at once, and Down + jump starts a Wolf Dash run. | — | 492 | `ASS-Final-Instant-wolf-transformation.ppf` |
+| **Heart Refresh shortcut** | Heart Refresh runs in real time from the item shortcut. | New Weapons and Specials, Familiars gain a level per kill, No more game over, Damage number colors: weak and resist, Percent DEF, Items, relics and shops | 7,083 | `ASS-Final-Heart-Refresh-shortcut.ppf` |
 | **Hellfire casts in place** | Hellfire casts where Alucard stands, with a shorter windup. | — | 48 | `ASS-Final-Hellfire-casts-in-place.ppf` |
-| **Spells and subweapons scale with INT** | Spells, form attacks and subweapons grow stronger with INT. | — | 253 | `ASS-Final-Spells-and-subweapons-scale-with-INT.ppf` |
+| **Spells and subweapons scale with INT** | Spells, form attacks and subweapons grow stronger with INT. | New Weapons and Specials | 235 | `ASS-Final-Spells-and-subweapons-scale-with-INT.ppf` |
 
 ### Status and damage rules
 
@@ -73,7 +74,7 @@ Built on 2026-10-27 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451
 |---|---|---|---:|---|
 | **Petrification rework** | Petrification is shorter and harder to wiggle out of, and hits while petrified are spaced out. | — | 127 | `ASS-Final-Petrification-rework.ppf` |
 | **Poison damage over time** | Poison drains HP over time. | — | 135 | `ASS-Final-Poison-damage-over-time.ppf` |
-| **Percent DEF** | DEF reduces damage by a percentage. Brings the current DEF of all equipment and enemies with it. | Damage number colors: weak and resist | 1,197 | `ASS-Final-Percent-DEF.ppf` |
+| **Percent DEF** | DEF reduces damage by a percentage. Brings the current DEF of all equipment and enemies with it. | Damage number colors: weak and resist | 1,145 | `ASS-Final-Percent-DEF.ppf` |
 
 ### Menus and presentation
 
@@ -91,10 +92,16 @@ Built on 2026-10-27 against main BIN `88B80D57C46C42F4A3CEF97C1DA99560309CDAC451
 | **No more game over** | Death just brings Alucard back to the last save point. | — | 275 | `ASS-Final-No-more-game-over.ppf` |
 | **Clock Tower gear doors always open** | Both Clock Tower gear doors stay open. | — | 32 | `ASS-Final-Clock-Tower-gear-doors-always-open.ppf` |
 | **Richter rescue cutscene fixes** | The Richter rescue cutscene plays correctly, with its voices. | Boss AI pack | 156 | `ASS-Final-Richter-rescue-cutscene-fixes.ppf` |
-| **Prologue skip** | New Alucard games skip the Richter prologue and start with the story scroll. | — | 165 | `ASS-Final-Prologue-skip.ppf` |
+| **Prologue skip** | New Alucard games skip the Richter prologue and start with the story scroll. | — | 158 | `ASS-Final-Prologue-skip.ppf` |
 
 ### Richter Mode
 
 | Feature | What it does | Requires | Bytes | Patch |
 |---|---|---|---:|---|
-| **Richter Mode overhaul** | Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces. | Boss AI pack, New Weapons and Specials, Familiars gain a level per kill, No more game over, Items, relics and shops, Stat-scaled buffs, Damage number colors: weak and resist, Percent DEF | 29,766 | `ASS-Final-Richter-Mode-overhaul.ppf` |
+| **Richter Mode overhaul** | Playable Richter rebuilt: Rest levels, growth from collecting, relic abilities, new moves, a new pause menu with a guide, and every boss Alucard faces. | Boss AI pack, New Weapons and Specials, Dawn familiar, Damage number colors: weak and resist, Percent DEF, Stat-scaled buffs, Spells and subweapons scale with INT | 45,188 | `ASS-Final-Richter-Mode-overhaul.ppf` |
+
+### Maria Mode
+
+| Feature | What it does | Requires | Bytes | Patch |
+|---|---|---|---:|---|
+| **Maria Mode** | Play the castle as Maria, with her own moves, spells, guardian beasts, pause guide and voices. | Boss AI pack, New Weapons and Specials, Dawn familiar, Familiars gain a level per kill, No more game over, Damage number colors: weak and resist, Percent DEF, Items, relics and shops, Stat-scaled buffs, Heart Refresh shortcut, Spells and subweapons scale with INT, Prologue skip, Richter Mode overhaul | 788,784 | `ASS-Final-Maria-Mode.ppf` |

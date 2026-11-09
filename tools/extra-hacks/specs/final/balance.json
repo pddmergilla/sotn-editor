@@ -3600,6 +3600,18 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0xAC37",
+      "off": "24",
+      "on": "34"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xAC39",
+      "off": "90",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0xAC3B",
       "off": "00",
       "on": "08"
@@ -4176,9 +4188,21 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0xB5DC",
+      "off": "E02E4A01",
+      "on": "50462003"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0xB5EE",
       "off": "63",
       "on": "28"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB606",
+      "off": "22",
+      "on": "EA"
     },
     {
       "file": "DRA.BIN",
@@ -4188,9 +4212,9 @@
     },
     {
       "file": "DRA.BIN",
-      "offset": "0xB630",
-      "off": "43",
-      "on": "03"
+      "offset": "0xB62E",
+      "off": "900143",
+      "on": "580203"
     },
     {
       "file": "DRA.BIN",
@@ -4200,15 +4224,39 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0xB656",
+      "off": "8001",
+      "on": "4802"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0xB666",
       "off": "00",
       "on": "28"
     },
     {
       "file": "DRA.BIN",
+      "offset": "0xB67E",
+      "off": "8801",
+      "on": "5802"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB6A6",
+      "off": "7901",
+      "on": "3A02"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0xB6B6",
       "off": "00",
       "on": "28"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB6CE",
+      "off": "7C01",
+      "on": "4402"
     },
     {
       "file": "DRA.BIN",
@@ -4280,7 +4328,7 @@
       "file": "DRA.BIN",
       "offset": "0xB7E6",
       "off": "AA00",
-      "on": "0E01"
+      "on": "6C02"
     },
     {
       "file": "DRA.BIN",
@@ -4292,7 +4340,7 @@
       "file": "DRA.BIN",
       "offset": "0xB80E",
       "off": "FF00",
-      "on": "C701"
+      "on": "8F02"
     },
     {
       "file": "DRA.BIN",
@@ -4304,7 +4352,7 @@
       "file": "DRA.BIN",
       "offset": "0xB836",
       "off": "6301",
-      "on": "2B02"
+      "on": "E803"
     },
     {
       "file": "DRA.BIN",
@@ -5418,18 +5466,6 @@
     },
     {
       "file": "DRA.BIN",
-      "offset": "0x3B3C7",
-      "off": "50",
-      "on": "82"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x3D1F7",
-      "off": "81",
-      "on": "75"
-    },
-    {
-      "file": "DRA.BIN",
       "offset": "0x3D240",
       "off": "4E657266656420627574206361",
       "on": "436F6E67726174756C6174696F"
@@ -5760,6 +5796,12 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0x3DA8A",
+      "off": "53544F",
+      "on": "484954"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0x3DA8E",
       "off": "4F6276696F",
       "on": "43616E2073"
@@ -5959,8 +6001,14 @@
     {
       "file": "DRA.BIN",
       "offset": "0x3DE72",
-      "off": "20202020202020202020202020",
-      "on": "4F6E652D48616E646564000000"
+      "off": "202020",
+      "on": "4F6E65"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x3DE7D",
+      "off": "2020",
+      "on": "0000"
     },
     {
       "file": "DRA.BIN",
@@ -6319,8 +6367,8 @@
     {
       "file": "DRA.BIN",
       "offset": "0x3EE04",
-      "off": "817B41544B2020",
-      "on": "41544B2B313030"
+      "off": "817B41",
+      "on": "41544B"
     },
     {
       "file": "DRA.BIN",
@@ -6588,6 +6636,78 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0x73D80",
+      "off": "0014040010",
+      "on": "2800BFAF24"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73D86",
+      "off": "A42702",
+      "on": "B1AF20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73D8A",
+      "off": "053403340200C21702002130C2",
+      "on": "B0AFFFFF843001008424422004"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73D98",
+      "off": "433006000100073428",
+      "on": "0980033CA07B628C18"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DA2",
+      "off": "BF",
+      "on": "A4"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DA4",
+      "off": "2400B1AF5FFA030C2000B0AF",
+      "on": "2A8082000200001623104400"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DB1",
+      "off": "28",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DB4",
+      "off": "1800A48F",
+      "on": "A07B62AC"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DBD",
+      "off": "8040",
+      "on": "2800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DC8",
+      "off": "04",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DCA",
+      "off": "0234",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x73DCE",
+      "off": "02",
+      "on": "00"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0x80D34",
       "off": "C409",
       "on": "A00F"
@@ -6612,6 +6732,12 @@
     },
     {
       "file": "BIN/RIC.BIN",
+      "offset": "0x186CB",
+      "off": "20",
+      "on": "04"
+    },
+    {
+      "file": "BIN/RIC.BIN",
       "offset": "0x186DA",
       "off": "01",
       "on": "0A"
@@ -6624,15 +6750,9 @@
     },
     {
       "file": "BIN/RIC.BIN",
-      "offset": "0x186EE",
-      "off": "02",
-      "on": "0A"
-    },
-    {
-      "file": "BIN/RIC.BIN",
       "offset": "0x186F2",
-      "off": "02",
-      "on": "04"
+      "off": "0218",
+      "on": "040C"
     },
     {
       "file": "BIN/RIC.BIN",
@@ -6720,9 +6840,9 @@
     },
     {
       "file": "BIN/RIC.BIN",
-      "offset": "0x18869",
-      "off": "0005",
-      "on": "0121"
+      "offset": "0x1886A",
+      "off": "05",
+      "on": "21"
     },
     {
       "file": "BIN/RIC.BIN",
@@ -6741,12 +6861,6 @@
       "offset": "0x18894",
       "off": "20",
       "on": "00"
-    },
-    {
-      "file": "BIN/RIC.BIN",
-      "offset": "0x188BA",
-      "off": "0F",
-      "on": "3C"
     },
     {
       "file": "BIN/RIC.BIN",
@@ -6791,15 +6905,15 @@
       "on": "0534"
     },
     {
-      "file": "ST/CHI/CHI.BIN",
+      "file": "ST/TE3/TE3.BIN",
       "offset": "0x1EFA4",
-      "off": "16",
+      "off": "00",
       "on": "28"
     },
     {
-      "file": "ST/CHI/CHI.BIN",
+      "file": "ST/TE3/TE3.BIN",
       "offset": "0x1EFA6",
-      "off": "C596",
+      "off": "0000",
       "on": "0534"
     },
     {
@@ -6816,219 +6930,9 @@
     },
     {
       "file": "ST/LIB/LIB.BIN",
-      "offset": "0x135D",
-      "off": "00",
-      "on": "02"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1365",
-      "off": "00",
-      "on": "05"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1368",
-      "off": "581B",
-      "on": "983A"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x136D",
-      "off": "00",
-      "on": "04"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1370",
-      "off": "B004",
-      "on": "3011"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1464",
-      "off": "04",
-      "on": "00"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1482",
-      "off": "07",
-      "on": "00"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x148A",
-      "off": "07",
-      "on": "00"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x149A",
-      "off": "00",
-      "on": "03"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x14C2",
-      "off": "00",
-      "on": "0A"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x14CA",
-      "off": "00",
-      "on": "06"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
       "offset": "0x14D0",
       "off": "40",
       "on": "3F"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x14E4",
-      "off": "2003",
-      "on": "2C01"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x14EC",
-      "off": "DC05",
-      "on": "E803"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1748",
-      "off": "F401",
-      "on": "8813"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1750",
-      "off": "BC02",
-      "on": "581B"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1758",
-      "off": "E803",
-      "on": "1027"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1760",
-      "off": "B004",
-      "on": "E02E"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1768",
-      "off": "7805",
-      "on": "B036"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1770",
-      "off": "0807",
-      "on": "5046"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1778",
-      "off": "D007",
-      "on": "3075"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1780",
-      "off": "9808",
-      "on": "007D"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1788",
-      "off": "C409",
-      "on": "50C3"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1790",
-      "off": "F00A",
-      "on": "D8D6"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x1798",
-      "off": "B80B00",
-      "on": "D00101"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17A0",
-      "off": "AC0D",
-      "on": "50C3"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17A8",
-      "off": "AC0D00",
-      "on": "F82401"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17B0",
-      "off": "AC0D00",
-      "on": "F82401"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17B8",
-      "off": "AC0D00",
-      "on": "F82401"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17C0",
-      "off": "A00F00",
-      "on": "803801"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17C8",
-      "off": "941100",
-      "on": "880D01"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17D0",
-      "off": "881300",
-      "on": "701101"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17D8",
-      "off": "7017",
-      "on": "60EA"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17E0",
-      "off": "581B00",
-      "on": "9F8601"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17E8",
-      "off": "342100",
-      "on": "803801"
-    },
-    {
-      "file": "ST/LIB/LIB.BIN",
-      "offset": "0x17F0",
-      "off": "102700",
-      "on": "9E8601"
     },
     {
       "file": "ST/LIB/LIB.BIN",
@@ -7331,15 +7235,15 @@
       "on": "0534"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x3A1EC",
-      "off": "16",
+      "off": "74",
       "on": "28"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x3A1EE",
-      "off": "C596",
+      "off": "1B80",
       "on": "0534"
     },
     {

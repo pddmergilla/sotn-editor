@@ -9557,177 +9557,279 @@
       "on": "1071070880006296"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0xA20",
-      "off": "9CE6",
+      "off": "9900",
       "on": "58D6"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x1318",
-      "off": "20",
+      "off": "E4",
       "on": "01"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x1322",
-      "off": "35",
+      "off": "EB",
       "on": "01"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x36C1C",
-      "off": "DC",
+      "off": "10",
       "on": "E0"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x36D8C",
-      "off": "F9014014",
-      "on": "00000000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x37062",
-      "off": "40",
-      "on": "00"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x37198",
-      "off": "F6",
-      "on": "00"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x3719A",
-      "off": "4014",
-      "on": "0000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x372C4",
-      "off": "AB",
-      "on": "00"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x372C6",
-      "off": "4014",
-      "on": "0000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x38488",
-      "off": "EB016014",
-      "on": "00000000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x38770",
-      "off": "31016014",
-      "on": "00000000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4CABC",
-      "off": "7D024014",
-      "on": "00000000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4CCA8",
-      "off": "02024014",
-      "on": "00000000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D658",
-      "off": "0780023C7CC3428C1D80053C7833A58CE8FFBD2710",
-      "on": "D8FFBD272400BFAF2000B0AF1C00B1AF218080002C"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D66E",
-      "off": "BFAF0000428C1B80043CEC2184240780013C7CC322AC5746000C00",
-      "on": "1196A739070C000000000300222E16004014000000000C00222E13"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D68A",
-      "off": "00001D80053C7C33A58C1B80043CF42184245746000C",
-      "on": "4010000000003400028E00000000000142300E004014"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D6A4",
-      "off": "1D80053C8033A58C1B80043CFC2184245746",
-      "on": "2C000296000000000C00422C090040100000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D6B7",
-      "off": "0C000000001D80053C8433A58C1B80043C042284245746",
-      "on": "000480023C98C9428C0000000003004230030040140000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D6CF",
-      "off": "0C000000001D80053C8833A58C1B80043C0C2284245746",
-      "on": "00A739070C212000022400BF8F2000B08F1C00B18F0000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D6E7",
-      "off": "0C00",
-      "on": "0008"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4D6EA",
-      "off": "0000434A000C",
-      "on": "E0032800BD27"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4E618",
-      "off": "05",
-      "on": "00"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4E61A",
-      "off": "4014",
-      "on": "0000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4E6D8",
-      "off": "03",
-      "on": "00"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4F89C",
       "off": "10",
       "on": "00"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4F89E",
-      "off": "4014",
-      "on": "0000"
-    },
-    {
-      "file": "ST/NP3/NP3.BIN",
-      "offset": "0x4F988",
-      "off": "03",
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x37198",
+      "off": "30",
       "on": "00"
     },
     {
-      "file": "ST/NP3/NP3.BIN",
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x3719A",
+      "off": "58",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x372C4",
+      "off": "EA",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x372C6",
+      "off": "EBFF",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x38488",
+      "off": "10911B80",
+      "on": "00000000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x38770",
+      "off": "30",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x38772",
+      "off": "60",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4CABC",
+      "off": "F0FF0724",
+      "on": "00000000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4CCA8",
+      "off": "12",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4CCAA",
+      "off": "C0A0",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D658",
+      "off": "020003A605",
+      "on": "D8FFBD2724"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D65E",
+      "off": "033406",
+      "on": "BFAF20"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D662",
+      "off": "04963F",
+      "on": "B0AF1C"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D666",
+      "off": "42302C0003A634",
+      "on": "B1AF218080002C"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D66E",
+      "off": "038EE0FF8424212082",
+      "on": "1196A739070C000000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D678",
+      "off": "0020633406",
+      "on": "0300222E16"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D67E",
+      "off": "04A634",
+      "on": "401400"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D682",
+      "off": "03AEFF",
+      "on": "00000C"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D686",
+      "off": "423206",
+      "on": "222E13"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D68A",
+      "off": "422CE2FF4014212060022C",
+      "on": "4010000000003400028E00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D696",
+      "off": "2296",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D699",
+      "off": "00000001",
+      "on": "0142300E"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D69E",
+      "off": "4224",
+      "on": "4014"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6A4",
+      "off": "4318070C",
+      "on": "2C000296"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6AE",
+      "off": "228E85",
+      "on": "422C09"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6B2",
+      "off": "2392",
+      "on": "4010"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6B5",
+      "off": "20",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6B7",
+      "off": "240C0022AE0100622409",
+      "on": "000480023C98C9428C00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6C2",
+      "off": "632C64",
+      "on": "000003"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6C6",
+      "off": "601485",
+      "on": "423003"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6CA",
+      "off": "22A20880",
+      "on": "40140000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6CF",
+      "off": "3C08D38424071A070C801785242180400009",
+      "on": "00A739070C212000022400BF8F2000B08F1C"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6E2",
+      "off": "0012",
+      "on": "B18F"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6E8",
+      "off": "56",
+      "on": "08"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4D6EA",
+      "off": "070C21200002",
+      "on": "E0032800BD27"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4E618",
+      "off": "0C",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4E61A",
+      "off": "03A2",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4E6D8",
+      "off": "02",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4F89C",
+      "off": "05",
+      "on": "00"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
+      "offset": "0x4F89E",
+      "off": "4010",
+      "on": "0000"
+    },
+    {
+      "file": "ST/TE2/TE2.BIN",
       "offset": "0x50D7C",
-      "off": "03",
+      "off": "80",
       "on": "00"
     },
     {
@@ -11334,6 +11436,162 @@
     },
     {
       "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E14",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E16",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E20",
+      "off": "06",
+      "on": "03"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E22",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E2E",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E32",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E3A",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E3C",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E3E",
+      "off": "07",
+      "on": "04"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E5E",
+      "off": "06",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E60",
+      "off": "03",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E64",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E6C",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E6E",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E70",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E72",
+      "off": "03",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E78",
+      "off": "0C",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E7E",
+      "off": "0C",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1E84",
+      "off": "0C",
+      "on": "01"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EAC",
+      "off": "04",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EAE",
+      "off": "04",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EB0",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EB2",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EB4",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EB6",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x1EB8",
+      "off": "10",
+      "on": "08"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
       "offset": "0x3BBF4",
       "off": "80",
       "on": "20"
@@ -11345,6 +11603,234 @@
       "on": "08"
     },
     {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x4074C",
+      "off": "40",
+      "on": "00"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x4075C",
+      "off": "08",
+      "on": "20"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x407EC",
+      "off": "2E",
+      "on": "00"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x407EE",
+      "off": "02A6",
+      "on": "0000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42154",
+      "off": "95",
+      "on": "BE"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42264",
+      "off": "FF03",
+      "on": "0000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42764",
+      "off": "0F00823003",
+      "on": "EB0A070800"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x4276A",
+      "off": "4014",
+      "on": "0000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BAC",
+      "off": "56",
+      "on": "50"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BAE",
+      "off": "25861B",
+      "on": "228E07"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BB2",
+      "off": "04",
+      "on": "03"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BB4",
+      "off": "10AF84245746",
+      "on": "0F0040140000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BBB",
+      "off": "0C000000000980023C9874429400",
+      "on": "00EC336284DA336884DE33698402"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BCA",
+      "off": "0000800042300C",
+      "on": "4010D0FF0A2530"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BD2",
+      "off": "40100000000030",
+      "on": "0A252A580A0114"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BDA",
+      "off": "229600",
+      "on": "2BA602"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BDE",
+      "off": "00001B",
+      "on": "2AA600"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BE2",
+      "off": "401400",
+      "on": "20A606"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BE6",
+      "off": "000056",
+      "on": "29A604"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BEA",
+      "off": "229630",
+      "on": "20A608"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BEE",
+      "off": "239601",
+      "on": "20AE0C"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BF2",
+      "off": "422401",
+      "on": "20AE0F"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42BF6",
+      "off": "6334560022A6020B0708300023A630",
+      "on": "8230DFFE401400000000DC09070800"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C06",
+      "off": "20A60980023C98744294",
+      "on": "00000000000000000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C14",
+      "off": "20",
+      "on": "00"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C16",
+      "off": "42300C",
+      "on": "000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C1A",
+      "off": "4010",
+      "on": "0000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C20",
+      "off": "2E",
+      "on": "00"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C22",
+      "off": "2296",
+      "on": "0000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C28",
+      "off": "09",
+      "on": "00"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C2A",
+      "off": "4014",
+      "on": "0000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C30",
+      "off": "56",
+      "on": "00"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C32",
+      "off": "22962E",
+      "on": "000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C36",
+      "off": "2396FFFF422401",
+      "on": "00000000000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C3E",
+      "off": "633456",
+      "on": "000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C42",
+      "off": "22A6140B07082E",
+      "on": "00000000000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C4A",
+      "off": "23A62E",
+      "on": "000000"
+    },
+    {
+      "file": "ST/RNZ0/RNZ0.BIN",
+      "offset": "0x42C4E",
+      "off": "20A6",
+      "on": "0000"
+    },
+    {
       "file": "ST/RNZ1/RNZ1.BIN",
       "offset": "0x3C180",
       "off": "0D",
@@ -11354,6 +11840,366 @@
       "file": "ST/RNZ1/RNZ1.BIN",
       "offset": "0x3C182",
       "off": "4014",
+      "on": "0000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1558",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x155A",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1564",
+      "off": "06",
+      "on": "03"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1566",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1576",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x157E",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1580",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x1582",
+      "off": "07",
+      "on": "04"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15A2",
+      "off": "06",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15A4",
+      "off": "03",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15A8",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15B0",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15B2",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15B4",
+      "off": "02",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15B6",
+      "off": "03",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15BC",
+      "off": "0C",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15C2",
+      "off": "0C",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15C8",
+      "off": "0C",
+      "on": "01"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15F0",
+      "off": "04",
+      "on": "02"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15F2",
+      "off": "04",
+      "on": "02"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15F4",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15F6",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15F8",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15FA",
+      "off": "03",
+      "on": "02"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x15FC",
+      "off": "10",
+      "on": "08"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x2825C",
+      "off": "95",
+      "on": "BE"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x2836C",
+      "off": "FF03",
+      "on": "0000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x2886C",
+      "off": "0F00823003",
+      "on": "2DA3060800"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28872",
+      "off": "4014",
+      "on": "0000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CB4",
+      "off": "56",
+      "on": "50"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CB6",
+      "off": "25861A",
+      "on": "228E07"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CBA",
+      "off": "04",
+      "on": "03"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CBC",
+      "off": "80B284245746",
+      "on": "0F0040140000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CC3",
+      "off": "0C000000000980023C9874429400",
+      "on": "00EC336284DA336884DE33698402"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CD2",
+      "off": "0000800042300C",
+      "on": "4010D0FF0A2530"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CDA",
+      "off": "4010000000",
+      "on": "0A252A580A"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CE0",
+      "off": "30",
+      "on": "14"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CE2",
+      "off": "229600",
+      "on": "2BA602"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CE6",
+      "off": "00001B",
+      "on": "2AA600"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CEA",
+      "off": "401400",
+      "on": "20A606"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CEE",
+      "off": "000056",
+      "on": "29A604"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CF2",
+      "off": "229630",
+      "on": "20A608"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CF6",
+      "off": "239601",
+      "on": "20AE0C"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CFA",
+      "off": "422401",
+      "on": "20AE0F"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28CFE",
+      "off": "6334560022A644A30608300023A630",
+      "on": "8230DFFE4014000000001EA2060800"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D0E",
+      "off": "20A60980023C98744294",
+      "on": "00000000000000000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D1C",
+      "off": "20",
+      "on": "00"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D1E",
+      "off": "42300C",
+      "on": "000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D22",
+      "off": "4010",
+      "on": "0000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D28",
+      "off": "2E",
+      "on": "00"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D2A",
+      "off": "2296",
+      "on": "0000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D30",
+      "off": "09",
+      "on": "00"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D32",
+      "off": "4014",
+      "on": "0000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D38",
+      "off": "56",
+      "on": "00"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D3A",
+      "off": "22962E",
+      "on": "000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D3E",
+      "off": "2396FFFF422401",
+      "on": "00000000000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D46",
+      "off": "633456",
+      "on": "000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D4A",
+      "off": "22A656A306082E",
+      "on": "00000000000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D52",
+      "off": "23A62E",
+      "on": "000000"
+    },
+    {
+      "file": "ST/CHI/CHI.BIN",
+      "offset": "0x28D56",
+      "off": "20A6",
       "on": "0000"
     },
     {

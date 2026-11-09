@@ -85,7 +85,8 @@
     const detect = tunable.some(flag => !flag) && on.some((value, i) => value !== off[i]);
     // stats: an item cost the Stats Editor shows; the app writes it through the stats model.
     return {file: edit.file, offset: edit.offset, on, off, vanillaOff, vanillaOn, tunable, onAlt, onAltTunable, detect, with: withEdit, layers, layered,
-      locate: edit.locate ? {...edit.locate, offset: edit.offset} : null, stats: !!edit.stats, free: !!edit.free, optional: !!edit.optional};
+      locate: edit.locate ? {...edit.locate, offset: edit.offset} : null, stats: !!edit.stats, free: !!edit.free, optional: !!edit.optional,
+      fileSize: edit.fileSize || null};
   }
   // The bytes an edit writes when on: its own form (or the with-form), then every selected layer over it.
   function onBytes(edit, selected, vanilla) {
@@ -257,6 +258,8 @@
     return out;
   }
 
+  const sizeFits = (edit, length) => !edit.fileSize || edit.fileSize.includes(length);
+
   function featureState(feature, files, profile, catalog = null, present = null) {
     if (feature.layerOnly && catalog) return layerState(catalog, feature, files);
     // Recognize complete earlier versions.
@@ -271,6 +274,8 @@
     const optional = [];
     for (const edit of editsFor(feature, profile)) {
       const bytes = files.get(edit.file);
+      // fileSize: at any other size the file holds other data (ASS -Final- swapped two unused test stages).
+      if (bytes && !sizeFits(edit, bytes.length)) continue;
       // short: the file is smaller than the hack needs (an ASS -Final- hack on an image without its enlarged files).
       if (!bytes || edit.offset + edit.on.length > bytes.length) return {state: "unknown", mismatch: edit, short: true};
       if (!edit.detect) continue;
@@ -341,7 +346,7 @@
       edit.offset = at ?? edit.locate.offset;
     }
     const print = fingerprint(catalog, files);
-    const result = {profile: print.profile, print, final, features: []};
+    const result = {profile: print.profile, print, final, features: [], sizes: new Map([...files].map(([path, bytes]) => [path, bytes.length]))};
     if (!print.profile) {
       result.reason = print.windowMisses > catalog.fingerprint.windowTolerance
         ? `Its game code differs from vanilla US and Alternate Scarlet Symphony in ${print.windowMisses} of ${print.windows} checked regions.`
@@ -433,6 +438,7 @@
       if (!info || (info.state !== "on" && info.state !== "off")) continue;
       const want = !!selected.get(feature.id), self = changed(feature.id);
       for (const edit of editsFor(feature, analysis.profile)) {
+        if (analysis.sizes?.has(edit.file) && !sizeFits(edit, analysis.sizes.get(edit.file))) continue;
         // Optional install-on-demand code is still written when a hack that layers its own bytes into it is selected or changes.
         if (want && edit.optional && !edit.layers.some(layer => selected.get(layer.feature) || changed(layer.feature))) continue;
         if (!self && !(want && ((edit.with && changed(edit.with.feature)) || edit.layers.some(layer => changed(layer.feature))))) continue;
@@ -452,6 +458,7 @@
       const want = !!selected.get(feature.id);
       for (const edit of editsFor(feature, analysis.profile)) {
         if (!edit.locate || edits.some(e => e.locate === edit.locate)) continue;
+        if (analysis.sizes?.has(edit.file) && !sizeFits(edit, analysis.sizes.get(edit.file))) continue;
         if (!edits.some(e => e.file === edit.file && !e.entity)) continue;
         edits.push({file: edit.file, offset: edit.offset, bytes: !want ? (vanilla ? edit.vanillaOff : edit.off) : onBytes(edit, selected, vanilla),
           label: feature.label, locate: edit.locate});

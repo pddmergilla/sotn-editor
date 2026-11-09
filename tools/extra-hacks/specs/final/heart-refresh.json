@@ -4437,6 +4437,8 @@
     "weapons",
     "familiar-level",
     "death-return",
+    "damage-colors-weak",
+    "percent-def",
     "items"
   ]
 }

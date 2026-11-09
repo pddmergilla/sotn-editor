@@ -22,7 +22,7 @@ const child = require('node:child_process');
 const ROOT = path.join(__dirname, '../..');
 const C = require('../../sotn-core.js'), A = require('../../ass2-core.js'), M = require('../../stats-model.js');
 const {ppf, apply} = require('../weapons/build-stone-sword-patch.js');
-const {FEATURES, SPLITS, OTHER_IMAGES, classify} = require('./final-hacks.js');
+const {FEATURES, SPLITS, OTHER_IMAGES, IGNORE_HISTORY, classify} = require('./final-hacks.js');
 
 const arg = name => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const DOWNLOADS = 'C:/Users/omergilla/Downloads', CODEX = 'C:/Users/omergilla/Documents/Codex';
@@ -59,7 +59,7 @@ function listPpfs(dir, depth, out = []) {
     const p = path.join(dir, e.name);
     // Full release patches (vanilla -> ASS) are not feature patches, and OTHER_IMAGES patches target other BINs.
     if (e.isDirectory()) listPpfs(p, depth - 1, out);
-    else if (/\.ppf$/i.test(e.name) && !/^Alternate-Scarlet-Symphony-/.test(e.name) && !OTHER_IMAGES.some(r => r.test(e.name.replace(/^(Reverse|Undo)-/, '')))) out.push(p);
+    else if (/\.ppf$/i.test(e.name) && !/^Alternate-Scarlet-Symphony-|^Castlevania - Alternate Scarlet Symphony/.test(e.name) && !OTHER_IMAGES.some(r => r.test(e.name.replace(/^(Reverse|Undo)-/, '')))) out.push(p);
   }
   return out;
 }
@@ -132,7 +132,7 @@ async function main() {
 
   const disc = await C.DiscImage.open(new Blob([cur])), files = await walk(disc, disc.root, [], new Map());
   const sectorFile = new Map();
-  for (const [name, e] of files) for (let s = 0; s < Math.ceil(e.size / 2048); s++) sectorFile.set(e.extent + s, {name, at: s * 2048});
+  for (const [name, e] of files) for (let s = 0; s < Math.ceil(e.size / 2048); s++) sectorFile.set(e.extent + s, {name, at: s * 2048, size: e.size});
   const fileOf = o => sectorFile.get(sectorOf(o))?.name || `sector ${sectorOf(o)}`;
 
   // Every PPF that wrote a changed byte, with the values it wrote in the direction it was applied.
@@ -179,6 +179,10 @@ async function main() {
   const {all: stats, def: defense} = await statFieldOffsets(disc, files);
   // 2.0.10 file sizes: bytes past a file's old end are code or data the file grew for, not castle content.
   const oldDisc = await C.DiscImage.open(new Blob([base])), oldSize = new Map();
+  // Sectors that held another file in 2.0.10 (NP3/TE2 and CHI/TE3 swapped places so NP3 and CHI could grow).
+  const oldSectorFile = new Map();
+  for (const [name, e] of await walk(oldDisc, oldDisc.root, [], new Map())) for (let s = 0; s < Math.ceil(e.size / 2048); s++) oldSectorFile.set(e.extent + s, name);
+  const swapped = o => oldSectorFile.has(sectorOf(o)) && sectorFile.has(sectorOf(o)) && oldSectorFile.get(sectorOf(o)) !== sectorFile.get(sectorOf(o)).name;
   for (const name of files.keys()) { try { oldSize.set(name, (await oldDisc.findPath(name.split('/'))).size); } catch { oldSize.set(name, 0); } }
   const fileAt = o => sectorFile.get(sectorOf(o))?.at + o % SECTOR - DATA;
   const grownAt = o => o % SECTOR >= DATA && o % SECTOR < USER_END && sectorFile.has(sectorOf(o)) && fileAt(o) >= oldSize.get(fileOf(o));
@@ -196,9 +200,11 @@ async function main() {
 
   // Assign each byte to one group; tuning on top of a feature's own bytes stays with the feature.
   const group = new Map(), owner = new Map(), absorbed = new Map();
+  const unclassified = new Map();
+  for (const own of changed.values()) { const top = own.map(i => ppfs[i]).find(p => !p.recovery); if (top && !top.feature) unclassified.set(top.file, Object.keys(top.files).join(' ')); }
+  assert.ok(!unclassified.size, `Unclassified PPFs:\n${[...unclassified].sort().join('\n')}`);
   for (const [o, own] of changed) {
     const top = own.map(i => ppfs[i]).find(p => !p.recovery);
-    assert.ok(!top || top.feature, `Unclassified PPF ${top?.file}`);
     let id = top?.feature || null;
     if (defense.has(o)) { group.set(o, 'percent-def'); if (top) owner.set(o, ppfs.indexOf(top)); continue; }
     if (kind(id) === 'hack') { group.set(o, id); owner.set(o, ppfs.indexOf(top)); continue; }
@@ -261,8 +267,13 @@ async function main() {
   const hacks = FEATURES.filter(f => f.kind === 'hack' || f.toggle).map(f => f.id);
   const value = new Map(hacks.map(id => [id, new Map()]));
   for (const p of [...ppfs].filter(p => p.applied && kind(p.feature) === 'hack').sort((a, b) => a.mtime.localeCompare(b.mtime)))
-    for (const [o, v] of p.written) if (!defense.has(o) || p.feature === 'percent-def') value.get(p.feature).set(o, v);
+    for (const [o, v] of p.written) {
+      // A write to a sector that now holds another file belonged to the file that moved away: not this file's history.
+      if (swapped(o) && group.get(o) !== p.feature) continue;
+      if (!defense.has(o) || p.feature === 'percent-def') value.get(p.feature).set(o, v);
+    }
   for (const [o, id] of group) if (value.has(id)) value.get(id).set(o, cur[o]);
+  for (const [o, id] of group) for (const rule of IGNORE_HISTORY) if (rule.owner === id) value.get(rule.of).delete(o);
   const deps = new Map(hacks.map(id => [id, new Set()]));
   for (const [o, id] of group) if (value.has(id))
     for (const other of hacks) if (other !== id && value.get(other).has(o)) deps.get(id).add(other);
@@ -338,8 +349,10 @@ async function main() {
     let disc = 0, grown = false;
     for (const [o, v] of [...own].sort((a, b) => a[0] - b[0])) {
       const sf = o % SECTOR >= DATA && o % SECTOR < USER_END ? sectorFile.get(sectorOf(o)) : null;
-      if (!sf) { disc++; continue; }
-      const at = sf.at + o % SECTOR - DATA, old = await baseFile(sf.name), off = at < old.length ? old[at] : base[o];
+      const at = sf ? sf.at + o % SECTOR - DATA : 0;
+      // Padding past the file's end in its last sector is not file content.
+      if (!sf || at >= sf.size) { disc++; continue; }
+      const old = await baseFile(sf.name), off = at < old.length ? old[at] : base[o];
       if (at >= old.length) grown = true;
       if (off === v) continue;
       if (!byFile.has(sf.name)) byFile.set(sf.name, []);

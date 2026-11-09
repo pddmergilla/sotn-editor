@@ -5,7 +5,7 @@
     "sha256": "8F9B4F05CF8E8F8E08CEFD8CEA5EA43B9D365D5A3D1920DA248645702771751A"
   },
   "final": {
-    "sha256": "88B80D57C46C42F4A3CEF97C1DA99560309CDAC451EBF7C3E6BCD459CA2DC7CA"
+    "sha256": "983D01B59CAFFFC7717883BD084026C6681C13FE3533A7FA217F712EC1473DAB"
   },
   "order": [
     "balance",
@@ -18,6 +18,8 @@
     "sword-familiar",
     "familiar-level",
     "death-return",
+    "damage-colors-weak",
+    "percent-def",
     "items",
     "dark-metamorphosis",
     "scaled-buffs",
@@ -26,20 +28,20 @@
     "dropkick",
     "air-control",
     "bat-form",
+    "instant-wolf",
     "heart-refresh",
     "hellfire",
     "spell-int",
     "petrification",
     "poison",
-    "damage-colors-weak",
-    "percent-def",
     "element-line",
     "system-settings",
     "title-final",
     "clock-tower-doors",
     "richter-rescue",
     "prologue-skip",
-    "richter-mode"
+    "richter-mode",
+    "maria-mode"
   ],
   "display": [
     "balance",
@@ -59,6 +61,7 @@
     "dropkick",
     "air-control",
     "bat-form",
+    "instant-wolf",
     "heart-refresh",
     "hellfire",
     "spell-int",
@@ -73,6 +76,7 @@
     "clock-tower-doors",
     "richter-rescue",
     "prologue-skip",
-    "richter-mode"
+    "richter-mode",
+    "maria-mode"
   ]
 }
