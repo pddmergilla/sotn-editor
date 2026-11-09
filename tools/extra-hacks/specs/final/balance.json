@@ -4266,6 +4266,12 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0xB6F4",
+      "off": "B80B",
+      "on": "A00F"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0xB706",
       "off": "63",
       "on": "28"
@@ -4275,6 +4281,12 @@
       "offset": "0xB71C",
       "off": "1027",
       "on": "6C38"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB720",
+      "off": "0201",
+      "on": "8200"
     },
     {
       "file": "DRA.BIN",

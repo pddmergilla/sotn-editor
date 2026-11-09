@@ -740,7 +740,7 @@
       "file": "DRA.BIN",
       "offset": "0x90DA",
       "off": "32",
-      "on": "21"
+      "on": "1E"
     },
     {
       "file": "DRA.BIN",
@@ -1112,7 +1112,7 @@
       "file": "DRA.BIN",
       "offset": "0xB2C2",
       "off": "00",
-      "on": "49"
+      "on": "45"
     },
     {
       "file": "DRA.BIN",
@@ -1142,7 +1142,7 @@
       "file": "DRA.BIN",
       "offset": "0xB5E2",
       "off": "00",
-      "on": "20"
+      "on": "24"
     },
     {
       "file": "DRA.BIN",
@@ -1154,7 +1154,7 @@
       "file": "DRA.BIN",
       "offset": "0xB722",
       "off": "32",
-      "on": "39"
+      "on": "28"
     },
     {
       "file": "DRA.BIN",
@@ -1173,6 +1173,12 @@
       "offset": "0xB8B2",
       "off": "00",
       "on": "1E"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0xB902",
+      "off": "32",
+      "on": "2A"
     },
     {
       "file": "DRA.BIN",
@@ -1238,7 +1244,7 @@
       "file": "DRA.BIN",
       "offset": "0xC1C2",
       "off": "00",
-      "on": "14"
+      "on": "0F"
     },
     {
       "file": "DRA.BIN",
@@ -1250,7 +1256,7 @@
       "file": "DRA.BIN",
       "offset": "0xC2DA",
       "off": "00",
-      "on": "4D"
+      "on": "3C"
     },
     {
       "file": "DRA.BIN",
