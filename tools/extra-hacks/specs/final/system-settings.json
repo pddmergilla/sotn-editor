@@ -2,7 +2,7 @@
   "id": "system-settings",
   "label": "Minimap setting and item shortcut button",
   "category": "Menus and presentation",
-  "summary": "System gains a setting to show or hide the minimap, and Button Config gains a remappable item shortcut.",
+  "summary": "System gains a minimap setting, and Button Config gains a remappable item shortcut.",
   "edits": [
     {
       "file": "DRA.BIN",
@@ -25,212 +25,56 @@
     {
       "file": "DRA.BIN",
       "offset": "0x2F124",
-      "off": "0000000000000000000000000000000000",
-      "on": "0480083CE7C008910C80043CC4F2843403"
+      "off": "00000000000000",
+      "on": "294E5354414E54"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F12C",
+      "off": "00000000",
+      "on": "374F4C46"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F131",
+      "off": "0000000000",
+      "on": "244153481A"
     },
     {
       "file": "DRA.BIN",
       "offset": "0x2F137",
-      "off": "00",
-      "on": "11"
+      "off": "00000000",
+      "on": "394553FF"
     },
     {
       "file": "DRA.BIN",
-      "offset": "0x2F13C",
-      "off": "000000000000000000",
-      "on": "0C80043CD7F2843412"
+      "offset": "0x2F144",
+      "off": "00000000000000",
+      "on": "294E5354414E54"
     },
     {
       "file": "DRA.BIN",
-      "offset": "0x2F146",
+      "offset": "0x2F14C",
+      "off": "00000000",
+      "on": "374F4C46"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F151",
+      "off": "0000000000",
+      "on": "244153481A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F157",
       "off": "000000",
-      "on": "053490"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F14A",
-      "off": "0000000000000000",
-      "on": "0634FBD9030C2138"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F153",
-      "off": "0000",
-      "on": "0228"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F156",
-      "off": "000000",
-      "on": "BF8F24"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F15A",
-      "off": "000000000000",
-      "on": "B18F2FE10308"
+      "on": "2E4FFF"
     },
     {
       "file": "DRA.BIN",
       "offset": "0x2F164",
-      "off": "0000000000",
-      "on": "02E6030C02"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F16A",
-      "off": "0000",
-      "on": "0434"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F16E",
-      "off": "000000",
-      "on": "088E06"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F172",
-      "off": "000000",
-      "on": "093403"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F176",
-      "off": "0000",
-      "on": "0911"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F17C",
-      "off": "00000000",
-      "on": "32F10308"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F184",
-      "off": "000000000000000000",
-      "on": "0C80043CF8F2843402"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F18E",
-      "off": "0000000000000000",
-      "on": "05346EE6030C2130"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F198",
-      "off": "00000000000000000000000000",
-      "on": "0980083C9474099596740A9510"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1A6",
-      "off": "000000",
-      "on": "2B3103"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1AA",
-      "off": "0000",
-      "on": "6011"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1B0",
-      "off": "00000000",
-      "on": "5AF10308"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1B8",
-      "off": "000000000000000000",
-      "on": "0480083CE7C00B9140"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1C2",
-      "off": "000000",
-      "on": "293104"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1C6",
-      "off": "0000",
-      "on": "2011"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1CC",
-      "off": "00",
-      "on": "01"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1CE",
-      "off": "000000",
-      "on": "6B390B"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1D3",
-      "off": "00",
-      "on": "10"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1D9",
-      "off": "00000000",
-      "on": "80493104"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1DE",
-      "off": "0000",
-      "on": "2011"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1E4",
-      "off": "0000",
-      "on": "2158"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1E8",
-      "off": "00",
-      "on": "05"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1EB",
-      "off": "00",
-      "on": "10"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1F1",
-      "off": "00000000",
-      "on": "20493105"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1F6",
-      "off": "0000",
-      "on": "2011"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1FC",
-      "off": "00",
-      "on": "01"
-    },
-    {
-      "file": "DRA.BIN",
-      "offset": "0x2F1FE",
-      "off": "000000000000000000000000000000000000",
-      "on": "0B34E7C00BA1FED1040C33060434D1F40308"
+      "off": "000000000000000000000000000000000000000000000000000000000000",
+      "on": "456E61626C6520446F776E817B4A756D7020746F20496E7374616E742057"
     },
     {
       "file": "DRA.BIN",
@@ -398,7 +242,7 @@
       "file": "DRA.BIN",
       "offset": "0x2F2C9",
       "off": "0000000000000000",
-      "on": "4D494E494D41501A"
+      "on": "2D494E494D41501A"
     },
     {
       "file": "DRA.BIN",
@@ -416,7 +260,7 @@
       "file": "DRA.BIN",
       "offset": "0x2F2DC",
       "off": "0000000000000000",
-      "on": "4D494E494D41501A"
+      "on": "2D494E494D41501A"
     },
     {
       "file": "DRA.BIN",
@@ -439,14 +283,20 @@
     {
       "file": "DRA.BIN",
       "offset": "0x2F2F8",
-      "off": "000000000000000000000000000000000000000000000000000000000000000000",
-      "on": "53686F77206D696E696D61703A204C65667420596573202F205269676874204E6F"
+      "off": "0000000000000000000000000000000000000000000000000000000000000000",
+      "on": "456E61626C65204D696E696D617020646973706C6179204F4E206F72204F4646"
     },
     {
       "file": "DRA.BIN",
       "offset": "0x42600",
-      "off": "0100293167",
-      "on": "8C3C030800"
+      "off": "01",
+      "on": "8C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42602",
+      "off": "293167",
+      "on": "030800"
     },
     {
       "file": "DRA.BIN",
@@ -551,5 +401,457 @@
       "on": "08"
     }
   ],
-  "requires": []
+  "requires": [],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "7C",
+          "tunable": []
+        },
+        {
+          "bytes": "E0",
+          "tunable": []
+        },
+        {
+          "bytes": "80",
+          "tunable": []
+        },
+        {
+          "bytes": "0480083CE7C008",
+          "tunable": []
+        },
+        {
+          "bytes": "0C80043C",
+          "tunable": []
+        },
+        {
+          "bytes": "F284340300",
+          "tunable": []
+        },
+        {
+          "bytes": "11000000",
+          "tunable": []
+        },
+        {
+          "bytes": "12000534900006",
+          "tunable": []
+        },
+        {
+          "bytes": "FBD9030C",
+          "tunable": []
+        },
+        {
+          "bytes": "3800022800",
+          "tunable": []
+        },
+        {
+          "bytes": "8F2400",
+          "tunable": []
+        },
+        {
+          "bytes": "02E6030C020004340000088E06000934030009110000000032F103080000",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "083403",
+          "tunable": []
+        },
+        {
+          "bytes": "6816",
+          "tunable": []
+        },
+        {
+          "bytes": "0C80043CE9F28434FBD90308",
+          "tunable": []
+        },
+        {
+          "bytes": "04800F3C26CAEF95",
+          "tunable": []
+        },
+        {
+          "bytes": "24482F0103",
+          "tunable": []
+        },
+        {
+          "bytes": "2015",
+          "tunable": []
+        },
+        {
+          "bytes": "E9890308",
+          "tunable": []
+        },
+        {
+          "bytes": "217040012150",
+          "tunable": []
+        },
+        {
+          "bytes": "04800B3C18CA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "80",
+          "tunable": []
+        },
+        {
+          "bytes": "4A351ACA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "20",
+          "tunable": []
+        },
+        {
+          "bytes": "4A351CCA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "40",
+          "tunable": []
+        },
+        {
+          "bytes": "4A351ECA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "10",
+          "tunable": []
+        },
+        {
+          "bytes": "4A3582890308",
+          "tunable": []
+        },
+        {
+          "bytes": "33484F57",
+          "tunable": []
+        },
+        {
+          "bytes": "4D494E494D41501A",
+          "tunable": []
+        },
+        {
+          "bytes": "394553FF",
+          "tunable": []
+        },
+        {
+          "bytes": "33484F57",
+          "tunable": []
+        },
+        {
+          "bytes": "4D494E494D41501A",
+          "tunable": []
+        },
+        {
+          "bytes": "2E4FFF",
+          "tunable": []
+        },
+        {
+          "bytes": "2954454D",
+          "tunable": []
+        },
+        {
+          "bytes": "33484F5254435554FF",
+          "tunable": []
+        },
+        {
+          "bytes": "53686F77206D696E696D61703A204C65667420596573202F205269676874204E",
+          "tunable": []
+        },
+        {
+          "bytes": "8C",
+          "tunable": []
+        },
+        {
+          "bytes": "030800",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "0F34",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "30D2030800000000",
+          "tunable": []
+        },
+        {
+          "bytes": "80",
+          "tunable": []
+        },
+        {
+          "bytes": "853C",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "6C",
+          "tunable": []
+        },
+        {
+          "bytes": "493C030800",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "593C",
+          "tunable": []
+        },
+        {
+          "bytes": "0800",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        }
+      ],
+      "guards": [
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F12B",
+          "bytes": "91",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F130",
+          "bytes": "C4",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F13C",
+          "bytes": "0C80043CD7F28434",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F14B",
+          "bytes": "34",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F150",
+          "bytes": "21",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F156",
+          "bytes": "BF",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F15A",
+          "bytes": "B18F2FE10308",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F184",
+          "bytes": "0C80043CF8F2843402",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F18E",
+          "bytes": "05346EE6030C2130",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F198",
+          "bytes": "0980083C9474099596740A9510",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1A6",
+          "bytes": "2B3103",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1AA",
+          "bytes": "6011",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1B0",
+          "bytes": "5AF10308",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1B8",
+          "bytes": "0480083CE7C00B9140",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1C2",
+          "bytes": "293104",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1C6",
+          "bytes": "2011",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1CC",
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1CE",
+          "bytes": "6B390B",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1D3",
+          "bytes": "10",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1D9",
+          "bytes": "80493104",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1DE",
+          "bytes": "2011",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1E4",
+          "bytes": "2158",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1E8",
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1EB",
+          "bytes": "10",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1F1",
+          "bytes": "20493105",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1F6",
+          "bytes": "2011",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1FC",
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F1FE",
+          "bytes": "0B34E7C00BA1FED1040C33060434D1F40308",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x2F318",
+          "bytes": "6F",
+          "tunable": []
+        },
+        {
+          "file": "DRA.BIN",
+          "offset": "0x42601",
+          "bytes": "3C",
+          "tunable": []
+        }
+      ]
+    }
+  ]
 }

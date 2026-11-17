@@ -26,14 +26,14 @@ const FEATURES = [
       /^Creature-Hammer-Only-LIT/, /^Cerberus-Water-Neutral/, /^Succubus-All-Attack-Damage/, /^Succubus-Wing-Spike-Damage/,
       /^Pentagram-35MP/, /^Potions-900/, /^Librarian-/, /^Water-Enemy-Attacks/, /^Dark-Resist-Undead/, /^Enemy-Element-Only/,
       /^Ascaln-Gram-Sword-Familiar-DAR/, /^Greater-Demon-Dracula-Hands-DEF/, /^Alucard-Rebalance/,
-      /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/, /^Wall-Slam-Half-Hit-Damage/]},
+      /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/, /^Wall-Slam-Half-Hit-Damage/, /^Warg-HP444-DEF5-/]},
   {id: 'text', kind: 'text', title: 'Credits and prologue text', category: 'Text', match: [/^Credits-Oy-Final/, /^Credits-Centered/, /^Prologue-Welcome-/]},
   {id: 'content', kind: 'content', toggle: true, title: 'ASS -Final- Castle', category: FINAL,
-    about: 'The revised castle: restored maps, new pickups and relic placements, and the -Final- relic progression.',
+    about: 'The revised castle: restored maps, new pickups and relic placements, the -Final- relic progression, and removed stage-name popups plus selected boss and enemy drops.',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
       /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/,
       /^Clock-Room-Statues-/, /^Entity-List-Sync-/, /^Entity-Slot-Overlap-Fix/, /^Jewel-Sword-Door-/, /^Relic-Orb-Vertical-Sync/, /^Skelerang-Slots-/,
-      /^Mudman-CHI-/, /^Warg-NP3-Gate/]},
+      /^Mudman-CHI-/, /^Warg-NP3-Gate/, /^Remove-All-Stage-Name-Popups-ASS-Final/, /^Remove-Boss-And-Selected-Enemy-Drops-ASS-Final/]},
 
   // ---- Boss AI: one patch for every boss.
   {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',
@@ -45,7 +45,7 @@ const FEATURES = [
 
   // ---- Normal enemies: one patch.
   {id: 'enemy-ai', kind: 'hack', category: ENEMY, title: 'Enemy AI pack',
-    match: [/^Frozen-Half-/, /^Lesser-Demon-/, /^Skull-Lord-/, /^Wereskeleton-/, /^Enemy-No-Idle/, /^Bone-Ark-/, /^Balloon-Pod-/,
+    match: [/^Plate-Lord-No-Walking-Choices-/, /^Frozen-Half-/, /^Lesser-Demon-/, /^Skull-Lord-/, /^Wereskeleton-/, /^Enemy-No-Idle/, /^Bone-Ark-/, /^Balloon-Pod-/,
       /^Stone-Skull-/, /^Salome-/, /^Guardian-/, /^Sniper-/, /^Archer-/, /^Hammer-Blade-Gurkha/, /^Salem-Witch-/],
     about: 'Enemies fight with new AI and new attack patterns.'},
 
@@ -53,8 +53,9 @@ const FEATURES = [
   {id: 'weapons', kind: 'hack', category: WEAPON, title: 'New Weapons and Specials',
     match: [/^Hunter-Sword-/, /^Stone-Sword-/, /^Alucard-Sword-Soul-Steal/, /^Terminus-Est-/, /^Elemental-Swords-/, /^Icebrand-Zero-Cel/,
       /^Kidlat-/, /^Hunting-Blade-/, /^Spirit-Wand-/, /Gram-Pentagram-Special/, /^Staurolite-/, /^Fire-Rings-/,
-      /^Shield-Spells-/, /^Alucard-Shield-/, /^Medusa-Shield-Laser/, /^Axe-Armor-/, /^Melee-Ranged-/, /^Ranged-Weapon-Subweapons/],
-    about: 'New weapons, and new special moves for many existing ones.'},
+      /^Shield-Spells-/, /^Alucard-Shield-/, /^Medusa-Shield-Laser/, /^Axe-Armor-/, /^Melee-Ranged-/, /^Ranged-Weapon-Subweapons/,
+      /^Alucard-Hadouken-/],
+    about: 'New weapons, new special moves, and Alucard Hadouken height fixed while crouching.'},
 
   // ---- Familiars.
   {id: 'dawn', kind: 'hack', category: FAMILIAR, title: 'Dawn familiar', match: [/^Dawn-/],
@@ -92,8 +93,8 @@ const FEATURES = [
   {id: 'bat-form', kind: 'hack', category: ALUCARD, title: 'Bat form and Wing Smash', match: [/^Bat-Form-/, /^Wing-Smash-/, /^Power-of-Mist-Infinite/],
     about: 'Bat form flies faster, and Power of Mist makes Wing Smash unlimited.'},
   {id: 'instant-wolf', kind: 'hack', category: ALUCARD, title: 'Instant wolf transformation',
-    match: [/^Alucard-Instant-Wolf/, /^Alucard-Restore-Snapshot-Sync/],
-    about: 'Alucard turns into the wolf at once, and Down + jump starts a Wolf Dash run.'},
+    match: [/^Alucard-Instant-Wolf/, /^Alucard-Restore-Snapshot-Sync/, /^Wolf-Dash-System-Setting-/, /^Instant-Wolf-Dash-Short-Description-/],
+    about: 'Alucard turns into the wolf at once. Includes the Instant Wolf Dash Yes/No setting for Down + jump.'},
   {id: 'heart-refresh', kind: 'hack', category: ALUCARD, title: 'Heart Refresh shortcut', match: [/^Heart-Refresh-/],
     about: 'Heart Refresh runs in real time from the item shortcut.'},
   {id: 'hellfire', kind: 'hack', category: ALUCARD, title: 'Hellfire casts in place', match: [/^Hellfire-/],
@@ -114,7 +115,7 @@ const FEATURES = [
   {id: 'element-line', kind: 'hack', category: MENU, title: 'RES/WEAK element line', match: [/^Menu-RES-WEAK/],
     about: 'The main menu shows Alucard\'s resistances and weaknesses.'},
   {id: 'system-settings', kind: 'hack', category: MENU, title: 'Minimap setting and item shortcut button', match: [/^System-Settings/],
-    about: 'System gains a setting to show or hide the minimap, and Button Config gains a remappable item shortcut.'},
+    about: 'System gains a minimap setting, and Button Config gains a remappable item shortcut.'},
   {id: 'damage-colors-weak', kind: 'hack', category: MENU, title: 'Damage number colors: weak and resist', match: [/^Damage-Number-(Colors|Helper)-/],
     about: 'Weakness and resisted hits get their own damage number colors (adds to Damage Number Colors).'},
   {id: 'title-final', kind: 'hack', category: MENU, title: 'Title: Alternate Scarlet Symphony -Final-', fixed: true, match: [/^Title-Alternate/, /Title-Placement/],
@@ -137,7 +138,7 @@ const FEATURES = [
 
   // ---- Maria Mode (playable Maria). One patch, like Richter Mode.
   {id: 'maria-mode', kind: 'hack', category: MARIA, title: 'Maria Mode',
-    match: [/^Maria-/, /^Main-Menu-Maria-/, /Succubus.Maria/],
+    match: [/^Maria-/, /^Alchemy-Maria-/, /^Main-Menu-Maria-/, /Succubus.Maria/],
     about: 'Play the castle as Maria, with her own moves, spells, guardian beasts, pause guide and voices.'}
 ];
 

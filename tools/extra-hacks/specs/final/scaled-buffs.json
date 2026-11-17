@@ -288,5 +288,200 @@
     }
   ],
   "requires": [],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "208251824F4D",
+          "tunable": []
+        },
+        {
+          "bytes": "20436F7720506F776572000000",
+          "tunable": []
+        },
+        {
+          "bytes": "496E63726561736520",
+          "tunable": []
+        },
+        {
+          "bytes": "4546207768656E206869740000",
+          "tunable": []
+        },
+        {
+          "bytes": "11",
+          "tunable": []
+        },
+        {
+          "bytes": "0780083C162F",
+          "tunable": []
+        },
+        {
+          "bytes": "851480093C2C98298D09800A3CB87B4A8D2A4008002B4809002140090143500A",
+          "tunable": []
+        },
+        {
+          "bytes": "1800480112480000211049",
+          "tunable": []
+        },
+        {
+          "bytes": "1027482802",
+          "tunable": []
+        },
+        {
+          "bytes": "0015000000000F2702240800E003000000000780083C162F08851480093C2898298D09800A3CBC7B4B8D04",
+          "tunable": []
+        },
+        {
+          "bytes": "001914000C341B006C011260",
+          "tunable": []
+        },
+        {
+          "bytes": "21104C00040020110A000C341B",
+          "tunable": []
+        },
+        {
+          "bytes": "6C011260000021104C0031FF0308",
+          "tunable": []
+        },
+        {
+          "bytes": "00000000E703023408",
+          "tunable": []
+        },
+        {
+          "bytes": "E003247C42AD00",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0780083C162F08851480093C34982E8D09",
+          "tunable": []
+        },
+        {
+          "bytes": "09",
+          "tunable": []
+        },
+        {
+          "bytes": "2A40",
+          "tunable": []
+        },
+        {
+          "bytes": "002B700E",
+          "tunable": []
+        },
+        {
+          "bytes": "2170C801CC7B2A8DDC",
+          "tunable": []
+        },
+        {
+          "bytes": "2B",
+          "tunable": []
+        },
+        {
+          "bytes": "4060080021504C0121586C01CC",
+          "tunable": []
+        },
+        {
+          "bytes": "DC",
+          "tunable": []
+        },
+        {
+          "bytes": "08002D25C0",
+          "tunable": []
+        },
+        {
+          "bytes": "2C",
+          "tunable": []
+        },
+        {
+          "bytes": "D07B2A8DE07B2B8D43600C0018008E011260000021504C0121586C01D07B2AADE0",
+          "tunable": []
+        },
+        {
+          "bytes": "2B",
+          "tunable": []
+        },
+        {
+          "bytes": "04002925F4FF2D1521700001",
+          "tunable": []
+        },
+        {
+          "bytes": "0980033C",
+          "tunable": []
+        },
+        {
+          "bytes": "B87B628CC87B638C431002002110",
+          "tunable": []
+        },
+        {
+          "bytes": "000980033CC87B62AC",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0980033C",
+          "tunable": []
+        },
+        {
+          "bytes": "C47B628CD47B638C431002002110",
+          "tunable": []
+        },
+        {
+          "bytes": "000980033CD47B62AC",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "A68B0308",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "1027",
+          "tunable": []
+        },
+        {
+          "bytes": "0F27",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "1F8A0308",
+          "tunable": []
+        },
+        {
+          "bytes": "65D2",
+          "tunable": []
+        },
+        {
+          "bytes": "F4D3",
+          "tunable": []
+        }
+      ],
+      "guards": []
+    }
+  ],
   "joinInto": "dark-stats"
 }

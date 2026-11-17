@@ -1184,7 +1184,7 @@
   };
   $("duplicateEntity").onclick=()=>{
     const e=state.selectedEntity,b=currentEntityBank();if(!e||!b||!canAddEntity())return;
-    const choice={entity:e},copy=ET.makeEntity(state.discStage,choice,e.x+16,e.y+16);
+    const choice={entity:e},copy=ET.makeEntity(state.discStage,choice,e.x+16,e.y+16,b);
     if(!copy){setStatus("No free slot or persistence index for duplication.");return;}
     const end=b.findIndex(v=>v.x===-1&&v.y===-1),previous=entityEditState();b.splice(end>=0?end:b.length,0,copy);state.selectedEntity=copy;
     pushUndo("entity duplication",()=>{b.splice(b.indexOf(copy),1);restoreEntityEditState(previous);if(currentEntityBank()===b)state.selectedEntity=e;});
@@ -1311,7 +1311,7 @@
       setStatus("Checking edited overlays and disc sectors...");
       const changes=await collectChanges();
       const stem=state.discName.replace(/\.[^.]+$/,"");
-      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v8.1"):C.modifiedBlob(state.disc.file,changes);
+      const blob=kind==="ppf"?C.ppf3Blob(changes,"SOTN Editor v8.2"):C.modifiedBlob(state.disc.file,changes);
       const saved=await saveBlob(blob,`${stem}-edits.${kind==="ppf"?"ppf":"bin"}`,kind==="bin");
       window.SotnSiteStats?.count(kind==="ppf"?"editor/export-ppf":"editor/build-bin");
       setStatus(`${kind==="ppf"?"PPF3 patch":"Modified BIN"} ${saved.downloaded?"download started":"saved and verified"} (${changes.length} changed sectors). ${saved.warning||""}`);

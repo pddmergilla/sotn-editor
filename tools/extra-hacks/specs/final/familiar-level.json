@@ -23,5 +23,24 @@
       "on": "64004224"
     }
   ],
-  "requires": []
+  "requires": [],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "76",
+          "tunable": []
+        },
+        {
+          "bytes": "31",
+          "tunable": []
+        },
+        {
+          "bytes": "64004224",
+          "tunable": []
+        }
+      ],
+      "guards": []
+    }
+  ]
 }

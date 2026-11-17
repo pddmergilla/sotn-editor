@@ -2,8 +2,680 @@
   "id": "instant-wolf",
   "label": "Instant wolf transformation",
   "category": "Alucard abilities and spells",
-  "summary": "Alucard turns into the wolf at once, and Down + jump starts a Wolf Dash run.",
+  "summary": "Alucard turns into the wolf at once. Includes the Instant Wolf Dash Yes/No setting for Down + jump.",
   "edits": [
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F124",
+      "off": "00000000000000",
+      "on": "294E5354414E54"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F12C",
+      "off": "00000000",
+      "on": "374F4C46"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F131",
+      "off": "0000000000",
+      "on": "244153481A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F137",
+      "off": "00000000",
+      "on": "394553FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F144",
+      "off": "00000000000000",
+      "on": "294E5354414E54"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F14C",
+      "off": "00000000",
+      "on": "374F4C46"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F151",
+      "off": "0000000000",
+      "on": "244153481A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F157",
+      "off": "000000",
+      "on": "2E4FFF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F164",
+      "off": "000000000000000000000000000000000000000000000000000000000000",
+      "on": "456E61626C6520446F776E817B4A756D7020746F20576F6C662044617368"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F214",
+      "off": "00",
+      "on": "07"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F216",
+      "off": "000000",
+      "on": "083403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F21A",
+      "off": "0000",
+      "on": "6816"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F220",
+      "off": "000000000000000000000000",
+      "on": "0C80043CE9F28434FBD90308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F230",
+      "off": "0000000000000000",
+      "on": "04800F3C26CAEF95"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F23C",
+      "off": "0000000000",
+      "on": "24482F0103"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F242",
+      "off": "0000",
+      "on": "2015"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F248",
+      "off": "00000000",
+      "on": "E9890308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F250",
+      "off": "000000000000",
+      "on": "217040012150"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F258",
+      "off": "0000000000000000",
+      "on": "04800B3C18CA6F95"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F264",
+      "off": "0000000000",
+      "on": "2460CF0102"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F26A",
+      "off": "0000",
+      "on": "8011"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F270",
+      "off": "00",
+      "on": "80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F272",
+      "off": "000000000000",
+      "on": "4A351ACA6F95"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F27C",
+      "off": "0000000000",
+      "on": "2460CF0102"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F282",
+      "off": "0000",
+      "on": "8011"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F288",
+      "off": "00",
+      "on": "20"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F28A",
+      "off": "000000000000",
+      "on": "4A351CCA6F95"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F294",
+      "off": "0000000000",
+      "on": "2460CF0102"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F29A",
+      "off": "0000",
+      "on": "8011"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2A0",
+      "off": "00",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2A2",
+      "off": "000000000000",
+      "on": "4A351ECA6F95"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2AC",
+      "off": "0000000000",
+      "on": "2460CF0102"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2B2",
+      "off": "0000",
+      "on": "8011"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2B8",
+      "off": "00",
+      "on": "10"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2BA",
+      "off": "000000000000",
+      "on": "4A3582890308"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2C4",
+      "off": "00000000",
+      "on": "33484F57"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2C9",
+      "off": "0000000000000000",
+      "on": "2D494E494D41501A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2D2",
+      "off": "00000000",
+      "on": "394553FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2D7",
+      "off": "00000000",
+      "on": "33484F57"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2DC",
+      "off": "0000000000000000",
+      "on": "2D494E494D41501A"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2E5",
+      "off": "000000",
+      "on": "2E4FFF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2E9",
+      "off": "00000000",
+      "on": "2954454D"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2EE",
+      "off": "000000000000000000",
+      "on": "33484F5254435554FF"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x2F2F8",
+      "off": "0000000000000000000000000000000000000000000000000000000000000000",
+      "on": "456E61626C65204D696E696D617020646973706C6179204F4E206F72204F4646"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425C1",
+      "off": "00A4AF0800A5AF0C",
+      "on": "80083CE7C0089100"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425CA",
+      "off": "A6AF10",
+      "on": "000001"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425CE",
+      "off": "A7AF14",
+      "on": "093105"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425D2",
+      "off": "A8AF18",
+      "on": "201100"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425D6",
+      "off": "A9AF1C00AAAF2000ABAF24",
+      "on": "00000C80043CD7F2843403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425E2",
+      "off": "ACAF28",
+      "on": "001000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425E6",
+      "off": "ADAF2C00AEAF3000AFAF40",
+      "on": "00000C80043CC4F2843412"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x425F2",
+      "off": "BFAF0980083C9074099594740A9501",
+      "on": "05349000063421380002FBD9030C00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42602",
+      "off": "293167002011F0004A3104800B3C18CA6B250B800C3C",
+      "on": "00000480083CE7C00891000000000200093105002011"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42619",
+      "off": "CE8C2508000D342170000000",
+      "on": "0000000C80043C44F1843403"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42626",
+      "off": "6F95",
+      "on": "0010"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4262A",
+      "off": "848DF000EF310200E011FFFFAD252570C40102006B25F8FFA01504",
+      "on": "00000C80043C24F1843412000534A000063421380002FBD9030C00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42646",
+      "off": "8C2507800B3CEC2E6F8D2770C0012478EE01EC2E6FAD51",
+      "on": "00002800BF8F2400B18F2FE103080000000002E6030C02"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4265E",
+      "off": "401180",
+      "on": "043400"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42662",
+      "off": "4B3108",
+      "on": "088E00"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42666",
+      "off": "60159F",
+      "on": "000006"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4266A",
+      "off": "0C",
+      "on": "09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4266C",
+      "off": "20",
+      "on": "07"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4266E",
+      "off": "4B3105",
+      "on": "091100"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42672",
+      "off": "6015A0",
+      "on": "000007"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42676",
+      "off": "0C",
+      "on": "09"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42678",
+      "off": "10",
+      "on": "0C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4267A",
+      "off": "4B3102",
+      "on": "091100"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4267E",
+      "off": "6015A1",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42682",
+      "off": "0C3446000C3440680C",
+      "on": "000032F10308000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4268C",
+      "off": "2168AC0180680D002168AC0180680D000A800E3C2168AE01284BAE95A07B0F8DA47B",
+      "on": "0C80043CF8F28434020005346EE6030C2130000001000F3407000010000000000C80"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426AF",
+      "off": "8D748B030CFF7FCE313A00A010",
+      "on": "3C64F18434020005346EE6030C"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426BD",
+      "off": "28E00138",
+      "on": "30000002"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426C2",
+      "off": "A01407",
+      "on": "0F3409"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426C6",
+      "off": "0F",
+      "on": "08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426C8",
+      "off": "762FE4",
+      "on": "947409"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426CC",
+      "off": "FC2EE58D34",
+      "on": "96740A9510"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426D2",
+      "off": "80142C2FE48D32",
+      "on": "2C311B00801500"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426DA",
+      "off": "A014",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426DD",
+      "off": "0005",
+      "on": "8008"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426E0",
+      "off": "0700A534242085",
+      "on": "E7C00B91000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426E8",
+      "off": "2E",
+      "on": "40"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426EA",
+      "off": "80140434E4950634E5950500842C2A",
+      "on": "2C310F0080150000000000804C3108"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426FB",
+      "off": "1040",
+      "on": "1500"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x426FE",
+      "off": "A52C2800A01021200C018A798490",
+      "on": "000000204C310D00801100000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4270D",
+      "off": "7C058D05008014047C048D03",
+      "on": "00000025586F010600001000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4271A",
+      "off": "AC100000000020008C1400",
+      "on": "0000FFFFEC3924588B0102"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42727",
+      "off": "0046",
+      "on": "1000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4272A",
+      "off": "043414008411007C058D007C0CAD3400A5AFE82EE68DEC2EE78D3800A6AF3C",
+      "on": "000026586F01E7C00BA1FED1040C33060434D1F40308000000005AF1030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4274A",
+      "off": "A7AF80",
+      "on": "000001"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4274E",
+      "off": "0634E82EE6AD6E3B040CEC2EE6AD07800F3C3800A68F3C",
+      "on": "21300300201400000000EE8B030800000000618C030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42766",
+      "off": "A78FE82EE6ADEC2EE7AD0980083C34",
+      "on": "00000480083CE7C008910000000002"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42776",
+      "off": "A58FE9890308",
+      "on": "083107000015"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x4277D",
+      "off": "7C05ADA08A030C3400AEAF060040100980083CA87B058D34",
+      "on": "00000003004015202F088F1CC1030800000000F2C0030800"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42796",
+      "off": "AE8F000000002328AE",
+      "on": "00001CC10308000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427A0",
+      "off": "A87B05AD40",
+      "on": "0000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427A6",
+      "off": "BF8F",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427AA",
+      "off": "A38F04",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427AE",
+      "off": "A48F08",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427B2",
+      "off": "A58F0C",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427B6",
+      "off": "A68F10",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427BA",
+      "off": "A78F14",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427BE",
+      "off": "A88F18",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427C2",
+      "off": "A98F1C",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427C6",
+      "off": "AA8F20",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427CA",
+      "off": "AB8F24",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427CE",
+      "off": "AC8F28",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427D2",
+      "off": "AD8F2C",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427D6",
+      "off": "AE8F30",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427DA",
+      "off": "AF8F50",
+      "on": "000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427DE",
+      "off": "BD270980023C4C74428C08",
+      "on": "0000000000000000000000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x427EA",
+      "off": "E003",
+      "on": "0000"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x42FB0",
+      "off": "74002014",
+      "on": "D3890308"
+    },
     {
       "file": "DRA.BIN",
       "offset": "0x5037C",
@@ -61,14 +733,20 @@
     {
       "file": "DRA.BIN",
       "offset": "0x503BC",
-      "off": "19C1030810",
-      "on": "03002A2D2B"
+      "off": "19C1",
+      "on": "DA89"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x503C0",
+      "off": "10",
+      "on": "03"
     },
     {
       "file": "DRA.BIN",
       "offset": "0x503C2",
       "off": "A4271380033C9475638C6766A53418006500C31703001020",
-      "on": "4011202F088FEC2E0B8FE82E0C8F662F0D97010008312500"
+      "on": "2A2D202F088FEC2E0B8FE82E0C8F662F0D97010008312500"
     },
     {
       "file": "DRA.BIN",
@@ -330,6 +1008,24 @@
     },
     {
       "file": "DRA.BIN",
+      "offset": "0x584B4",
+      "off": "2800",
+      "on": "7089"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5C4B4",
+      "off": "06",
+      "on": "08"
+    },
+    {
+      "file": "DRA.BIN",
+      "offset": "0x5C4C0",
+      "off": "02E6",
+      "on": "9689"
+    },
+    {
+      "file": "DRA.BIN",
       "offset": "0x6B290",
       "off": "0780023CEC2E428C",
       "on": "DFC0030800000000"
@@ -455,5 +1151,785 @@
       "on": "0000"
     }
   ],
-  "requires": []
+  "requires": [
+    "system-settings"
+  ],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "0480083CE7C008",
+          "tunable": []
+        },
+        {
+          "bytes": "0C80043C",
+          "tunable": []
+        },
+        {
+          "bytes": "F284340300",
+          "tunable": []
+        },
+        {
+          "bytes": "11000000",
+          "tunable": []
+        },
+        {
+          "bytes": "12000534900006",
+          "tunable": []
+        },
+        {
+          "bytes": "FBD9030C",
+          "tunable": []
+        },
+        {
+          "bytes": "3800022800",
+          "tunable": []
+        },
+        {
+          "bytes": "8F2400",
+          "tunable": []
+        },
+        {
+          "bytes": "02E6030C020004340000088E06000934030009110000000032F103080000",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "083403",
+          "tunable": []
+        },
+        {
+          "bytes": "6816",
+          "tunable": []
+        },
+        {
+          "bytes": "0C80043CE9F28434FBD90308",
+          "tunable": []
+        },
+        {
+          "bytes": "04800F3C26CAEF95",
+          "tunable": []
+        },
+        {
+          "bytes": "24482F0103",
+          "tunable": []
+        },
+        {
+          "bytes": "2015",
+          "tunable": []
+        },
+        {
+          "bytes": "E9890308",
+          "tunable": []
+        },
+        {
+          "bytes": "217040012150",
+          "tunable": []
+        },
+        {
+          "bytes": "04800B3C18CA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "80",
+          "tunable": []
+        },
+        {
+          "bytes": "4A351ACA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "20",
+          "tunable": []
+        },
+        {
+          "bytes": "4A351CCA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "40",
+          "tunable": []
+        },
+        {
+          "bytes": "4A351ECA6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "2460CF0102",
+          "tunable": []
+        },
+        {
+          "bytes": "8011",
+          "tunable": []
+        },
+        {
+          "bytes": "10",
+          "tunable": []
+        },
+        {
+          "bytes": "4A3582890308",
+          "tunable": []
+        },
+        {
+          "bytes": "33484F57",
+          "tunable": []
+        },
+        {
+          "bytes": "4D494E494D41501A",
+          "tunable": []
+        },
+        {
+          "bytes": "394553FF",
+          "tunable": []
+        },
+        {
+          "bytes": "33484F57",
+          "tunable": []
+        },
+        {
+          "bytes": "4D494E494D41501A",
+          "tunable": []
+        },
+        {
+          "bytes": "2E4FFF",
+          "tunable": []
+        },
+        {
+          "bytes": "2954454D",
+          "tunable": []
+        },
+        {
+          "bytes": "33484F5254435554FF",
+          "tunable": []
+        },
+        {
+          "bytes": "53686F77206D696E696D61703A204C65667420596573202F205269676874204E",
+          "tunable": []
+        },
+        {
+          "bytes": "00A4AF0800A5AF0C",
+          "tunable": []
+        },
+        {
+          "bytes": "A6AF10",
+          "tunable": []
+        },
+        {
+          "bytes": "A7AF14",
+          "tunable": []
+        },
+        {
+          "bytes": "A8AF18",
+          "tunable": []
+        },
+        {
+          "bytes": "A9AF1C00AAAF2000ABAF24",
+          "tunable": []
+        },
+        {
+          "bytes": "ACAF28",
+          "tunable": []
+        },
+        {
+          "bytes": "ADAF2C00AEAF3000AFAF40",
+          "tunable": []
+        },
+        {
+          "bytes": "BFAF0980083C9074099594740A958C",
+          "tunable": []
+        },
+        {
+          "bytes": "030800000000F0004A3104800B3C18CA6B250B800C3C",
+          "tunable": []
+        },
+        {
+          "bytes": "CE8C2504000D342170000000",
+          "tunable": []
+        },
+        {
+          "bytes": "6F95",
+          "tunable": []
+        },
+        {
+          "bytes": "848D01000F340200E011FFFFAD252570C40102006B25F8FFA01504",
+          "tunable": []
+        },
+        {
+          "bytes": "8C2507800B3CEC2E6F8D2770C0012478EE01EC2E6FAD51",
+          "tunable": []
+        },
+        {
+          "bytes": "401180",
+          "tunable": []
+        },
+        {
+          "bytes": "4B3108",
+          "tunable": []
+        },
+        {
+          "bytes": "60159F",
+          "tunable": []
+        },
+        {
+          "bytes": "0C",
+          "tunable": []
+        },
+        {
+          "bytes": "20",
+          "tunable": []
+        },
+        {
+          "bytes": "4B3105",
+          "tunable": []
+        },
+        {
+          "bytes": "6015A0",
+          "tunable": []
+        },
+        {
+          "bytes": "0C",
+          "tunable": []
+        },
+        {
+          "bytes": "10",
+          "tunable": []
+        },
+        {
+          "bytes": "4B3102",
+          "tunable": []
+        },
+        {
+          "bytes": "6015A1",
+          "tunable": []
+        },
+        {
+          "bytes": "0C3446000C3440680C",
+          "tunable": []
+        },
+        {
+          "bytes": "2168AC0180680D002168AC0180680D000A800E3C2168AE01284BAE95A07B0F8DA47B",
+          "tunable": []
+        },
+        {
+          "bytes": "8D748B030CFF7FCE313A00A010",
+          "tunable": []
+        },
+        {
+          "bytes": "28E00138",
+          "tunable": []
+        },
+        {
+          "bytes": "A01407",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "762FE4",
+          "tunable": []
+        },
+        {
+          "bytes": "FC2EE58D34",
+          "tunable": []
+        },
+        {
+          "bytes": "80142C2FE48D32",
+          "tunable": []
+        },
+        {
+          "bytes": "A014",
+          "tunable": []
+        },
+        {
+          "bytes": "0005",
+          "tunable": []
+        },
+        {
+          "bytes": "0700A534242085",
+          "tunable": []
+        },
+        {
+          "bytes": "2E",
+          "tunable": []
+        },
+        {
+          "bytes": "80140434E4950634E5950500842C2A",
+          "tunable": []
+        },
+        {
+          "bytes": "1040",
+          "tunable": []
+        },
+        {
+          "bytes": "A52C2800A01021200C018A798490",
+          "tunable": []
+        },
+        {
+          "bytes": "7C058D05008014047C048D03",
+          "tunable": []
+        },
+        {
+          "bytes": "AC100000000020008C1400",
+          "tunable": []
+        },
+        {
+          "bytes": "0046",
+          "tunable": []
+        },
+        {
+          "bytes": "043414008411007C058D007C0CAD3400A5AFE82EE68DEC2EE78D3800A6AF3C",
+          "tunable": []
+        },
+        {
+          "bytes": "A7AF80",
+          "tunable": []
+        },
+        {
+          "bytes": "0634E82EE6AD6E3B040CEC2EE6AD07800F3C3800A68F3C",
+          "tunable": []
+        },
+        {
+          "bytes": "A78FE82EE6ADEC2EE7AD0980083C34",
+          "tunable": []
+        },
+        {
+          "bytes": "A58FE9890308",
+          "tunable": []
+        },
+        {
+          "bytes": "7C05ADA08A030C3400AEAF060040100980083CA87B058D34",
+          "tunable": []
+        },
+        {
+          "bytes": "AE8F000000002328AE",
+          "tunable": []
+        },
+        {
+          "bytes": "A87B05AD40",
+          "tunable": []
+        },
+        {
+          "bytes": "BF8F",
+          "tunable": []
+        },
+        {
+          "bytes": "A38F04",
+          "tunable": []
+        },
+        {
+          "bytes": "A48F08",
+          "tunable": []
+        },
+        {
+          "bytes": "A58F0C",
+          "tunable": []
+        },
+        {
+          "bytes": "A68F10",
+          "tunable": []
+        },
+        {
+          "bytes": "A78F14",
+          "tunable": []
+        },
+        {
+          "bytes": "A88F18",
+          "tunable": []
+        },
+        {
+          "bytes": "A98F1C",
+          "tunable": []
+        },
+        {
+          "bytes": "AA8F20",
+          "tunable": []
+        },
+        {
+          "bytes": "AB8F24",
+          "tunable": []
+        },
+        {
+          "bytes": "AC8F28",
+          "tunable": []
+        },
+        {
+          "bytes": "AD8F2C",
+          "tunable": []
+        },
+        {
+          "bytes": "AE8F30",
+          "tunable": []
+        },
+        {
+          "bytes": "AF8F50",
+          "tunable": []
+        },
+        {
+          "bytes": "BD270980023C4C74428C08",
+          "tunable": []
+        },
+        {
+          "bytes": "E003",
+          "tunable": []
+        },
+        {
+          "bytes": "74002014",
+          "tunable": []
+        },
+        {
+          "bytes": "0780183C0F8019",
+          "tunable": []
+        },
+        {
+          "bytes": "043409978404288F",
+          "tunable": []
+        },
+        {
+          "bytes": "00000A",
+          "tunable": []
+        },
+        {
+          "bytes": "001118",
+          "tunable": []
+        },
+        {
+          "bytes": "0A3407",
+          "tunable": []
+        },
+        {
+          "bytes": "2A15E82E0B8F00",
+          "tunable": []
+        },
+        {
+          "bytes": "000000406C3103",
+          "tunable": []
+        },
+        {
+          "bytes": "801123586C01EFC00308E82E0B",
+          "tunable": []
+        },
+        {
+          "bytes": "840420",
+          "tunable": []
+        },
+        {
+          "bytes": "0300",
+          "tunable": []
+        },
+        {
+          "bytes": "2B",
+          "tunable": []
+        },
+        {
+          "bytes": "4011202F088FEC2E0B8FE82E0C8F662F0D97010008312500",
+          "tunable": []
+        },
+        {
+          "bytes": "1140006B31",
+          "tunable": []
+        },
+        {
+          "bytes": "00601100408C31210080110080AD311F",
+          "tunable": []
+        },
+        {
+          "bytes": "A015D02B088FF42B098F182C0A8F3C2C0B8F2540090125400A0125400B0140",
+          "tunable": []
+        },
+        {
+          "bytes": "083116",
+          "tunable": []
+        },
+        {
+          "bytes": "00150980083C4C74088D000000",
+          "tunable": []
+        },
+        {
+          "bytes": "04000011000000",
+          "tunable": []
+        },
+        {
+          "bytes": "EAF8030C0E",
+          "tunable": []
+        },
+        {
+          "bytes": "04340E00401002",
+          "tunable": []
+        },
+        {
+          "bytes": "0434A9FB030C212800",
+          "tunable": []
+        },
+        {
+          "bytes": "0A004014000000",
+          "tunable": []
+        },
+        {
+          "bytes": "CA24040C000000",
+          "tunable": []
+        },
+        {
+          "bytes": "6135040C18",
+          "tunable": []
+        },
+        {
+          "bytes": "04340F80193C01",
+          "tunable": []
+        },
+        {
+          "bytes": "0834840428AFD62C040868060434",
+          "tunable": []
+        },
+        {
+          "bytes": "80023CEC2E428C00000000A82C040802004230",
+          "tunable": []
+        },
+        {
+          "bytes": "0000000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000000000000000000000000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0780183CFC3302A70F80193C8404298F202F028F05000834063408A7E8FFBD2710",
+          "tunable": []
+        },
+        {
+          "bytes": "BFAF09",
+          "tunable": []
+        },
+        {
+          "bytes": "201501",
+          "tunable": []
+        },
+        {
+          "bytes": "423003",
+          "tunable": []
+        },
+        {
+          "bytes": "401000",
+          "tunable": []
+        },
+        {
+          "bytes": "000099B2040C00",
+          "tunable": []
+        },
+        {
+          "bytes": "000010",
+          "tunable": []
+        },
+        {
+          "bytes": "BF8F18",
+          "tunable": []
+        },
+        {
+          "bytes": "BD2708",
+          "tunable": []
+        },
+        {
+          "bytes": "E00300",
+          "tunable": []
+        },
+        {
+          "bytes": "000002000834063408A7EAF8030C060004340D",
+          "tunable": []
+        },
+        {
+          "bytes": "40100000",
+          "tunable": []
+        },
+        {
+          "bytes": "0025F7030C040004",
+          "tunable": []
+        },
+        {
+          "bytes": "09004010",
+          "tunable": []
+        },
+        {
+          "bytes": "0000009F38040C",
+          "tunable": []
+        },
+        {
+          "bytes": "38F703",
+          "tunable": []
+        },
+        {
+          "bytes": "040004340400023405",
+          "tunable": []
+        },
+        {
+          "bytes": "043C51C10308ED00083402",
+          "tunable": []
+        },
+        {
+          "bytes": "023403",
+          "tunable": []
+        },
+        {
+          "bytes": "043CE20008340B80013C140922ACE438040C14",
+          "tunable": []
+        },
+        {
+          "bytes": "A8",
+          "tunable": []
+        },
+        {
+          "bytes": "A48F1000BF8F92360408",
+          "tunable": []
+        },
+        {
+          "bytes": "00BD2700000000000000000000000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "493C",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "593C",
+          "tunable": []
+        },
+        {
+          "bytes": "DFC0030800000000",
+          "tunable": []
+        },
+        {
+          "bytes": "1B",
+          "tunable": []
+        },
+        {
+          "bytes": "1B",
+          "tunable": []
+        },
+        {
+          "bytes": "09",
+          "tunable": []
+        },
+        {
+          "bytes": "29C1030C00000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000C284",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "40",
+          "tunable": []
+        },
+        {
+          "bytes": "1B",
+          "tunable": []
+        },
+        {
+          "bytes": "1B",
+          "tunable": []
+        },
+        {
+          "bytes": "09",
+          "tunable": []
+        },
+        {
+          "bytes": "29C1030C00000000",
+          "tunable": []
+        },
+        {
+          "bytes": "C284",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        }
+      ],
+      "guards": [
+        {
+          "file": "DRA.BIN",
+          "offset": "0x503BE",
+          "bytes": "2A2D",
+          "tunable": []
+        }
+      ]
+    }
+  ]
 }

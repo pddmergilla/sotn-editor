@@ -1,6 +1,6 @@
 // Split everything the main BIN gained after ASS 2.0.10 into one guarded PPF pair per feature (see final-hacks.js).
 //
-//   node tools/ass2/build-final-hacks.js [--out DIR] [--dry]
+//   node tools/ass2/build-final-hacks.js [--out DIR] [--dry] [--specs-only]
 //
 // The shipped 2.0.10 image is rebuilt in memory from vanilla + ass2/Alternate-Scarlet-Symphony-2.0.ppf. Each byte that
 // differs in the current main BIN is assigned to the newest applied PPF that wrote it (next to the main BIN, in outputs/
@@ -27,9 +27,10 @@ const {FEATURES, SPLITS, OTHER_IMAGES, IGNORE_HISTORY, classify} = require('./fi
 const arg = name => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const DOWNLOADS = 'C:/Users/omergilla/Downloads', CODEX = 'C:/Users/omergilla/Documents/Codex';
 const VANILLA = process.env.SOTN_VANILLA_BIN || `${DOWNLOADS}/Castlevania - Symphony of the Night (USA)/Castlevania - Symphony of the Night (USA) (Track 1).bin`;
-const MAIN = process.env.SOTN_ASS_BIN || path.join(ROOT, 'MainBIN/Castlevania - Alternate Scarlet Symphony 2.0.bin');
+const MAIN = process.env.SOTN_FINAL_BIN || process.env.SOTN_ASS_BIN || path.join(ROOT, 'MainBIN/Castlevania - Alternate Scarlet Symphony -Final-.bin');
 const OUT = path.resolve(arg('--out') || path.join(ROOT, 'MainBIN/ASS-Final-Hacks'));
 const DRY = process.argv.includes('--dry');
+const SPECS_ONLY = process.argv.includes('--specs-only');
 const SECTOR = 2352, DATA = 24, USER_END = DATA + 2048;
 const kind = id => FEATURES.find(f => f.id === id)?.kind || id;
 
@@ -37,11 +38,23 @@ const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex').toU
 const hex = v => '0x' + v.toString(16).toUpperCase();
 const revision = cwd => { try { return child.execFileSync('git', ['-c', 'safe.directory=*', 'rev-parse', 'HEAD'], {cwd, encoding: 'utf8'}).trim(); } catch { return null; } };
 const slug = t => t.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function tunableRanges(file, offset, length, tunables = []) {
+  const ranges = [];
+  for (const t of tunables || []) {
+    if (t.file !== file) continue;
+    const start = Number.parseInt(t.offset, 16), end = start + Number(t.length);
+    const lo = Math.max(offset, start), hi = Math.min(offset + length, end);
+    if (lo < hi) ranges.push([lo - offset, hi - lo]);
+  }
+  return ranges;
+}
 
 // The base is always the last 2.0 release, ASS 2.0.10: outputs/ref/ASS-2.0.10.bin, else vanilla + its PPF from git.
 const BASE = {version: '2.0.10', sha256: '8F9B4F05CF8E8F8E08CEFD8CEA5EA43B9D365D5A3D1920DA248645702771751A',
   vanilla: 'CE01203A9DF93E001B88EF4C350889C19F11FFBA89D20F214BDD8DEC0B2D8D7C', commit: '0debdca', ppf: 'ass2/Alternate-Scarlet-Symphony-2.0.ppf'};
 const REF = path.join(ROOT, 'outputs/ref/ASS-2.0.10.bin');
+const F04_RELEASE_COMMIT = 'a181bf8177b61974d3f3be69c0f51af3650b25f6';
+const F04_SHA256 = '9A8B6B63E0BA88A0C0CDD520E182D977D8BC3268F32659C648809BE366827344';
 function release() {
   return {version: BASE.version, ppf: {file: `${BASE.ppf} (${BASE.commit})`}, vanilla: {sha256: BASE.vanilla}, result: {sha256: BASE.sha256}};
 }
@@ -119,6 +132,30 @@ async function main() {
   const baseSha = sha(base);
   assert.equal(baseSha, rel.result.sha256, `ASS ${rel.version} rebuild`);
   const cur = fs.readFileSync(MAIN), curSha = sha(cur);
+  let f04Disc = null;
+  const f04Files = new Map();
+  if (SPECS_ONLY) {
+    const vanillaBlob = await fs.openAsBlob(VANILLA);
+    const oldPpfBytes = child.execFileSync('git', ['-c', 'safe.directory=*', 'show', F04_RELEASE_COMMIT + ':ass2/ASS-Final.ppf'], {cwd: ROOT, maxBuffer: 1 << 28});
+    const oldPpf = A.parsePpf(oldPpfBytes);
+    assert.equal((await A.inspect(vanillaBlob, oldPpf, {size: vanilla.length})).status, 'vanilla', 'Audited F.04 PPF input guard');
+    const oldImage = A.patchedFile(vanillaBlob, oldPpf), oldHash = crypto.createHash('sha256');
+    for (let at = 0; at < vanilla.length; at += 8 << 20) {
+      const end = Math.min(vanilla.length, at + (8 << 20));
+      oldHash.update(Buffer.from(await oldImage.slice(at, end).arrayBuffer()));
+    }
+    assert.equal(oldHash.digest('hex').toUpperCase(), F04_SHA256, 'Audited F.04 result image');
+    f04Disc = await C.DiscImage.open(oldImage);
+  }
+  async function f04File(name) {
+    if (!f04Disc) throw new Error('F.04 file lookup requires --specs-only.');
+    if (!f04Files.has(name)) {
+      const record = await f04Disc.findPath(name.split('/'));
+      assert.ok(record, 'F.04 is missing ' + name);
+      f04Files.set(name, Buffer.from(await f04Disc.readFile(record)));
+    }
+    return f04Files.get(name);
+  }
   console.error(`ASS ${rel.version} ${baseSha}\ncurrent ${curSha}`);
 
   // Every changed byte outside EDC/ECC.
@@ -137,7 +174,8 @@ async function main() {
 
   // Every PPF that wrote a changed byte, with the values it wrote in the direction it was applied.
   const ppfs = [], writers = new Map();
-  for (const file of [...listPpfs(DOWNLOADS, 1), ...listPpfs(CODEX, 4), ...listPpfs(path.join(ROOT, 'MainBIN'), 9), ...listPpfs(path.join(ROOT, 'outputs'), 9)]) {
+  // Skip full numbered release patches.
+  for (const file of [...listPpfs(DOWNLOADS, 1), ...listPpfs(CODEX, 4), ...listPpfs(path.join(ROOT, 'MainBIN'), 9), ...listPpfs(path.join(ROOT, 'outputs'), 9)].filter(file => !/^(?:Reverse-|Undo-)?ASS-F(?:inal)?(?:\.|-)0?\d+\.ppf$/i.test(path.basename(file)))) {
     let p; try { p = A.parsePpf(fs.readFileSync(file)); } catch { continue; }
     let mod = 0, und = 0;
     p.offsets.forEach((o, i) => {
@@ -262,6 +300,10 @@ async function main() {
   }
   assert.equal(group.size, changed.size);
 
+  // The wolf setting replaces the old settings helper.
+  for (const [o, id] of group) if (id === 'system-settings' && fileOf(o) === 'DRA.BIN' && fileAt(o) >= 0x2F124 && fileAt(o) < 0x2F324)
+    group.set(o, 'instant-wolf');
+
   // Each feature's own values: what its applied patches wrote, oldest first, then its final bytes.
   // Hacks plus the toggle groups (balance, content). A toggle group's values are only its own final bytes.
   const hacks = FEATURES.filter(f => f.kind === 'hack' || f.toggle).map(f => f.id);
@@ -371,9 +413,66 @@ async function main() {
     return spec;
   }
   const SPEC_DIR = path.join(ROOT, 'tools/extra-hacks/specs/final'), specIndex = [];
+  const oldSpecs = new Map();
+  if (SPECS_ONLY) for (const f of FEATURES) {
+    const file = path.join(SPEC_DIR, f.id + '.json');
+    if (fs.existsSync(file)) oldSpecs.set(f.id, JSON.parse(fs.readFileSync(file, 'utf8')));
+  }
+  async function f04Version(spec, previous) {
+    if (previous.tunables && !spec.tunables) spec.tunables = previous.tunables;
+    const edits = [];
+    for (const edit of spec.edits) {
+      const start = Number.parseInt(edit.offset, 16), current = Buffer.from(edit.on, 'hex');
+      const data = await f04File(edit.file);
+      assert.ok(start + current.length <= data.length, 'F.04 range is missing: ' + edit.file + ' ' + edit.offset);
+      edits.push({bytes: data.subarray(start, start + current.length).toString('hex').toUpperCase(),
+        tunable: tunableRanges(edit.file, start, current.length, spec.tunables)});
+    }
+    const previousVersions = previous.onVersions || [];
+    for (const version of previousVersions)
+      assert.ok(version && !Array.isArray(version) && Array.isArray(version.edits) && Array.isArray(version.guards),
+        'Unsupported older version form in ' + spec.id);
+    let oldVersion;
+    {
+      const currentBytes = new Set();
+      for (const edit of spec.edits) {
+        const start = Number.parseInt(edit.offset, 16), size = Buffer.from(edit.on, 'hex').length;
+        for (let i = 0; i < size; i++) currentBytes.add(edit.file + ':' + (start + i));
+      }
+      const removed = new Map();
+      const audited = JSON.parse(child.execFileSync('git', ['-c', 'safe.directory=*', 'show',
+        F04_RELEASE_COMMIT + ':tools/extra-hacks/specs/final/' + spec.id + '.json'], {cwd: ROOT, maxBuffer: 1 << 26}));
+      for (const edit of [...audited.edits, ...previous.edits || []]) {
+        const start = Number.parseInt(edit.offset, 16), size = Buffer.from(edit.on, 'hex').length;
+        const data = await f04File(edit.file);
+        assert.ok(start + size <= data.length, 'F.04 old range is missing: ' + edit.file + ' ' + edit.offset);
+        if (!removed.has(edit.file)) removed.set(edit.file, new Map());
+        const file = removed.get(edit.file);
+        for (let i = 0; i < size; i++) if (!currentBytes.has(edit.file + ':' + (start + i)))
+          file.set(start + i, data[start + i]);
+      }
+      const guards = [];
+      for (const [fileName, bytes] of removed) {
+        const entries = [...bytes].sort((a, b) => a[0] - b[0]);
+        for (let i = 0; i < entries.length;) {
+          const start = entries[i][0], run = [entries[i][1]]; i++;
+          while (i < entries.length && entries[i][0] === start + run.length) run.push(entries[i++][1]);
+          const tunable = tunableRanges(fileName, start, run.length, previous.tunables);
+          guards.push({file: fileName, offset: hex(start), bytes: Buffer.from(run).toString('hex').toUpperCase(), tunable});
+        }
+      }
+      oldVersion = {edits, guards};
+    }
+    const differs = edits.some((edit, i) => edit.bytes !== spec.edits[i].on) || oldVersion.guards.length > 0;
+    const versions = [];
+    if (differs) versions.push(oldVersion);
+    // F.04 signatures follow the refreshed edit ranges.
+    if (versions.length) spec.onVersions = versions; else delete spec.onVersions;
+  }
   // The Extra Hacks catalog builder reads 2.0.10 from REF (tools/extra-hacks/sotn.py, image 'a').
-  if (!DRY && !fs.existsSync(REF)) { fs.mkdirSync(path.dirname(REF), {recursive: true}); fs.writeFileSync(REF, base); }
-  if (!DRY) { fs.mkdirSync(OUT, {recursive: true}); fs.rmSync(SPEC_DIR, {recursive: true, force: true}); fs.mkdirSync(SPEC_DIR, {recursive: true}); }
+  if (!DRY && !SPECS_ONLY && !fs.existsSync(REF)) { fs.mkdirSync(path.dirname(REF), {recursive: true}); fs.writeFileSync(REF, base); }
+  if (!DRY && !SPECS_ONLY) { fs.mkdirSync(OUT, {recursive: true}); fs.rmSync(SPEC_DIR, {recursive: true, force: true}); fs.mkdirSync(SPEC_DIR, {recursive: true}); }
+  if (SPECS_ONLY) assert.ok(fs.existsSync(SPEC_DIR), 'Final specs directory must already exist.');
   const block = base.subarray(0x9320, 0x9720), curBlock = cur.subarray(0x9320, 0x9720);
   for (const f of FEATURES.filter(f => hacks.includes(f.id))) {
     const own = value.get(f.id), mine = byGroup.get(f.id) || [], need = closure(f.id);
@@ -425,11 +524,17 @@ async function main() {
     entry.reversal = {path: path.join(OUT, `Reverse-${name}.ppf`), size: reversal.length, sha256: sha(reversal), records: A.parsePpf(reversal).offsets.length, appliesTo: `current main BIN ${curSha.slice(0, 8)}`};
     const spec = await catalogSpec(f, own);
     spec.requires = need;
+    if (SPECS_ONLY) {
+      const previous = oldSpecs.get(f.id);
+      if (!previous) throw new Error('Missing existing Final spec: ' + f.id);
+      await f04Version(spec, previous);
+    }
     // joinInto: Extra Hacks shows this hack inside an earlier hack's checkbox.
     if (f.joinInto) spec.joinInto = f.joinInto;
     specIndex.push(f.id);
     if (!DRY) {
-      fs.writeFileSync(entry.forward.path, forward); fs.writeFileSync(entry.reversal.path, reversal);
+      if (!SPECS_ONLY) { fs.writeFileSync(entry.forward.path, forward); fs.writeFileSync(entry.reversal.path, reversal); }
+      if (SPECS_ONLY) assert.ok(fs.existsSync(path.join(SPEC_DIR, `${f.id}.json`)), `Missing existing Final spec: ${f.id}`);
       fs.writeFileSync(path.join(SPEC_DIR, `${f.id}.json`), JSON.stringify(spec, null, 2) + '\n');
     }
     console.error(`${f.id}: ${mine.length} bytes${need.length ? ` (requires ${need.join(', ')})` : ''}`);
@@ -443,13 +548,15 @@ async function main() {
     'reversal PPF: guards pass on the current BIN, valid EDC/ECC, undo restores the current BIN', 'main BIN hash unchanged'];
   report.gameplay = 'Not played in an emulator; byte-level checks only. Install a feature\'s requirements first; remove features that require it first.';
   if (!DRY) {
-    fs.writeFileSync(path.join(OUT, 'README.md'), readme(report));
+    if (!SPECS_ONLY) fs.writeFileSync(path.join(OUT, 'README.md'), readme(report));
     fs.writeFileSync(path.join(SPEC_DIR, 'index.json'), JSON.stringify({generatedBy: 'tools/ass2/build-final-hacks.js',
       base: {name: `ASS ${rel.version}`, sha256: baseSha}, final: {sha256: curSha}, order: order.filter(id => specIndex.includes(id)),
       display: displayOrder(specIndex)}, null, 2) + '\n');
   }
-  const json = JSON.stringify(report, null, 2) + '\n';
-  fs.writeFileSync(DRY ? path.join(ROOT, 'outputs/final-audit-2026-10-24/dry-report.json') : path.join(OUT, 'ASS-Final-Hacks.verification.json'), json);
+  if (!SPECS_ONLY) {
+    const json = JSON.stringify(report, null, 2) + '\n';
+    fs.writeFileSync(DRY ? path.join(ROOT, 'outputs/final-audit-2026-10-24/dry-report.json') : path.join(OUT, 'ASS-Final-Hacks.verification.json'), json);
+  }
   console.log(JSON.stringify({features: report.features.filter(e => e.bytes).length, order: report.installOrder.length,
     excluded: Object.fromEntries(Object.entries(report.excluded).map(([k, v]) => [k, v.bytes])), current: curSha}));
 }

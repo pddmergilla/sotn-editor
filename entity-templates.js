@@ -32,9 +32,9 @@
     return [...choices.values()].sort((a, b) => a.group.localeCompare(b.group) || a.type.name.localeCompare(b.type.name) || a.entity.params - b.entity.params);
   }
 
-  function freeSlot(stage, omit = null) {
+  function freeSlot(stage, omit = null, minimum = 1, limit = 96) {
     const used = new Set(entries(stage).filter(e => e !== omit).map(e => e.slot));
-    for (let slot = 1; slot < 96; slot++) if (!used.has(slot)) return slot;
+    for (let slot = minimum; slot < limit; slot++) if (!used.has(slot)) return slot;
     return null;
   }
 
@@ -44,9 +44,10 @@
     return null;
   }
 
-  function makeEntity(stage, choice, x, y) {
+  function makeEntity(stage, choice, x, y, roomEntities = null) {
     if (!choice?.entity || !Number.isInteger(x) || !Number.isInteger(y) || x < -32768 || x > 32767 || y < -32768 || y > 32767) return null;
-    const slot = freeSlot(stage);
+    const minimum = roomEntities ? Math.max(0, ...roomEntities.filter(isEntry).map(e => e.slot)) + 1 : 1;
+    const slot = freeSlot(stage, null, minimum, roomEntities ? 192 : 96);
     const spawnId = choice.entity.spawnId ? freePersistenceIndex(stage) : 0;
     if (slot === null || spawnId === null) return null;
     const {id, flags, params} = choice.entity;

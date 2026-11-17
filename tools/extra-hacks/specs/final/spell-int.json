@@ -391,5 +391,268 @@
   ],
   "requires": [
     "weapons"
+  ],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "64",
+          "tunable": []
+        },
+        {
+          "bytes": "1484248C1884258C1C",
+          "tunable": []
+        },
+        {
+          "bytes": "26",
+          "tunable": []
+        },
+        {
+          "bytes": "000003AE040004AE080005AE0C0006AE2084238C24",
+          "tunable": []
+        },
+        {
+          "bytes": "24",
+          "tunable": []
+        },
+        {
+          "bytes": "2884258C10",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "14",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "18",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "11",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "40A308350C00E817180002960980033CE07B63",
+          "tunable": []
+        },
+        {
+          "bytes": "F4010934F4016324180043001210000015",
+          "tunable": []
+        },
+        {
+          "bytes": "3402",
+          "tunable": []
+        },
+        {
+          "bytes": "341A004900B4F60308121000003958000C00",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0C0003341A004300",
+          "tunable": []
+        },
+        {
+          "bytes": "0A000334101000",
+          "tunable": []
+        },
+        {
+          "bytes": "402805",
+          "tunable": []
+        },
+        {
+          "bytes": "2128A2",
+          "tunable": []
+        },
+        {
+          "bytes": "1A00A3",
+          "tunable": []
+        },
+        {
+          "bytes": "180002961500043412",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "02000534",
+          "tunable": []
+        },
+        {
+          "bytes": "1043",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "00000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0980033CE07B638C",
+          "tunable": []
+        },
+        {
+          "bytes": "04969001",
+          "tunable": []
+        },
+        {
+          "bytes": "18",
+          "tunable": []
+        },
+        {
+          "bytes": "83",
+          "tunable": []
+        },
+        {
+          "bytes": "1218",
+          "tunable": []
+        },
+        {
+          "bytes": "90010534",
+          "tunable": []
+        },
+        {
+          "bytes": "1A006500211020021218000003004012422003",
+          "tunable": []
+        },
+        {
+          "bytes": "2118640000000000000003A600000000000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "048008",
+          "tunable": []
+        },
+        {
+          "bytes": "A0C908",
+          "tunable": []
+        },
+        {
+          "bytes": "0A8003",
+          "tunable": []
+        },
+        {
+          "bytes": "070000",
+          "tunable": []
+        },
+        {
+          "bytes": "208763",
+          "tunable": []
+        },
+        {
+          "bytes": "FFFF08",
+          "tunable": []
+        },
+        {
+          "bytes": "178003",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "00D863341F8003",
+          "tunable": []
+        },
+        {
+          "bytes": "63340480",
+          "tunable": []
+        },
+        {
+          "bytes": "50C823",
+          "tunable": []
+        },
+        {
+          "bytes": "098003",
+          "tunable": []
+        },
+        {
+          "bytes": "0800E0",
+          "tunable": []
+        },
+        {
+          "bytes": "638C",
+          "tunable": []
+        }
+      ],
+      "guards": []
+    }
   ]
 }

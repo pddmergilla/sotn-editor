@@ -10,9 +10,9 @@ Only needed when a hack is added or changed; stat, text and map edits in later b
 A Final hack may rewrite bytes an earlier hack owns. Those bytes stay with the earlier hack as a layer: the later
 hack's bytes are written over the earlier hack's when the later one is selected, and the later hack requires it.
 
-usage: python build_catalog.py [--out PATH] [--allow-missing] [--metadata-only]
+usage: python build_catalog.py [--out PATH] [--allow-missing] [--release-only] [--metadata-only]
 """
-import hashlib, json, struct, sys, zlib
+import hashlib, json, struct, subprocess, sys, zlib
 from pathlib import Path
 from sotn import *
 from stat_buffs import dark_extension, write_stones, stone_edits
@@ -30,7 +30,17 @@ MARKER_FILES = ['DRA.BIN', 'BIN/RIC.BIN']
 # Unused test stages whose directory records ASS -Final- F.02 swapped with NP3 and CHI, so those two could grow.
 SWAPPED = {'ST/TE2/TE2.BIN', 'ST/TE3/TE3.BIN'}
 WINDOW = 256
-OVERRIDES = json.loads((HERE / 'overrides.json').read_text(encoding='utf-8')) if (HERE / 'overrides.json').exists() else {}
+RELEASE_ONLY = '--release-only' in sys.argv
+if RELEASE_ONLY:
+    REPO_ROOT = Path(__file__).resolve().parents[2]
+    try:
+        OVERRIDES = json.loads(subprocess.check_output(
+            ['git', '-c', 'safe.directory=*', 'show', 'HEAD:tools/extra-hacks/overrides.json'],
+            cwd=REPO_ROOT).decode('utf-8'))
+    except subprocess.CalledProcessError as error:
+        raise SystemExit('Cannot read the tracked override catalog for --release-only.') from error
+else:
+    OVERRIDES = json.loads((HERE / 'overrides.json').read_text(encoding='utf-8')) if (HERE / 'overrides.json').exists() else {}
 
 
 def masked(b, off, n):
@@ -200,11 +210,47 @@ def tuned(rec, pos):
     return bool(rec.get('stats')) and any(start <= pos < start + length for start, length in rec.get('tunable', []))
 
 
+def final_versions(spec):
+    versions = []
+    for raw in spec.get('onVersions', []):
+        forms = raw.get('edits', []) if isinstance(raw, dict) else raw
+        guards = raw.get('guards', []) if isinstance(raw, dict) else []
+        assert len(forms) == len(spec['edits']), (spec['id'], 'incomplete Final version')
+        parsed = []
+        for form, edit in zip(forms, spec['edits']):
+            if isinstance(form, str):
+                data, ranges0 = bytes.fromhex(form), []
+            else:
+                data = bytes.fromhex(form.get('bytes', form.get('on', '')))
+                ranges0 = form.get('tunable', [])
+            assert len(data) == len(bytes.fromhex(edit['on'])), (spec['id'], 'invalid Final version form')
+            mask = bytearray(len(data))
+            for start, length in ranges0:
+                assert start >= 0 and length > 0 and start + length <= len(mask), (spec['id'], 'invalid version mask')
+                mask[start:start + length] = b'\1' * length
+            parsed.append((data, mask))
+        versions.append({'forms': parsed, 'guards': guards})
+    return versions
+
+
+def mask_ranges(mask):
+    out, start = [], None
+    for pos in range(len(mask) + 1):
+        active = pos < len(mask) and bool(mask[pos])
+        if active and start is None:
+            start = pos
+        elif not active and start is not None:
+            out.append([start, pos - start])
+            start = None
+    return out
+
+
 def add_final(features):
     """Append the ASS -Final- hacks. A byte an earlier hack already owns becomes a layer on that hack's edit
     (written over it while the Final hack is selected), and the Final hack then requires that hack."""
     index = json.loads((FINAL / 'index.json').read_text(encoding='utf-8'))
     claim = {}  # (file, offset) -> (owner id, edit record, position in the record)
+    final_compat = {}
     for ft in features:
         for e in ft['edits']:
             if e.get('locate'):
@@ -214,7 +260,39 @@ def add_final(features):
     for fid in index['order']:
         s = json.loads((FINAL / f'{fid}.json').read_text(encoding='utf-8'))
         requires, recs = list(s.get('requires', [])), []
-        for e in s['edits']:
+        versions = final_versions(s)
+        version_bytes = []
+        version_masks = []
+        version_guards = []
+        for version in versions:
+            values, masks = {}, {}
+            for edit, (data, mask) in zip(s['edits'], version['forms']):
+                start = h(edit['offset'])
+                for pos, value in enumerate(data):
+                    key = (edit['file'], start + pos)
+                    values[key] = value
+                    masks[key] = mask[pos]
+            guards = {}
+            guard_masks = {}
+            for guard in version['guards']:
+                start, data = h(guard['offset']), bytes.fromhex(guard['bytes'])
+                mask = bytearray(len(data))
+                for pos, length in guard.get('tunable', []):
+                    assert pos >= 0 and length > 0 and pos + length <= len(mask), (fid, 'invalid guard mask')
+                    mask[pos:pos + length] = b'\1' * length
+                for pos, value in enumerate(data):
+                    key = (guard['file'], start + pos)
+                    if key in guards and guards[key] != value:
+                        raise ValueError(f"{fid}: conflicting version guards at {key}")
+                    if key in guard_masks and guard_masks[key] != mask[pos]:
+                        raise ValueError(f"{fid}: conflicting version guard masks at {key}")
+                    guards[key] = value
+                    guard_masks[key] = mask[pos]
+            version_bytes.append(values)
+            version_masks.append(masks)
+            version_guards.append((guards, guard_masks))
+        layered_versions = [dict() for _ in versions]
+        for e_index, e in enumerate(s['edits']):
             f, off, on, of = e['file'], h(e['offset']), bytes.fromhex(e['on']), bytes.fromhex(e['off'])
             old = read(f, 'a')
             n = min(len(on), max(0, len(old) - off))
@@ -234,14 +312,56 @@ def add_final(features):
                     layer['at'].append((pos, on[i]))
                     if owner not in requires:
                         requires.append(owner)
+                    for vi, values in enumerate(version_bytes):
+                        if key in values:
+                            layered_versions[vi][key] = values[key]
+                            previous = next((item for item in layer.setdefault('onVersions', []) if item['version'] == vi + 1), None)
+                            if previous is None:
+                                previous = {'version': vi + 1, 'at': [], '_maskPositions': []}
+                                layer['onVersions'].append(previous)
+                            previous['at'].append((pos, values[key]))
+                            if version_masks[vi][key]:
+                                previous['_maskPositions'].append(pos)
                     run = None
                     continue
                 if run is None:
-                    run = {'file': f, 'offset': off + i, 'off': bytearray(), 'on': bytearray()}
+                    run = {'file': f, 'offset': off + i, 'off': bytearray(), 'on': bytearray(),
+                           '_versionBytes': [bytearray() for _ in versions], '_versionMasks': [bytearray() for _ in versions]}
                     recs.append(run)
                 claim[key] = (fid, run, len(run['on']))
                 run['off'].append(of[i])
                 run['on'].append(on[i])
+                for vi, values in enumerate(version_bytes):
+                    if key not in values:
+                        raise ValueError(f"{fid}: Final version misses {key}")
+                    run['_versionBytes'][vi].append(values[key])
+                    run['_versionMasks'][vi].append(version_masks[vi][key])
+        for vi, (guards, guard_masks) in enumerate(version_guards):
+            for key, value in guards.items():
+                if key not in claim:
+                    continue
+                owner, rec, pos = claim[key]
+                layer = next((item for item in rec.setdefault('layers', []) if item['feature'] == fid), None)
+                if layer is None:
+                    layer = {'feature': fid, 'at': []}
+                    rec['layers'].append(layer)
+                prior = next((item for item in layer.setdefault('onVersions', []) if item['version'] == vi + 1), None)
+                if prior is None:
+                    prior = {'version': vi + 1, 'at': [], '_maskPositions': []}
+                    layer['onVersions'].append(prior)
+                existing = next((byte for old_pos, byte in prior['at'] if old_pos == pos), None)
+                if existing is not None and existing != value:
+                    raise ValueError(f"{fid}: conflicting guarded layer at {key}")
+                if existing is None:
+                    prior['at'].append((pos, value))
+                if guard_masks.get(key, 0) and pos not in prior['_maskPositions']:
+                    prior['_maskPositions'].append(pos)
+                if key in layered_versions[vi] and layered_versions[vi][key] != value:
+                    raise ValueError(f"{fid}: conflicting guarded layer at {key}")
+                layered_versions[vi][key] = value
+                version_masks[vi][key] = guard_masks.get(key, 0)
+        final_compat[fid] = {'versionGuards': version_guards, 'layeredVersions': layered_versions,
+                             'versionMasks': version_masks}
         feat = {'id': fid, 'label': s['label'], 'category': s['category'], 'summary': s['summary'], 'final': True,
                 'vanilla': 'Available only on Alternate Scarlet Symphony images.', 'edits': recs}
         if s.get('fixed'):
@@ -300,11 +420,50 @@ def add_final(features):
             got = fin[e['offset']:e['offset'] + len(expect)]
             diff = [hex(e['offset'] + i) for i in range(len(expect)) if i >= len(got) or got[i] != expect[i]]
             assert not diff, f"{ft['id']}: bytes do not match ASS -Final- at {e['file']} {e['offset']:#x} (length {len(expect)}, file {len(fin)}; differ at {diff[:8]}, {len(diff)} bytes; layers {[(l.get('feature'), l['at']) for l in e.get('layers', [])]}; tunable {e.get('tunable')})"
+    # Final versions keep their own masks and exact guard ranges.
+    for ft in features:
+        if not ft.get('final'):
+            continue
+        compat = final_compat[ft['id']]
+        versions = final_versions(json.loads((FINAL / f"{ft['id']}.json").read_text(encoding='utf-8')))
+        if not versions:
+            continue
+        output_versions = []
+        for vi, version in enumerate(versions):
+            guards, guard_masks = map(dict, compat['versionGuards'][vi])
+            for key, value in compat['layeredVersions'][vi].items():
+                if key in guards and guards[key] != value:
+                    raise ValueError(f"{ft['id']}: conflicting layered version guard at {key}")
+                if key in guard_masks and guard_masks[key] != compat['versionMasks'][vi][key]:
+                    raise ValueError(f"{ft['id']}: conflicting layered version mask at {key}")
+                guards[key] = value
+                guard_masks[key] = compat['versionMasks'][vi][key]
+            guard_runs = []
+            for file in sorted({name for name, _ in guards}):
+                offsets = sorted(offset for name, offset in guards if name == file)
+                for offset in offsets:
+                    tunable = guard_masks.get((file, offset), 0)
+                    if guard_runs and guard_runs[-1]['file'] == file and guard_runs[-1]['end'] == offset and guard_runs[-1]['tunable'] == tunable:
+                        guard_runs[-1]['bytes'].append(guards[(file, offset)])
+                        guard_runs[-1]['end'] += 1
+                    else:
+                        guard_runs.append({'file': file, 'offset': offset, 'end': offset + 1, 'bytes': bytearray([guards[(file, offset)]]), 'tunable': tunable})
+            output_edits = []
+            for edit in ft['edits']:
+                data = edit['_versionBytes'][vi]
+                mask = edit['_versionMasks'][vi]
+                output_edits.append({'bytes': bytes(data).hex().upper(), 'tunable': mask_ranges(mask)})
+            output_versions.append({'edits': output_edits, 'guards': [
+                {'file': run['file'], 'offset': hex(run['offset']), 'bytes': bytes(run['bytes']).hex().upper(),
+                 'tunable': [[0, len(run['bytes'])]] if run['tunable'] else []} for run in guard_runs]})
+        ft['onVersions'] = output_versions
     # Layers as runs of [position, bytes]; edit bytes as hex.
     for ft in features:
         for e in ft['edits']:
             if isinstance(e['on'], bytearray):
                 e['off'], e['on'] = bytes(e['off']).hex().upper(), bytes(e['on']).hex().upper()
+                e.pop('_versionBytes', None)
+                e.pop('_versionMasks', None)
             for layer in e.get('layers', []):
                 if layer['at'] and isinstance(layer['at'][0], tuple):
                     runs = []
@@ -314,9 +473,22 @@ def add_final(features):
                         else:
                             runs.append([pos, bytearray([value])])
                     layer['at'] = [[pos, bytes(b).hex().upper()] for pos, b in runs]
+                for version in layer.get('onVersions', []):
+                    runs = []
+                    for pos, value in sorted(version['at']):
+                        if runs and runs[-1][0] + len(runs[-1][1]) == pos:
+                            runs[-1][1].append(value)
+                        else:
+                            runs.append([pos, bytearray([value])])
+                    version['at'] = [[pos, bytes(b).hex().upper()] for pos, b in runs]
+                    mask = bytearray(len(e['on']) // 2)
+                    for pos in version.pop('_maskPositions', []):
+                        mask[pos] = 1
+                    version['tunable'] = mask_ranges(mask)
         if ft.get('final') and not ft['edits']:
             ft['layerOnly'] = True  # every byte rewrites another hack: present when its layers are
-    final_vanilla(features)
+    if not RELEASE_ONLY:
+        final_vanilla(features)
     return index
 
 
@@ -444,7 +616,8 @@ def main():
         metadata_only()
         return
     allow = '--allow-missing' in sys.argv
-    write_stones()
+    if not RELEASE_ONLY:
+        write_stones()
     specs = load_specs(allow)
     features = []
     owner = {}

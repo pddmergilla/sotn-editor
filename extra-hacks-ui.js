@@ -76,6 +76,19 @@
       const bytes = hexBytes(value);
       if (!bytes || pos < 0 || pos + bytes.length > on.length) throw new Error(`Extra Hacks catalog: invalid layer in ${feature.id}.`);
       return [pos, bytes];
+    }), onVersions: (layer.onVersions || []).map(version => {
+      const at = version.at.map(([pos, value]) => {
+        const bytes = hexBytes(value);
+        if (!bytes || pos < 0 || pos + bytes.length > on.length) throw new Error(`Extra Hacks catalog: invalid earlier layer in ${feature.id}.`);
+        return [pos, bytes];
+      });
+      const tunable = new Uint8Array(on.length);
+      for (const [start, length] of version.tunable || []) {
+        if (!Number.isInteger(start) || !Number.isInteger(length) || start < 0 || length < 1 || start + length > on.length)
+          throw new Error(`Extra Hacks catalog: invalid earlier layer mask in ${feature.id}.`);
+        tunable.fill(1, start, start + length);
+      }
+      return {version: version.version, at, tunable};
     })}));
     const layered = layers.length ? Array.from({length: on.length}, () => []) : null;
     for (const layer of layers) for (const [pos, bytes] of layer.at) bytes.forEach((value, i) => layered[pos + i].push(value));
@@ -89,9 +102,13 @@
       fileSize: edit.fileSize || null};
   }
   // The bytes an edit writes when on: its own form (or the with-form), then every selected layer over it.
-  function onBytes(edit, selected, vanilla) {
-    const bytes = (edit.with && selected.get(edit.with.feature) ? edit.with.on : (vanilla ? edit.vanillaOn : edit.on)).slice();
-    for (const layer of edit.layers) if (selected.get(layer.feature)) for (const [pos, value] of layer.at) bytes.set(value, pos);
+  function onBytes(edit, selected, vanilla, retained = null, states = null) {
+    const bytes = (retained || (edit.with && selected.get(edit.with.feature) ? edit.with.on : (vanilla ? edit.vanillaOn : edit.on))).slice();
+    for (const layer of edit.layers) if (selected.get(layer.feature)) {
+      for (const [pos, value] of layer.at) bytes.set(value, pos);
+      const prior = layer.onVersions.find(version => version.version === states?.get(layer.feature)?.version);
+      if (prior) for (const [pos, value] of prior.at) bytes.set(value, pos);
+    }
     return bytes;
   }
 
@@ -126,23 +143,50 @@
 
   function prepareCatalog(raw) {
     if (!raw || raw.version !== 2 || !Array.isArray(raw.features)) return null;
-    const features = raw.features.map(feature => ({
-      ...feature,
-      requires: feature.requires || [],
-      vanillaRequires: feature.vanillaRequires || [],
-      entities: (feature.entities || []).map(prepareEntity),
-      edits: (feature.edits || []).map(edit => prepareEdit(feature, edit)),
-      onVersions: (feature.onVersions || []).map(version => {
-        if (version.length !== feature.edits.length) throw new Error(`Extra Hacks catalog: incomplete version in ${feature.id}.`);
-        return version.map((bytes, i) => {
-          const parsed = hexBytes(bytes);
-          if (!parsed || parsed.length !== feature.edits[i].on.length / 2) throw new Error(`Extra Hacks catalog: invalid version in ${feature.id}.`);
-          return parsed;
+    const features = raw.features.map(feature => {
+      const edits = (feature.edits || []).map(edit => prepareEdit(feature, edit));
+      const onVersions = (feature.onVersions || []).map(version => {
+        const forms = Array.isArray(version) ? version : version.edits;
+        const guards = Array.isArray(version) ? [] : version.guards || [];
+        if (!Array.isArray(forms) || forms.length !== edits.length) throw new Error(`Extra Hacks catalog: incomplete version in ${feature.id}.`);
+        const parsed = forms.map((form, i) => {
+          const bytes = hexBytes(typeof form === "string" ? form : form.bytes);
+          if (!bytes || bytes.length !== edits[i].on.length) throw new Error(`Extra Hacks catalog: invalid version in ${feature.id}.`);
+          let tunable = edits[i].tunable;
+          if (typeof form !== "string") {
+            tunable = new Uint8Array(bytes.length);
+            for (const [start, length] of form.tunable || []) {
+              if (!Number.isInteger(start) || !Number.isInteger(length) || start < 0 || length < 1 || start + length > bytes.length)
+                throw new Error(`Extra Hacks catalog: invalid version mask in ${feature.id}.`);
+              tunable.fill(1, start, start + length);
+            }
+          }
+          return {bytes, tunable};
         });
-      }),
-      // vanillaEdits: a hack that needs different bytes on vanilla (the relic swap uses other pedestals).
-      vanillaEdits: feature.vanillaEdits ? feature.vanillaEdits.map(edit => prepareEdit(feature, edit)) : null
-    }));
+        const versionGuards = guards.map(guard => {
+          const bytes = hexBytes(guard.bytes), offset = typeof guard.offset === "number" ? guard.offset : Number.parseInt(guard.offset, 16);
+          if (!guard.file || !bytes?.length || !Number.isInteger(offset) || offset < 0) throw new Error(`Extra Hacks catalog: invalid version guard in ${feature.id}.`);
+          const tunable = new Uint8Array(bytes.length);
+          for (const [start, length] of guard.tunable || []) {
+            if (!Number.isInteger(start) || !Number.isInteger(length) || start < 0 || length < 1 || start + length > bytes.length)
+              throw new Error(`Extra Hacks catalog: invalid version guard mask in ${feature.id}.`);
+            tunable.fill(1, start, start + length);
+          }
+          return {file: guard.file, offset, bytes, tunable};
+        });
+        return {edits: parsed, guards: versionGuards};
+      });
+      return {
+        ...feature,
+        requires: feature.requires || [],
+        vanillaRequires: feature.vanillaRequires || [],
+        entities: (feature.entities || []).map(prepareEntity),
+        edits,
+        onVersions,
+        // vanillaEdits: a hack that needs different bytes on vanilla.
+        vanillaEdits: feature.vanillaEdits ? feature.vanillaEdits.map(edit => prepareEdit(feature, edit)) : null
+      };
+    });
     // valueLayers: hacks whose layers rewrite the code holding this hack's tuning values (Stat-scaled buffs
     // replaces the Dark Metamorphosis bonuses); while one is selected the values cannot be edited.
     for (const feature of features) {
@@ -176,6 +220,7 @@
     for (const [file] of catalog.fingerprint?.markers || []) names.add(file);
     for (const feature of catalog.features) {
       for (const edit of [...feature.edits, ...feature.vanillaEdits || [], ...feature.entities]) names.add(edit.file);
+      for (const version of feature.onVersions || []) for (const guard of version.guards) names.add(guard.file);
       for (const [file] of feature.context || []) names.add(file);
     }
     return [...names];
@@ -214,7 +259,7 @@
   const NONE = new Uint8Array(0);
   // layered: per byte, the values later hacks may have written there instead (null when none).
   function matches(actual, expected, tunable = NONE, layered = null) {
-    for (let i = 0; i < expected.length; i++) if (!tunable[i] && actual[i] !== expected[i] && !layered?.[i].includes(actual[i])) return false;
+    for (let i = 0; i < expected.length; i++) if (!tunable[i] && actual[i] !== expected[i] && !layered?.[i].includes(actual[i]) && !layered?.[i].includes(-1)) return false;
     return true;
   }
 
@@ -255,22 +300,32 @@
     if (!edit.layered) return null;
     if (!present) return Array.from({length: edit.on.length}, () => []);
     const out = Array.from({length: edit.on.length}, () => []);
-    for (const layer of edit.layers) if (present.has(layer.feature)) for (const [pos, bytes] of layer.at) bytes.forEach((value, i) => out[pos + i].push(value));
+    for (const layer of edit.layers) {
+      const state = present instanceof Map ? present.get(layer.feature) : present.has(layer.feature) ? {state: "on"} : null;
+      if (state?.state !== "on") continue;
+      for (const [pos, bytes] of layer.at) bytes.forEach((value, i) => out[pos + i].push(value));
+      const prior = layer.onVersions.find(version => version.version === state.version);
+      if (prior) for (const [pos, bytes] of prior.at) bytes.forEach((value, i) => out[pos + i].push(value));
+      if (prior) prior.tunable.forEach((flag, i) => { if (flag) out[i].push(-1); });
+    }
     return out;
   }
 
   const sizeFits = (edit, length) => !edit.fileSize || edit.fileSize.includes(length);
 
   function featureState(feature, files, profile, catalog = null, present = null) {
-    if (feature.layerOnly && catalog) return layerState(catalog, feature, files);
     // Recognize complete earlier versions.
     for (const [version, forms] of (feature.onVersions || []).entries()) {
       if (editsFor(feature, profile) !== feature.edits) continue;
-      if (forms.every((form, i) => {
+      if (forms.edits.every((form, i) => {
         const edit = feature.edits[i], bytes = files.get(edit.file);
-        return bytes && edit.offset + form.length <= bytes.length && matches(bytes.subarray(edit.offset, edit.offset + form.length), form, edit.tunable);
+        return bytes && edit.offset + form.bytes.length <= bytes.length && matches(bytes.subarray(edit.offset, edit.offset + form.bytes.length), form.bytes, form.tunable);
+      }) && forms.guards.every(guard => {
+        const bytes = files.get(guard.file);
+        return bytes && guard.offset + guard.bytes.length <= bytes.length && matches(bytes.subarray(guard.offset, guard.offset + guard.bytes.length), guard.bytes, guard.tunable);
       })) return {state: "on", version: version + 1};
     }
+    if (feature.layerOnly && catalog) return layerState(catalog, feature, files);
     let on = 0, off = 0;
     const optional = [];
     for (const edit of editsFor(feature, profile)) {
@@ -358,11 +413,11 @@
     const states = new Map(catalog.features.map(feature => [feature.id, featureState(feature, files, print.profile, catalog)]));
     const layeredOn = catalog.features.filter(feature => feature.edits.some(edit => edit.layers.length));
     for (let pass = 0; pass < 8; pass++) {
-      const present = new Set([...states].filter(([, state]) => state.state === "on").map(([id]) => id));
+      const present = new Map([...states].filter(([, state]) => state.state === "on"));
       let changed = false;
       for (const feature of layeredOn) {
         const next = featureState(feature, files, print.profile, catalog, present);
-        if (next.state !== states.get(feature.id).state) changed = true;
+        if (next.state !== states.get(feature.id).state || next.version !== states.get(feature.id).version) changed = true;
         states.set(feature.id, next);
       }
       if (!changed) break;
@@ -437,6 +492,7 @@
     const source = new Map(analysis.features.map(item => [item.id, item.state === "on"]));
     const changed = id => !!selected.get(id) !== !!source.get(id);
     const vanilla = analysis.profile === "vanilla";
+    const states = new Map(analysis.features.filter(item => !changed(item.id)).map(item => [item.id, item]));
     for (const feature of catalog.features) {
       const info = analysis.features.find(item => item.id === feature.id);
       if (!info || (info.state !== "on" && info.state !== "off")) continue;
@@ -446,7 +502,8 @@
         // Optional install-on-demand code is still written when a hack that layers its own bytes into it is selected or changes.
         if (want && edit.optional && !edit.layers.some(layer => selected.get(layer.feature) || changed(layer.feature))) continue;
         if (!self && !(want && ((edit.with && changed(edit.with.feature)) || edit.layers.some(layer => changed(layer.feature))))) continue;
-        const bytes = !want ? (vanilla ? edit.vanillaOff : edit.off) : onBytes(edit, selected, vanilla);
+        const retained = !self && info.version ? feature.onVersions[info.version - 1]?.edits[feature.edits.indexOf(edit)]?.bytes : null;
+        const bytes = !want ? (vanilla ? edit.vanillaOff : edit.off) : onBytes(edit, selected, vanilla, retained, states);
         edits.push({file: edit.file, offset: edit.offset, bytes, label: feature.label, stats: edit.stats, locate: edit.locate});
       }
       if (!self) continue;

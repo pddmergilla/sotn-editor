@@ -968,7 +968,7 @@
       "file": "DRA.BIN",
       "offset": "0xA462",
       "off": "19",
-      "on": "0F"
+      "on": "05"
     },
     {
       "file": "DRA.BIN",
@@ -2299,5 +2299,1540 @@
   ],
   "requires": [
     "damage-colors-weak"
+  ],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "06",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "FCFF",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "0100",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "FE",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0300",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "0200",
+          "tunable": []
+        },
+        {
+          "bytes": "0200",
+          "tunable": []
+        },
+        {
+          "bytes": "0200",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "FF",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "FE",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "06",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "09",
+          "tunable": []
+        },
+        {
+          "bytes": "0A",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "0C",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "13",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "12",
+          "tunable": []
+        },
+        {
+          "bytes": "0A",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "14",
+          "tunable": []
+        },
+        {
+          "bytes": "15",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "0D",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0C",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "0C",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0A",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "0A",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "0A",
+          "tunable": []
+        },
+        {
+          "bytes": "14",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "0E",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "3C",
+          "tunable": []
+        },
+        {
+          "bytes": "14",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "2B",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "64",
+          "tunable": []
+        },
+        {
+          "bytes": "17",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "20",
+          "tunable": []
+        },
+        {
+          "bytes": "06",
+          "tunable": []
+        },
+        {
+          "bytes": "15",
+          "tunable": []
+        },
+        {
+          "bytes": "1F",
+          "tunable": []
+        },
+        {
+          "bytes": "64",
+          "tunable": []
+        },
+        {
+          "bytes": "46",
+          "tunable": []
+        },
+        {
+          "bytes": "32",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "07",
+          "tunable": []
+        },
+        {
+          "bytes": "50",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "46",
+          "tunable": []
+        },
+        {
+          "bytes": "28",
+          "tunable": []
+        },
+        {
+          "bytes": "23",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "32",
+          "tunable": []
+        },
+        {
+          "bytes": "19",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "04",
+          "tunable": []
+        },
+        {
+          "bytes": "4D",
+          "tunable": []
+        },
+        {
+          "bytes": "32",
+          "tunable": []
+        },
+        {
+          "bytes": "64",
+          "tunable": []
+        },
+        {
+          "bytes": "64",
+          "tunable": []
+        },
+        {
+          "bytes": "46",
+          "tunable": []
+        },
+        {
+          "bytes": "39",
+          "tunable": []
+        },
+        {
+          "bytes": "25",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "3C",
+          "tunable": []
+        },
+        {
+          "bytes": "46",
+          "tunable": []
+        },
+        {
+          "bytes": "37",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "63",
+          "tunable": []
+        },
+        {
+          "bytes": "26",
+          "tunable": []
+        },
+        {
+          "bytes": "21",
+          "tunable": []
+        },
+        {
+          "bytes": "14",
+          "tunable": []
+        },
+        {
+          "bytes": "5A00",
+          "tunable": []
+        },
+        {
+          "bytes": "10",
+          "tunable": []
+        },
+        {
+          "bytes": "19",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "6300",
+          "tunable": []
+        },
+        {
+          "bytes": "32",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "42",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "16",
+          "tunable": []
+        },
+        {
+          "bytes": "0A",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "03",
+          "tunable": []
+        },
+        {
+          "bytes": "0E",
+          "tunable": []
+        },
+        {
+          "bytes": "28",
+          "tunable": []
+        },
+        {
+          "bytes": "45",
+          "tunable": []
+        },
+        {
+          "bytes": "3C",
+          "tunable": []
+        },
+        {
+          "bytes": "0D",
+          "tunable": []
+        },
+        {
+          "bytes": "05",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "24",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "28",
+          "tunable": []
+        },
+        {
+          "bytes": "20",
+          "tunable": []
+        },
+        {
+          "bytes": "2F",
+          "tunable": []
+        },
+        {
+          "bytes": "1E",
+          "tunable": []
+        },
+        {
+          "bytes": "2A",
+          "tunable": []
+        },
+        {
+          "bytes": "16",
+          "tunable": []
+        },
+        {
+          "bytes": "17",
+          "tunable": []
+        },
+        {
+          "bytes": "50",
+          "tunable": []
+        },
+        {
+          "bytes": "42",
+          "tunable": []
+        },
+        {
+          "bytes": "3C",
+          "tunable": []
+        },
+        {
+          "bytes": "37",
+          "tunable": []
+        },
+        {
+          "bytes": "31",
+          "tunable": []
+        },
+        {
+          "bytes": "37",
+          "tunable": []
+        },
+        {
+          "bytes": "42",
+          "tunable": []
+        },
+        {
+          "bytes": "45",
+          "tunable": []
+        },
+        {
+          "bytes": "0F",
+          "tunable": []
+        },
+        {
+          "bytes": "32",
+          "tunable": []
+        },
+        {
+          "bytes": "3C",
+          "tunable": []
+        },
+        {
+          "bytes": "34",
+          "tunable": []
+        },
+        {
+          "bytes": "46",
+          "tunable": []
+        },
+        {
+          "bytes": "42",
+          "tunable": []
+        },
+        {
+          "bytes": "5A",
+          "tunable": []
+        },
+        {
+          "bytes": "0B",
+          "tunable": []
+        },
+        {
+          "bytes": "37",
+          "tunable": []
+        },
+        {
+          "bytes": "37",
+          "tunable": []
+        },
+        {
+          "bytes": "58",
+          "tunable": []
+        },
+        {
+          "bytes": "09",
+          "tunable": []
+        },
+        {
+          "bytes": "2400A98F287C0A95802013",
+          "tunable": []
+        },
+        {
+          "bytes": "504901030040114050040021208A",
+          "tunable": []
+        },
+        {
+          "bytes": "2004",
+          "tunable": []
+        },
+        {
+          "bytes": "2A7C0A95000000002450490102",
+          "tunable": []
+        },
+        {
+          "bytes": "4011247C058D422004",
+          "tunable": []
+        },
+        {
+          "bytes": "8250040023502A0280500A",
+          "tunable": []
+        },
+        {
+          "bytes": "21208A004FFB03089001073400000000",
+          "tunable": []
+        },
+        {
+          "bytes": "456E656D792044454620817C8251824F0000000000000000",
+          "tunable": []
+        },
+        {
+          "bytes": "4D6170",
+          "tunable": []
+        },
+        {
+          "bytes": "636F766572",
+          "tunable": []
+        },
+        {
+          "bytes": "67",
+          "tunable": []
+        },
+        {
+          "bytes": "81",
+          "tunable": []
+        },
+        {
+          "bytes": "20757020746F2082",
+          "tunable": []
+        },
+        {
+          "bytes": "8254204445460000",
+          "tunable": []
+        },
+        {
+          "bytes": "0E",
+          "tunable": []
+        },
+        {
+          "bytes": "048002",
+          "tunable": []
+        },
+        {
+          "bytes": "60C7428C7E0003341B004300121000",
+          "tunable": []
+        },
+        {
+          "bytes": "00432C02006014000000000F00",
+          "tunable": []
+        },
+        {
+          "bytes": "3421802202",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "EBFC030800",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "21982002",
+          "tunable": []
+        },
+        {
+          "bytes": "431011",
+          "tunable": []
+        },
+        {
+          "bytes": "21",
+          "tunable": []
+        },
+        {
+          "bytes": "2202",
+          "tunable": []
+        },
+        {
+          "bytes": "24",
+          "tunable": []
+        },
+        {
+          "bytes": "A3AF",
+          "tunable": []
+        },
+        {
+          "bytes": "C038030C0000000008",
+          "tunable": []
+        },
+        {
+          "bytes": "42AEF0FA03080000000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "C038030C00000000",
+          "tunable": []
+        },
+        {
+          "bytes": "00000000",
+          "tunable": []
+        },
+        {
+          "bytes": "080040AE040040AE93FB0308211000000E",
+          "tunable": []
+        },
+        {
+          "bytes": "801864",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "02",
+          "tunable": []
+        },
+        {
+          "bytes": "A10464",
+          "tunable": []
+        },
+        {
+          "bytes": "A9282128000009",
+          "tunable": []
+        },
+        {
+          "bytes": "2011232805011800850012200000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "00001B",
+          "tunable": []
+        },
+        {
+          "bytes": "87001210000008",
+          "tunable": []
+        },
+        {
+          "bytes": "E0030000000008",
+          "tunable": []
+        },
+        {
+          "bytes": "E0032110000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000",
+          "tunable": []
+        },
+        {
+          "bytes": "C0",
+          "tunable": []
+        },
+        {
+          "bytes": "3C",
+          "tunable": []
+        },
+        {
+          "bytes": "BF",
+          "tunable": []
+        },
+        {
+          "bytes": "2000B0AF24",
+          "tunable": []
+        },
+        {
+          "bytes": "B1",
+          "tunable": []
+        },
+        {
+          "bytes": "28",
+          "tunable": []
+        },
+        {
+          "bytes": "B2AF2C00B3AF30",
+          "tunable": []
+        },
+        {
+          "bytes": "B4",
+          "tunable": []
+        },
+        {
+          "bytes": "34",
+          "tunable": []
+        },
+        {
+          "bytes": "B5",
+          "tunable": []
+        },
+        {
+          "bytes": "38",
+          "tunable": []
+        },
+        {
+          "bytes": "B6",
+          "tunable": []
+        },
+        {
+          "bytes": "2180A000",
+          "tunable": []
+        },
+        {
+          "bytes": "88",
+          "tunable": []
+        },
+        {
+          "bytes": "14",
+          "tunable": []
+        },
+        {
+          "bytes": "9426",
+          "tunable": []
+        },
+        {
+          "bytes": "4808",
+          "tunable": []
+        },
+        {
+          "bytes": "482801",
+          "tunable": []
+        },
+        {
+          "bytes": "4809",
+          "tunable": []
+        },
+        {
+          "bytes": "A089020A",
+          "tunable": []
+        },
+        {
+          "bytes": "92862D",
+          "tunable": []
+        },
+        {
+          "bytes": "0434F0F5030C01",
+          "tunable": []
+        },
+        {
+          "bytes": "053464",
+          "tunable": []
+        },
+        {
+          "bytes": "482A0B",
+          "tunable": []
+        },
+        {
+          "bytes": "001100",
+          "tunable": []
+        },
+        {
+          "bytes": "000009",
+          "tunable": []
+        },
+        {
+          "bytes": "401A00",
+          "tunable": []
+        },
+        {
+          "bytes": "000007",
+          "tunable": []
+        },
+        {
+          "bytes": "40105000083418",
+          "tunable": []
+        },
+        {
+          "bytes": "48021290000064",
+          "tunable": []
+        },
+        {
+          "bytes": "0834",
+          "tunable": []
+        },
+        {
+          "bytes": "00001B",
+          "tunable": []
+        },
+        {
+          "bytes": "4802129000004000139642",
+          "tunable": []
+        },
+        {
+          "bytes": "06960D80083CA0E3",
+          "tunable": []
+        },
+        {
+          "bytes": "A102",
+          "tunable": []
+        },
+        {
+          "bytes": "C0147F",
+          "tunable": []
+        },
+        {
+          "bytes": "05342000063480FFC23002004010",
+          "tunable": []
+        },
+        {
+          "bytes": "8800",
+          "tunable": []
+        },
+        {
+          "bytes": "80FF053412",
+          "tunable": []
+        },
+        {
+          "bytes": "82962420C500241045002410440061",
+          "tunable": []
+        },
+        {
+          "bytes": "821000",
+          "tunable": []
+        },
+        {
+          "bytes": "00001400829600",
+          "tunable": []
+        },
+        {
+          "bytes": "0000241045",
+          "tunable": []
+        },
+        {
+          "bytes": "241044005D",
+          "tunable": []
+        },
+        {
+          "bytes": "10000000",
+          "tunable": []
+        },
+        {
+          "bytes": "01001534640016341000829600",
+          "tunable": []
+        },
+        {
+          "bytes": "0000241045",
+          "tunable": []
+        },
+        {
+          "bytes": "241044000400821400",
+          "tunable": []
+        },
+        {
+          "bytes": "0000C8",
+          "tunable": []
+        },
+        {
+          "bytes": "163402000934A0E309A10E",
+          "tunable": []
+        },
+        {
+          "bytes": "96",
+          "tunable": []
+        },
+        {
+          "bytes": "00000024104600050040100000000003",
+          "tunable": []
+        },
+        {
+          "bytes": "153440B016",
+          "tunable": []
+        },
+        {
+          "bytes": "01000934A0E309A1320010963958000C00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000FF",
+          "tunable": []
+        },
+        {
+          "bytes": "42302A",
+          "tunable": []
+        },
+        {
+          "bytes": "50",
+          "tunable": []
+        },
+        {
+          "bytes": "35",
+          "tunable": []
+        },
+        {
+          "bytes": "218000000980113CB87B312621A0",
+          "tunable": []
+        },
+        {
+          "bytes": "0010",
+          "tunable": []
+        },
+        {
+          "bytes": "A0AF3958000C000000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "288E3F004230211048001000A88F000000002A48020103",
+          "tunable": []
+        },
+        {
+          "bytes": "2011",
+          "tunable": []
+        },
+        {
+          "bytes": "000010",
+          "tunable": []
+        },
+        {
+          "bytes": "A2AF21A000020100102604",
+          "tunable": []
+        },
+        {
+          "bytes": "082AF1FF001504003126004011341B008012",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "16",
+          "tunable": []
+        },
+        {
+          "bytes": "881202",
+          "tunable": []
+        },
+        {
+          "bytes": "08340E008812000000",
+          "tunable": []
+        },
+        {
+          "bytes": "3958000C",
+          "tunable": []
+        },
+        {
+          "bytes": "00000980083CE47B088D00",
+          "tunable": []
+        },
+        {
+          "bytes": "000002",
+          "tunable": []
+        },
+        {
+          "bytes": "001D0000",
+          "tunable": []
+        },
+        {
+          "bytes": "00",
+          "tunable": []
+        },
+        {
+          "bytes": "08341B",
+          "tunable": []
+        },
+        {
+          "bytes": "48001010000001004224D1FC030800",
+          "tunable": []
+        },
+        {
+          "bytes": "00000480043C60C7848CBB5B",
+          "tunable": []
+        },
+        {
+          "bytes": "0C00",
+          "tunable": []
+        },
+        {
+          "bytes": "0000D1FC03080000000042101300D1FC030800",
+          "tunable": []
+        },
+        {
+          "bytes": "0000D2FC03084098130021986202180075021220",
+          "tunable": []
+        },
+        {
+          "bytes": "212840024FFB030C2138C0021027482C02000015000000",
+          "tunable": []
+        },
+        {
+          "bytes": "0F270234E0FC0308211051",
+          "tunable": []
+        },
+        {
+          "bytes": "E0FC030800C0",
+          "tunable": []
+        },
+        {
+          "bytes": "3400806226FFFF42303C00BF8F3800B68F3400B58F3000B48F2C00B38F2800B28F2400B18F2000B08F0800E0034000BD2704",
+          "tunable": []
+        },
+        {
+          "bytes": "838C060002341000621010",
+          "tunable": []
+        },
+        {
+          "bytes": "622C0E",
+          "tunable": []
+        },
+        {
+          "bytes": "401000",
+          "tunable": []
+        },
+        {
+          "bytes": "0000E8FFBD2714",
+          "tunable": []
+        },
+        {
+          "bytes": "BFAF0000858C08",
+          "tunable": []
+        },
+        {
+          "bytes": "868C2528A3005FFA030C01",
+          "tunable": []
+        },
+        {
+          "bytes": "07340980023CA07B428C14",
+          "tunable": []
+        },
+        {
+          "bytes": "BF8F",
+          "tunable": []
+        },
+        {
+          "bytes": "422C0800E0031800BD2771F5030805000234048008",
+          "tunable": []
+        },
+        {
+          "bytes": "A0C908",
+          "tunable": []
+        },
+        {
+          "bytes": "01",
+          "tunable": []
+        },
+        {
+          "bytes": "0934080009150980013CA07428",
+          "tunable": []
+        },
+        {
+          "bytes": "1F",
+          "tunable": []
+        },
+        {
+          "bytes": "09",
+          "tunable": []
+        },
+        {
+          "bytes": "0400091100000000AC",
+          "tunable": []
+        },
+        {
+          "bytes": "288C00000000A87B28AC9C3A0308000000",
+          "tunable": []
+        },
+        {
+          "bytes": "2600089613",
+          "tunable": []
+        },
+        {
+          "bytes": "093405",
+          "tunable": []
+        },
+        {
+          "bytes": "091514",
+          "tunable": []
+        },
+        {
+          "bytes": "1F3C43",
+          "tunable": []
+        },
+        {
+          "bytes": "040C00",
+          "tunable": []
+        },
+        {
+          "bytes": "000035",
+          "tunable": []
+        },
+        {
+          "bytes": "050821",
+          "tunable": []
+        },
+        {
+          "bytes": "000025",
+          "tunable": []
+        },
+        {
+          "bytes": "0508",
+          "tunable": []
+        }
+      ],
+      "guards": []
+    }
   ]
 }

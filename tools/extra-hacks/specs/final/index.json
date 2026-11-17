@@ -5,7 +5,7 @@
     "sha256": "8F9B4F05CF8E8F8E08CEFD8CEA5EA43B9D365D5A3D1920DA248645702771751A"
   },
   "final": {
-    "sha256": "9A8B6B63E0BA88A0C0CDD520E182D977D8BC3268F32659C648809BE366827344"
+    "sha256": "B7BA0FAB2ED95ACA67DDAB885A83358D454324AA875FC084F8183A83465F58DE"
   },
   "order": [
     "balance",
@@ -28,6 +28,7 @@
     "dropkick",
     "air-control",
     "bat-form",
+    "system-settings",
     "instant-wolf",
     "heart-refresh",
     "hellfire",
@@ -35,7 +36,6 @@
     "petrification",
     "poison",
     "element-line",
-    "system-settings",
     "title-final",
     "clock-tower-doors",
     "richter-rescue",

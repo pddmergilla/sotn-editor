@@ -77,5 +77,60 @@
       "on": "10C210C2B5D610C210C210C210C208A16BADADB510C210C210C2"
     }
   ],
-  "requires": []
+  "requires": [],
+  "onVersions": [
+    {
+      "edits": [
+        {
+          "bytes": "24",
+          "tunable": []
+        },
+        {
+          "bytes": "24",
+          "tunable": []
+        },
+        {
+          "bytes": "90",
+          "tunable": []
+        },
+        {
+          "bytes": "B0",
+          "tunable": []
+        },
+        {
+          "bytes": "4824",
+          "tunable": []
+        },
+        {
+          "bytes": "A0",
+          "tunable": []
+        },
+        {
+          "bytes": "A0",
+          "tunable": []
+        },
+        {
+          "bytes": "08",
+          "tunable": []
+        },
+        {
+          "bytes": "E00386",
+          "tunable": []
+        },
+        {
+          "bytes": "29A2",
+          "tunable": []
+        },
+        {
+          "bytes": "10C221",
+          "tunable": []
+        },
+        {
+          "bytes": "10C210C2B5D610C210C210C210C208A16BADADB510C210C210C2",
+          "tunable": []
+        }
+      ],
+      "guards": []
+    }
+  ]
 }
