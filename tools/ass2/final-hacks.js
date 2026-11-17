@@ -29,11 +29,11 @@ const FEATURES = [
       /^Castle-Levels-Inverted/, /^First-Castle-Level-/, /^Dop10-Dagger/, /^Wall-Slam-Half-Hit-Damage/, /^Warg-HP444-DEF5-/]},
   {id: 'text', kind: 'text', title: 'Credits and prologue text', category: 'Text', match: [/^Credits-Oy-Final/, /^Credits-Centered/, /^Prologue-Welcome-/]},
   {id: 'content', kind: 'content', toggle: true, title: 'ASS -Final- Castle', category: FINAL,
-    about: 'The revised castle: restored maps, new pickups and relic placements, the -Final- relic progression, and removed stage-name popups plus selected boss and enemy drops.',
+    about: 'The revised castle: restored maps, new pickups and relic placements, the -Final- relic progression, removed stage-name popups plus selected boss and enemy drops, and immediate Vlad relic rewards for Maria and Richter.',
     match: [/^Restore-Exact-Lost-Maps/, /^Recover-Main-With-Death/, /^All-Pot-Drops/, /Caverns-Pot-Drops/, /^Unique-MaxUp-Pickups/, /^Unique-Cards-Heart-Max-Ups/,
       /^Life-Apple-Pickups-to-Life-MaxUps/, /^Castle-Consumable-Replacements/, /Entrance-Dracula-Tunic/, /^Power-Core-Relic-Text/,
       /^Clock-Room-Statues-/, /^Entity-List-Sync-/, /^Entity-Slot-Overlap-Fix/, /^Jewel-Sword-Door-/, /^Relic-Orb-Vertical-Sync/, /^Skelerang-Slots-/,
-      /^Mudman-CHI-/, /^Warg-NP3-Gate/, /^Remove-All-Stage-Name-Popups-ASS-Final/, /^Remove-Boss-And-Selected-Enemy-Drops-ASS-Final/]},
+      /^Mudman-CHI-/, /^Warg-NP3-Gate/, /^Remove-All-Stage-Name-Popups-ASS-Final/, /^Remove-Boss-And-Selected-Enemy-Drops-ASS-Final/, /^Vlad-Relic-Boss-Drops-/]},
 
   // ---- Boss AI: one patch for every boss.
   {id: 'boss-ai', kind: 'hack', category: BOSS, title: 'Boss AI pack',

@@ -54,6 +54,8 @@ const BASE = {version: '2.0.10', sha256: '8F9B4F05CF8E8F8E08CEFD8CEA5EA43B9D365D
   vanilla: 'CE01203A9DF93E001B88EF4C350889C19F11FFBA89D20F214BDD8DEC0B2D8D7C', commit: '0debdca', ppf: 'ass2/Alternate-Scarlet-Symphony-2.0.ppf'};
 const REF = path.join(ROOT, 'outputs/ref/ASS-2.0.10.bin');
 const F04_RELEASE_COMMIT = 'a181bf8177b61974d3f3be69c0f51af3650b25f6';
+const F05_RELEASE_COMMIT = '44dcf5d';
+const F05_SHA256 = 'B7BA0FAB2ED95ACA67DDAB885A83358D454324AA875FC084F8183A83465F58DE';
 const F04_SHA256 = '9A8B6B63E0BA88A0C0CDD520E182D977D8BC3268F32659C648809BE366827344';
 function release() {
   return {version: BASE.version, ppf: {file: `${BASE.ppf} (${BASE.commit})`}, vanilla: {sha256: BASE.vanilla}, result: {sha256: BASE.sha256}};
@@ -132,8 +134,8 @@ async function main() {
   const baseSha = sha(base);
   assert.equal(baseSha, rel.result.sha256, `ASS ${rel.version} rebuild`);
   const cur = fs.readFileSync(MAIN), curSha = sha(cur);
-  let f04Disc = null;
-  const f04Files = new Map();
+  let f04Disc = null, f05Disc = null;
+  const f04Files = new Map(), f05Files = new Map();
   if (SPECS_ONLY) {
     const vanillaBlob = await fs.openAsBlob(VANILLA);
     const oldPpfBytes = child.execFileSync('git', ['-c', 'safe.directory=*', 'show', F04_RELEASE_COMMIT + ':ass2/ASS-Final.ppf'], {cwd: ROOT, maxBuffer: 1 << 28});
@@ -146,6 +148,21 @@ async function main() {
     }
     assert.equal(oldHash.digest('hex').toUpperCase(), F04_SHA256, 'Audited F.04 result image');
     f04Disc = await C.DiscImage.open(oldImage);
+    const f05Patch = A.parsePpf(child.execFileSync('git', ['-c', 'safe.directory=*', 'show', F05_RELEASE_COMMIT + ':ass2/ASS-Final.ppf'], {cwd: ROOT, maxBuffer: 1 << 28}));
+    assert.equal((await A.inspect(vanillaBlob, f05Patch, {size: vanilla.length})).status, 'vanilla', 'F.05 input guard');
+    const f05Image = A.patchedFile(vanillaBlob, f05Patch), f05Hash = crypto.createHash('sha256');
+    for (let at = 0; at < vanilla.length; at += 8 << 20)
+      f05Hash.update(Buffer.from(await f05Image.slice(at, Math.min(vanilla.length, at + (8 << 20))).arrayBuffer()));
+    assert.equal(f05Hash.digest('hex').toUpperCase(), F05_SHA256, 'F.05 result image');
+    f05Disc = await C.DiscImage.open(f05Image);
+  }
+  async function f05File(name) {
+    if (!f05Files.has(name)) {
+      const record = await f05Disc.findPath(name.split('/'));
+      assert.ok(record, 'F.05 is missing ' + name);
+      f05Files.set(name, Buffer.from(await f05Disc.readFile(record)));
+    }
+    return f05Files.get(name);
   }
   async function f04File(name) {
     if (!f04Disc) throw new Error('F.04 file lookup requires --specs-only.');
@@ -418,13 +435,16 @@ async function main() {
     const file = path.join(SPEC_DIR, f.id + '.json');
     if (fs.existsSync(file)) oldSpecs.set(f.id, JSON.parse(fs.readFileSync(file, 'utf8')));
   }
-  async function f04Version(spec, previous) {
+  async function priorVersion(spec, previous, getFile, commit) {
     if (previous.tunables && !spec.tunables) spec.tunables = previous.tunables;
+    const audited = JSON.parse(child.execFileSync('git', ['-c', 'safe.directory=*', 'show',
+      commit + ':tools/extra-hacks/specs/final/' + spec.id + '.json'], {cwd: ROOT, maxBuffer: 1 << 26}));
+    if (commit === F05_RELEASE_COMMIT && JSON.stringify(spec.edits) === JSON.stringify(audited.edits)) return null;
     const edits = [];
     for (const edit of spec.edits) {
       const start = Number.parseInt(edit.offset, 16), current = Buffer.from(edit.on, 'hex');
-      const data = await f04File(edit.file);
-      assert.ok(start + current.length <= data.length, 'F.04 range is missing: ' + edit.file + ' ' + edit.offset);
+      const data = await getFile(edit.file);
+      assert.ok(start + current.length <= data.length, 'Earlier release range is missing: ' + edit.file + ' ' + edit.offset);
       edits.push({bytes: data.subarray(start, start + current.length).toString('hex').toUpperCase(),
         tunable: tunableRanges(edit.file, start, current.length, spec.tunables)});
     }
@@ -440,12 +460,10 @@ async function main() {
         for (let i = 0; i < size; i++) currentBytes.add(edit.file + ':' + (start + i));
       }
       const removed = new Map();
-      const audited = JSON.parse(child.execFileSync('git', ['-c', 'safe.directory=*', 'show',
-        F04_RELEASE_COMMIT + ':tools/extra-hacks/specs/final/' + spec.id + '.json'], {cwd: ROOT, maxBuffer: 1 << 26}));
       for (const edit of [...audited.edits, ...previous.edits || []]) {
         const start = Number.parseInt(edit.offset, 16), size = Buffer.from(edit.on, 'hex').length;
-        const data = await f04File(edit.file);
-        assert.ok(start + size <= data.length, 'F.04 old range is missing: ' + edit.file + ' ' + edit.offset);
+        const data = await getFile(edit.file);
+        assert.ok(start + size <= data.length, 'Earlier release old range is missing: ' + edit.file + ' ' + edit.offset);
         if (!removed.has(edit.file)) removed.set(edit.file, new Map());
         const file = removed.get(edit.file);
         for (let i = 0; i < size; i++) if (!currentBytes.has(edit.file + ':' + (start + i)))
@@ -464,10 +482,7 @@ async function main() {
       oldVersion = {edits, guards};
     }
     const differs = edits.some((edit, i) => edit.bytes !== spec.edits[i].on) || oldVersion.guards.length > 0;
-    const versions = [];
-    if (differs) versions.push(oldVersion);
-    // F.04 signatures follow the refreshed edit ranges.
-    if (versions.length) spec.onVersions = versions; else delete spec.onVersions;
+    return differs ? oldVersion : null;
   }
   // The Extra Hacks catalog builder reads 2.0.10 from REF (tools/extra-hacks/sotn.py, image 'a').
   if (!DRY && !SPECS_ONLY && !fs.existsSync(REF)) { fs.mkdirSync(path.dirname(REF), {recursive: true}); fs.writeFileSync(REF, base); }
@@ -527,7 +542,10 @@ async function main() {
     if (SPECS_ONLY) {
       const previous = oldSpecs.get(f.id);
       if (!previous) throw new Error('Missing existing Final spec: ' + f.id);
-      await f04Version(spec, previous);
+      const versions = [await priorVersion(spec, previous, f04File, F04_RELEASE_COMMIT),
+        await priorVersion(spec, previous, f05File, F05_RELEASE_COMMIT)].filter(Boolean);
+      const unique = [...new Map(versions.map(version => [JSON.stringify(version), version])).values()];
+      if (unique.length) spec.onVersions = unique; else delete spec.onVersions;
     }
     // joinInto: Extra Hacks shows this hack inside an earlier hack's checkbox.
     if (f.joinInto) spec.joinInto = f.joinInto;
