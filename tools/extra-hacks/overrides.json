@@ -43,5 +43,54 @@
     "slot": 16
    }
   }
+ },
+ "hellfire": {"vanilla": {}},
+ "bat-form": {"vanilla": {}},
+ "air-control": {
+  "vanilla": {
+   "skip": [["BIN/RIC.BIN", "0x0", "0x1000000"]],
+   "note": "On vanilla, Richter keeps his vanilla backflip; Alucard's air control and hurt recovery are unchanged."
+  }
+ },
+ "instant-wolf": {
+  "vanilla": {
+   "skip": [["DRA.BIN", "0x50488", "0x504A4"], ["ST/TE5/F_TE5.BIN", "0x0", "0x1000000"]]
+  }
+ },
+ "petrification": {"vanilla": {}},
+ "poison": {"vanilla": {}},
+ "percent-def": {
+  "vanilla": {
+   "skip": [["DRA.BIN", "0x4000", "0xD000"]],
+   "note": "On vanilla, equipment and enemies keep their vanilla DEF values; only the percent rule is added."
+  }
+ },
+ "element-line": {
+  "requires": ["damage-colors-weak"],
+  "vanilla": {}
+ },
+ "system-settings": {
+  "vanilla": {
+   "requires": ["minimap"],
+   "patch": {"DRA.BIN:0x2f144": "20"}
+  }
+ },
+ "damage-colors-weak": {"vanilla": {}},
+ "death-return": {
+  "vanilla": {
+   "patch": {
+    "DRA.BIN:0x2e358": "0D80013CB0DC20AC0980013C21A90308B87823AC0D80013CB0DC20AC0780023C78FE030873C34224",
+    "DRA.BIN:0x4a47c": "D638030800000000",
+    "DRA.BIN:0x5f9d8": "DB38030800000000",
+    "DRA.BIN:0x2ebb0": "0000000000000000"
+   },
+   "note": "Death still ends the game until Alucard has been in a save room since the game was started or loaded."
+  }
+ },
+ "clock-tower-doors": {"vanilla": {}},
+ "prologue-skip": {
+  "vanilla": {
+   "patch": {"DRA.BIN:0x5ff10": "1F000334"}
+  }
  }
 }

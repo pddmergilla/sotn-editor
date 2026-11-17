@@ -244,6 +244,9 @@ def add_final(features):
                 run['on'].append(on[i])
         feat = {'id': fid, 'label': s['label'], 'category': s['category'], 'summary': s['summary'], 'final': True,
                 'vanilla': 'Available only on Alternate Scarlet Symphony images.', 'edits': recs}
+        for need in OVERRIDES.get(fid, {}).get('requires', []):
+            if need not in requires:
+                requires.append(need)
         if requires:
             feat['requires'] = requires
         if s.get('finalOnly'):
@@ -311,7 +314,48 @@ def add_final(features):
                     layer['at'] = [[pos, bytes(b).hex().upper()] for pos, b in runs]
         if ft.get('final') and not ft['edits']:
             ft['layerOnly'] = True  # every byte rewrites another hack: present when its layers are
+    final_vanilla(features)
     return index
+
+
+def final_vanilla(features):
+    """ASS -Final- hacks that also work on vanilla US (overrides.json "vanilla"). Their vanilla edits are the Final
+    bytes written over vanilla's files, less the "skip" ranges (data tuned for ASS), plus "patch" bytes (fixes where the
+    Final bytes rely on ASS code or carry an ASS byte vanilla lacks), as runs of the bytes that differ from vanilla.
+    Their layers on ASS 2.0 hacks that run on vanilla (Damage Number Colors, Quick Items) are written with those."""
+    for ft in features:
+        cfg = OVERRIDES.get(ft['id'], {}).get('vanilla')
+        if not ft.get('final') or cfg is None:
+            continue
+        images = {}
+        def image(f):
+            if f not in images:
+                images[f] = bytearray(read(f, 'v'))
+            return images[f]
+        skip = [(f, h(s), h(e)) for f, s, e in cfg.get('skip', [])]
+        for e in ft['edits']:
+            on, off = bytes.fromhex(e['on']), e['offset']
+            for i, value in enumerate(on):
+                if any(f == e['file'] and s <= off + i < x for f, s, x in skip):
+                    continue
+                image(e['file'])[off + i] = value
+        for key, data in cfg.get('patch', {}).items():
+            f, off = key.rsplit(':', 1)
+            data = bytes.fromhex(data)
+            image(f)[h(off):h(off) + len(data)] = data
+        edits = []
+        for f in sorted(images):
+            for s0, e0 in ranges(read(f, 'v'), images[f], gap=3):
+                edits.append({'file': f, 'offset': s0, 'off': read(f, 'v')[s0:e0].hex().upper(), 'on': bytes(images[f][s0:e0]).hex().upper()})
+        assert edits or ft.get('layerOnly'), ft['id']
+        ft['vanilla'] = True
+        if edits:
+            ft['vanillaEdits'] = edits
+        if cfg.get('requires'):
+            ft['vanillaRequires'] = cfg['requires']
+        if cfg.get('note'):
+            ft['vanillaNote'] = cfg['note']
+        print('  vanilla', ft['id'], len(edits), 'edits', sum(len(x['on']) // 2 for x in edits), 'bytes')
 
 
 def exclusion_map(specs):
