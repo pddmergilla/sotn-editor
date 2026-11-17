@@ -10,7 +10,7 @@ Only needed when a hack is added or changed; stat, text and map edits in later b
 A Final hack may rewrite bytes an earlier hack owns. Those bytes stay with the earlier hack as a layer: the later
 hack's bytes are written over the earlier hack's when the later one is selected, and the later hack requires it.
 
-usage: python build_catalog.py [--out PATH] [--allow-missing]
+usage: python build_catalog.py [--out PATH] [--allow-missing] [--metadata-only]
 """
 import hashlib, json, struct, sys, zlib
 from pathlib import Path
@@ -244,6 +244,8 @@ def add_final(features):
                 run['on'].append(on[i])
         feat = {'id': fid, 'label': s['label'], 'category': s['category'], 'summary': s['summary'], 'final': True,
                 'vanilla': 'Available only on Alternate Scarlet Symphony images.', 'edits': recs}
+        if s.get('fixed'):
+            feat['fixed'] = True
         for need in OVERRIDES.get(fid, {}).get('requires', []):
             if need not in requires:
                 requires.append(need)
@@ -414,7 +416,33 @@ def fingerprint(specs):
             'markers': markers, 'minMarkerVotes': max(8, len(markers) // 4), 'markerAgreement': 0.9}
 
 
+def metadata_only():
+    source = OUT.read_text(encoding='utf-8')
+    marker = 'window.SotnExtraHacks = '
+    start = source.index(marker) + len(marker)
+    end = source.rfind(';')
+    catalog = json.loads(source[start:end])
+    specs = {}
+    for folder in (SPECS, FINAL):
+        for path in folder.glob('*.json'):
+            spec = json.loads(path.read_text(encoding='utf-8'))
+            if spec.get('id'):
+                specs[spec['id']] = spec
+    for feature in catalog['features']:
+        spec = specs.get(feature['id'], {})
+        if spec.get('fixed'):
+            feature['fixed'] = True
+        else:
+            feature.pop('fixed', None)
+    text = source[:start] + json.dumps(catalog, separators=(',', ':')) + ';\n'
+    OUT.write_text(text, encoding='utf-8')
+    print('updated feature metadata in', OUT)
+
+
 def main():
+    if '--metadata-only' in sys.argv:
+        metadata_only()
+        return
     allow = '--allow-missing' in sys.argv
     write_stones()
     specs = load_specs(allow)
@@ -430,7 +458,7 @@ def main():
                 owner[key] = s['id']
         vanilla = s.get('vanilla', {})
         feat = {'id': s['id'], 'label': s.get('label', s['id'])}
-        for k in ('wip', 'shippedIn', 'subtitle', 'summary', 'requires', 'valueTemplate', 'defaults', 'values', 'contextReason', 'partialIsOn', 'vanillaNote'):
+        for k in ('wip', 'shippedIn', 'subtitle', 'summary', 'requires', 'valueTemplate', 'defaults', 'values', 'contextReason', 'partialIsOn', 'vanillaNote', 'fixed'):
             if s.get(k):
                 feat[k] = s[k]
         if vanilla.get('vanillaRequires'):

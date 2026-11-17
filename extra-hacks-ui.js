@@ -167,6 +167,7 @@
 
   // vanillaRequires: dependencies that apply only when adding hacks to a vanilla image.
   const requiresFor = (feature, profile) => profile === "vanilla" ? [...feature.requires, ...feature.vanillaRequires] : feature.requires;
+  const visibleFeatures = catalog => (catalog?.features || []).filter(feature => !feature.fixed);
   const editsFor = (feature, profile) => profile === "vanilla" && feature.vanillaEdits ? feature.vanillaEdits : feature.edits;
 
   function filesUsed(catalog) {
@@ -392,6 +393,7 @@
       else if (info.state === "unknown" || info.state === "mixed") reason = UNSUPPORTED;
       else if (info.state === "off" && info.blocked) reason = `The spare space this hack needs (${info.blocked}) holds other data in this BIN, such as longer item text.`;
       else if (info.state === "off" && !info.context) reason = feature.contextReason || "This BIN lacks the Alternate Scarlet Symphony code this hack builds on.";
+      else if (feature.fixed) reason = "This feature is fixed and cannot be changed.";
       else canToggle = true;
       out.set(feature.id, {feature, info, reason, canToggle, source: info?.state === "on"});
     }
@@ -413,6 +415,8 @@
     const next = new Map(selected), notes = [];
     const byId = new Map(catalog.features.map(feature => [feature.id, feature]));
     const visit = (key, on) => {
+      const feature = byId.get(key), entry = avail.get(key);
+      if (feature?.fixed && !!on !== !!entry?.source) throw new Error(`${feature.label} is always included and cannot be changed.`);
       if (next.get(key) === on) return;
       next.set(key, on);
       if (on) for (const need of byId.get(key) ? requiresFor(byId.get(key), profile) : []) {
@@ -474,6 +478,10 @@
   // Byte edits for a build. options.statsOwned(file, offset) is true for item costs the Stats
   // Editor writes itself (see statsValues).
   function plan(catalog, analysis, selected, options = {}) {
+    for (const feature of catalog.features) if (feature.fixed) {
+      const info = analysis.features.find(item => item.id === feature.id);
+      if (!!selected.get(feature.id) !== (info?.state === "on")) throw new Error(`${feature.label} is always included and cannot be changed.`);
+    }
     const edits = plannedEdits(catalog, analysis, selected).filter(edit => !(edit.stats && options.statsOwned?.(edit.file, edit.offset)));
     for (const feature of catalog.features) {
       const tuning = options.tuning?.get(feature.id);
@@ -615,7 +623,7 @@
     list.replaceChildren();
     list.classList.toggle("blocked", phase === "unsupported");
     let category = null;
-    for (const feature of catalog?.features || []) {
+    for (const feature of visibleFeatures(catalog)) {
       if (feature.joinInto) continue;
       if (feature.category && feature.category !== category) {
         category = feature.category;
@@ -788,7 +796,10 @@
       avail = availability(catalog, analysis);
       for (const entry of avail.values()) selected.set(entry.feature.id, entry.source);
       // Counted as the tab shows them: a joined hack is part of its host's checkbox.
-      const shown = analysis.features.filter(item => !catalog.features.find(f => f.id === item.id).joinInto);
+      const shown = analysis.features.filter(item => {
+        const feature = catalog.features.find(f => f.id === item.id);
+        return feature && !feature.fixed && !feature.joinInto;
+      });
       const found = shown.filter(item => item.state === "on").length;
       const finalOnly = shown.filter(item => item.short && catalog.features.find(f => f.id === item.id).finalOnly).length;
       const unknown = shown.filter(item => item.state === "unknown" || item.state === "mixed").length - finalOnly;
@@ -884,6 +895,6 @@
   global.SotnExtraHacksUI = api;
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = {UNSUPPORTED, crc32, maskedCopy, hexBytes, prepareCatalog, filesUsed, fingerprint, featureState, readValues, analyze, availability, cascade, plan, statsValues, applyEdits, api};
+    module.exports = {UNSUPPORTED, crc32, maskedCopy, hexBytes, prepareCatalog, filesUsed, fingerprint, featureState, readValues, analyze, availability, cascade, plan, statsValues, applyEdits, visibleFeatures, api};
   }
 })(typeof window !== "undefined" ? window : globalThis);

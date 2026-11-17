@@ -346,6 +346,7 @@ async function main() {
   };
   async function catalogSpec(f, own) {
     const byFile = new Map(), spec = {id: f.id, label: f.title, category: f.category, summary: f.about, edits: []};
+    if (f.fixed) spec.fixed = true;
     let disc = 0, grown = false;
     for (const [o, v] of [...own].sort((a, b) => a[0] - b[0])) {
       const sf = o % SECTOR >= DATA && o % SECTOR < USER_END ? sectorFile.get(sectorOf(o)) : null;

@@ -117,7 +117,7 @@ const FEATURES = [
     about: 'System gains a setting to show or hide the minimap, and Button Config gains a remappable item shortcut.'},
   {id: 'damage-colors-weak', kind: 'hack', category: MENU, title: 'Damage number colors: weak and resist', match: [/^Damage-Number-(Colors|Helper)-/],
     about: 'Weakness and resisted hits get their own damage number colors (adds to Damage Number Colors).'},
-  {id: 'title-final', kind: 'hack', category: MENU, title: 'Title: Alternate Scarlet Symphony -Final-', match: [/^Title-Alternate/, /Title-Placement/],
+  {id: 'title-final', kind: 'hack', category: MENU, title: 'Title: Alternate Scarlet Symphony -Final-', fixed: true, match: [/^Title-Alternate/, /Title-Placement/],
     about: 'The title screen reads Alternate Scarlet Symphony -Final-. Always included in the full ASS -Final- patch.'},
 
   // ---- World.
