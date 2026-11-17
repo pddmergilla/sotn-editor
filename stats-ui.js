@@ -546,6 +546,17 @@
       return el("label", {class: "sf wide"}, el("span", {class: "sfLabel", text: "Steals souls"}), pick);
     }
 
+    function consumableField(id) {
+      const f = F(id);
+      const options = [{value: 0, label: "No"}, {value: 1, label: "Yes"}];
+      const pick = plainSelect(options, f.value ? 1 : 0, value => commit(id, Number(value), pick), {disabled: !!f.readOnly});
+      bind(id, pick, () => {
+        pick.value = String(f.value ? 1 : 0);
+        markChanged(pick, id);
+      });
+      return el("label", {class: "sf"}, el("span", {class: "sfLabel", text: "Consumable"}), pick,
+        el("span", {class: "sfNote", text: "No keeps the item when used; MP cost is separate."}));
+    }
     function specialPanel(it, key, title) {
       const slot = it[key], index = val(slot), label = rowName(it.index);
       const options = [{value: 0, label: "None"}, ...M.specialRows(model).map(r => ({value: r.index, label: specialLabel(r.index, it.index)}))];
@@ -683,7 +694,7 @@
         el("span", {class: "itemTitle"}, iconControl(it), control(it.name, {big: true})), `#${it.index}`,
         sf("Description", it.desc, {wide: true}),
         grid(sf("Icon", it.icon), sf("Icon palette", it.palette), sf("ATK", it.attack), sf("DEF", it.defense),
-          ...(kind === "hand" ? [sf(costLabel(it.mp), it.mp), it.heal ? sf("HP healed", it.heal) : null, isThrown(it) ? sf("Max on screen", it.chain, {note: "Counted per hand."}) : null, isWeapon(it) || isThrown(it) ? sf("Hit cooldown", it.invFrames, {note: "frames before the same enemy can be hit again"}) : null, isWeapon(it) ? soulField(it.hitEffect) : null, sf("Critical rate", it.crit), sf("Stun frames", it.stun), sf("Element", it.element, {wide: true})] :
+          ...(kind === "hand" ? [sf(costLabel(it.mp), it.mp), consumableField(it.consumable), it.heal ? sf("HP healed", it.heal) : null, isThrown(it) ? sf("Max on screen", it.chain, {note: "Counted per hand."}) : null, isWeapon(it) || isThrown(it) ? sf("Hit cooldown", it.invFrames, {note: "frames before the same enemy can be hit again"}) : null, isWeapon(it) ? soulField(it.hitEffect) : null, sf("Critical rate", it.crit), sf("Stun frames", it.stun), sf("Element", it.element, {wide: true})] :
             [sf("STR", it.str), sf("CON", it.con), sf("INT", it.int), sf("LCK", it.lck)])),
         kind === "hand" ? null : grid(sf("Weak to", it.weak, {wide: true}), sf("Resists", it.resist, {wide: true}),
           sf("Immune to", it.immune, {wide: true}), sf("Absorbs", it.absorb, {wide: true})),

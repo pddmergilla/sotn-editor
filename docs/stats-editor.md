@@ -21,10 +21,12 @@ The **Stats Editor** tab reads the loaded BIN's own values, so an already modded
 | Richter subweapons and crashes | heart cost, damage, how many can be out at once, hit cooldown, element, crash heart cost, crash damage rows, Agunea follow-up cost | `subweapons_def`, `RicEntitySubwpnAgunea` |
 | Familiars | name, base damage and element of each attack | menu strings, `g_SpellDefs` rows 7 and 15-27 |
 | Enemies | name, HP, LVL, EXP, DEF, contact damage and element, weaknesses/resistances, both drops and drop rates, each attack's damage and element | `g_EnemyDefs`; recognized ASS Medusa sword elements in `BOSS/RBO3/RBO3.BIN` |
-| Hand items | name, icon, icon palette, description, ATK, DEF, MP cost (shown as heart cost when the cost has bit `0x8000`, the Healing items use Hearts flag), critical rate, how many can be out at once (thrown weapons, bombs and food), stun frames, element, hit cooldown and whether hits steal souls (weapons and their specials), special effect; for weapons a moveset: basic attack, category, the ↓↘→ and ←→ specials with their damage, MP cost and element | `g_EquipDefs` rows 0-168, specials in rows 169-216 and recognized external rows |
+| Hand items | name, icon, icon palette, description, ATK, DEF, MP cost (shown as heart cost when the cost has bit `0x8000`, the Healing items use Hearts flag), whether use consumes the item (separate from MP cost), critical rate, how many can be out at once (thrown weapons, bombs and food), stun frames, element, hit cooldown and whether hits steal souls (weapons and their specials), special effect; for weapons a moveset: basic attack, category, the ↓↘→ and ←→ specials with their damage, MP cost and element | `g_EquipDefs` rows 0-168, specials in rows 169-216 and recognized external rows |
 | Head gear, armor, cloaks, accessories | name, icon, icon palette, description, ATK, DEF, STR, CON, INT, LCK, weak/resist/immune/absorb, special effect | `g_AccessoryDefs` |
 | Special effects | which item grants each coded effect | `CheckEquipmentItemCount` calls in DRA and every stage/boss overlay |
 | Sunstone and Moonstone | separate STR, CON, INT and LCK bonuses per stone (0–99), on their accessory cards and under Special effects | guarded day/night hooks and a bonus table in unused sound-bank padding |
+
+For example, set Shuriken's Consumable to No and choose its MP cost to keep the item while spending MP.
 
 Click an item's icon to pick from all 320 item icons in the BIN.
 
